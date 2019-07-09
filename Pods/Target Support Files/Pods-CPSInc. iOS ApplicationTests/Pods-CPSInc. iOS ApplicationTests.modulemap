@@ -1,0 +1,6 @@
+framework module Pods_CPSInc__iOS_ApplicationTests {
+  umbrella header "Pods-CPSInc. iOS ApplicationTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,26 @@
+PODS:
+  - Alamofire (4.8.2)
+  - Charts (3.3.0):
+    - Charts/Core (= 3.3.0)
+  - Charts/Core (3.3.0)
+  - SwiftyDropbox (5.1.0):
+    - Alamofire (~> 4.8.2)
+
+DEPENDENCIES:
+  - Charts
+  - SwiftyDropbox
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - Charts
+    - SwiftyDropbox
+
+SPEC CHECKSUMS:
+  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
+  Charts: e0dd4cd8f257bccf98407b58183ddca8e8d5b578
+  SwiftyDropbox: 7ca4961e0340c62c8d6d1ece91d67badfe4c0380
+
+PODFILE CHECKSUM: 48cd361433f1f19cfa2ccdfccdaebe4689c5f904
+
+COCOAPODS: 1.5.2

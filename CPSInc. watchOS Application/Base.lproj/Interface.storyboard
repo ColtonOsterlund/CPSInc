@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="14490.70" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+    <device id="watch38" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="watchOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="14490.21"/>
+    </dependencies>
+    <scenes>
+        <!--Main Interface Controller-->
+        <scene sceneID="aou-V4-d1y">
+            <objects>
+                <controller id="AgC-eL-Hgc" customClass="MainInterfaceController" customModule="CPSInc__watchOS_Application_Extension">
+                    <items>
+                        <imageView width="120" height="88" alignment="center" image="Creative Protein Solutions LOGO" contentMode="scaleAspectFit" id="Vd5-AT-vpL">
+                            <gestureRecognizers>
+                                <swipeGestureRecognizer direction="2" id="WdA-Gn-8Pe"/>
+                            </gestureRecognizers>
+                        </imageView>
+                        <picker height="40" alignment="center" focusStyle="stack" id="Y8a-ot-tXw">
+                            <connections>
+                                <action selector="optionsPickerDidChangeIndex:" destination="AgC-eL-Hgc" id="NrO-NM-Rgt"/>
+                            </connections>
+                        </picker>
+                    </items>
+                    <connections>
+                        <outlet property="optionsPicker" destination="Y8a-ot-tXw" id="IOI-Lq-am0"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="220" y="305.5"/>
+        </scene>
+        <!--Static Notification Interface Controller-->
+        <scene sceneID="AEw-b0-oYE">
+            <objects>
+                <notificationController id="YCC-NB-fut">
+                    <items>
+                        <label alignment="left" text="Alert Label" numberOfLines="0" id="IdU-wH-bcW"/>
+                    </items>
+                    <notificationCategory key="notificationCategory" identifier="myCategory" id="JfB-70-Muf"/>
+                    <connections>
+                        <outlet property="notificationAlertLabel" destination="IdU-wH-bcW" id="JKC-fr-R95"/>
+                        <segue destination="4sK-HA-Art" kind="relationship" relationship="dynamicNotificationInterface" id="kXh-Jw-8B1"/>
+                        <segue destination="eXb-UN-Cd0" kind="relationship" relationship="dynamicInteractiveNotificationInterface" id="mpB-YA-K8N"/>
+                    </connections>
+                </notificationController>
+            </objects>
+            <point key="canvasLocation" x="220" y="643"/>
+        </scene>
+        <!--Notification Controller-->
+        <scene sceneID="ZPc-GJ-vnh">
+            <objects>
+                <controller id="4sK-HA-Art" customClass="NotificationController" customModule="CPSInc__watchOS_Application" customModuleProvider="target"/>
+            </objects>
+            <point key="canvasLocation" x="468" y="643"/>
+        </scene>
+        <!--RunTestInterfaceController-->
+        <scene sceneID="Wpi-dI-nKg">
+            <objects>
+                <controller identifier="RunTestInterfaceController" id="hqV-vg-764" customClass="RunTestInterfaceController" customModule="CPSInc__watchOS_Application_Extension">
+                    <items>
+                        <label alignment="center" text="Connected Device: " textAlignment="center" minimumScaleFactor="0.5" id="2OZ-U4-QNs">
+                            <color key="textColor" red="0.0" green="0.4549631053" blue="0.78617498829999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </label>
+                        <label alignment="center" text="None" textAlignment="center" minimumScaleFactor="0.5" id="b1k-gU-NiM">
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </label>
+                        <picker height="37" alignment="center" focusStyle="stack" id="JDF-WY-ofe">
+                            <connections>
+                                <action selector="optionsPickerValueChanged:" destination="hqV-vg-764" id="lcv-KV-eGF"/>
+                            </connections>
+                        </picker>
+                        <label alignment="center" text="Final vs. Cont:" id="44q-xX-rro">
+                            <color key="textColor" red="0.0" green="0.4549631053" blue="0.78617498829999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </label>
+                        <label alignment="center" id="2jE-U4-MZc"/>
+                        <label alignment="center" text="-" id="Gfo-9W-eAF"/>
+                        <label alignment="center" text="Test Duration:" id="1GH-c8-Bbi">
+                            <color key="textColor" red="0.0" green="0.4549631053" blue="0.78617498829999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </label>
+                        <label alignment="center" text="-" id="9gB-uX-vEs"/>
+                        <label alignment="center" id="AwV-HF-E9k"/>
+                        <label alignment="center" text="Test Type:" id="2v3-h5-oyM">
+                            <color key="textColor" red="0.0" green="0.4549631053" blue="0.78617498829999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </label>
+                        <label alignment="center" text="-" id="atT-W8-5Zu"/>
+                    </items>
+                    <connections>
+                        <outlet property="connectedDeviceLabel" destination="b1k-gU-NiM" id="Bnc-nc-OMm"/>
+                        <outlet property="finalVsContLabel" destination="Gfo-9W-eAF" id="dFV-1P-X5b"/>
+                        <outlet property="optionsPicker" destination="JDF-WY-ofe" id="F0C-qF-cDL"/>
+                        <outlet property="testDurationLabel" destination="9gB-uX-vEs" id="aKE-bG-42W"/>
+                        <outlet property="testTypeLabel" destination="atT-W8-5Zu" id="z3R-TX-vdQ"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="750" y="595"/>
+        </scene>
+        <!--SettingsInterfaceController-->
+        <scene sceneID="h0l-1d-BtQ">
+            <objects>
+                <controller identifier="SettingsInterfaceController" id="oWj-9m-iM3" customClass="SettingsInterfaceController" customModule="CPSInc__watchOS_Application_Extension">
+                    <items>
+                        <label alignment="left" text="Final vs. Cont:" id="CGe-X1-IY9">
+                            <color key="textColor" red="0.0" green="0.4549631053" blue="0.78617498829999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </label>
+                        <picker height="35" alignment="center" focusStyle="stack" id="tpX-FO-LG1">
+                            <connections>
+                                <action selector="finalVsContPickerChanged:" destination="oWj-9m-iM3" id="AKd-5W-wwF"/>
+                            </connections>
+                        </picker>
+                        <label alignment="left" text="Test Duration:" id="gLb-z7-Ldh">
+                            <color key="textColor" red="0.0" green="0.4549631053" blue="0.78617498829999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </label>
+                        <picker height="35" alignment="center" focusStyle="stack" id="HI9-Km-kVb">
+                            <connections>
+                                <action selector="testDurationPickerChanged:" destination="oWj-9m-iM3" id="QFF-ez-xRu"/>
+                            </connections>
+                        </picker>
+                        <label alignment="left" text="Test Type:" id="h3l-rt-hRb">
+                            <color key="textColor" red="0.0" green="0.4549631053" blue="0.78617498829999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </label>
+                        <picker height="35" alignment="center" focusStyle="stack" id="ZCB-pd-MMT">
+                            <connections>
+                                <action selector="testTypePickerChanged:" destination="oWj-9m-iM3" id="FI5-d8-OHg"/>
+                            </connections>
+                        </picker>
+                    </items>
+                    <connections>
+                        <outlet property="finalVsContPicker" destination="tpX-FO-LG1" id="NQa-qm-4PG"/>
+                        <outlet property="testDurationPicker" destination="HI9-Km-kVb" id="6vg-ck-wWw"/>
+                        <outlet property="testTypePicker" destination="ZCB-pd-MMT" id="5pM-82-YEG"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="750" y="932"/>
+        </scene>
+        <!--LogbookInterfaceController-->
+        <scene sceneID="M0p-SA-oLq">
+            <objects>
+                <controller identifier="LogbookInterfaceController" id="nIG-ic-yjs" customClass="LogbookInterfaceController" customModule="CPSInc__watchOS_Application_Extension"/>
+            </objects>
+            <point key="canvasLocation" x="750" y="1244"/>
+        </scene>
+        <!--Notification Controller-->
+        <scene sceneID="Niz-AI-uX2">
+            <objects>
+                <controller id="eXb-UN-Cd0" customClass="NotificationController" customModule="CPSInc__watchOS_Application" customModuleProvider="target"/>
+            </objects>
+            <point key="canvasLocation" x="468" y="345"/>
+        </scene>
+        <!--FindDeviceInterfaceController-->
+        <scene sceneID="R9P-i7-Iis">
+            <objects>
+                <controller identifier="FindDeviceInterfaceController" id="Ool-IE-k4d" customClass="FindDeviceInterfaceController" customModule="CPSInc__watchOS_Application_Extension">
+                    <items>
+                        <label alignment="center" text="Connected Device: " textAlignment="center" minimumScaleFactor="0.5" id="dmU-Gd-VoY">
+                            <color key="textColor" red="0.0" green="0.4549631053" blue="0.78617498829999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </label>
+                        <label alignment="center" text="None" textAlignment="center" minimumScaleFactor="0.5" id="2Ey-G6-vkZ">
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </label>
+                        <picker height="48" alignment="center" focusStyle="stack" id="kUL-63-hgV">
+                            <connections>
+                                <action selector="optionsPickerValueChanged:" destination="Ool-IE-k4d" id="dCC-FU-o5m"/>
+                            </connections>
+                        </picker>
+                        <picker height="46" alignment="center" semanticContentAttribute="forceLeftToRight" focusStyle="stack" id="2wB-I3-NbJ">
+                            <accessibilityTraits key="accessibilityTraits" staticText="YES" updatesFrequently="YES" adjustable="YES"/>
+                            <connections>
+                                <action selector="deviceNamePickerChanged:" destination="Ool-IE-k4d" id="SgN-Jl-aYx"/>
+                            </connections>
+                        </picker>
+                        <table alignment="left" id="Hcv-bd-RPx"/>
+                    </items>
+                    <connections>
+                        <outlet property="connectedDeviceLabel" destination="2Ey-G6-vkZ" id="dcJ-lr-iLq"/>
+                        <outlet property="deviceNamePicker" destination="2wB-I3-NbJ" id="6rX-Xb-URW"/>
+                        <outlet property="optionsPicker" destination="kUL-63-hgV" id="ORK-YB-rOz"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="750" y="268"/>
+        </scene>
+        <!--FinalValueResultInterfaceController-->
+        <scene sceneID="6kM-9W-2NA">
+            <objects>
+                <controller identifier="FinalValueResultInterfaceController" id="VRr-QP-UrG" customClass="FinalValueResultInterfaceController" customModule="CPSInc__watchOS_Application_Extension">
+                    <items>
+                        <label alignment="center" text="Final Value:" id="Hcm-Oz-mZH">
+                            <color key="textColor" red="0.0" green="0.4549631053" blue="0.78617498829999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </label>
+                        <label alignment="center" text="Test in Progress..." id="c2M-jl-oZe"/>
+                        <picker height="38" alignment="center" verticalAlignment="bottom" focusStyle="stack" id="oyU-kP-bvC">
+                            <connections>
+                                <action selector="optionsPickerChangedValue:" destination="VRr-QP-UrG" id="1jG-Wo-heC"/>
+                            </connections>
+                        </picker>
+                    </items>
+                    <connections>
+                        <outlet property="finalValueResultLabel" destination="c2M-jl-oZe" id="H3X-Ok-DAh"/>
+                        <outlet property="optionsPicker" destination="oyU-kP-bvC" id="8EG-8j-xkM"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="1117" y="455"/>
+        </scene>
+        <!--ContinuousValueResultInterfaceController-->
+        <scene sceneID="nVb-P3-fQB">
+            <objects>
+                <controller identifier="ContinuousValueResultInterfaceController" id="El0-0S-Zps" customClass="ContinuousValueResultInterfaceController" customModule="CPSInc__watchOS_Application_Extension">
+                    <items>
+                        <label alignment="center" text="Final Values:" id="suT-uC-MQG">
+                            <color key="textColor" red="0.0" green="0.4549631053" blue="0.78617498829999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </label>
+                        <table alignment="left" id="W8a-B3-qXp"/>
+                        <label alignment="center" text="Test in Progress..." id="nqm-NF-Uat"/>
+                        <table alignment="left" id="bVW-Ff-sgY"/>
+                        <picker height="66" alignment="center" verticalAlignment="center" focusStyle="stack" id="M1V-rp-kAy"/>
+                        <picker height="39" alignment="center" verticalAlignment="bottom" focusStyle="stack" id="3GU-Xf-wnN">
+                            <connections>
+                                <action selector="optionsPickerChangedValue:" destination="El0-0S-Zps" id="xeM-1v-Sik"/>
+                            </connections>
+                        </picker>
+                    </items>
+                    <connections>
+                        <outlet property="finalValTable" destination="bVW-Ff-sgY" id="OB6-sG-IAd"/>
+                        <outlet property="finalValueResultLabel" destination="nqm-NF-Uat" id="kyn-c5-3OA"/>
+                        <outlet property="optionsPicker" destination="3GU-Xf-wnN" id="SdC-7k-jFc"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="1116" y="709.5"/>
+        </scene>
+    </scenes>
+</document>
