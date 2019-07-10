@@ -10,6 +10,7 @@
 		15D51765A71B28437B6E713B /* Pods_CPSInc__watchOS_Application.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC23B7DC84B8A273DAC6E4CD /* Pods_CPSInc__watchOS_Application.framework */; };
 		36E9ACFF9C25576E61827930 /* Pods_CPSInc__iOS_Application.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D1556416CD3A065738418B /* Pods_CPSInc__iOS_Application.framework */; };
 		8084FC59D056BA722B4EFCBB /* Pods_CPSInc__iOS_ApplicationUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BBFC0EFE67C421E13704E5 /* Pods_CPSInc__iOS_ApplicationUITests.framework */; };
+		9C1C31B322D53E580057989C /* TestChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C31B222D53E580057989C /* TestChartViewController.swift */; };
 		9C373EEC22AEC48700B0FC1A /* MainInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3939DC22A05D2D008D066C /* MainInterfaceController.swift */; };
 		9C3939CF22A05D2B008D066C /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C3939CD22A05D2B008D066C /* Interface.storyboard */; };
 		9C3939D122A05D2D008D066C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C3939D022A05D2D008D066C /* Assets.xcassets */; };
@@ -130,6 +131,7 @@
 		5D13BEB5AC44E502EEEDC3DE /* Pods-CPSInc. iOS ApplicationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CPSInc. iOS ApplicationTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CPSInc. iOS ApplicationTests/Pods-CPSInc. iOS ApplicationTests.release.xcconfig"; sourceTree = "<group>"; };
 		7D7B351882ADCD72B35E65C8 /* Pods-CPSInc. iOS Application.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CPSInc. iOS Application.release.xcconfig"; path = "Pods/Target Support Files/Pods-CPSInc. iOS Application/Pods-CPSInc. iOS Application.release.xcconfig"; sourceTree = "<group>"; };
 		80609FA3E8D23956909B11FB /* Pods-CPSInc. watchOS Application.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CPSInc. watchOS Application.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CPSInc. watchOS Application/Pods-CPSInc. watchOS Application.debug.xcconfig"; sourceTree = "<group>"; };
+		9C1C31B222D53E580057989C /* TestChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestChartViewController.swift; sourceTree = "<group>"; };
 		9C3939CB22A05D2B008D066C /* CPSInc. watchOS Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CPSInc. watchOS Application.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C3939CE22A05D2B008D066C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		9C3939D022A05D2D008D066C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -327,6 +329,7 @@
 				9CFB11C022C3F937003E76B5 /* HerdLogbookViewController.swift */,
 				9CFB11CB22C4216D003E76B5 /* CowLogbookViewController.swift */,
 				9CFB11CD22C42196003E76B5 /* TestLogbookViewController.swift */,
+				9C1C31B222D53E580057989C /* TestChartViewController.swift */,
 				9CFB11D122C51D88003E76B5 /* HerdInfoViewController.swift */,
 				9CFB11CF22C51D6F003E76B5 /* CowInfoViewController.swift */,
 				9CFB11D322C51D9D003E76B5 /* TestIInfoViewController.swift */,
@@ -701,6 +704,7 @@
 				9CFB11D022C51D6F003E76B5 /* CowInfoViewController.swift in Sources */,
 				9CFB11FA22C54E53003E76B5 /* AddCowViewController.swift in Sources */,
 				9C6F9EAC22985F35009EC1D6 /* CPSInc__iOS_Application.xcdatamodeld in Sources */,
+				9C1C31B322D53E580057989C /* TestChartViewController.swift in Sources */,
 				9CFB11F222C5332D003E76B5 /* Test+CoreDataProperties.swift in Sources */,
 				9CFB11ED22C53316003E76B5 /* Herd+CoreDataClass.swift in Sources */,
 				9C6F9EE322987804009EC1D6 /* TestViewController.swift in Sources */,

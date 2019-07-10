@@ -821,6 +821,8 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
             let lineChartDataSet = LineChartDataSet(entries: self.dataEntries, label: "Glucose Results")
             let lineChartData = LineChartData(dataSet: lineChartDataSet)
             self.lineChartView.data = lineChartData
+            self.lineChartView.xAxis.granularity = 1
+            self.lineChartView.xAxis.labelPosition = XAxis.LabelPosition.bottom
             self.lineChartView.setVisibleXRangeMaximum(5.0) //causes you to have to scroll to see the rest of the values
             self.lineChartView.moveViewToX(0.0) //initially display the graph starting at index of 0
             self.lineChartView.isHidden = false
