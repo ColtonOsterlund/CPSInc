@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CPSLogo" translatesAutoresizingMaskIntoConstraints="NO" id="ncc-PC-Lhg">
-                                <rect key="frame" x="107" y="250" width="161.00000000000045" height="167.00000000000023"/>
+                                <rect key="frame" x="107" y="250" width="161" height="167"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.63724843535018449" blue="0.99908632040023804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

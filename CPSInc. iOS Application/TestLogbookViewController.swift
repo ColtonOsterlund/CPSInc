@@ -25,6 +25,7 @@ public class TestLogbookViewController: UITableViewController, WCSessionDelegate
     private var chartBtn = UIBarButtonItem()
     private var filterBtn = UIBarButtonItem()
     private var graphSelectedBtn = UIBarButtonItem()
+    private var cancelSelectionBtn = UIBarButtonItem()
     
     //UIDatePicker
     private let startDatePicker = UIDatePicker()
@@ -80,6 +81,7 @@ public class TestLogbookViewController: UITableViewController, WCSessionDelegate
         chartBtn = UIBarButtonItem.init(title: "Chart", style: .done, target: self, action: #selector(graphResults))
         filterBtn = UIBarButtonItem.init(title: "Filter", style: .done, target: self, action: #selector(filterResults))
         graphSelectedBtn = UIBarButtonItem.init(title: "Graph Selected", style: .done, target: self, action: #selector(graphFromSelected))
+        cancelSelectionBtn = UIBarButtonItem.init(title: "Cancel", style: .done, target: self, action: #selector(cancelSelected))
         
         navigationItem.rightBarButtonItems = [addBtn, chartBtn, filterBtn]
         
@@ -112,6 +114,19 @@ public class TestLogbookViewController: UITableViewController, WCSessionDelegate
         fatalError("init(coder:) has not been implemented") // or see Roman Sausarnes's answer
     }
     
+    @objc private func cancelSelected(){
+        DispatchQueue.main.async { //reset bar buttons
+            self.navigationItem.rightBarButtonItems =  [self.addBtn, self.chartBtn, self.filterBtn]
+        }
+        
+        selectedTestResults.removeAll() //reset selectedTestResults after graphing
+        selectingValuesFlag = 0 //reset selected values flag
+        
+        if let index = self.tableView.indexPathForSelectedRow{
+            self.tableView.deselectRow(at: index, animated: true)
+        }
+    }
+    
     @objc private func datePickerChangedValue(sender: UIDatePicker){
         let dateformatter = DateFormatter()
         dateformatter.dateStyle = DateFormatter.Style.short
@@ -133,7 +148,7 @@ public class TestLogbookViewController: UITableViewController, WCSessionDelegate
         graphingAlert.addAction(UIAlertAction(title: "Graph Selected Results", style: .default, handler: { action in
             self.selectingValuesFlag = 1
             DispatchQueue.main.async {
-                self.navigationItem.rightBarButtonItems = [self.graphSelectedBtn]
+                self.navigationItem.rightBarButtonItems = [self.cancelSelectionBtn, self.graphSelectedBtn]
             }
         }))
         
@@ -229,6 +244,7 @@ public class TestLogbookViewController: UITableViewController, WCSessionDelegate
         self.graphTestResults(testResults: selectedTestResults)
         
         selectedTestResults.removeAll() //reset selectedTestResults after graphing
+        selectingValuesFlag = 0 //reset selected values flag
     }
     
     
@@ -380,26 +396,28 @@ public class TestLogbookViewController: UITableViewController, WCSessionDelegate
     }
     
     public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if(selectingValuesFlag == 0){
-            tableView.allowsMultipleSelection = false
-            self.testInfoView!.setSelectedTest(test: self.testList[indexPath.row])
-            self.navigationController?.pushViewController(self.testInfoView!, animated: true)
-        }
-        else{
-            tableView.allowsMultipleSelection = true
-            selectedTestResults.append(testList[indexPath.row])
-        }
+       // if(tableView.cellForRow(at: indexPath)?.isSelected == false){ //cannot select a row twice
+            if(selectingValuesFlag == 0){
+                tableView.allowsMultipleSelection = false
+                self.testInfoView!.setSelectedTest(test: self.testList[indexPath.row])
+                self.navigationController?.pushViewController(self.testInfoView!, animated: true)
+            }
+            else{
+                tableView.allowsMultipleSelection = true
+                selectedTestResults.append(testList[indexPath.row])
+            }
+       // }
         
     }
     
     public override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         if(selectingValuesFlag == 1){
-            for var i in 0...(selectedTestResults.count - 1){
-                if(selectedTestResults[i] == testList[indexPath.row]){
-                    print(selectedTestResults[i])
-                    selectedTestResults.remove(at: i)
-                    i -= 1
+           var index = 0
+            for test in selectedTestResults{
+                if(test == testList[indexPath.row]){
+                    selectedTestResults.remove(at: index)
                 }
+                index += 1
             }
         }
     }
