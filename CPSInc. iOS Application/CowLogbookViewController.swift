@@ -166,6 +166,7 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate 
                 
                 //Delete Cow record from database
                 self.appDelegate?.persistentContainer.viewContext.delete(self.cowList[indexPath.row])
+                self.appDelegate?.saveContext() //save context after cow is deleted
                 self.fetchSavedData()
                 
             }))

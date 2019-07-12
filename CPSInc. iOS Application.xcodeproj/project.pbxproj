@@ -132,8 +132,6 @@
 		7D7B351882ADCD72B35E65C8 /* Pods-CPSInc. iOS Application.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CPSInc. iOS Application.release.xcconfig"; path = "Pods/Target Support Files/Pods-CPSInc. iOS Application/Pods-CPSInc. iOS Application.release.xcconfig"; sourceTree = "<group>"; };
 		80609FA3E8D23956909B11FB /* Pods-CPSInc. watchOS Application.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CPSInc. watchOS Application.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CPSInc. watchOS Application/Pods-CPSInc. watchOS Application.debug.xcconfig"; sourceTree = "<group>"; };
 		9C1C31B222D53E580057989C /* TestChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestChartViewController.swift; sourceTree = "<group>"; };
-		9C1C31B422D7D7E30057989C /* CPSInc. watchOS Application Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "CPSInc. watchOS Application Extension.entitlements"; sourceTree = "<group>"; };
-		9C1C31B522D7D7F70057989C /* CPSInc. iOS Application.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "CPSInc. iOS Application.entitlements"; sourceTree = "<group>"; };
 		9C3939CB22A05D2B008D066C /* CPSInc. watchOS Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CPSInc. watchOS Application.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C3939CE22A05D2B008D066C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		9C3939D022A05D2D008D066C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -265,7 +263,6 @@
 		9C3939DB22A05D2D008D066C /* CPSInc. watchOS Application Extension */ = {
 			isa = PBXGroup;
 			children = (
-				9C1C31B422D7D7E30057989C /* CPSInc. watchOS Application Extension.entitlements */,
 				9C3939DC22A05D2D008D066C /* MainInterfaceController.swift */,
 				9CEBC3BB22AB181C009CACBA /* FindDeviceInterfaceController.swift */,
 				9CEBC3BE22AB1867009CACBA /* RunTestInterfaceController.swift */,
@@ -324,7 +321,6 @@
 		9C6F9EA222985F35009EC1D6 /* CPSInc. iOS Application */ = {
 			isa = PBXGroup;
 			children = (
-				9C1C31B522D7D7F70057989C /* CPSInc. iOS Application.entitlements */,
 				9C6F9EE622988B0C009EC1D6 /* LaunchScreen.storyboard */,
 				9C6F9EDA22986944009EC1D6 /* MenuViewController.swift */,
 				9C6F9EE0229877F2009EC1D6 /* ConnectViewController.swift */,
@@ -489,7 +485,7 @@
 						CreatedOnToolsVersion = 10.2;
 						SystemCapabilities = {
 							com.apple.DataProtection = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -497,7 +493,7 @@
 						CreatedOnToolsVersion = 10.2;
 						SystemCapabilities = {
 							com.apple.DataProtection = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -836,7 +832,6 @@
 			baseConfigurationReference = 17F95069B6CBD6D56DB9FFCB /* Pods-CPSInc. watchOS Application Extension.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				CODE_SIGN_ENTITLEMENTS = "CPSInc. watchOS Application Extension/CPSInc. watchOS Application Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = H5K6477XCY;
 				INFOPLIST_FILE = "CPSInc. watchOS Application Extension/Info.plist";
@@ -860,7 +855,6 @@
 			baseConfigurationReference = A7B0512BBF2101ABB4F1FD07 /* Pods-CPSInc. watchOS Application Extension.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				CODE_SIGN_ENTITLEMENTS = "CPSInc. watchOS Application Extension/CPSInc. watchOS Application Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = H5K6477XCY;
 				INFOPLIST_FILE = "CPSInc. watchOS Application Extension/Info.plist";
@@ -1001,7 +995,6 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "CPSInc. iOS Application/CPSInc. iOS Application.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = H5K6477XCY;
 				INFOPLIST_FILE = "CPSInc. iOS Application/Info.plist";
@@ -1022,7 +1015,6 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "CPSInc. iOS Application/CPSInc. iOS Application.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = H5K6477XCY;
 				INFOPLIST_FILE = "CPSInc. iOS Application/Info.plist";

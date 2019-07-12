@@ -355,6 +355,7 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
                 
                 //Delete Herd record from database
                 self.appDelegate?.persistentContainer.viewContext.delete(self.herdList[indexPath.row])
+                self.appDelegate?.saveContext() //save context after element is deleted
                 self.fetchSavedData()
                 
             }))

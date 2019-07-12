@@ -119,8 +119,14 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
             
             inQueueView = 0
         }
-
-    
+        
+        
+        
+        let dirPaths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        var docsDir = dirPaths[0]
+        
+        print(docsDir)
+        
     }
     
     public func centralManagerDidUpdateState(_ central: CBCentralManager) {
