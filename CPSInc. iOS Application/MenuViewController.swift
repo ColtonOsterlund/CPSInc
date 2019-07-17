@@ -138,6 +138,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
 //        var docsDir = dirPaths[0]
 //
 //        print(docsDir)
+       // print(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])
         
     }
     

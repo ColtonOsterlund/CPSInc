@@ -446,7 +446,7 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
             testToSave.dataType = "Continuous"
         }
         
-       testToSave.runtime = Int16((menuView?.getSettingsView().getTestDuration())!)
+       testToSave.runtime = (menuView?.getSettingsView().getTestDuration())! as NSNumber
 
         
         switch(menuView?.getSettingsView().getTestType()){

@@ -36,13 +36,13 @@
 		9C6F9EE322987804009EC1D6 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6F9EE222987804009EC1D6 /* TestViewController.swift */; };
 		9C6F9EE52298781A009EC1D6 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6F9EE42298781A009EC1D6 /* SettingsViewController.swift */; };
 		9C6F9EE722988B0C009EC1D6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C6F9EE622988B0C009EC1D6 /* LaunchScreen.storyboard */; };
-		9C9618CA22DEAA8F00B48713 /* Cow+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618C422DEAA8E00B48713 /* Cow+CoreDataClass.swift */; };
-		9C9618CB22DEAA8F00B48713 /* Test+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618C522DEAA8E00B48713 /* Test+CoreDataClass.swift */; };
-		9C9618CC22DEAA8F00B48713 /* Test+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618C622DEAA8E00B48713 /* Test+CoreDataProperties.swift */; };
-		9C9618CD22DEAA8F00B48713 /* Cow+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618C722DEAA8E00B48713 /* Cow+CoreDataProperties.swift */; };
-		9C9618CE22DEAA8F00B48713 /* Herd+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618C822DEAA8E00B48713 /* Herd+CoreDataClass.swift */; };
-		9C9618CF22DEAA8F00B48713 /* Herd+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618C922DEAA8F00B48713 /* Herd+CoreDataProperties.swift */; };
 		9C9618D522DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618D322DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodeld */; };
+		9C9618DD22DF7E5A00B48713 /* Test+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618D722DF7E5A00B48713 /* Test+CoreDataClass.swift */; };
+		9C9618DE22DF7E5A00B48713 /* Test+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618D822DF7E5A00B48713 /* Test+CoreDataProperties.swift */; };
+		9C9618DF22DF7E5A00B48713 /* Herd+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618D922DF7E5A00B48713 /* Herd+CoreDataClass.swift */; };
+		9C9618E022DF7E5A00B48713 /* Herd+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618DA22DF7E5A00B48713 /* Herd+CoreDataProperties.swift */; };
+		9C9618E122DF7E5A00B48713 /* Cow+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618DB22DF7E5A00B48713 /* Cow+CoreDataClass.swift */; };
+		9C9618E222DF7E5A00B48713 /* Cow+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618DC22DF7E5A00B48713 /* Cow+CoreDataProperties.swift */; };
 		9CEBC3BC22AB181C009CACBA /* FindDeviceInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEBC3BB22AB181C009CACBA /* FindDeviceInterfaceController.swift */; };
 		9CEBC3BF22AB1867009CACBA /* RunTestInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEBC3BE22AB1867009CACBA /* RunTestInterfaceController.swift */; };
 		9CEBC3C322AB1922009CACBA /* FinalValueResultInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEBC3C222AB1922009CACBA /* FinalValueResultInterfaceController.swift */; };
@@ -172,13 +172,14 @@
 		9C6F9EE222987804009EC1D6 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		9C6F9EE42298781A009EC1D6 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		9C6F9EE622988B0C009EC1D6 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
-		9C9618C422DEAA8E00B48713 /* Cow+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Cow+CoreDataClass.swift"; sourceTree = "<group>"; };
-		9C9618C522DEAA8E00B48713 /* Test+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Test+CoreDataClass.swift"; sourceTree = "<group>"; };
-		9C9618C622DEAA8E00B48713 /* Test+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Test+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		9C9618C722DEAA8E00B48713 /* Cow+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Cow+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		9C9618C822DEAA8E00B48713 /* Herd+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Herd+CoreDataClass.swift"; sourceTree = "<group>"; };
-		9C9618C922DEAA8F00B48713 /* Herd+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Herd+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		9C9618D422DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CPSInc__iOS_Application.xcdatamodel; sourceTree = "<group>"; };
+		9C9618D622DF7A6E00B48713 /* CPSInc__iOS_Application 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "CPSInc__iOS_Application 2.xcdatamodel"; sourceTree = "<group>"; };
+		9C9618D722DF7E5A00B48713 /* Test+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test+CoreDataClass.swift"; sourceTree = "<group>"; };
+		9C9618D822DF7E5A00B48713 /* Test+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		9C9618D922DF7E5A00B48713 /* Herd+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Herd+CoreDataClass.swift"; sourceTree = "<group>"; };
+		9C9618DA22DF7E5A00B48713 /* Herd+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Herd+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		9C9618DB22DF7E5A00B48713 /* Cow+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cow+CoreDataClass.swift"; sourceTree = "<group>"; };
+		9C9618DC22DF7E5A00B48713 /* Cow+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cow+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		9CEBC3BB22AB181C009CACBA /* FindDeviceInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindDeviceInterfaceController.swift; sourceTree = "<group>"; };
 		9CEBC3BE22AB1867009CACBA /* RunTestInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunTestInterfaceController.swift; sourceTree = "<group>"; };
 		9CEBC3C022AB1884009CACBA /* SettingsInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInterfaceController.swift; sourceTree = "<group>"; };
@@ -353,12 +354,12 @@
 				9CFB11D322C51D9D003E76B5 /* TestIInfoViewController.swift */,
 				9CFB11F722C54E44003E76B5 /* AddHerdViewController.swift */,
 				9CFB11F922C54E53003E76B5 /* AddCowViewController.swift */,
-				9C9618C422DEAA8E00B48713 /* Cow+CoreDataClass.swift */,
-				9C9618C722DEAA8E00B48713 /* Cow+CoreDataProperties.swift */,
-				9C9618C822DEAA8E00B48713 /* Herd+CoreDataClass.swift */,
-				9C9618C922DEAA8F00B48713 /* Herd+CoreDataProperties.swift */,
-				9C9618C522DEAA8E00B48713 /* Test+CoreDataClass.swift */,
-				9C9618C622DEAA8E00B48713 /* Test+CoreDataProperties.swift */,
+				9C9618D722DF7E5A00B48713 /* Test+CoreDataClass.swift */,
+				9C9618D822DF7E5A00B48713 /* Test+CoreDataProperties.swift */,
+				9C9618D922DF7E5A00B48713 /* Herd+CoreDataClass.swift */,
+				9C9618DA22DF7E5A00B48713 /* Herd+CoreDataProperties.swift */,
+				9C9618DB22DF7E5A00B48713 /* Cow+CoreDataClass.swift */,
+				9C9618DC22DF7E5A00B48713 /* Cow+CoreDataProperties.swift */,
 				9C6F9EA322985F35009EC1D6 /* AppDelegate.swift */,
 				9C1C31B622D8E1A30057989C /* EncryptedStringTransformer.swift */,
 				9C9618D322DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodeld */,
@@ -731,27 +732,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C1C31C522DE4BD00057989C /* RunTestInstructionViewController.swift in Sources */,
+				9C9618DD22DF7E5A00B48713 /* Test+CoreDataClass.swift in Sources */,
 				9C1C31C122DE40410057989C /* InstructionPageViewController.swift in Sources */,
 				9CFB11D422C51D9D003E76B5 /* TestIInfoViewController.swift in Sources */,
-				9C9618CC22DEAA8F00B48713 /* Test+CoreDataProperties.swift in Sources */,
 				9CFB11D022C51D6F003E76B5 /* CowInfoViewController.swift in Sources */,
+				9C9618E122DF7E5A00B48713 /* Cow+CoreDataClass.swift in Sources */,
 				9CFB11FA22C54E53003E76B5 /* AddCowViewController.swift in Sources */,
+				9C9618E022DF7E5A00B48713 /* Herd+CoreDataProperties.swift in Sources */,
+				9C9618DE22DF7E5A00B48713 /* Test+CoreDataProperties.swift in Sources */,
 				9C1C31B322D53E580057989C /* TestChartViewController.swift in Sources */,
 				9C1C31C322DE4BC20057989C /* FindDeviceInstructionViewController.swift in Sources */,
 				9C6F9EE322987804009EC1D6 /* TestViewController.swift in Sources */,
-				9C9618CE22DEAA8F00B48713 /* Herd+CoreDataClass.swift in Sources */,
 				9C9618D522DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodeld in Sources */,
-				9C9618CA22DEAA8F00B48713 /* Cow+CoreDataClass.swift in Sources */,
 				9CFB11CE22C42196003E76B5 /* TestLogbookViewController.swift in Sources */,
 				9CFB11C122C3F937003E76B5 /* HerdLogbookViewController.swift in Sources */,
 				9CFB11F822C54E44003E76B5 /* AddHerdViewController.swift in Sources */,
 				9CFB11D222C51D88003E76B5 /* HerdInfoViewController.swift in Sources */,
 				9C6F9EE1229877F2009EC1D6 /* ConnectViewController.swift in Sources */,
 				9C6F9EDB22986944009EC1D6 /* MenuViewController.swift in Sources */,
+				9C9618E222DF7E5A00B48713 /* Cow+CoreDataProperties.swift in Sources */,
 				9C1C31C922DE4BED0057989C /* SettingsInstructionViewController.swift in Sources */,
-				9C9618CF22DEAA8F00B48713 /* Herd+CoreDataProperties.swift in Sources */,
-				9C9618CB22DEAA8F00B48713 /* Test+CoreDataClass.swift in Sources */,
-				9C9618CD22DEAA8F00B48713 /* Cow+CoreDataProperties.swift in Sources */,
+				9C9618DF22DF7E5A00B48713 /* Herd+CoreDataClass.swift in Sources */,
 				9C6F9EA422985F35009EC1D6 /* AppDelegate.swift in Sources */,
 				9CFB11CC22C4216D003E76B5 /* CowLogbookViewController.swift in Sources */,
 				9C1C31B722D8E1A30057989C /* EncryptedStringTransformer.swift in Sources */,
@@ -1204,6 +1205,7 @@
 		9C9618D322DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				9C9618D622DF7A6E00B48713 /* CPSInc__iOS_Application 2.xcdatamodel */,
 				9C9618D422DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodel */,
 			);
 			currentVersion = 9C9618D422DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodel */;

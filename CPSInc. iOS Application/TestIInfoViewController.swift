@@ -144,7 +144,7 @@ class TestInfoViewController: UIViewController {
         
         dateTextView.text = dateformatter.string(from: selectedTest!.date! as Date)
         dataTypeTextView.text = selectedTest?.dataType
-        runtimeTextView.text = String((selectedTest?.runtime)!)
+        runtimeTextView.text = (selectedTest?.runtime)!.stringValue
         testTypeTextView.text = selectedTest?.testType
         valueTextView.text = String((selectedTest?.value)!)
         unitsTextView.text = selectedTest?.units

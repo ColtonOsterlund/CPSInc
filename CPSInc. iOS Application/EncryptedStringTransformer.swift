@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import RNCryptor
 
-class EncryptedStringTransformer : ValueTransformer {
+class EncryptedValueransformer : ValueTransformer {
     let password = "S@ndeepHere123"
 
     override func transformedValue(_ value: Any?) -> Any? {
