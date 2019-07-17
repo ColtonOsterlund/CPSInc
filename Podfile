@@ -8,6 +8,7 @@ target 'CPSInc. iOS Application' do
   # Pods for CPSInc. iOS Application
   pod 'Charts'
   pod 'SwiftyDropbox'
+  pod 'RNCryptor', '~> 5.0'
 
   target 'CPSInc. iOS ApplicationTests' do
     inherit! :search_paths

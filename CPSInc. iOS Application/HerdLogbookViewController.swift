@@ -143,9 +143,9 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
                                 if let response = response {
                                     
                                     let fileMetadata = response.0
-                                    print(fileMetadata)
+                                    //print(fileMetadata)
                                     let fileData = response.1
-                                    print(fileData)
+                                    //print(fileData)
                                     
                                     let fileString = String(data: fileData, encoding: .utf8)
                                     

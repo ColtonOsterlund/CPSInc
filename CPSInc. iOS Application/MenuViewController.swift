@@ -17,6 +17,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     private var testView: TestViewController? = nil
     private var settingsView: SettingsViewController? = nil
     private var logbookView: HerdLogbookViewController? = nil
+    private var instructionsView: InstructionPageViewController? = nil
     private var appDelegate: AppDelegate? = nil
     
     //UIButtons
@@ -24,6 +25,9 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     private let testBtn = UIButton()
     private let settingsBtn = UIButton()
     private let logbookBtn = UIButton()
+    
+    //UIBarButtons
+     private var instructionBtn = UIBarButtonItem()
     
     //UIImages
     private let findDeviceBtnImage = UIImage(named: "device")
@@ -36,6 +40,13 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     private let testLabel = UILabel()
     private let settingsLabel = UILabel()
     private let logbookLabel = UILabel()
+    private let logoLabel = UILabel()
+    
+    //UITextViews for hyper link
+    let attributedString = NSMutableAttributedString(string: "Visit Website")
+    let url = URL(string: "https://creativeproteinsolutions.com")!
+    let hyperlinkTextView = UITextView()
+    
     
     //Bluetooth Data
     private var centralManager: CBCentralManager? = nil
@@ -59,6 +70,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         testView = TestViewController(menuView: self, appDelegate: appDelegate)
         settingsView = SettingsViewController(menuView: self, appDelegate: appDelegate)
         logbookView = HerdLogbookViewController(menuView: self, appDelegate: appDelegate)
+        instructionsView = InstructionPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         self.appDelegate = appDelegate
     }
     
@@ -121,11 +133,11 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         }
         
         
-        
-        let dirPaths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-        var docsDir = dirPaths[0]
-        
-        print(docsDir)
+        //USE TO FIND THE FOLDER CONTAINING THE .sqlite DATABASE
+//        let dirPaths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+//        var docsDir = dirPaths[0]
+//
+//        print(docsDir)
         
     }
     
@@ -169,6 +181,33 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         logbookLabel.textColor = .black
         logbookLabel.textAlignment = .center
         view.addSubview(logbookLabel)
+        
+        logoLabel.text = "Creative Protein Solutions Inc."
+        logoLabel.textColor = .black
+        logoLabel.textAlignment = .center
+        logoLabel.font = logoLabel.font.withSize(25)
+        view.addSubview(logoLabel)
+        
+        
+        // Set the 'click here' substring to be the link
+        attributedString.setAttributes([.link: url], range: NSMakeRange(0, 13))
+        hyperlinkTextView.attributedText = attributedString
+        hyperlinkTextView.isUserInteractionEnabled = true
+        hyperlinkTextView.isEditable = false
+        // Set how links should appear: blue and underlined
+        hyperlinkTextView.linkTextAttributes = [
+            .foregroundColor: UIColor.blue,
+            .underlineStyle: NSUnderlineStyle.single.rawValue
+        ]
+        hyperlinkTextView.font = hyperlinkTextView.font?.withSize(20)
+        hyperlinkTextView.textAlignment = .center
+        hyperlinkTextView.backgroundColor = .init(red: 0, green: 0.637, blue: 0.999, alpha: 1)
+        view.addSubview(hyperlinkTextView)
+        
+        
+        instructionBtn = UIBarButtonItem.init(title: "Instructions", style: .done, target: self, action: #selector(instructionsBtnPressed))
+        
+        navigationItem.rightBarButtonItems = [instructionBtn]
     
     }
     
@@ -224,8 +263,18 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         logbookBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.15)).isActive = true
         
         logbookLabel.translatesAutoresizingMaskIntoConstraints = false
-        logbookLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25)).isActive = true
+        logbookLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25)).isActive = true
         logbookLabel.topAnchor.constraint(equalTo: logbookBtn.bottomAnchor, constant: 10).isActive = true
+        
+        logoLabel.translatesAutoresizingMaskIntoConstraints = false
+        logoLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        logoLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: (UIScreen.main.bounds.height * 0.01)).isActive = true
+        
+        hyperlinkTextView.translatesAutoresizingMaskIntoConstraints = false
+        hyperlinkTextView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        hyperlinkTextView.topAnchor.constraint(equalTo: logoLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.01)).isActive = true
+        hyperlinkTextView.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        hyperlinkTextView.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
     private func setButtonListeners(){
@@ -344,6 +393,10 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         wcSession!.delegate = logbookView
         logbookView?.setWCSession(session: wcSession)
     
+    }
+    
+    @objc private func instructionsBtnPressed(){
+        navigationController?.pushViewController(instructionsView!, animated: true)
     }
     
     private func showToast(controller: UIViewController, message: String, seconds: Double){

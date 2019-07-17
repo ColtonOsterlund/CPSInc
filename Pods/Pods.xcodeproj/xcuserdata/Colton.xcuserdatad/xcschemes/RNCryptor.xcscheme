@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CE2C1D64E8178B97430245CF31252CA5"
-               BuildableName = "Pods_CPSInc__iOS_Application.framework"
-               BlueprintName = "Pods-CPSInc. iOS Application"
+               BlueprintIdentifier = "EA515C1770CBE94735C47AB602AAA879"
+               BuildableName = "RNCryptor.framework"
+               BlueprintName = "RNCryptor"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CE2C1D64E8178B97430245CF31252CA5"
-            BuildableName = "Pods_CPSInc__iOS_Application.framework"
-            BlueprintName = "Pods-CPSInc. iOS Application"
+            BlueprintIdentifier = "EA515C1770CBE94735C47AB602AAA879"
+            BuildableName = "RNCryptor.framework"
+            BlueprintName = "RNCryptor"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

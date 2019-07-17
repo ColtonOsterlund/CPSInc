@@ -446,7 +446,8 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
             testToSave.dataType = "Continuous"
         }
         
-        testToSave.runtime = Int16((menuView?.getSettingsView().getTestDuration())!)
+       testToSave.runtime = Int16((menuView?.getSettingsView().getTestDuration())!)
+
         
         switch(menuView?.getSettingsView().getTestType()){
             case 0:
@@ -623,16 +624,18 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         testProgressView.setProgress(0, animated: true)
         
         //not sure if this is the best method to delay - look into this
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(menuView!.getSettingsView().getTestDuration() * 1/4)){
+        let currentTime = DispatchTime.now()
+        
+        DispatchQueue.main.asyncAfter(deadline: currentTime + .seconds(menuView!.getSettingsView().getTestDuration() * 1/4)){
             self.testProgressView.setProgress(0.25, animated: true)
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(menuView!.getSettingsView().getTestDuration() * 1/2 )){
+        DispatchQueue.main.asyncAfter(deadline: currentTime + .seconds(menuView!.getSettingsView().getTestDuration() * 1/2 )){
             self.testProgressView.setProgress(0.5, animated: true)
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(menuView!.getSettingsView().getTestDuration() * 3/4)){
+        DispatchQueue.main.asyncAfter(deadline: currentTime + .seconds(menuView!.getSettingsView().getTestDuration() * 3/4)){
             self.testProgressView.setProgress(0.75, animated: true)
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(menuView!.getSettingsView().getTestDuration())){
+        DispatchQueue.main.asyncAfter(deadline: currentTime + .seconds(menuView!.getSettingsView().getTestDuration())){
             self.testProgressView.setProgress(1, animated: true)
             
             self.testProgressView.isHidden = true
@@ -785,16 +788,18 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         testTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: Selector(("readNewVoltage")), userInfo: nil, repeats: true)
         
         //not sure if this is the best method to delay - look into this
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(menuView!.getSettingsView().getTestDuration() * 1/4)){
+        let currentTime = DispatchTime.now()
+        
+        DispatchQueue.main.asyncAfter(deadline: currentTime + .seconds(menuView!.getSettingsView().getTestDuration() * 1/4)){
             self.testProgressView.setProgress(0.25, animated: true)
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(menuView!.getSettingsView().getTestDuration() * 1/2 )){
+        DispatchQueue.main.asyncAfter(deadline: currentTime + .seconds(menuView!.getSettingsView().getTestDuration() * 1/2 )){
             self.testProgressView.setProgress(0.5, animated: true)
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(menuView!.getSettingsView().getTestDuration() * 3/4)){
+        DispatchQueue.main.asyncAfter(deadline: currentTime + .seconds(menuView!.getSettingsView().getTestDuration() * 3/4)){
             self.testProgressView.setProgress(0.75, animated: true)
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(menuView!.getSettingsView().getTestDuration())){
+        DispatchQueue.main.asyncAfter(deadline: currentTime + .seconds(menuView!.getSettingsView().getTestDuration())){
             timer.invalidate() //stops timer from running/firing
             
             //testing purposes
@@ -810,7 +815,7 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
             self.glucoseResultTable.isHidden = false
             
             //populate the graph data
-            for i in 0...self.menuView!.getSettingsView().getTestDuration(){
+            for i in 0...self.menuView!.getSettingsView().getTestDuration(){ //should only happen 0 - testDuration times
                 let dataEntry = ChartDataEntry(x: Double(i), y: Double(self.peripheralData[i]))
                 self.dataEntries.append(dataEntry)
                 

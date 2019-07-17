@@ -11,6 +11,13 @@
 		36E9ACFF9C25576E61827930 /* Pods_CPSInc__iOS_Application.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D1556416CD3A065738418B /* Pods_CPSInc__iOS_Application.framework */; };
 		8084FC59D056BA722B4EFCBB /* Pods_CPSInc__iOS_ApplicationUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BBFC0EFE67C421E13704E5 /* Pods_CPSInc__iOS_ApplicationUITests.framework */; };
 		9C1C31B322D53E580057989C /* TestChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C31B222D53E580057989C /* TestChartViewController.swift */; };
+		9C1C31B722D8E1A30057989C /* EncryptedStringTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C31B622D8E1A30057989C /* EncryptedStringTransformer.swift */; };
+		9C1C31BF22DE3DD80057989C /* InstructionsStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C1C31BE22DE3DD80057989C /* InstructionsStoryboard.storyboard */; };
+		9C1C31C122DE40410057989C /* InstructionPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C31C022DE40410057989C /* InstructionPageViewController.swift */; };
+		9C1C31C322DE4BC20057989C /* FindDeviceInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C31C222DE4BC20057989C /* FindDeviceInstructionViewController.swift */; };
+		9C1C31C522DE4BD00057989C /* RunTestInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C31C422DE4BD00057989C /* RunTestInstructionViewController.swift */; };
+		9C1C31C722DE4BDD0057989C /* LogbookInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C31C622DE4BDD0057989C /* LogbookInstructionViewController.swift */; };
+		9C1C31C922DE4BED0057989C /* SettingsInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C31C822DE4BED0057989C /* SettingsInstructionViewController.swift */; };
 		9C373EEC22AEC48700B0FC1A /* MainInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3939DC22A05D2D008D066C /* MainInterfaceController.swift */; };
 		9C3939CF22A05D2B008D066C /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C3939CD22A05D2B008D066C /* Interface.storyboard */; };
 		9C3939D122A05D2D008D066C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C3939D022A05D2D008D066C /* Assets.xcassets */; };
@@ -21,7 +28,6 @@
 		9C3939E522A05D2E008D066C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C3939E422A05D2E008D066C /* Assets.xcassets */; };
 		9C3939EA22A05D2E008D066C /* CPSInc. watchOS Application.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 9C3939CB22A05D2B008D066C /* CPSInc. watchOS Application.app */; };
 		9C6F9EA422985F35009EC1D6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6F9EA322985F35009EC1D6 /* AppDelegate.swift */; };
-		9C6F9EAC22985F35009EC1D6 /* CPSInc__iOS_Application.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9C6F9EAA22985F35009EC1D6 /* CPSInc__iOS_Application.xcdatamodeld */; };
 		9C6F9EAE22985F35009EC1D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C6F9EAD22985F35009EC1D6 /* Assets.xcassets */; };
 		9C6F9EBC22985F35009EC1D6 /* CPSInc__iOS_ApplicationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6F9EBB22985F35009EC1D6 /* CPSInc__iOS_ApplicationTests.swift */; };
 		9C6F9EC722985F35009EC1D6 /* CPSInc__iOS_ApplicationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6F9EC622985F35009EC1D6 /* CPSInc__iOS_ApplicationUITests.swift */; };
@@ -30,6 +36,13 @@
 		9C6F9EE322987804009EC1D6 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6F9EE222987804009EC1D6 /* TestViewController.swift */; };
 		9C6F9EE52298781A009EC1D6 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6F9EE42298781A009EC1D6 /* SettingsViewController.swift */; };
 		9C6F9EE722988B0C009EC1D6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C6F9EE622988B0C009EC1D6 /* LaunchScreen.storyboard */; };
+		9C9618CA22DEAA8F00B48713 /* Cow+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618C422DEAA8E00B48713 /* Cow+CoreDataClass.swift */; };
+		9C9618CB22DEAA8F00B48713 /* Test+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618C522DEAA8E00B48713 /* Test+CoreDataClass.swift */; };
+		9C9618CC22DEAA8F00B48713 /* Test+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618C622DEAA8E00B48713 /* Test+CoreDataProperties.swift */; };
+		9C9618CD22DEAA8F00B48713 /* Cow+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618C722DEAA8E00B48713 /* Cow+CoreDataProperties.swift */; };
+		9C9618CE22DEAA8F00B48713 /* Herd+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618C822DEAA8E00B48713 /* Herd+CoreDataClass.swift */; };
+		9C9618CF22DEAA8F00B48713 /* Herd+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618C922DEAA8F00B48713 /* Herd+CoreDataProperties.swift */; };
+		9C9618D522DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618D322DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodeld */; };
 		9CEBC3BC22AB181C009CACBA /* FindDeviceInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEBC3BB22AB181C009CACBA /* FindDeviceInterfaceController.swift */; };
 		9CEBC3BF22AB1867009CACBA /* RunTestInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEBC3BE22AB1867009CACBA /* RunTestInterfaceController.swift */; };
 		9CEBC3C322AB1922009CACBA /* FinalValueResultInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEBC3C222AB1922009CACBA /* FinalValueResultInterfaceController.swift */; };
@@ -37,18 +50,11 @@
 		9CFB119322C12EE5003E76B5 /* SettingsInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEBC3C022AB1884009CACBA /* SettingsInterfaceController.swift */; };
 		9CFB11C122C3F937003E76B5 /* HerdLogbookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFB11C022C3F937003E76B5 /* HerdLogbookViewController.swift */; };
 		9CFB11C322C4099F003E76B5 /* LogbookInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFB11C222C4099F003E76B5 /* LogbookInterfaceController.swift */; };
-		9CFB11C522C41589003E76B5 /* logbook.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CFB11C422C41589003E76B5 /* logbook.png */; };
 		9CFB11CC22C4216D003E76B5 /* CowLogbookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFB11CB22C4216D003E76B5 /* CowLogbookViewController.swift */; };
 		9CFB11CE22C42196003E76B5 /* TestLogbookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFB11CD22C42196003E76B5 /* TestLogbookViewController.swift */; };
 		9CFB11D022C51D6F003E76B5 /* CowInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFB11CF22C51D6F003E76B5 /* CowInfoViewController.swift */; };
 		9CFB11D222C51D88003E76B5 /* HerdInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFB11D122C51D88003E76B5 /* HerdInfoViewController.swift */; };
 		9CFB11D422C51D9D003E76B5 /* TestIInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFB11D322C51D9D003E76B5 /* TestIInfoViewController.swift */; };
-		9CFB11E922C532FB003E76B5 /* Cow+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFB11E722C532FB003E76B5 /* Cow+CoreDataClass.swift */; };
-		9CFB11EA22C532FB003E76B5 /* Cow+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFB11E822C532FB003E76B5 /* Cow+CoreDataProperties.swift */; };
-		9CFB11ED22C53316003E76B5 /* Herd+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFB11EB22C53316003E76B5 /* Herd+CoreDataClass.swift */; };
-		9CFB11EE22C53316003E76B5 /* Herd+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFB11EC22C53316003E76B5 /* Herd+CoreDataProperties.swift */; };
-		9CFB11F122C5332D003E76B5 /* Test+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFB11EF22C5332D003E76B5 /* Test+CoreDataClass.swift */; };
-		9CFB11F222C5332D003E76B5 /* Test+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFB11F022C5332D003E76B5 /* Test+CoreDataProperties.swift */; };
 		9CFB11F822C54E44003E76B5 /* AddHerdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFB11F722C54E44003E76B5 /* AddHerdViewController.swift */; };
 		9CFB11FA22C54E53003E76B5 /* AddCowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFB11F922C54E53003E76B5 /* AddCowViewController.swift */; };
 		E0531446D00F30A04E86E162 /* Pods_CPSInc__watchOS_Application_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0ACBB11BD0C73D642F56A876 /* Pods_CPSInc__watchOS_Application_Extension.framework */; };
@@ -132,6 +138,13 @@
 		7D7B351882ADCD72B35E65C8 /* Pods-CPSInc. iOS Application.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CPSInc. iOS Application.release.xcconfig"; path = "Pods/Target Support Files/Pods-CPSInc. iOS Application/Pods-CPSInc. iOS Application.release.xcconfig"; sourceTree = "<group>"; };
 		80609FA3E8D23956909B11FB /* Pods-CPSInc. watchOS Application.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CPSInc. watchOS Application.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CPSInc. watchOS Application/Pods-CPSInc. watchOS Application.debug.xcconfig"; sourceTree = "<group>"; };
 		9C1C31B222D53E580057989C /* TestChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestChartViewController.swift; sourceTree = "<group>"; };
+		9C1C31B622D8E1A30057989C /* EncryptedStringTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedStringTransformer.swift; sourceTree = "<group>"; };
+		9C1C31BE22DE3DD80057989C /* InstructionsStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = InstructionsStoryboard.storyboard; sourceTree = "<group>"; };
+		9C1C31C022DE40410057989C /* InstructionPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionPageViewController.swift; sourceTree = "<group>"; };
+		9C1C31C222DE4BC20057989C /* FindDeviceInstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindDeviceInstructionViewController.swift; sourceTree = "<group>"; };
+		9C1C31C422DE4BD00057989C /* RunTestInstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunTestInstructionViewController.swift; sourceTree = "<group>"; };
+		9C1C31C622DE4BDD0057989C /* LogbookInstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogbookInstructionViewController.swift; sourceTree = "<group>"; };
+		9C1C31C822DE4BED0057989C /* SettingsInstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInstructionViewController.swift; sourceTree = "<group>"; };
 		9C3939CB22A05D2B008D066C /* CPSInc. watchOS Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CPSInc. watchOS Application.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C3939CE22A05D2B008D066C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		9C3939D022A05D2D008D066C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -146,7 +159,6 @@
 		9C3939E722A05D2E008D066C /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
 		9C6F9EA022985F35009EC1D6 /* CPSInc. iOS Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CPSInc. iOS Application.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C6F9EA322985F35009EC1D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		9C6F9EAB22985F35009EC1D6 /* CPSInc__iOS_Application.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CPSInc__iOS_Application.xcdatamodel; sourceTree = "<group>"; };
 		9C6F9EAD22985F35009EC1D6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9C6F9EB222985F35009EC1D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9C6F9EB722985F35009EC1D6 /* CPSInc. iOS ApplicationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CPSInc. iOS ApplicationTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -160,6 +172,13 @@
 		9C6F9EE222987804009EC1D6 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		9C6F9EE42298781A009EC1D6 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		9C6F9EE622988B0C009EC1D6 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		9C9618C422DEAA8E00B48713 /* Cow+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Cow+CoreDataClass.swift"; sourceTree = "<group>"; };
+		9C9618C522DEAA8E00B48713 /* Test+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Test+CoreDataClass.swift"; sourceTree = "<group>"; };
+		9C9618C622DEAA8E00B48713 /* Test+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Test+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		9C9618C722DEAA8E00B48713 /* Cow+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Cow+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		9C9618C822DEAA8E00B48713 /* Herd+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Herd+CoreDataClass.swift"; sourceTree = "<group>"; };
+		9C9618C922DEAA8F00B48713 /* Herd+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Herd+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		9C9618D422DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CPSInc__iOS_Application.xcdatamodel; sourceTree = "<group>"; };
 		9CEBC3BB22AB181C009CACBA /* FindDeviceInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindDeviceInterfaceController.swift; sourceTree = "<group>"; };
 		9CEBC3BE22AB1867009CACBA /* RunTestInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunTestInterfaceController.swift; sourceTree = "<group>"; };
 		9CEBC3C022AB1884009CACBA /* SettingsInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInterfaceController.swift; sourceTree = "<group>"; };
@@ -167,18 +186,11 @@
 		9CEBC3C422AB194A009CACBA /* ContinuousValueResultInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinuousValueResultInterfaceController.swift; sourceTree = "<group>"; };
 		9CFB11C022C3F937003E76B5 /* HerdLogbookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HerdLogbookViewController.swift; sourceTree = "<group>"; };
 		9CFB11C222C4099F003E76B5 /* LogbookInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogbookInterfaceController.swift; sourceTree = "<group>"; };
-		9CFB11C422C41589003E76B5 /* logbook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logbook.png; path = ../../../Desktop/logbook.png; sourceTree = "<group>"; };
 		9CFB11CB22C4216D003E76B5 /* CowLogbookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CowLogbookViewController.swift; sourceTree = "<group>"; };
 		9CFB11CD22C42196003E76B5 /* TestLogbookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestLogbookViewController.swift; sourceTree = "<group>"; };
 		9CFB11CF22C51D6F003E76B5 /* CowInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CowInfoViewController.swift; sourceTree = "<group>"; };
 		9CFB11D122C51D88003E76B5 /* HerdInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HerdInfoViewController.swift; sourceTree = "<group>"; };
 		9CFB11D322C51D9D003E76B5 /* TestIInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestIInfoViewController.swift; sourceTree = "<group>"; };
-		9CFB11E722C532FB003E76B5 /* Cow+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cow+CoreDataClass.swift"; sourceTree = "<group>"; };
-		9CFB11E822C532FB003E76B5 /* Cow+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cow+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		9CFB11EB22C53316003E76B5 /* Herd+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Herd+CoreDataClass.swift"; sourceTree = "<group>"; };
-		9CFB11EC22C53316003E76B5 /* Herd+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Herd+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		9CFB11EF22C5332D003E76B5 /* Test+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test+CoreDataClass.swift"; sourceTree = "<group>"; };
-		9CFB11F022C5332D003E76B5 /* Test+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		9CFB11F722C54E44003E76B5 /* AddHerdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHerdViewController.swift; sourceTree = "<group>"; };
 		9CFB11F922C54E53003E76B5 /* AddCowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCowViewController.swift; sourceTree = "<group>"; };
 		A7B0512BBF2101ABB4F1FD07 /* Pods-CPSInc. watchOS Application Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CPSInc. watchOS Application Extension.release.xcconfig"; path = "Pods/Target Support Files/Pods-CPSInc. watchOS Application Extension/Pods-CPSInc. watchOS Application Extension.release.xcconfig"; sourceTree = "<group>"; };
@@ -322,6 +334,12 @@
 			isa = PBXGroup;
 			children = (
 				9C6F9EE622988B0C009EC1D6 /* LaunchScreen.storyboard */,
+				9C1C31BE22DE3DD80057989C /* InstructionsStoryboard.storyboard */,
+				9C1C31C022DE40410057989C /* InstructionPageViewController.swift */,
+				9C1C31C222DE4BC20057989C /* FindDeviceInstructionViewController.swift */,
+				9C1C31C422DE4BD00057989C /* RunTestInstructionViewController.swift */,
+				9C1C31C622DE4BDD0057989C /* LogbookInstructionViewController.swift */,
+				9C1C31C822DE4BED0057989C /* SettingsInstructionViewController.swift */,
 				9C6F9EDA22986944009EC1D6 /* MenuViewController.swift */,
 				9C6F9EE0229877F2009EC1D6 /* ConnectViewController.swift */,
 				9C6F9EE222987804009EC1D6 /* TestViewController.swift */,
@@ -335,16 +353,16 @@
 				9CFB11D322C51D9D003E76B5 /* TestIInfoViewController.swift */,
 				9CFB11F722C54E44003E76B5 /* AddHerdViewController.swift */,
 				9CFB11F922C54E53003E76B5 /* AddCowViewController.swift */,
+				9C9618C422DEAA8E00B48713 /* Cow+CoreDataClass.swift */,
+				9C9618C722DEAA8E00B48713 /* Cow+CoreDataProperties.swift */,
+				9C9618C822DEAA8E00B48713 /* Herd+CoreDataClass.swift */,
+				9C9618C922DEAA8F00B48713 /* Herd+CoreDataProperties.swift */,
+				9C9618C522DEAA8E00B48713 /* Test+CoreDataClass.swift */,
+				9C9618C622DEAA8E00B48713 /* Test+CoreDataProperties.swift */,
 				9C6F9EA322985F35009EC1D6 /* AppDelegate.swift */,
-				9CFB11EF22C5332D003E76B5 /* Test+CoreDataClass.swift */,
-				9CFB11F022C5332D003E76B5 /* Test+CoreDataProperties.swift */,
-				9CFB11EB22C53316003E76B5 /* Herd+CoreDataClass.swift */,
-				9CFB11EC22C53316003E76B5 /* Herd+CoreDataProperties.swift */,
-				9CFB11E722C532FB003E76B5 /* Cow+CoreDataClass.swift */,
-				9CFB11E822C532FB003E76B5 /* Cow+CoreDataProperties.swift */,
-				9C6F9EAA22985F35009EC1D6 /* CPSInc__iOS_Application.xcdatamodeld */,
+				9C1C31B622D8E1A30057989C /* EncryptedStringTransformer.swift */,
+				9C9618D322DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodeld */,
 				9C6F9EAD22985F35009EC1D6 /* Assets.xcassets */,
-				9CFB11C422C41589003E76B5 /* logbook.png */,
 				9C6F9EB222985F35009EC1D6 /* Info.plist */,
 			);
 			path = "CPSInc. iOS Application";
@@ -551,8 +569,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9CFB11C522C41589003E76B5 /* logbook.png in Resources */,
 				9C6F9EE722988B0C009EC1D6 /* LaunchScreen.storyboard in Resources */,
+				9C1C31BF22DE3DD80057989C /* InstructionsStoryboard.storyboard in Resources */,
 				9C6F9EAE22985F35009EC1D6 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -673,12 +691,14 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-CPSInc. iOS Application/Pods-CPSInc. iOS Application-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
+				"${BUILT_PRODUCTS_DIR}/RNCryptor/RNCryptor.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyDropbox/SwiftyDropbox.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNCryptor.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyDropbox.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -710,27 +730,33 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C1C31C522DE4BD00057989C /* RunTestInstructionViewController.swift in Sources */,
+				9C1C31C122DE40410057989C /* InstructionPageViewController.swift in Sources */,
 				9CFB11D422C51D9D003E76B5 /* TestIInfoViewController.swift in Sources */,
+				9C9618CC22DEAA8F00B48713 /* Test+CoreDataProperties.swift in Sources */,
 				9CFB11D022C51D6F003E76B5 /* CowInfoViewController.swift in Sources */,
 				9CFB11FA22C54E53003E76B5 /* AddCowViewController.swift in Sources */,
-				9C6F9EAC22985F35009EC1D6 /* CPSInc__iOS_Application.xcdatamodeld in Sources */,
 				9C1C31B322D53E580057989C /* TestChartViewController.swift in Sources */,
-				9CFB11F222C5332D003E76B5 /* Test+CoreDataProperties.swift in Sources */,
-				9CFB11ED22C53316003E76B5 /* Herd+CoreDataClass.swift in Sources */,
+				9C1C31C322DE4BC20057989C /* FindDeviceInstructionViewController.swift in Sources */,
 				9C6F9EE322987804009EC1D6 /* TestViewController.swift in Sources */,
+				9C9618CE22DEAA8F00B48713 /* Herd+CoreDataClass.swift in Sources */,
+				9C9618D522DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodeld in Sources */,
+				9C9618CA22DEAA8F00B48713 /* Cow+CoreDataClass.swift in Sources */,
 				9CFB11CE22C42196003E76B5 /* TestLogbookViewController.swift in Sources */,
-				9CFB11F122C5332D003E76B5 /* Test+CoreDataClass.swift in Sources */,
-				9CFB11EE22C53316003E76B5 /* Herd+CoreDataProperties.swift in Sources */,
-				9CFB11EA22C532FB003E76B5 /* Cow+CoreDataProperties.swift in Sources */,
-				9CFB11E922C532FB003E76B5 /* Cow+CoreDataClass.swift in Sources */,
 				9CFB11C122C3F937003E76B5 /* HerdLogbookViewController.swift in Sources */,
 				9CFB11F822C54E44003E76B5 /* AddHerdViewController.swift in Sources */,
 				9CFB11D222C51D88003E76B5 /* HerdInfoViewController.swift in Sources */,
 				9C6F9EE1229877F2009EC1D6 /* ConnectViewController.swift in Sources */,
 				9C6F9EDB22986944009EC1D6 /* MenuViewController.swift in Sources */,
+				9C1C31C922DE4BED0057989C /* SettingsInstructionViewController.swift in Sources */,
+				9C9618CF22DEAA8F00B48713 /* Herd+CoreDataProperties.swift in Sources */,
+				9C9618CB22DEAA8F00B48713 /* Test+CoreDataClass.swift in Sources */,
+				9C9618CD22DEAA8F00B48713 /* Cow+CoreDataProperties.swift in Sources */,
 				9C6F9EA422985F35009EC1D6 /* AppDelegate.swift in Sources */,
 				9CFB11CC22C4216D003E76B5 /* CowLogbookViewController.swift in Sources */,
+				9C1C31B722D8E1A30057989C /* EncryptedStringTransformer.swift in Sources */,
 				9C6F9EE52298781A009EC1D6 /* SettingsViewController.swift in Sources */,
+				9C1C31C722DE4BDD0057989C /* LogbookInstructionViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1175,12 +1201,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		9C6F9EAA22985F35009EC1D6 /* CPSInc__iOS_Application.xcdatamodeld */ = {
+		9C9618D322DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				9C6F9EAB22985F35009EC1D6 /* CPSInc__iOS_Application.xcdatamodel */,
+				9C9618D422DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodel */,
 			);
-			currentVersion = 9C6F9EAB22985F35009EC1D6 /* CPSInc__iOS_Application.xcdatamodel */;
+			currentVersion = 9C9618D422DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodel */;
 			path = CPSInc__iOS_Application.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
