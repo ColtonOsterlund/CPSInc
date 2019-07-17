@@ -8,7 +8,7 @@
         <attribute name="methodOfDryOff" optional="YES" attributeType="Transformable" valueTransformerName="EncryptedValueTransformer" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="Transformable" valueTransformerName="EncryptedValueTransformer" syncable="YES"/>
         <attribute name="parity" optional="YES" attributeType="Transformable" valueTransformerName="EncryptedValueTransformer" syncable="YES"/>
-        <attribute name="reproductionStatus" optional="YES" attributeType="Transformable" valueTransformerName="EncryptedStringTransformer" syncable="YES"/>
+        <attribute name="reproductionStatus" optional="YES" attributeType="Transformable" valueTransformerName="EncryptedValueTransformer" syncable="YES"/>
         <relationship name="herd" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Herd" inverseName="cow" inverseEntity="Herd" syncable="YES"/>
         <relationship name="testData" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Test" inverseName="cow" inverseEntity="Test" syncable="YES"/>
     </entity>

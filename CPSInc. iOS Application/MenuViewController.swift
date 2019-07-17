@@ -134,12 +134,10 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         
         
         //USE TO FIND THE FOLDER CONTAINING THE .sqlite DATABASE
-//        let dirPaths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-//        var docsDir = dirPaths[0]
-//
-//        print(docsDir)
-       // print(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])
+        print(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])
         
+        //to print module name for heavyweight migration
+        //print(NSStringFromClass(HerdToHerdV1ToV2CustomPolicy.self).components(separatedBy:".")[0])
     }
     
     public func centralManagerDidUpdateState(_ central: CBCentralManager) {

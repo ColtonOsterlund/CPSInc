@@ -104,6 +104,7 @@ public class AppDelegate: UIResponder, UIApplicationDelegate {
          error conditions that could cause the creation of the store to fail.
          */
         let container = NSPersistentContainer(name: "CPSInc__iOS_Application")
+        
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 // Replace this implementation with code to handle the error appropriately.
@@ -118,6 +119,12 @@ public class AppDelegate: UIResponder, UIApplicationDelegate {
                  Check the error message to determine what the actual problem was.
                  */
                 fatalError("Unresolved error \(error), \(error.userInfo)")
+            }
+            else{
+                let description = NSPersistentStoreDescription()
+                description.shouldMigrateStoreAutomatically = false
+                description.shouldInferMappingModelAutomatically = true
+                container.persistentStoreDescriptions = [description]
             }
         })
         

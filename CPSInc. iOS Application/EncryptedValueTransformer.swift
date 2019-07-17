@@ -10,10 +10,11 @@ import Foundation
 import UIKit
 import RNCryptor
 
-class EncryptedValueransformer : ValueTransformer {
+@objc(EncryptedValueTransformer) //either need this or to reference the project module with dot notaiton when specifying the value transformer for the Transformable attributes in the data model
+public class EncryptedValueTransformer : ValueTransformer {
     let password = "S@ndeepHere123"
 
-    override func transformedValue(_ value: Any?) -> Any? {
+    override public func transformedValue(_ value: Any?) -> Any? {
         guard let passedValue = value else {
             return nil
         }
@@ -24,7 +25,7 @@ class EncryptedValueransformer : ValueTransformer {
         return ciphertext
     }
     
-    override func reverseTransformedValue(_ value: Any?) -> Any? {
+    override public func reverseTransformedValue(_ value: Any?) -> Any? {
         guard value != nil else {
             return nil
         }
