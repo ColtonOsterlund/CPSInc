@@ -36,7 +36,19 @@ public class FinalValueResultInterfaceController: WKInterfaceController, WKCrown
             popToRootController() //resets the test in willDissapear
         }
         else{
-            //save test
+            if(session!.isReachable){
+                do{
+                    try session?.updateApplicationContext(["SaveTest":"SaveTest"])
+                }catch{
+                    print("Error while sending application context")
+                }
+                
+                let action = WKAlertAction.init(title: "Dismiss", style:.default) {
+                    self.popToRootController()
+                }
+                
+                presentAlert(withTitle: "Save Test", message: "Please See iPhone to Save Test", preferredStyle:.actionSheet, actions: [action])
+            }
         }
     }
     
@@ -126,6 +138,28 @@ public class FinalValueResultInterfaceController: WKInterfaceController, WKCrown
             }
             
             finalValueResultLabel.setText(String(applicationContext["FinalValueTestResult"] as! Float) + "mmol/L")
+            
+            optionsPicker.setHidden(false)
+            //optionsPicker.focus()
+        }
+        else if(applicationContext["ContinuousValueFinalTestResult"] != nil){
+            if((applicationContext["ContinuousValueFinalTestResult"] as! Float) < 3.0){
+                finalValueResultLabel.setTextColor(.red)
+            }
+            else if((applicationContext["ContinuousValueFinalTestResult"] as! Float) >= 3.0 && (applicationContext["ContinuousValueFinalTestResult"] as! Float) < 4.0){
+                finalValueResultLabel.setTextColor(.yellow)
+            }
+            else if((applicationContext["ContinuousValueFinalTestResult"] as! Float) >= 4.0 && (applicationContext["ContinuousValueFinalTestResult"] as! Float) < 8.0){
+                finalValueResultLabel.setTextColor(.green)
+            }
+            else if((applicationContext["ContinuousValueFinalTestResult"] as! Float) >= 8.0 && (applicationContext["ContinuousValueFinalTestResult"] as! Float) < 12.0){
+                finalValueResultLabel.setTextColor(.yellow)
+            }
+            else{
+                finalValueResultLabel.setTextColor(.red)
+            }
+            
+            finalValueResultLabel.setText(String(applicationContext["ContinuousValueFinalTestResult"] as! Float) + "mmol/L")
             
             optionsPicker.setHidden(false)
             //optionsPicker.focus()

@@ -10,6 +10,7 @@ import UIKit
 import CoreBluetooth
 import Charts //using the Charts framework - done using the tutorial https://www.appcoda.com/ios-charts-api-tutorial/
 import WatchConnectivity
+import UserNotifications
 
 public class TestViewController: UIViewController, CBPeripheralDelegate, UITableViewDataSource, UITableViewDelegate, WCSessionDelegate{
 
@@ -56,6 +57,13 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
     private let lineChartView = LineChartView()
     private var dataEntries = [ChartDataEntry]()
     //var dataXEntry: Int = 0
+    
+    
+    //incubation timer
+    private var incubationTimeLabel = UILabel()
+    private let incubationLabel = UILabel()
+    private var incubationTimer: Timer? = nil
+    private let cancelTestBtn = UIButton()
     
     //Test Settings - technically dont need these we can access them straight through settingsView
 //    var testDurationSeconds: Int? = nil //how long to run the test for before taking final value
@@ -209,6 +217,30 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         view.addSubview(lineChartView)
         lineChartView.isHidden = true
         
+        
+        incubationTimeLabel.text = "00:10"
+        incubationTimeLabel.font = incubationTimeLabel.font.withSize(50)
+        incubationTimeLabel.textColor = .white
+        incubationTimeLabel.textAlignment = .center
+        view.addSubview(incubationTimeLabel)
+        incubationTimeLabel.isHidden = true
+        
+        incubationLabel.text = "Incubation Timer:"
+        incubationLabel.font = incubationLabel.font.withSize(25)
+        incubationLabel.textColor = .white
+        incubationLabel.textAlignment = .center
+        view.addSubview(incubationLabel)
+        incubationLabel.isHidden = true
+        
+        //cancelTestButton
+        cancelTestBtn.backgroundColor = .blue
+        cancelTestBtn.setTitle("Cancel Test", for: .normal)
+        cancelTestBtn.setTitleColor(.white, for: .normal)
+        cancelTestBtn.layer.borderWidth = 2
+        cancelTestBtn.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor
+        view.addSubview(cancelTestBtn)
+        cancelTestBtn.isEnabled = false
+        cancelTestBtn.isHidden = true
     }
     
     private func setLayoutConstraints(){
@@ -274,12 +306,26 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         lineChartView.bottomAnchor.constraint(equalTo: glucoseResultTable.topAnchor, constant: -(UIScreen.main.bounds.height * 0.02)).isActive = true
         lineChartView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
         
+        
+        incubationTimeLabel.translatesAutoresizingMaskIntoConstraints = false
+        incubationTimeLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        incubationTimeLabel.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        
+        incubationLabel.translatesAutoresizingMaskIntoConstraints = false
+        incubationLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        incubationLabel.bottomAnchor.constraint(equalTo: incubationTimeLabel.topAnchor, constant: -(UIScreen.main.bounds.height * 0.05)).isActive = true
+        
+        cancelTestBtn.translatesAutoresizingMaskIntoConstraints = false
+        cancelTestBtn.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        cancelTestBtn.topAnchor.constraint(equalTo: incubationTimeLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        cancelTestBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
     }
     
     private func setButtonListeners(){
         startTestBtn.addTarget(self, action: #selector(startTestBtnPressed), for: .touchUpInside)
         resetTestBtn.addTarget(self, action: #selector(resetTestBtnPressed), for: .touchUpInside)
         saveTestBtn.addTarget(self, action: #selector(saveTestBtnPressed), for: .touchUpInside)
+        cancelTestBtn.addTarget(self, action: #selector(cancelTestBtnPressed), for: .touchUpInside)
     }
     
     @objc private func saveTestBtnPressed(){
@@ -576,6 +622,99 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
 //            testDurationSeconds = settingsView?.testDurationSeconds
 //            isFinalValueTest = settingsView?.isFinalValueTest
             
+            incubationTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: Selector(("updateIncubationTimeString")), userInfo: nil, repeats: true)
+            
+            //send notification if app is in background
+            self.appDelegate!.getNotificationCenter().getNotificationSettings { (settings) in
+                if settings.authorizationStatus == .authorized {
+                    let content = UNMutableNotificationContent()
+                    content.title = "Timer Almost Done"
+                    content.body = "Your Have 5 Seconds Before the Incubation Timer is Done"
+                    content.sound = UNNotificationSound.default
+                    content.badge = 1
+                    
+                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false) //set value to send notification however long before the test is over that you want to receive that notification
+                    
+                    let identifier = "Local Timer Almost Done Notification"
+                    let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+                    
+                    self.appDelegate?.getNotificationCenter().add(request) { (error) in
+                        if let error = error {
+                            print("Error \(error.localizedDescription)")
+                        }
+                    }
+                }
+            }
+            
+            //run and display incubation timer here - send notification when there is 60 seconds left
+            incubationLabel.isHidden = false
+            incubationTimeLabel.isHidden = false
+            cancelTestBtn.isHidden = false
+            cancelTestBtn.isEnabled = true
+            
+            
+//            if(menuView!.getSettingsView().getFinalContinuous() == true){
+//                runFinalValueTest()
+//            }
+//            else{
+//                runContinuousTest()
+//            }
+        }
+    }
+    
+    
+    @objc private func cancelTestBtnPressed(){
+        
+        cancelTestBtn.transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
+        
+        UIView.animate(withDuration: 0.5,
+                       delay: 0,
+                       usingSpringWithDamping: CGFloat(0.70),
+                       initialSpringVelocity: CGFloat(5.0),
+                       options: UIView.AnimationOptions.allowUserInteraction,
+                       animations: {
+                        self.cancelTestBtn.transform = CGAffineTransform.identity
+        },
+                       completion: { Void in()  }
+        )
+        
+        
+        incubationTimer?.invalidate() //stops timer from firing
+        incubationTimer = nil //resets incubation timer to nil
+    
+        incubationTimeLabel.text = "00:10" //resets incubation timer label
+        incubationTimeLabel.isHidden = true
+        incubationLabel.isHidden = true
+        cancelTestBtn.isHidden = true
+        cancelTestBtn.isEnabled = true
+        
+        resetTestBtnPressed()
+    }
+    
+    
+    @objc private func updateIncubationTimeString(){
+        let timerTextArray = incubationTimeLabel.text!.components(separatedBy: ":")
+        
+        var minutes = Int(timerTextArray[0])
+        var seconds = Int(timerTextArray[1])
+        
+        if(seconds == 0 && minutes != 0){
+            seconds! = 59
+            minutes! -= 1
+        }
+        
+        else if(seconds == 0 && minutes == 0){
+            
+            incubationTimer?.invalidate() //stops timer from firing
+            incubationTimer = nil //resets incubation timer to nil
+            
+            seconds = 10 //resets seconds
+            minutes = 0 //resets minutes
+            incubationTimeLabel.isHidden = true
+            incubationLabel.isHidden = true
+            cancelTestBtn.isHidden = true
+            cancelTestBtn.isEnabled = true
+            
             if(menuView!.getSettingsView().getFinalContinuous() == true){
                 runFinalValueTest()
             }
@@ -583,7 +722,15 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
                 runContinuousTest()
             }
         }
+       
+        else{
+            seconds! -= 1
+        }
+        
+        
+        incubationTimeLabel.text = String(minutes!) + ":" + String(seconds!) //resets incubation timer label
     }
+    
     
     private func runFinalValueTest(){
         //run final value test
@@ -736,7 +883,30 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
             
             self.resetTestBtn.isEnabled = true
             self.resetTestBtn.isHidden = false
+            
+            //send notification if app is in background
+            self.appDelegate!.getNotificationCenter().getNotificationSettings { (settings) in
+                if settings.authorizationStatus == .authorized {
+                    let content = UNMutableNotificationContent()
+                    content.title = "Test Complete"
+                    content.body = "Your Test is Complete"
+                    content.sound = UNNotificationSound.default
+                    content.badge = 1
+                    
+                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+                    
+                    let identifier = "Local Test Finished Notification"
+                    let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+                    
+                    self.appDelegate?.getNotificationCenter().add(request) { (error) in
+                        if let error = error {
+                            print("Error \(error.localizedDescription)")
+                        }
+                    }
+                }
+            }
         }
+        
     }
     
     private func runContinuousTest(){
@@ -837,7 +1007,7 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
             //sending the final value of the result set
             if(self.wcSession!.isReachable){
                 do{
-                    try self.wcSession?.updateApplicationContext(["ContinuousValueFinalTestResult":self.peripheralData[self.menuView!.getSettingsView().getTestDuration()]])
+                    try self.wcSession?.updateApplicationContext(["ContinuousValueFinalTestResult":self.peripheralData.last!])
                 }catch{
                     print("error while updating application context")
                 }
@@ -845,10 +1015,33 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
             
             self.testResultToSave = self.peripheralData.last
             
+            
             self.resetTestBtn.isEnabled = true
             self.resetTestBtn.isHidden = false
             self.saveTestBtn.isEnabled = true
             self.saveTestBtn.isHidden = false
+            
+            //send notifiation if app is in background
+            self.appDelegate!.getNotificationCenter().getNotificationSettings { (settings) in
+                if settings.authorizationStatus == .authorized {
+                    let content = UNMutableNotificationContent()
+                    content.title = "Test Complete"
+                    content.body = "Your Test is Complete"
+                    content.sound = UNNotificationSound.default
+                    content.badge = 1
+                    
+                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+                    
+                    let identifier = "Local Test Finished Notification"
+                    let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+                    
+                    self.appDelegate?.getNotificationCenter().add(request) { (error) in
+                        if let error = error {
+                            print("Error \(error.localizedDescription)")
+                        }
+                    }
+                }
+            }
             
         }
     }
@@ -1200,12 +1393,7 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         switch(messageRequest){
         case "RunTestPrompt":
             DispatchQueue.main.async {
-                if(self.menuView!.getSettingsView().getFinalContinuous() == true){ //only able to run final value tests at this stage - take this if statemenet out when it is set up to run continuous tests
-                    self.startTestBtnPressed()
-                }
-                else{
-                    self.showToast(controller: self, message: "Cannot Run Continuous Test from Apple Watch in this Version", seconds: 2)
-                }
+                self.startTestBtnPressed()
             }
             
         default:
@@ -1245,6 +1433,11 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
                 self.resetTestBtnPressed()
                 
                 self.navigationController?.popViewController(animated: true)
+            }
+        }
+        else if(applicationContext["SaveTest"] != nil){
+            DispatchQueue.main.async {
+                self.saveTestBtnPressed()
             }
         }
     }

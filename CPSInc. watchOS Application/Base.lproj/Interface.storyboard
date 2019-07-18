@@ -140,7 +140,21 @@
         <!--LogbookInterfaceController-->
         <scene sceneID="M0p-SA-oLq">
             <objects>
-                <controller identifier="LogbookInterfaceController" id="nIG-ic-yjs" customClass="LogbookInterfaceController" customModule="CPSInc__watchOS_Application_Extension"/>
+                <controller identifier="LogbookInterfaceController" id="nIG-ic-yjs" customClass="LogbookInterfaceController" customModule="CPSInc__watchOS_Application_Extension">
+                    <items>
+                        <label alignment="left" text="Herd List:" id="Ra7-Rb-2wo">
+                            <color key="textColor" red="0.0" green="0.4549631053" blue="0.78617498829999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </label>
+                        <picker height="125" alignment="center" focusStyle="stack" id="ddz-hl-Ldl">
+                            <connections>
+                                <action selector="testTypePickerChanged:" destination="oWj-9m-iM3" id="R5D-OS-ZsH"/>
+                            </connections>
+                        </picker>
+                    </items>
+                    <connections>
+                        <outlet property="herdListPicker" destination="ddz-hl-Ldl" id="dvn-pQ-BKZ"/>
+                    </connections>
+                </controller>
             </objects>
             <point key="canvasLocation" x="750" y="1244"/>
         </scene>
@@ -189,7 +203,7 @@
             <objects>
                 <controller identifier="FinalValueResultInterfaceController" id="VRr-QP-UrG" customClass="FinalValueResultInterfaceController" customModule="CPSInc__watchOS_Application_Extension">
                     <items>
-                        <label alignment="center" text="Final Value:" id="Hcm-Oz-mZH">
+                        <label height="20" alignment="center" text="Test Value:" id="Hcm-Oz-mZH">
                             <color key="textColor" red="0.0" green="0.4549631053" blue="0.78617498829999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </label>
                         <label alignment="center" text="Test in Progress..." id="c2M-jl-oZe"/>
@@ -205,34 +219,7 @@
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="1117" y="455"/>
-        </scene>
-        <!--ContinuousValueResultInterfaceController-->
-        <scene sceneID="nVb-P3-fQB">
-            <objects>
-                <controller identifier="ContinuousValueResultInterfaceController" id="El0-0S-Zps" customClass="ContinuousValueResultInterfaceController" customModule="CPSInc__watchOS_Application_Extension">
-                    <items>
-                        <label alignment="center" text="Final Values:" id="suT-uC-MQG">
-                            <color key="textColor" red="0.0" green="0.4549631053" blue="0.78617498829999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        </label>
-                        <table alignment="left" id="W8a-B3-qXp"/>
-                        <label alignment="center" text="Test in Progress..." id="nqm-NF-Uat"/>
-                        <table alignment="left" id="bVW-Ff-sgY"/>
-                        <picker height="66" alignment="center" verticalAlignment="center" focusStyle="stack" id="M1V-rp-kAy"/>
-                        <picker height="39" alignment="center" verticalAlignment="bottom" focusStyle="stack" id="3GU-Xf-wnN">
-                            <connections>
-                                <action selector="optionsPickerChangedValue:" destination="El0-0S-Zps" id="xeM-1v-Sik"/>
-                            </connections>
-                        </picker>
-                    </items>
-                    <connections>
-                        <outlet property="finalValTable" destination="bVW-Ff-sgY" id="OB6-sG-IAd"/>
-                        <outlet property="finalValueResultLabel" destination="nqm-NF-Uat" id="kyn-c5-3OA"/>
-                        <outlet property="optionsPicker" destination="3GU-Xf-wnN" id="SdC-7k-jFc"/>
-                    </connections>
-                </controller>
-            </objects>
-            <point key="canvasLocation" x="1116" y="709.5"/>
+            <point key="canvasLocation" x="1125" y="554"/>
         </scene>
     </scenes>
 </document>

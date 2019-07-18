@@ -10,21 +10,33 @@ import UIKit
 import CoreData
 import WatchConnectivity
 import SwiftyDropbox
+import UserNotifications
 
 @UIApplicationMain
-public class AppDelegate: UIResponder, UIApplicationDelegate {
+public class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     public var window: UIWindow?
     private var wcSession: WCSession? = nil
     private var firstView: MenuViewController? = nil
+    private var navigationController: UINavigationController? = nil
+    private let notificationCenter = UNUserNotificationCenter.current()
 
 
     public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
         firstView = MenuViewController(appDelegate: self)
-        let navigationController = UINavigationController(rootViewController: firstView!)
-        navigationController.navigationBar.barTintColor = .blue
+        navigationController = UINavigationController(rootViewController: firstView!)
+        navigationController!.navigationBar.barTintColor = .blue
+        
+        notificationCenter.delegate = self
+        let options: UNAuthorizationOptions = [.alert, .sound, .badge]
+        notificationCenter.requestAuthorization(options: options) {
+            (didAllow, error) in
+            if !didAllow {
+                print("User has declined notifications")
+            }
+        }
         
         //setup WatchConnectivity session - do it here so that it is setup before the application is displayed
         if (WCSession.isSupported()) {
@@ -84,6 +96,8 @@ public class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     public func applicationDidBecomeActive(_ application: UIApplication) {
+        
+        UIApplication.shared.applicationIconBadgeNumber = 0
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 
@@ -92,6 +106,29 @@ public class AppDelegate: UIResponder, UIApplicationDelegate {
         // Saves changes in the application's managed object context before the application terminates.
         self.saveContext()
     }
+    
+    
+    
+    
+    //User Notifications
+    public func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                didReceive response: UNNotificationResponse,
+                                withCompletionHandler completionHandler: @escaping () -> Void) {
+        
+        if response.notification.request.identifier == "Local Test Finished Notification" {
+            //handle response
+        }
+        else if response.notification.request.identifier == "Local Device Discovered Notification"{
+            //handle response
+        }
+        else if response.notification.request.identifier == "Local Timer Almost Done Notification"{
+            //handle response
+        }
+        
+        completionHandler()
+    }
+    
+    
     
     
     // MARK: - Core Data stack
@@ -155,6 +192,13 @@ public class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         
+    }
+    
+    
+    
+    //getters/setters
+    public func getNotificationCenter() -> UNUserNotificationCenter{
+        return notificationCenter
     }
 }
 

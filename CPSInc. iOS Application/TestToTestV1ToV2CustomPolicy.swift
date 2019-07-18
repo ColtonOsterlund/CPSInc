@@ -30,6 +30,7 @@ class TestToTestV1ToV2CustomPolicy: NSEntityMigrationPolicy{
                 dInstance.setValue(sInstance.primitiveValue(forKey: "units") as! String, forKey: "units")
                 dInstance.setValue(sInstance.primitiveValue(forKey: "value") as! Float, forKey: "value")
                 
+
             }
         
     }
@@ -38,7 +39,6 @@ class TestToTestV1ToV2CustomPolicy: NSEntityMigrationPolicy{
     override public func createRelationships(forDestination dInstance: NSManagedObject, in mapping: NSEntityMapping, manager: NSMigrationManager) throws {
         
         
-         print("trying to create relationships - herd")
     }
     
 }

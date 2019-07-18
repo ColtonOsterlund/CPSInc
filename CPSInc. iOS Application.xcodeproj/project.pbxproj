@@ -50,7 +50,6 @@
 		9CEBC3BC22AB181C009CACBA /* FindDeviceInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEBC3BB22AB181C009CACBA /* FindDeviceInterfaceController.swift */; };
 		9CEBC3BF22AB1867009CACBA /* RunTestInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEBC3BE22AB1867009CACBA /* RunTestInterfaceController.swift */; };
 		9CEBC3C322AB1922009CACBA /* FinalValueResultInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEBC3C222AB1922009CACBA /* FinalValueResultInterfaceController.swift */; };
-		9CEBC3C522AB194A009CACBA /* ContinuousValueResultInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEBC3C422AB194A009CACBA /* ContinuousValueResultInterfaceController.swift */; };
 		9CFB119322C12EE5003E76B5 /* SettingsInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEBC3C022AB1884009CACBA /* SettingsInterfaceController.swift */; };
 		9CFB11C122C3F937003E76B5 /* HerdLogbookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFB11C022C3F937003E76B5 /* HerdLogbookViewController.swift */; };
 		9CFB11C322C4099F003E76B5 /* LogbookInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFB11C222C4099F003E76B5 /* LogbookInterfaceController.swift */; };
@@ -192,7 +191,6 @@
 		9CEBC3BE22AB1867009CACBA /* RunTestInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunTestInterfaceController.swift; sourceTree = "<group>"; };
 		9CEBC3C022AB1884009CACBA /* SettingsInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInterfaceController.swift; sourceTree = "<group>"; };
 		9CEBC3C222AB1922009CACBA /* FinalValueResultInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalValueResultInterfaceController.swift; sourceTree = "<group>"; };
-		9CEBC3C422AB194A009CACBA /* ContinuousValueResultInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinuousValueResultInterfaceController.swift; sourceTree = "<group>"; };
 		9CFB11C022C3F937003E76B5 /* HerdLogbookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HerdLogbookViewController.swift; sourceTree = "<group>"; };
 		9CFB11C222C4099F003E76B5 /* LogbookInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogbookInterfaceController.swift; sourceTree = "<group>"; };
 		9CFB11CB22C4216D003E76B5 /* CowLogbookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CowLogbookViewController.swift; sourceTree = "<group>"; };
@@ -290,7 +288,6 @@
 				9CEBC3C022AB1884009CACBA /* SettingsInterfaceController.swift */,
 				9CFB11C222C4099F003E76B5 /* LogbookInterfaceController.swift */,
 				9CEBC3C222AB1922009CACBA /* FinalValueResultInterfaceController.swift */,
-				9CEBC3C422AB194A009CACBA /* ContinuousValueResultInterfaceController.swift */,
 				9C3939E022A05D2D008D066C /* NotificationController.swift */,
 				9C3939E222A05D2D008D066C /* ComplicationController.swift */,
 				9C3939DE22A05D2D008D066C /* ExtensionDelegate.swift */,
@@ -732,7 +729,6 @@
 				9C3939E122A05D2D008D066C /* NotificationController.swift in Sources */,
 				9CFB11C322C4099F003E76B5 /* LogbookInterfaceController.swift in Sources */,
 				9CFB119322C12EE5003E76B5 /* SettingsInterfaceController.swift in Sources */,
-				9CEBC3C522AB194A009CACBA /* ContinuousValueResultInterfaceController.swift in Sources */,
 				9C3939E322A05D2D008D066C /* ComplicationController.swift in Sources */,
 				9C3939DF22A05D2D008D066C /* ExtensionDelegate.swift in Sources */,
 				9CEBC3C322AB1922009CACBA /* FinalValueResultInterfaceController.swift in Sources */,
@@ -1224,7 +1220,7 @@
 				9C9618D622DF7A6E00B48713 /* CPSInc__iOS_Application 2.xcdatamodel */,
 				9C9618D422DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodel */,
 			);
-			currentVersion = 9C9618D622DF7A6E00B48713 /* CPSInc__iOS_Application 2.xcdatamodel */;
+			currentVersion = 9C9618D422DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodel */;
 			path = CPSInc__iOS_Application.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

@@ -16,6 +16,8 @@ public class LogbookInterfaceController: WKInterfaceController, WKCrownDelegate,
     private var session: WCSession? = nil
     
     
+    @IBOutlet weak var herdListPicker: WKInterfacePicker!
+    var herdListPickerData = [WKPickerItem]()
     
     override public func awake(withContext context: Any?) { //called to setup any relevant contextual data from a previous interface controller. Use this method to finish the initialization of your interface.
         super.awake(withContext: context)
@@ -36,8 +38,13 @@ public class LogbookInterfaceController: WKInterfaceController, WKCrownDelegate,
             print("wcSession has been activated on iWatch - LogbookInterfaceController")
         }
         
+        let action = WKAlertAction.init(title: "Dismiss", style:.default) {
+            self.popToRootController()
+        }
+        
+        presentAlert(withTitle: "Logbook", message: "Please See iPhone to View Logbook Data", preferredStyle:.actionSheet, actions: [action])
+        
     }
-    
     
     
     public override func willDisappear() {

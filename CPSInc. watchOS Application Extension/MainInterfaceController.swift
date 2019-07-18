@@ -16,7 +16,6 @@ public class MainInterfaceController: WKInterfaceController, WKCrownDelegate, WC
     private let runTestIC = RunTestInterfaceController()
     private let settingsIC = SettingsInterfaceController()
     private let finalValIC = FinalValueResultInterfaceController()
-    private let continuousValIC = ContinuousValueResultInterfaceController()
     
     private var session: WCSession? = nil
     

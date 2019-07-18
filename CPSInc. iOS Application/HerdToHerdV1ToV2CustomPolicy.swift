@@ -33,8 +33,9 @@ class HerdToHerdV1ToV2CustomPolicy: NSEntityMigrationPolicy{
     
     override public func createRelationships(forDestination dInstance: NSManagedObject, in mapping: NSEntityMapping, manager: NSMigrationManager) throws {
         
-        print("trying to create relationships - herd")
+        
         
     }
+    
     
 }

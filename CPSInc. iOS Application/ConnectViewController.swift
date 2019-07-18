@@ -9,6 +9,7 @@
 import UIKit
 import CoreBluetooth
 import WatchConnectivity
+import UserNotifications
 
 public class ConnectViewController: UIViewController, CBCentralManagerDelegate, UITableViewDataSource, UITableViewDelegate, WCSessionDelegate{
     
@@ -301,6 +302,27 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
         }
         
         self.peripheralTableView.reloadData()
+        
+        self.appDelegate!.getNotificationCenter().getNotificationSettings { (settings) in
+            if settings.authorizationStatus == .authorized {
+                let content = UNMutableNotificationContent()
+                content.title = "Device Discovered"
+                content.body = "A New Device Was Discovered"
+                content.sound = UNNotificationSound.default
+                content.badge = 1
+                
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+                
+                let identifier = "Local Device Discovered Notification"
+                let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+                
+                self.appDelegate?.getNotificationCenter().add(request) { (error) in
+                    if let error = error {
+                        print("Error \(error.localizedDescription)")
+                    }
+                }
+            }
+        }
         
     }
     

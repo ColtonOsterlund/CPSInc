@@ -32,16 +32,15 @@ class CowToCowV1ToV2CustomPolicy: NSEntityMigrationPolicy{
                 dInstance.setValue(sInstance.primitiveValue(forKey: "parity") as! String, forKey: "parity")
                 dInstance.setValue(sInstance.primitiveValue(forKey: "reproductionStatus") as! String, forKey: "reproductionStatus")
                 
-            }
-        
+                
+        }
     }
     
     
     override public func createRelationships(forDestination dInstance: NSManagedObject, in mapping: NSEntityMapping, manager: NSMigrationManager) throws {
         
-         print("trying to create relationships - herd")
+        
         
     }
-    
     
 }

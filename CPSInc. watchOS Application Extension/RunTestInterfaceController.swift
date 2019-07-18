@@ -144,7 +144,7 @@ public class RunTestInterfaceController: WKInterfaceController, WKCrownDelegate,
                 }
                 else{
                     self.backToMain = false
-                    self.pushController(withName: "ContinuousValueResultInterfaceController", context: nil)
+                    self.pushController(withName: "FinalValueResultInterfaceController", context: nil)
                 }
             }
         }
