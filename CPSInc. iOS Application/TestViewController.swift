@@ -64,6 +64,7 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
     private let incubationLabel = UILabel()
     private var incubationTimer: Timer? = nil
     private let cancelTestBtn = UIButton()
+    private var testCancelled = false
     
     //Test Settings - technically dont need these we can access them straight through settingsView
 //    var testDurationSeconds: Int? = nil //how long to run the test for before taking final value
@@ -622,29 +623,37 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
 //            testDurationSeconds = settingsView?.testDurationSeconds
 //            isFinalValueTest = settingsView?.isFinalValueTest
             
+            testCancelled = false
+            
             incubationTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: Selector(("updateIncubationTimeString")), userInfo: nil, repeats: true)
             
-            //send notification if app is in background
-            self.appDelegate!.getNotificationCenter().getNotificationSettings { (settings) in
-                if settings.authorizationStatus == .authorized {
-                    let content = UNMutableNotificationContent()
-                    content.title = "Timer Almost Done"
-                    content.body = "Your Have 5 Seconds Before the Incubation Timer is Done"
-                    content.sound = UNNotificationSound.default
-                    content.badge = 1
-                    
-                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false) //set value to send notification however long before the test is over that you want to receive that notification
-                    
-                    let identifier = "Local Timer Almost Done Notification"
-                    let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-                    
-                    self.appDelegate?.getNotificationCenter().add(request) { (error) in
-                        if let error = error {
-                            print("Error \(error.localizedDescription)")
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(4)){
+                if(self.testCancelled == false){
+                    //send notification if app is in background
+                    self.appDelegate!.getNotificationCenter().getNotificationSettings { (settings) in
+                        if settings.authorizationStatus == .authorized {
+                            let content = UNMutableNotificationContent()
+                            content.title = "Timer Almost Done"
+                            content.body = "Your Have 5 Seconds Before the Incubation Timer is Done"
+                            content.sound = UNNotificationSound.default
+                            content.badge = 1
+                        
+                            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false) //set value to send notification however long before the test is over that you want to receive that notification
+                        
+                            let identifier = "Local Timer Almost Done Notification"
+                            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+                        
+                            self.appDelegate?.getNotificationCenter().add(request) { (error) in
+                                if let error = error {
+                                    print("Error \(error.localizedDescription)")
+                                }
+                            }
                         }
                     }
                 }
             }
+            
             
             //run and display incubation timer here - send notification when there is 60 seconds left
             incubationLabel.isHidden = false
@@ -678,6 +687,7 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
                        completion: { Void in()  }
         )
         
+        testCancelled = true
         
         incubationTimer?.invalidate() //stops timer from firing
         incubationTimer = nil //resets incubation timer to nil
@@ -728,7 +738,7 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         }
         
         
-        incubationTimeLabel.text = String(minutes!) + ":" + String(seconds!) //resets incubation timer label
+        incubationTimeLabel.text = String(format: "%02d", minutes!) + ":" + String(format: "%02d", seconds!) //resets incubation timer label
     }
     
     

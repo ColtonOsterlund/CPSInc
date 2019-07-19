@@ -10,6 +10,7 @@ import UIKit
 import WatchConnectivity
 import CoreData
 import SwiftyDropbox
+import UserNotifications
 
 public class HerdLogbookViewController: UITableViewController, WCSessionDelegate {
     
@@ -247,6 +248,28 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
             DispatchQueue.main.async {
                 self.fetchSavedData() //execute on main thread at end of background thread running
                 self.scanningIndicator.stopAnimating()
+                
+                //send notification if app is in background
+                self.appDelegate!.getNotificationCenter().getNotificationSettings { (settings) in
+                    if settings.authorizationStatus == .authorized {
+                        let content = UNMutableNotificationContent()
+                        content.title = "Import Complete"
+                        content.body = "Your Herd Import is Complete"
+                        content.sound = UNNotificationSound.default
+                        content.badge = 1
+                        
+                        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false) //set value to send notification however long before the test is over that you want to receive that notification
+                        
+                        let identifier = "Import Complete Notification"
+                        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+                        
+                        self.appDelegate?.getNotificationCenter().add(request) { (error) in
+                            if let error = error {
+                                print("Error \(error.localizedDescription)")
+                            }
+                        }
+                    }
+                }
             }
         }
         

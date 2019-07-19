@@ -116,19 +116,47 @@ public class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotification
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
         
         if response.notification.request.identifier == "Local Test Finished Notification" {
-            //handle response
+            navigationController?.popToRootViewController(animated: true)
+            navigationController?.pushViewController((firstView?.getTestView())!, animated: true)
         }
         else if response.notification.request.identifier == "Local Device Discovered Notification"{
-            //handle response
+            navigationController?.popToRootViewController(animated: true)
+            navigationController?.pushViewController((firstView?.getConnectView())!, animated: true)
         }
         else if response.notification.request.identifier == "Local Timer Almost Done Notification"{
-            //handle response
+            navigationController?.popToRootViewController(animated: true)
+            navigationController?.pushViewController((firstView?.getTestView())!, animated: true)
+        }
+        else if response.notification.request.identifier == "Import Complete Notification"{
+            navigationController?.popToRootViewController(animated: true)
+            navigationController?.pushViewController((firstView?.getHerdLogbookView())!, animated: true)
         }
         
         completionHandler()
     }
     
     
+    public func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        
+        if(notification.request.identifier == "Local Test Finished Notification" && navigationController?.visibleViewController != firstView?.getTestView()){
+            completionHandler([.alert, .sound])
+        }
+        else if(notification.request.identifier == "Local Device Discovered Notification" && navigationController?.visibleViewController != firstView?.getConnectView()){
+            completionHandler([.alert, .sound])
+        }
+        else if(notification.request.identifier == "Local Timer Almost Done Notification" && navigationController?.visibleViewController != firstView?.getTestView()){
+            completionHandler([.alert, .sound])
+        }
+        else if(notification.request.identifier == "Import Complete Notification" && navigationController?.visibleViewController != firstView?.getHerdLogbookView()){
+            completionHandler([.alert, .sound])
+        }
+        else{
+            return
+        }
+        
+    }
     
     
     // MARK: - Core Data stack
