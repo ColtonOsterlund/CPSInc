@@ -25,6 +25,11 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
     private var integratedVoltageValue: Int? = nil
     private var differentialVoltageValue: Int? = nil
     
+    private let incubationTimeMinutes = "00"
+    private let incubationTimeSeconds = "10"
+    private let notificationTimeMinutes = "00"
+    private let notificationTimeSeconds = "03"
+    
     //UITableView
     private let glucoseResultTable = UITableView()
     private let herdListTable = UITableView()
@@ -219,7 +224,7 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         lineChartView.isHidden = true
         
         
-        incubationTimeLabel.text = "00:10"
+        incubationTimeLabel.text = incubationTimeMinutes + ":" + incubationTimeSeconds
         incubationTimeLabel.font = incubationTimeLabel.font.withSize(50)
         incubationTimeLabel.textColor = .white
         incubationTimeLabel.textAlignment = .center
@@ -628,14 +633,14 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
             incubationTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: Selector(("updateIncubationTimeString")), userInfo: nil, repeats: true)
             
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(4)){
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(((Int(incubationTimeMinutes)! * 60) + Int(incubationTimeSeconds)!) - ((Int(notificationTimeMinutes)! * 60) + Int(notificationTimeSeconds)!))){
                 if(self.testCancelled == false){
                     //send notification if app is in background
                     self.appDelegate!.getNotificationCenter().getNotificationSettings { (settings) in
                         if settings.authorizationStatus == .authorized {
                             let content = UNMutableNotificationContent()
                             content.title = "Timer Almost Done"
-                            content.body = "Your Have 5 Seconds Before the Incubation Timer is Done"
+                            content.body = "Your Have " + self.notificationTimeMinutes + " Minutes and " + self.notificationTimeSeconds + " Seconds Before the Incubation Timer is Done"
                             content.sound = UNNotificationSound.default
                             content.badge = 1
                         
@@ -692,7 +697,7 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         incubationTimer?.invalidate() //stops timer from firing
         incubationTimer = nil //resets incubation timer to nil
     
-        incubationTimeLabel.text = "00:10" //resets incubation timer label
+        incubationTimeLabel.text = incubationTimeMinutes + ":" + incubationTimeSeconds //resets incubation timer label
         incubationTimeLabel.isHidden = true
         incubationLabel.isHidden = true
         cancelTestBtn.isHidden = true
@@ -718,8 +723,8 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
             incubationTimer?.invalidate() //stops timer from firing
             incubationTimer = nil //resets incubation timer to nil
             
-            seconds = 10 //resets seconds
-            minutes = 0 //resets minutes
+            seconds = Int(incubationTimeSeconds)!
+            minutes = Int(incubationTimeMinutes)!
             incubationTimeLabel.isHidden = true
             incubationLabel.isHidden = true
             cancelTestBtn.isHidden = true
@@ -809,19 +814,19 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
                 
                 switch testType{
                 case 0: //Immunoglobulins
-                    glucoseResult = Float(Float(self.integratedVoltageValue!) / Float(1000)) / 33.109 //this is measured/based off the integrated voltage after 10s
+                    glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109
                     
                 case 1: //Lactoferrin
-                    glucoseResult = Float(Float(self.integratedVoltageValue!) / Float(1000)) / 33.109 //this is measured/based off the integrated voltage after 10s
+                    glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109
                     
                 case 2: //Blood Calcium
-                    glucoseResult = Float(Float(self.integratedVoltageValue!) / Float(1000)) / 33.109//this is measured/based off the integrated voltage after 10s
+                    glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109
                     
                 case 3: //Generic Glucose
-                    glucoseResult = Float(Float(self.integratedVoltageValue!) / Float(1000)) / 33.109 //this is measured/based off the integrated voltage after 10s
+                    glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109
                     
                 default:
-                    glucoseResult = Float(Float(self.integratedVoltageValue!) / Float(1000)) / 33.109 //this is measured/based off the integrated voltage after 10s
+                    glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109
                 }
             }
             else{
@@ -1071,19 +1076,19 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
             
             switch testType{
                 case 0: //Immunoglobulins
-                    glucoseResult = Float(Float(self.integratedVoltageValue!) / Float(1000)) / 33.109 //this is measured/based off the integrated voltage after 10s
+                    glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109 //this is measured/based off the integrated voltage after 10s
                 
                 case 1: //Lactoferrin
-                    glucoseResult = Float(Float(self.integratedVoltageValue!) / Float(1000)) / 33.109 //this is measured/based off the integrated voltage after 10s
+                    glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109 //this is measured/based off the integrated voltage after 10s
                 
                 case 2: //Blood Calcium
-                    glucoseResult = Float(Float(self.integratedVoltageValue!) / Float(1000)) / 33.109 //this is measured/based off the integrated voltage after 10s
+                    glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109 //this is measured/based off the integrated voltage after 10s
                 
                 case 3: //Generic Glucose
-                    glucoseResult = Float(Float(self.integratedVoltageValue!) / Float(1000)) / 33.109 //this is measured/based off the integrated voltage after 10s
+                    glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109 //this is measured/based off the integrated voltage after 10s
                 
                 default:
-                    glucoseResult = Float(Float(self.integratedVoltageValue!) / Float(1000)) / 33.109 //this is measured/based off the integrated voltage after 10s
+                    glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109 //this is measured/based off the integrated voltage after 10s
             }
         
         }

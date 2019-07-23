@@ -21,7 +21,6 @@ public class TestLogbookViewController: UITableViewController, WCSessionDelegate
     private var testChartView: TestChartViewController? = nil
     
     //UIBarButtonItems
-    private var addBtn = UIBarButtonItem()
     private var chartBtn = UIBarButtonItem()
     private var filterBtn = UIBarButtonItem()
     private var graphSelectedBtn = UIBarButtonItem()
@@ -48,7 +47,7 @@ public class TestLogbookViewController: UITableViewController, WCSessionDelegate
         self.title = "Test Logbook"
         //view.backgroundColor = .init(red: 0, green: 0.637, blue: 0.999, alpha: 1)
         setupLayoutItems()
-        
+
         fetchSavedData()
     }
     
@@ -77,13 +76,12 @@ public class TestLogbookViewController: UITableViewController, WCSessionDelegate
     private func setupLayoutItems(){
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "testTableViewCell")
         
-        addBtn = UIBarButtonItem.init(barButtonSystemItem: .add, target: self, action: #selector(addBtnPressed))
         chartBtn = UIBarButtonItem.init(title: "Chart", style: .done, target: self, action: #selector(graphResults))
         filterBtn = UIBarButtonItem.init(title: "Filter", style: .done, target: self, action: #selector(filterResults))
         graphSelectedBtn = UIBarButtonItem.init(title: "Graph Selected", style: .done, target: self, action: #selector(graphFromSelected))
         cancelSelectionBtn = UIBarButtonItem.init(title: "Cancel", style: .done, target: self, action: #selector(cancelSelected))
         
-        navigationItem.rightBarButtonItems = [addBtn, chartBtn, filterBtn]
+        navigationItem.rightBarButtonItems = [chartBtn, filterBtn]
         
         startDatePicker.datePickerMode = .date
         startDatePicker.tag = 0
@@ -116,7 +114,7 @@ public class TestLogbookViewController: UITableViewController, WCSessionDelegate
     
     @objc private func cancelSelected(){
         DispatchQueue.main.async { //reset bar buttons
-            self.navigationItem.rightBarButtonItems =  [self.addBtn, self.chartBtn, self.filterBtn]
+            self.navigationItem.rightBarButtonItems =  [self.chartBtn, self.filterBtn]
         }
         
         selectedTestResults.removeAll() //reset selectedTestResults after graphing
@@ -238,7 +236,7 @@ public class TestLogbookViewController: UITableViewController, WCSessionDelegate
     
     @objc private func graphFromSelected(){
         DispatchQueue.main.async { //reset bar buttons
-            self.navigationItem.rightBarButtonItems =  [self.addBtn, self.chartBtn, self.filterBtn]
+            self.navigationItem.rightBarButtonItems =  [self.chartBtn, self.filterBtn]
         }
         
         self.graphTestResults(testResults: selectedTestResults)
@@ -355,11 +353,6 @@ public class TestLogbookViewController: UITableViewController, WCSessionDelegate
         }))
         
         self.present(filterResultAlert, animated: true)
-    }
-    
-    @objc private func addBtnPressed(){
-        //fill out
-        //RUN TEST STRAIGHT FROM COW RECORD IN LOGBOOK
     }
     
     public func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {

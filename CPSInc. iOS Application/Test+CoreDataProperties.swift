@@ -19,7 +19,7 @@ extension Test {
 
     @NSManaged public var dataType: String?
     @NSManaged public var date: NSDate?
-    @NSManaged public var runtime: NSNumber
+    @NSManaged public var runtime: NSNumber?
     @NSManaged public var testType: String?
     @NSManaged public var units: String?
     @NSManaged public var value: Float

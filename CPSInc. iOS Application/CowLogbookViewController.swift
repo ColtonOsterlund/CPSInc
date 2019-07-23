@@ -22,6 +22,7 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate 
     private var addCowView: AddCowViewController? = nil
     
     
+    
     //UIBarButtonItems
     private var addBtn = UIBarButtonItem()
     
@@ -37,6 +38,8 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate 
     }
     
     private func fetchSavedData(){
+       // print("fetching saved cow data")
+        
         let fetchRequest: NSFetchRequest<Cow> = Cow.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "herd == %@", self.selectedHerd!) //list the cows from the selected herd
         

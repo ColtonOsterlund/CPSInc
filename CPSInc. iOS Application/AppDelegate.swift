@@ -140,13 +140,13 @@ public class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotification
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         
-        if(notification.request.identifier == "Local Test Finished Notification" && navigationController?.visibleViewController != firstView?.getTestView()){
+        if(notification.request.identifier == "Local Test Finished Notification" /*&& navigationController?.visibleViewController != firstView?.getTestView()*/){ //jeroen wants this to show from the view
             completionHandler([.alert, .sound])
         }
         else if(notification.request.identifier == "Local Device Discovered Notification" && navigationController?.visibleViewController != firstView?.getConnectView()){
             completionHandler([.alert, .sound])
         }
-        else if(notification.request.identifier == "Local Timer Almost Done Notification" && navigationController?.visibleViewController != firstView?.getTestView()){
+        else if(notification.request.identifier == "Local Timer Almost Done Notification" /*&& navigationController?.visibleViewController != firstView?.getTestView()*/){ //jeroen wants this to show from the view
             completionHandler([.alert, .sound])
         }
         else if(notification.request.identifier == "Import Complete Notification" && navigationController?.visibleViewController != firstView?.getHerdLogbookView()){

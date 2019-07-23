@@ -3,8 +3,8 @@
     <entity name="Cow" representedClassName="Cow" syncable="YES">
         <attribute name="daysInMilk" optional="YES" attributeType="String" valueTransformerName="EncryptedStringTransformer" syncable="YES"/>
         <attribute name="dryOffDay" optional="YES" attributeType="String" valueTransformerName="EncryptedStringTransformer" syncable="YES"/>
-        <attribute name="id" optional="YES" attributeType="String" valueTransformerName="EncryptedStringTransformer" syncable="YES"/>
-        <attribute name="mastitisHistory" optional="YES" attributeType="String" valueTransformerName="EncryptedStringTransformer" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" valueTransformerName="EncryptedValueTransformer" syncable="YES"/>
+        <attribute name="mastitisHistory" optional="YES" attributeType="String" valueTransformerName="EncryptedValueTransformer" syncable="YES"/>
         <attribute name="methodOfDryOff" optional="YES" attributeType="String" valueTransformerName="EncryptedStringTransformer" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" valueTransformerName="EncryptedStringTransformer" syncable="YES"/>
         <attribute name="parity" optional="YES" attributeType="String" valueTransformerName="EncryptedStringTransformer" syncable="YES"/>
@@ -13,10 +13,10 @@
         <relationship name="testData" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Test" inverseName="cow" inverseEntity="Test" syncable="YES"/>
     </entity>
     <entity name="Herd" representedClassName="Herd" syncable="YES">
-        <attribute name="id" optional="YES" attributeType="String" valueTransformerName="EncryptedStringTransformer" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" valueTransformerName="EncryptedValueTransformer" syncable="YES"/>
         <attribute name="location" optional="YES" attributeType="String" valueTransformerName="EncryptedStringTransformer" syncable="YES"/>
         <attribute name="milkingSystem" optional="YES" attributeType="String" valueTransformerName="EncryptedStringTransformer" syncable="YES"/>
-        <attribute name="pin" optional="YES" attributeType="String" valueTransformerName="EncryptedStringTransformer" syncable="YES"/>
+        <attribute name="pin" optional="YES" attributeType="String" valueTransformerName="EncryptedValueTransformer" syncable="YES"/>
         <relationship name="cow" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Cow" inverseName="herd" inverseEntity="Cow" syncable="YES"/>
     </entity>
     <entity name="Test" representedClassName="Test" syncable="YES">
@@ -25,12 +25,12 @@
         <attribute name="runtime" optional="YES" attributeType="Integer 16" valueTransformerName="EncryptedStringTransformer" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="testType" optional="YES" attributeType="String" valueTransformerName="EncryptedStringTransformer" syncable="YES"/>
         <attribute name="units" optional="YES" attributeType="String" valueTransformerName="EncryptedStringTransformer" syncable="YES"/>
-        <attribute name="value" optional="YES" attributeType="Float" valueTransformerName="EncryptedStringTransformer" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="Float" valueTransformerName="EncryptedValueTransformer" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="cow" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Cow" inverseName="testData" inverseEntity="Cow" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Cow" positionX="-54" positionY="-9" width="128" height="193"/>
-        <element name="Herd" positionX="-63" positionY="-18" width="128" height="118"/>
-        <element name="Test" positionX="-45" positionY="81" width="128" height="148"/>
+        <element name="Cow" positionX="-54" positionY="-9" width="128" height="195"/>
+        <element name="Herd" positionX="-63" positionY="-18" width="128" height="120"/>
+        <element name="Test" positionX="-45" positionY="81" width="128" height="150"/>
     </elements>
 </model>

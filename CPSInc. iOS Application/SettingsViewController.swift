@@ -77,6 +77,9 @@ public class SettingsViewController: UIViewController, WCSessionDelegate, UIPick
         
         self.menuView = menuView
         self.appDelegate = appDelegate
+        
+        createLayoutItems()
+        setLayoutConstraints()
     }
 
     // This extends the superclass.

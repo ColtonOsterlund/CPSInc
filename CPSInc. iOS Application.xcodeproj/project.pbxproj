@@ -520,6 +520,9 @@
 					9C6F9E9F22985F35009EC1D6 = {
 						CreatedOnToolsVersion = 10.2;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.DataProtection = {
 								enabled = 0;
 							};
