@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9769CF2CDCACF14F7E0107D4E3110C77"
+               BlueprintIdentifier = "4207731B88D580F771C435ED4998AF0F"
                BuildableName = "SwiftyDropbox.framework"
                BlueprintName = "SwiftyDropbox"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9769CF2CDCACF14F7E0107D4E3110C77"
+            BlueprintIdentifier = "4207731B88D580F771C435ED4998AF0F"
             BuildableName = "SwiftyDropbox.framework"
             BlueprintName = "SwiftyDropbox"
             ReferencedContainer = "container:Pods.xcodeproj">

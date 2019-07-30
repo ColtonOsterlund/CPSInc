@@ -21,6 +21,8 @@ public class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotification
     private var loginView: LoginViewController? = nil
     private var navigationController: UINavigationController? = nil
     private let notificationCenter = UNUserNotificationCenter.current()
+    
+    private var authorizedSession = false
 
 
     public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -229,6 +231,13 @@ public class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotification
     //getters/setters
     public func getNotificationCenter() -> UNUserNotificationCenter{
         return notificationCenter
+    }
+    
+    public func setAuthorizedSession(auth: Bool){
+        self.authorizedSession = auth
+    }
+    public func getAuthorizedSession() -> Bool{
+        return self.authorizedSession
     }
 }
 

@@ -785,6 +785,15 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         
         testProgressView.setProgress(0, animated: true)
         
+        
+        pauseUntilNotNil() //pause until not nil - device starts reading
+        
+        
+        if(menuView?.getSettingsView().getTestType() == 0){
+            pauseUntilNonZero()
+        }
+        
+        
         //not sure if this is the best method to delay - look into this
         let currentTime = DispatchTime.now()
         
@@ -924,6 +933,35 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         
     }
     
+    
+    
+    
+    private func pauseUntilNotNil(){
+        while(true){
+            if(integratedVoltageValue != nil){
+                break
+            }
+            return
+        }
+    }
+    
+    
+    
+    
+    private func pauseUntilNonZero(){
+        while(true){
+            print("pausing until non-zero")
+            if(integratedVoltageValue != 0){
+                break //break out of the loop once the integrated voltage value is not equal to 0
+            }
+        }
+        return
+    }
+    
+    
+    
+    
+    
     private func runContinuousTest(){
         
         if(wcSession!.isReachable){
@@ -960,6 +998,10 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         testProgressView.isHidden = false
         
         testProgressView.setProgress(0, animated: true)
+        
+        
+        pauseUntilNotNil() //pause until not nil - device starts reading
+        
         
         //print(integratedVoltageValue)
         

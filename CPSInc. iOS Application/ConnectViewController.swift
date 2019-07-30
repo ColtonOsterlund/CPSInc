@@ -159,6 +159,7 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
 //        scanningIndicator.frame = CGRect(x: (UIScreen.main.bounds.width / 2) - 25, y: (UIScreen.main.bounds.height / 2)  - 25, width: 50, height: 50)
         scanningIndicator.center = self.view.center
         scanningIndicator.style = UIActivityIndicatorView.Style.gray
+        scanningIndicator.backgroundColor = .lightGray
         view.addSubview(scanningIndicator)
         
     }
@@ -201,6 +202,8 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
         scanningIndicator.translatesAutoresizingMaskIntoConstraints = false
         scanningIndicator.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
         scanningIndicator.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        scanningIndicator.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 0.12).isActive = true
+        scanningIndicator.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * 0.06).isActive = true
         
         
         

@@ -7,9 +7,15 @@
 //
 
 import UIKit
+import SwiftKeychainWrapper
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
 
+    //views
+    private var registerView: RegisterAccountViewController? = nil
+    private var accountView: AccountPageViewController? = nil
+    private var appDelegate: AppDelegate? = nil
+    
     //UIImageView
     let logoImage = UIImageView()
     
@@ -18,8 +24,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     let passwordTextField = UITextField()
     
     //UIBarButtons
-    private var loginBtn = UIBarButtonItem()
     private var registerBtn = UIBarButtonItem()
+    
+    //UIButtons
+    let loginBtn = UIButton()
     
     //UIActivityIndicatorView
     private let scanningIndicator = UIActivityIndicatorView()
@@ -30,7 +38,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         self.title = "Login"
         view.backgroundColor = .init(red: 0, green: 0.637, blue: 0.999, alpha: 1)
-
+        
         setupComponents()
         setLayoutConstraints()
     }
@@ -57,14 +65,21 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         passwordTextField.delegate = self
         view.addSubview(passwordTextField)
         
-        loginBtn = UIBarButtonItem.init(title: "Login", style: .done, target: self, action: #selector(loginBtnPressed))
-        navigationItem.rightBarButtonItems = [loginBtn]
+        loginBtn.setTitle("Login", for: .normal)
+        loginBtn.backgroundColor = .blue
+        loginBtn.setTitleColor(.white, for: .normal)
+        loginBtn.layer.borderWidth = 2
+        loginBtn.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor //white
+        loginBtn.addTarget(self, action: #selector(loginBtnPressed), for: .touchUpInside)
+        view.addSubview(loginBtn)
         
         registerBtn = UIBarButtonItem.init(title: "Create Account", style: .done, target: self, action: #selector(registerBtnPressed))
-        navigationItem.leftBarButtonItems = [registerBtn]
+        navigationItem.rightBarButtonItems = [registerBtn]
+
         
         scanningIndicator.center = self.view.center
         scanningIndicator.style = UIActivityIndicatorView.Style.gray
+        scanningIndicator.backgroundColor = .lightGray
         view.addSubview(scanningIndicator)
     }
     
@@ -87,11 +102,48 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         passwordTextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
         passwordTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.03)).isActive = true
     
+        loginBtn.translatesAutoresizingMaskIntoConstraints = false
+        loginBtn.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        loginBtn.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.1)).isActive = true
+        loginBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.3)).isActive = true
+        loginBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        
         //scanningIndicator
         scanningIndicator.translatesAutoresizingMaskIntoConstraints = false
         scanningIndicator.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
         scanningIndicator.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        scanningIndicator.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 0.12).isActive = true
+        scanningIndicator.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * 0.06).isActive = true
     }
+    
+    
+    
+    
+    
+    
+    // This allows you to initialise your custom UIViewController without a nib or bundle.
+    public convenience init(appDelegate: AppDelegate?) {
+        self.init(nibName:nil, bundle:nil)
+        
+        self.appDelegate = appDelegate
+        registerView = RegisterAccountViewController()
+        accountView = AccountPageViewController()
+    }
+    
+    // This extends the superclass.
+    public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    
+    // This is also necessary when extending the superclass.
+    public required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
+    
+    
+    
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if(textField.tag == 0){
@@ -112,7 +164,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             self.showToast(controller: self, message: "Please Enter Email & Password", seconds: 1)
             return
         }
-        else{
+        else{            
             emailTextField.endEditing(true)
             passwordTextField.endEditing(true)
             
@@ -142,26 +194,55 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             
             let task = URLSession.shared.dataTask(with: request) { data, response, error in
                 if(error != nil){
+                    DispatchQueue.main.async {
+                        self.scanningIndicator.stopAnimating()
+                    }
                     print("Error occured during /login RESTAPI request")
                 }
                 else{
+                    DispatchQueue.main.async {
+                        self.scanningIndicator.stopAnimating()
+                    }
                     print("Response:")
                     print(response!)
                     print("Data:")
                     print(String(decoding: data!, as: UTF8.self))
-                    print("Session JWT:")
+                
+                    let jwtToken = ((response! as! HTTPURLResponse).allHeaderFields["Auth-Token"] as? String)
                     
+                    print("Auth Token: ")
+                    print(jwtToken)
+                    
+                    if(jwtToken == nil){ //not authenticated - let user know and return
+                        DispatchQueue.main.async {
+                            self.showToast(controller: self, message: "Email or Password is Incorrect", seconds: 1)
+                        }
+                        return
+                    }
+                        
+                    else{ //authenticated - save JWT authencation token into iOS Keychain & set authorizedSession in AppDelegate to true
+                        let jwtSavedSuccessfully = KeychainWrapper.standard.set(jwtToken!, forKey: "JWT-Auth-Token")
+                        
+                        if(jwtSavedSuccessfully){
+                            self.appDelegate?.setAuthorizedSession(auth: true)
+                            
+                            DispatchQueue.main.async {
+                                self.navigationController?.pushViewController(self.accountView!, animated: true)
+                            }
+                        }
+                    }
                     
                 }
             }
             
             task.resume()
-            
         }
+        
+        
     }
     
     @objc private func registerBtnPressed(){
-        //fill out
+        navigationController?.pushViewController(registerView!, animated: true)
     }
     
     

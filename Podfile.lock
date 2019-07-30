@@ -4,12 +4,14 @@ PODS:
     - Charts/Core (= 3.3.0)
   - Charts/Core (3.3.0)
   - RNCryptor (5.1.0)
+  - SwiftKeychainWrapper (3.4.0)
   - SwiftyDropbox (5.1.0):
     - Alamofire (~> 4.8.2)
 
 DEPENDENCIES:
   - Charts
   - RNCryptor (~> 5.0)
+  - SwiftKeychainWrapper
   - SwiftyDropbox
 
 SPEC REPOS:
@@ -17,14 +19,16 @@ SPEC REPOS:
     - Alamofire
     - Charts
     - RNCryptor
+    - SwiftKeychainWrapper
     - SwiftyDropbox
 
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
   Charts: e0dd4cd8f257bccf98407b58183ddca8e8d5b578
   RNCryptor: a369134686cd2ad391323cc856b62e591193ba79
+  SwiftKeychainWrapper: 6fc49fbf7d4a6b0772917acb0e53a1639f6078d6
   SwiftyDropbox: 7ca4961e0340c62c8d6d1ece91d67badfe4c0380
 
-PODFILE CHECKSUM: 80d937bfa6838b7a96ceb545d11ea26d80e590c4
+PODFILE CHECKSUM: e9745e3b67c4c8796b8fd43efeb6a831c8f53745
 
 COCOAPODS: 1.5.2

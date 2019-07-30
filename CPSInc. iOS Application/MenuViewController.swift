@@ -12,12 +12,17 @@ import WatchConnectivity
 
 public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCSessionDelegate{
     
+    //scrolling
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
+    
     //Views
     private var connectView: ConnectViewController? = nil
     private var testView: TestViewController? = nil
     private var settingsView: SettingsViewController? = nil
     private var logbookView: HerdLogbookViewController? = nil
     private var instructionsView: InstructionPageViewController? = nil
+    private var loginView: LoginViewController? = nil
     private var appDelegate: AppDelegate? = nil
     
     //UIButtons
@@ -25,6 +30,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     private let testBtn = UIButton()
     private let settingsBtn = UIButton()
     private let logbookBtn = UIButton()
+    private let accountBtn = UIButton()
     
     //UIBarButtons
      private var instructionBtn = UIBarButtonItem()
@@ -34,6 +40,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     private let testBtnImage = UIImage(named: "bloodDropCartoonImage")
     private let settingsBtnImage = UIImage(named: "settingsWheel")
     private let logbookBtnImage = UIImage(named: "logbook")
+    private let accountBtnImage = UIImage(named: "userLOGO")
     
     //UILabels
     private let findDeviceLabel = UILabel()
@@ -41,6 +48,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     private let settingsLabel = UILabel()
     private let logbookLabel = UILabel()
     private let logoLabel = UILabel()
+    private let accountLabel = UILabel()
     
     //UITextViews for hyper link
     let attributedString = NSMutableAttributedString(string: "Visit Website")
@@ -71,6 +79,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         settingsView = SettingsViewController(menuView: self, appDelegate: appDelegate)
         logbookView = HerdLogbookViewController(menuView: self, appDelegate: appDelegate)
         instructionsView = InstructionPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+        loginView = LoginViewController(appDelegate: appDelegate)
         self.appDelegate = appDelegate
     }
     
@@ -149,43 +158,62 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     }
     
     private func createLayoutItems(){ //play with layout of buttons
+        
+        scrollView.backgroundColor = .init(red: 0, green: 0.637, blue: 0.999, alpha: 1)
+        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 1.2)
+        scrollView.frame = view.bounds
+        view.addSubview(scrollView)
+        
+        contentView.backgroundColor = .init(red: 0, green: 0.637, blue: 0.999, alpha: 1)
+        contentView.frame.size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 2)
+        scrollView.addSubview(contentView)
+        
+        
         findDeviceBtn.setBackgroundImage(findDeviceBtnImage, for: .normal)
-        view.addSubview(findDeviceBtn)
+        contentView.addSubview(findDeviceBtn)
         
         findDeviceLabel.text = "Find a Device"
         findDeviceLabel.textColor = .black
         findDeviceLabel.textAlignment = .center
-        view.addSubview(findDeviceLabel)
+        contentView.addSubview(findDeviceLabel)
         
         testBtn.setBackgroundImage(testBtnImage, for: .normal)
-        view.addSubview(testBtn)
+        contentView.addSubview(testBtn)
         
         testLabel.text = "Run a Test"
         testLabel.textColor = .black
         testLabel.textAlignment = .center
-        view.addSubview(testLabel)
+        contentView.addSubview(testLabel)
         
         settingsBtn.setBackgroundImage(settingsBtnImage, for: .normal)
-        view.addSubview(settingsBtn)
+        contentView.addSubview(settingsBtn)
         
         settingsLabel.text = "Configure Settings"
         settingsLabel.textColor = .black
         settingsLabel.textAlignment = .center
-        view.addSubview(settingsLabel)
+        contentView.addSubview(settingsLabel)
         
         logbookBtn.setBackgroundImage(logbookBtnImage, for: .normal)
-        view.addSubview(logbookBtn)
+        contentView.addSubview(logbookBtn)
         
         logbookLabel.text = "Logbook"
         logbookLabel.textColor = .black
         logbookLabel.textAlignment = .center
-        view.addSubview(logbookLabel)
+        contentView.addSubview(logbookLabel)
         
         logoLabel.text = "Creative Protein Solutions Inc."
         logoLabel.textColor = .black
         logoLabel.textAlignment = .center
         logoLabel.font = logoLabel.font.withSize(25)
-        view.addSubview(logoLabel)
+        contentView.addSubview(logoLabel)
+        
+        accountBtn.setBackgroundImage(accountBtnImage, for: .normal)
+        contentView.addSubview(accountBtn)
+        
+        accountLabel.text = "Account"
+        accountLabel.textColor = .black
+        accountLabel.textAlignment = .center
+        contentView.addSubview(accountLabel)
         
         
         // Set the 'click here' substring to be the link
@@ -201,7 +229,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         hyperlinkTextView.font = hyperlinkTextView.font?.withSize(20)
         hyperlinkTextView.textAlignment = .center
         hyperlinkTextView.backgroundColor = .init(red: 0, green: 0.637, blue: 0.999, alpha: 1)
-        view.addSubview(hyperlinkTextView)
+        contentView.addSubview(hyperlinkTextView)
         
         
         instructionBtn = UIBarButtonItem.init(title: "Instructions", style: .done, target: self, action: #selector(instructionsBtnPressed))
@@ -215,62 +243,76 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         
         //findDeviceBtn
         findDeviceBtn.translatesAutoresizingMaskIntoConstraints = false
-        findDeviceBtn.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25) ).isActive = true
+        findDeviceBtn.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25) ).isActive = true
         //findDeviceBtn.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 75).isActive = true //this constant value is dependant on the screen resolution
-        findDeviceBtn.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: (UIScreen.main.bounds.height * 0.25) - ((UIScreen.main.bounds.height * 0.15) / 2)).isActive = true //this constant value is dependant on the screen resolution
+        findDeviceBtn.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: (UIScreen.main.bounds.height * 0.25) - ((UIScreen.main.bounds.height * 0.15) / 2)).isActive = true //this constant value is dependant on the screen resolution
         findDeviceBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.3)).isActive = true
         findDeviceBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.15)).isActive = true
         
         //findDeviceLabel
         findDeviceLabel.translatesAutoresizingMaskIntoConstraints = false
-        findDeviceLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25) ).isActive = true
+        findDeviceLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25) ).isActive = true
         findDeviceLabel.topAnchor.constraint(equalTo: findDeviceBtn.bottomAnchor, constant: 10).isActive = true
         
         //testBtn
         testBtn.translatesAutoresizingMaskIntoConstraints = false
-        testBtn.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: (UIScreen.main.bounds.width * 0.25) ).isActive = true
+        testBtn.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: (UIScreen.main.bounds.width * 0.25) ).isActive = true
         //testBtn.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
-         testBtn.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: (UIScreen.main.bounds.height * 0.25) - ((UIScreen.main.bounds.height * 0.15) / 2)).isActive = true //this
+         testBtn.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: (UIScreen.main.bounds.height * 0.25) - ((UIScreen.main.bounds.height * 0.15) / 2)).isActive = true //this
         testBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.3)).isActive = true
         testBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.15)).isActive = true
         
         //testLabel
         testLabel.translatesAutoresizingMaskIntoConstraints = false
-        testLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: (UIScreen.main.bounds.width * 0.25) ).isActive = true
+        testLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: (UIScreen.main.bounds.width * 0.25) ).isActive = true
         testLabel.topAnchor.constraint(equalTo: testBtn.bottomAnchor, constant: 10).isActive = true
         
         
         //settingsBtn
         settingsBtn.translatesAutoresizingMaskIntoConstraints = false
-        settingsBtn.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: (UIScreen.main.bounds.width * 0.25) ).isActive = true
+        settingsBtn.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: (UIScreen.main.bounds.width * 0.25) ).isActive = true
         //settingsBtn.topAnchor.constraint(equalTo: testBtn.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.15)).isActive = true //this constant value is dependant on the screen resolution
         //settingsBtn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -75).isActive = true //this constant value is dependant on the screen resolution
-        settingsBtn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -(UIScreen.main.bounds.height * 0.25) + ((UIScreen.main.bounds.height * 0.15) / 2)).isActive = true //this
+        settingsBtn.topAnchor.constraint(equalTo: findDeviceLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.15)).isActive = true //this
         settingsBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.3)).isActive = true
         settingsBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.15)).isActive = true
         
         //settingsLabel
         settingsLabel.translatesAutoresizingMaskIntoConstraints = false
-        settingsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: (UIScreen.main.bounds.width * 0.25)).isActive = true
+        settingsLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: (UIScreen.main.bounds.width * 0.25)).isActive = true
         settingsLabel.topAnchor.constraint(equalTo: settingsBtn.bottomAnchor, constant: 10).isActive = true
         
         
         logbookBtn.translatesAutoresizingMaskIntoConstraints = false
-        logbookBtn.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25) ).isActive = true
-        logbookBtn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -(UIScreen.main.bounds.height * 0.25) + ((UIScreen.main.bounds.height * 0.15) / 2)).isActive = true //this
+        logbookBtn.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25) ).isActive = true
+        logbookBtn.topAnchor.constraint(equalTo: findDeviceLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.15)).isActive = true
         logbookBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.3)).isActive = true
         logbookBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.15)).isActive = true
         
         logbookLabel.translatesAutoresizingMaskIntoConstraints = false
-        logbookLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25)).isActive = true
+        logbookLabel.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25)).isActive = true
         logbookLabel.topAnchor.constraint(equalTo: logbookBtn.bottomAnchor, constant: 10).isActive = true
         
+        
+        accountBtn.translatesAutoresizingMaskIntoConstraints = false
+        accountBtn.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25) ).isActive = true
+        accountBtn.topAnchor.constraint(equalTo: logbookLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.15)).isActive = true
+        accountBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.3)).isActive = true
+        accountBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.15)).isActive = true
+        
+        
+        accountLabel.translatesAutoresizingMaskIntoConstraints = false
+        accountLabel.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25)).isActive = true
+        accountLabel.topAnchor.constraint(equalTo: accountBtn.bottomAnchor, constant: 10).isActive = true
+        
+        
         logoLabel.translatesAutoresizingMaskIntoConstraints = false
-        logoLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        logoLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: (UIScreen.main.bounds.height * 0.01)).isActive = true
+        logoLabel.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        logoLabel.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: (UIScreen.main.bounds.height * 0.01)).isActive = true
+        
         
         hyperlinkTextView.translatesAutoresizingMaskIntoConstraints = false
-        hyperlinkTextView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        hyperlinkTextView.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor).isActive = true
         hyperlinkTextView.topAnchor.constraint(equalTo: logoLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.01)).isActive = true
         hyperlinkTextView.widthAnchor.constraint(equalToConstant: 200).isActive = true
         hyperlinkTextView.heightAnchor.constraint(equalToConstant: 30).isActive = true
@@ -281,6 +323,8 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         testBtn.addTarget(self, action: #selector(testBtnPressed), for: .touchUpInside) //see if you can put the action function in a seperate class like a listener class
         settingsBtn.addTarget(self, action: #selector(settingsBtnPressed), for: .touchUpInside) //see if you can put the action function in a seperate class like a listener class
         logbookBtn.addTarget(self, action: #selector(logbookBtnPressed), for: .touchUpInside)
+        
+        accountBtn.addTarget(self, action: #selector(accountBtnPressed), for: .touchUpInside)
     }
     
     @objc private func findDeviceBtnPressed(){ //see if you can put this in a seperate class like a listener class
@@ -393,6 +437,34 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         logbookView?.setWCSession(session: wcSession)
     
     }
+    
+    
+    
+    
+    @objc private func accountBtnPressed(){
+        accountBtn.transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
+    
+        UIView.animate(withDuration: 0.5,
+                   delay: 0,
+                   usingSpringWithDamping: CGFloat(0.70),
+                   initialSpringVelocity: CGFloat(5.0),
+                   options: UIView.AnimationOptions.allowUserInteraction,
+                   animations: {
+                    self.accountBtn.transform = CGAffineTransform.identity
+        },
+                   completion: { Void in()  }
+        )
+        
+        //IF LOGGED OUT GO TO LOGIN - IF LOGGED IN GO TO ACCOUNT SETTINGS/ACCOUNT INFO
+        navigationController?.pushViewController(loginView!, animated: true)
+        
+        //NOT GOING TO SWITCH TO THIS ON APPLE WATCH
+        
+        
+    }
+    
+    
+    
     
     @objc private func instructionsBtnPressed(){
         navigationController?.pushViewController(instructionsView!, animated: true)

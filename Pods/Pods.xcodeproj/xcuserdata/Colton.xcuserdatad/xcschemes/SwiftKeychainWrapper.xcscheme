@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "06736B0F8F121610866A55BD498C2DB5"
-               BuildableName = "RNCryptor.framework"
-               BlueprintName = "RNCryptor"
+               BlueprintIdentifier = "4146222EEBEBB5D4896A7D338E64B470"
+               BuildableName = "SwiftKeychainWrapper.framework"
+               BlueprintName = "SwiftKeychainWrapper"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "06736B0F8F121610866A55BD498C2DB5"
-            BuildableName = "RNCryptor.framework"
-            BlueprintName = "RNCryptor"
+            BlueprintIdentifier = "4146222EEBEBB5D4896A7D338E64B470"
+            BuildableName = "SwiftKeychainWrapper.framework"
+            BlueprintName = "SwiftKeychainWrapper"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
