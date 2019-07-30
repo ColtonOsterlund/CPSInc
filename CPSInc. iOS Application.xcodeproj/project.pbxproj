@@ -47,6 +47,8 @@
 		9C9618E822DFA75B00B48713 /* HerdToHerdV1ToV2CustomPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618E722DFA75B00B48713 /* HerdToHerdV1ToV2CustomPolicy.swift */; };
 		9C9618EA22DFA76A00B48713 /* CowToCowV1ToV2CustomPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618E922DFA76A00B48713 /* CowToCowV1ToV2CustomPolicy.swift */; };
 		9C9618EC22DFA77800B48713 /* TestToTestV1ToV2CustomPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618EB22DFA77800B48713 /* TestToTestV1ToV2CustomPolicy.swift */; };
+		9C9C949522EF76E8003E5454 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9C949422EF76E8003E5454 /* LoginViewController.swift */; };
+		9C9C949722F09AA6003E5454 /* RegisterAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9C949622F09AA6003E5454 /* RegisterAccountViewController.swift */; };
 		9CEBC3BC22AB181C009CACBA /* FindDeviceInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEBC3BB22AB181C009CACBA /* FindDeviceInterfaceController.swift */; };
 		9CEBC3BF22AB1867009CACBA /* RunTestInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEBC3BE22AB1867009CACBA /* RunTestInterfaceController.swift */; };
 		9CEBC3C322AB1922009CACBA /* FinalValueResultInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEBC3C222AB1922009CACBA /* FinalValueResultInterfaceController.swift */; };
@@ -187,6 +189,8 @@
 		9C9618E722DFA75B00B48713 /* HerdToHerdV1ToV2CustomPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HerdToHerdV1ToV2CustomPolicy.swift; sourceTree = "<group>"; };
 		9C9618E922DFA76A00B48713 /* CowToCowV1ToV2CustomPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CowToCowV1ToV2CustomPolicy.swift; sourceTree = "<group>"; };
 		9C9618EB22DFA77800B48713 /* TestToTestV1ToV2CustomPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestToTestV1ToV2CustomPolicy.swift; sourceTree = "<group>"; };
+		9C9C949422EF76E8003E5454 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		9C9C949622F09AA6003E5454 /* RegisterAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterAccountViewController.swift; sourceTree = "<group>"; };
 		9CEBC3BB22AB181C009CACBA /* FindDeviceInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindDeviceInterfaceController.swift; sourceTree = "<group>"; };
 		9CEBC3BE22AB1867009CACBA /* RunTestInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunTestInterfaceController.swift; sourceTree = "<group>"; };
 		9CEBC3C022AB1884009CACBA /* SettingsInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInterfaceController.swift; sourceTree = "<group>"; };
@@ -342,11 +346,13 @@
 				9C6F9EE622988B0C009EC1D6 /* LaunchScreen.storyboard */,
 				9C1C31BE22DE3DD80057989C /* InstructionsStoryboard.storyboard */,
 				9C1C31C022DE40410057989C /* InstructionPageViewController.swift */,
+				9C9C949422EF76E8003E5454 /* LoginViewController.swift */,
+				9C9C949622F09AA6003E5454 /* RegisterAccountViewController.swift */,
+				9C6F9EDA22986944009EC1D6 /* MenuViewController.swift */,
 				9C1C31C222DE4BC20057989C /* FindDeviceInstructionViewController.swift */,
 				9C1C31C422DE4BD00057989C /* RunTestInstructionViewController.swift */,
 				9C1C31C622DE4BDD0057989C /* LogbookInstructionViewController.swift */,
 				9C1C31C822DE4BED0057989C /* SettingsInstructionViewController.swift */,
-				9C6F9EDA22986944009EC1D6 /* MenuViewController.swift */,
 				9C6F9EE0229877F2009EC1D6 /* ConnectViewController.swift */,
 				9C6F9EE222987804009EC1D6 /* TestViewController.swift */,
 				9C6F9EE42298781A009EC1D6 /* SettingsViewController.swift */,
@@ -754,6 +760,7 @@
 				9C9618DE22DF7E5A00B48713 /* Test+CoreDataProperties.swift in Sources */,
 				9C1C31B322D53E580057989C /* TestChartViewController.swift in Sources */,
 				9C9618E422DF8F8600B48713 /* mappingModelV1toV2.xcmappingmodel in Sources */,
+				9C9C949522EF76E8003E5454 /* LoginViewController.swift in Sources */,
 				9C1C31C322DE4BC20057989C /* FindDeviceInstructionViewController.swift in Sources */,
 				9C6F9EE322987804009EC1D6 /* TestViewController.swift in Sources */,
 				9C9618D522DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodeld in Sources */,
@@ -770,6 +777,7 @@
 				9C9618DF22DF7E5A00B48713 /* Herd+CoreDataClass.swift in Sources */,
 				9C6F9EA422985F35009EC1D6 /* AppDelegate.swift in Sources */,
 				9CFB11CC22C4216D003E76B5 /* CowLogbookViewController.swift in Sources */,
+				9C9C949722F09AA6003E5454 /* RegisterAccountViewController.swift in Sources */,
 				9C1C31B722D8E1A30057989C /* EncryptedValueTransformer.swift in Sources */,
 				9C6F9EE52298781A009EC1D6 /* SettingsViewController.swift in Sources */,
 				9C1C31C722DE4BDD0057989C /* LogbookInstructionViewController.swift in Sources */,

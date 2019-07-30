@@ -26,9 +26,9 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
     private var differentialVoltageValue: Int? = nil
     
     private let incubationTimeMinutes = "00"
-    private let incubationTimeSeconds = "10"
+    private let incubationTimeSeconds = "00"
     private let notificationTimeMinutes = "00"
-    private let notificationTimeSeconds = "03"
+    private let notificationTimeSeconds = "00"
     
     //UITableView
     private let glucoseResultTable = UITableView()

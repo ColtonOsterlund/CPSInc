@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14490.98" systemVersion="18F132" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Cow" representedClassName="Cow" syncable="YES">
-        <attribute name="daysInMilk" optional="YES" attributeType="Transformable" valueTransformerName="" syncable="YES"/>
-        <attribute name="dryOffDay" optional="YES" attributeType="Transformable" valueTransformerName="" syncable="YES"/>
+        <attribute name="daysInMilk" optional="YES" attributeType="Transformable" valueTransformerName="EncryptedValueTransformer" syncable="YES"/>
+        <attribute name="dryOffDay" optional="YES" attributeType="Transformable" valueTransformerName="EncryptedValueTransformer" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="Transformable" valueTransformerName="EncryptedValueTransformer" syncable="YES"/>
         <attribute name="mastitisHistory" optional="YES" attributeType="Transformable" valueTransformerName="EncryptedValueTransformer" syncable="YES"/>
-        <attribute name="methodOfDryOff" optional="YES" attributeType="Transformable" valueTransformerName="" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="Transformable" valueTransformerName="" syncable="YES"/>
-        <attribute name="parity" optional="YES" attributeType="Transformable" valueTransformerName="" syncable="YES"/>
-        <attribute name="reproductionStatus" optional="YES" attributeType="Transformable" valueTransformerName="" syncable="YES"/>
+        <attribute name="methodOfDryOff" optional="YES" attributeType="Transformable" valueTransformerName="EncryptedValueTransformer" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="Transformable" valueTransformerName="EncryptedValueTransformer" syncable="YES"/>
+        <attribute name="parity" optional="YES" attributeType="Transformable" valueTransformerName="EncryptedValueTransformer" syncable="YES"/>
+        <attribute name="reproductionStatus" optional="YES" attributeType="Transformable" valueTransformerName="EncryptedValueTransformer" syncable="YES"/>
         <relationship name="herd" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Herd" inverseName="cow" inverseEntity="Herd" syncable="YES"/>
         <relationship name="testData" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Test" inverseName="cow" inverseEntity="Test" syncable="YES"/>
     </entity>
     <entity name="Herd" representedClassName="Herd" syncable="YES">
         <attribute name="id" optional="YES" attributeType="Transformable" valueTransformerName="EncryptedValueTransformer" syncable="YES"/>
-        <attribute name="location" optional="YES" attributeType="Transformable" valueTransformerName="" syncable="YES"/>
-        <attribute name="milkingSystem" optional="YES" attributeType="Transformable" valueTransformerName="" syncable="YES"/>
+        <attribute name="location" optional="YES" attributeType="Transformable" valueTransformerName="EncryptedValueTransformer" syncable="YES"/>
+        <attribute name="milkingSystem" optional="YES" attributeType="Transformable" valueTransformerName="EncryptedValueTransformer" syncable="YES"/>
         <attribute name="pin" optional="YES" attributeType="Transformable" valueTransformerName="EncryptedValueTransformer" syncable="YES"/>
         <relationship name="cow" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Cow" inverseName="herd" inverseEntity="Cow" syncable="YES"/>
     </entity>
     <entity name="Test" representedClassName="Test" syncable="YES">
-        <attribute name="dataType" optional="YES" attributeType="Transformable" valueTransformerName="" syncable="YES"/>
-        <attribute name="date" optional="YES" attributeType="Transformable" valueTransformerName="" syncable="YES"/>
-        <attribute name="runtime" optional="YES" attributeType="Transformable" valueTransformerName="" syncable="YES"/>
-        <attribute name="testType" optional="YES" attributeType="Transformable" valueTransformerName="" syncable="YES"/>
-        <attribute name="units" optional="YES" attributeType="Transformable" valueTransformerName="" syncable="YES"/>
+        <attribute name="dataType" optional="YES" attributeType="Transformable" valueTransformerName="EncryptedValueTransformer" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Transformable" valueTransformerName="EncryptedValueTransformer" syncable="YES"/>
+        <attribute name="runtime" optional="YES" attributeType="Transformable" valueTransformerName="EncryptedValueTransformer" syncable="YES"/>
+        <attribute name="testType" optional="YES" attributeType="Transformable" valueTransformerName="EncryptedValueTransformer" syncable="YES"/>
+        <attribute name="units" optional="YES" attributeType="Transformable" valueTransformerName="EncryptedValueTransformer" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="Transformable" valueTransformerName="EncryptedValueTransformer" syncable="YES"/>
         <relationship name="cow" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Cow" inverseName="testData" inverseEntity="Cow" syncable="YES"/>
     </entity>

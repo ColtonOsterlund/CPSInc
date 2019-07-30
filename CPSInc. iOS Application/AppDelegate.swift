@@ -18,6 +18,7 @@ public class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotification
     public var window: UIWindow?
     private var wcSession: WCSession? = nil
     private var firstView: MenuViewController? = nil
+    private var loginView: LoginViewController? = nil
     private var navigationController: UINavigationController? = nil
     private let notificationCenter = UNUserNotificationCenter.current()
 
@@ -26,6 +27,7 @@ public class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotification
         // Override point for customization after application launch.
         
         firstView = MenuViewController(appDelegate: self)
+        loginView = LoginViewController()
         navigationController = UINavigationController(rootViewController: firstView!)
         navigationController!.navigationBar.barTintColor = .blue
         

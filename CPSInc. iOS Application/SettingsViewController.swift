@@ -213,6 +213,14 @@ public class SettingsViewController: UIViewController, WCSessionDelegate, UIPick
         testTypeBtn.isEnabled = true
         view.addSubview(testTypeBtn)
         
+        
+        
+        
+        
+        if(defaults.integer(forKey: "testTypeDefault") == 0){ //immunoglobulins
+            changeToImmunoglobulin()
+        }
+        
     }
     
     private func setLayoutConstraints(){
@@ -394,7 +402,64 @@ public class SettingsViewController: UIViewController, WCSessionDelegate, UIPick
                     print("Error while sending application context")
                 }
             }
+            
+            if(row == 0){
+                changeToImmunoglobulin()
+            }
+            else{
+                changeFromImmunoglobulin()
+            }
         }
+    }
+    
+    
+    private func changeToImmunoglobulin(){
+        //change to final value
+        finalContinuousPicker.selectRow(0, inComponent: 0, animated: true)
+        finalContinuousTextView.text = "Final Value"
+        defaults.set(0, forKey: "finalContinuousDefault")
+        defaults.set("Final Value", forKey: "finalContinuousTextViewDefault")
+        if(wcSession != nil){
+            if(wcSession!.isReachable){
+                do{
+                    try wcSession?.updateApplicationContext(["FinalContSettingsUpdate":defaults.integer(forKey: "finalContinuousDefault")])
+                }catch{
+                    print("Error while sending application context")
+                }
+            }
+        }
+        testTypeLabel.textColor = .gray
+        finalContinuousTextView.textColor = .gray
+        finalContinuousBtn.isEnabled = false
+        
+        //change test duration
+        testDurationPicker.selectRow(2, inComponent: 0, animated: true)
+        testDurationTextView.text = "15 Seconds"
+        defaults.set(2, forKey: "testDurationDefault")
+        defaults.set("15 Second", forKey: "testDurationTextViewDefault")
+        if(wcSession != nil){
+            if(wcSession!.isReachable){
+                do{
+                    try wcSession?.updateApplicationContext(["TestDurationSettingsUpdate":defaults.integer(forKey: "testDurationDefault")])
+                }catch{
+                    print("Error while sending application context")
+                }
+            }
+        }
+        testDurationLabel.textColor = .gray
+        testDurationTextView.textColor = .gray
+        testDurationBtn.isEnabled = false
+        
+    }
+    
+    private func changeFromImmunoglobulin(){
+        testTypeLabel.textColor = .black
+        finalContinuousTextView.textColor = .black
+        finalContinuousBtn.isEnabled = true
+        
+        testDurationLabel.textColor = .black
+        testDurationTextView.textColor = .black
+        testDurationBtn.isEnabled = true
     }
     
 //    public func textViewDidBeginEditing(_ textView: UITextView) {
@@ -622,6 +687,10 @@ public class SettingsViewController: UIViewController, WCSessionDelegate, UIPick
             testDurationBtn.isEnabled = true
 //            finalContinuousTextView.isEditable = true
 //            testDurationTextView.isEditable = true
+        }
+        
+        if(defaults.integer(forKey: "testTypeDefault") == 0){
+            changeToImmunoglobulin()
         }
     }
     
