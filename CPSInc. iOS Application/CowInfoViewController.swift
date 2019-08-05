@@ -510,6 +510,24 @@ class CowInfoViewController: UIViewController, UIPickerViewDataSource, UIPickerV
                 print("Error during fetch request")
             }
             
+            
+            
+            
+            let fetchRequest: NSFetchRequest<Cow> = Cow.fetchRequest()
+            let idToSearch = selectedCow?.id
+            fetchRequest.predicate = NSPredicate(format: "id == %@", idToSearch!)
+            
+            //delete old record
+            do{
+                let savedCowArray = try appDelegate?.persistentContainer.viewContext.fetch(fetchRequest)
+                self.appDelegate?.persistentContainer.viewContext.delete(savedCowArray![0]) //this will always only have one element since we check that no two herds are given the same id
+            } catch{
+                print("Error during fetch request")
+            }
+            
+            
+            
+            
             let cow = Cow(context: (appDelegate?.persistentContainer.viewContext)!)
             cow.daysInMilk = daysInMilkTextView.text
             cow.dryOffDay = dryOffDayTextView.text

@@ -359,6 +359,22 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
                     
                     //delete all cows that return from the search
                     for cowToDelete in fetchedCowArray!{
+                        
+                        let fetchTestDeletionRequest: NSFetchRequest<Test> = Test.fetchRequest()
+                        fetchTestDeletionRequest.predicate = NSPredicate(format: "cow == %@", cowToDelete) //get all cows associated with the herd being deleted
+                        
+                        do{
+                            let fetchedTestArray = try self.appDelegate?.persistentContainer.viewContext.fetch(fetchTestDeletionRequest)
+                            
+                            for testToDelete in fetchedTestArray! {
+                                self.appDelegate?.persistentContainer.viewContext.delete(testToDelete)
+                            }
+                        }
+                        catch{
+                            print("Error during fetch request")
+                        }
+                        
+                        
                          self.appDelegate?.persistentContainer.viewContext.delete(cowToDelete)
                     }
 

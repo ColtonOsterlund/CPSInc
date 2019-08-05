@@ -439,5 +439,9 @@ public class TestLogbookViewController: UITableViewController, WCSessionDelegate
         return selectedCow!
     }
     
+    public func getTestList() -> [Test]{
+        return testList
+    }
+    
     
 }

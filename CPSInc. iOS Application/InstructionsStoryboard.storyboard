@@ -76,7 +76,22 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N3W-7p-knB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2659" y="-49"/>
+            <point key="canvasLocation" x="2665" y="-36"/>
+        </scene>
+        <!--Account Instruction View Controller-->
+        <scene sceneID="lre-vm-bnG">
+            <objects>
+                <viewController storyboardIdentifier="AccountInstructionViewController" id="Rdk-WD-MR4" customClass="AccountInstructionViewController" customModule="CPSInc__iOS_Application" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="BEj-2n-JqN">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.0" green="0.63724843539999998" blue="0.99908632040000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <viewLayoutGuide key="safeArea" id="Dwa-ka-qlf"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ee0-9c-QlH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3445" y="-36"/>
         </scene>
     </scenes>
 </document>

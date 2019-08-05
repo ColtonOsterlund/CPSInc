@@ -9,6 +9,8 @@
 import UIKit
 import CoreBluetooth
 import WatchConnectivity
+import SwiftKeychainWrapper
+import CoreGraphics
 
 public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCSessionDelegate{
     
@@ -23,6 +25,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     private var logbookView: HerdLogbookViewController? = nil
     private var instructionsView: InstructionPageViewController? = nil
     private var loginView: LoginViewController? = nil
+    private var accountView: AccountPageViewController? = nil
     private var appDelegate: AppDelegate? = nil
     
     //UIButtons
@@ -41,6 +44,12 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     private let settingsBtnImage = UIImage(named: "settingsWheel")
     private let logbookBtnImage = UIImage(named: "logbook")
     private let accountBtnImage = UIImage(named: "userLOGO")
+    private let greenCircleImage = UIImage(named: "green_circle")
+    private let redCircleImage = UIImage(named: "red_circle")
+    
+    //UIImageViews
+    private let greenCircleView = UIImageView()
+    private let redCircleView = UIImageView()
     
     //UILabels
     private let findDeviceLabel = UILabel()
@@ -49,6 +58,9 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     private let logbookLabel = UILabel()
     private let logoLabel = UILabel()
     private let accountLabel = UILabel()
+    
+    //UIActivityIndicatorView
+    private let scanningIndicator = UIActivityIndicatorView()
     
     //UITextViews for hyper link
     let attributedString = NSMutableAttributedString(string: "Visit Website")
@@ -79,7 +91,8 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         settingsView = SettingsViewController(menuView: self, appDelegate: appDelegate)
         logbookView = HerdLogbookViewController(menuView: self, appDelegate: appDelegate)
         instructionsView = InstructionPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
-        loginView = LoginViewController(appDelegate: appDelegate)
+        accountView = AccountPageViewController(appDelegate: appDelegate, menuView: self)
+        loginView = LoginViewController(appDelegate: appDelegate, accountView: accountView, menuView: self)
         self.appDelegate = appDelegate
     }
     
@@ -235,7 +248,28 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         instructionBtn = UIBarButtonItem.init(title: "Instructions", style: .done, target: self, action: #selector(instructionsBtnPressed))
         
         navigationItem.rightBarButtonItems = [instructionBtn]
-    
+        
+        scanningIndicator.center = self.view.center
+        scanningIndicator.style = UIActivityIndicatorView.Style.gray
+        scanningIndicator.backgroundColor = .lightGray
+        view.addSubview(scanningIndicator) //add to view because you always want it to be in the middle of the screen, you dont want it to scroll with the screen
+        
+        greenCircleView.image = greenCircleImage
+        contentView.addSubview(greenCircleView)
+        
+        redCircleView.image = redCircleImage
+        contentView.addSubview(redCircleView)
+        
+        if(appDelegate!.getSyncUpToDate() == true){
+            print("HERE")
+            greenCircleView.isHidden = false
+            redCircleView.isHidden = true
+        }
+        else{
+            print("HERE 2")
+            greenCircleView.isHidden = true
+            redCircleView.isHidden = false
+        }
     }
     
     private func setLayoutConstraints(){ //might not need constraints if everything is done in relation to screen size
@@ -269,18 +303,18 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         
         
         //settingsBtn
-        settingsBtn.translatesAutoresizingMaskIntoConstraints = false
-        settingsBtn.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: (UIScreen.main.bounds.width * 0.25) ).isActive = true
+        accountBtn.translatesAutoresizingMaskIntoConstraints = false
+        accountBtn.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: (UIScreen.main.bounds.width * 0.25) ).isActive = true
         //settingsBtn.topAnchor.constraint(equalTo: testBtn.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.15)).isActive = true //this constant value is dependant on the screen resolution
         //settingsBtn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -75).isActive = true //this constant value is dependant on the screen resolution
-        settingsBtn.topAnchor.constraint(equalTo: findDeviceLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.15)).isActive = true //this
-        settingsBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.3)).isActive = true
-        settingsBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.15)).isActive = true
+        accountBtn.topAnchor.constraint(equalTo: findDeviceLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.15)).isActive = true //this
+        accountBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.3)).isActive = true
+        accountBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.15)).isActive = true
         
         //settingsLabel
-        settingsLabel.translatesAutoresizingMaskIntoConstraints = false
-        settingsLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: (UIScreen.main.bounds.width * 0.25)).isActive = true
-        settingsLabel.topAnchor.constraint(equalTo: settingsBtn.bottomAnchor, constant: 10).isActive = true
+        accountLabel.translatesAutoresizingMaskIntoConstraints = false
+        accountLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: (UIScreen.main.bounds.width * 0.25)).isActive = true
+        accountLabel.topAnchor.constraint(equalTo: accountBtn.bottomAnchor, constant: 10).isActive = true
         
         
         logbookBtn.translatesAutoresizingMaskIntoConstraints = false
@@ -294,16 +328,16 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         logbookLabel.topAnchor.constraint(equalTo: logbookBtn.bottomAnchor, constant: 10).isActive = true
         
         
-        accountBtn.translatesAutoresizingMaskIntoConstraints = false
-        accountBtn.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25) ).isActive = true
-        accountBtn.topAnchor.constraint(equalTo: logbookLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.15)).isActive = true
-        accountBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.3)).isActive = true
-        accountBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.15)).isActive = true
+        settingsBtn.translatesAutoresizingMaskIntoConstraints = false
+        settingsBtn.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25) ).isActive = true
+        settingsBtn.topAnchor.constraint(equalTo: logbookLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.15)).isActive = true
+        settingsBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.3)).isActive = true
+        settingsBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.15)).isActive = true
         
         
-        accountLabel.translatesAutoresizingMaskIntoConstraints = false
-        accountLabel.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25)).isActive = true
-        accountLabel.topAnchor.constraint(equalTo: accountBtn.bottomAnchor, constant: 10).isActive = true
+        settingsLabel.translatesAutoresizingMaskIntoConstraints = false
+        settingsLabel.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25)).isActive = true
+        settingsLabel.topAnchor.constraint(equalTo: settingsBtn.bottomAnchor, constant: 10).isActive = true
         
         
         logoLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -316,6 +350,28 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         hyperlinkTextView.topAnchor.constraint(equalTo: logoLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.01)).isActive = true
         hyperlinkTextView.widthAnchor.constraint(equalToConstant: 200).isActive = true
         hyperlinkTextView.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        
+        //scanningIndicator
+        scanningIndicator.translatesAutoresizingMaskIntoConstraints = false
+        scanningIndicator.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        scanningIndicator.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        scanningIndicator.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 0.12).isActive = true
+        scanningIndicator.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * 0.06).isActive = true
+        
+        
+        greenCircleView.translatesAutoresizingMaskIntoConstraints = false
+        greenCircleView.topAnchor.constraint(equalTo: accountBtn.topAnchor).isActive = true
+        greenCircleView.rightAnchor.constraint(equalTo: accountBtn.rightAnchor).isActive = true
+        greenCircleView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.04)).isActive = true
+        greenCircleView.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.02)).isActive = true
+        
+        
+        redCircleView.translatesAutoresizingMaskIntoConstraints = false
+        redCircleView.topAnchor.constraint(equalTo: accountBtn.topAnchor).isActive = true
+        redCircleView.rightAnchor.constraint(equalTo: accountBtn.rightAnchor).isActive = true
+        redCircleView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.04)).isActive = true
+        redCircleView.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.02)).isActive = true
     }
     
     private func setButtonListeners(){
@@ -455,14 +511,56 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
                    completion: { Void in()  }
         )
         
-        //IF LOGGED OUT GO TO LOGIN - IF LOGGED IN GO TO ACCOUNT SETTINGS/ACCOUNT INFO
-        navigationController?.pushViewController(loginView!, animated: true)
-        
         //NOT GOING TO SWITCH TO THIS ON APPLE WATCH
         
+        DispatchQueue.main.async {
+            self.scanningIndicator.startAnimating()
+        }
+        
+        //CHECK THAT JWT HAS NOT EXPIRED - IF IT HAS SET APPDELEGATES AUTHORIZEDSESSION TO FALSE
+        var request = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/user/authenticate")!)
+        request.httpMethod = "GET"
+        request.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if(error != nil){
+                DispatchQueue.main.async {
+                    self.scanningIndicator.stopAnimating()
+                    print("Error occured during /login RESTAPI request")
+                    self.showToast(controller: self, message: "Error: " + (error as! String), seconds: 1)
+                }
+            }
+            else{
+                DispatchQueue.main.async {
+                    self.scanningIndicator.stopAnimating()
+                    self.showToast(controller: self, message: String(decoding: data!, as: UTF8.self), seconds: 1)
+                }
+                
+                
+                print("Response:")
+                print(response!)
+                print("Data:")
+                print(String(decoding: data!, as: UTF8.self))
+                
+                if(String(decoding: data!, as: UTF8.self) == "Authenticated"){
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)){
+                        self.navigationController?.pushViewController(self.accountView!, animated: true)
+                    }
+                }
+                
+                else{
+                    //IF LOGGED OUT GO TO LOGIN - IF LOGGED IN GO TO ACCOUNT SETTINGS/ACCOUNT INFO
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)){
+                        self.navigationController?.pushViewController(self.loginView!, animated: true)
+                    }
+                }
+                
+            }
+        }
+        
+        task.resume()
         
     }
-    
     
     
     
@@ -556,6 +654,21 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     
     public func setInQueueView(flag: Int){
         inQueueView = flag
+    }
+    
+    public func setSyncUpToDate(upToDate: Bool){
+        if(upToDate){
+            greenCircleView.isHidden = false
+            redCircleView.isHidden = true
+            
+            accountView!.setSyncStatus(needsSync: false)
+        }
+        else{
+            greenCircleView.isHidden = true
+            redCircleView.isHidden = false
+            
+            accountView!.setSyncStatus(needsSync: true)
+        }
     }
     
 }

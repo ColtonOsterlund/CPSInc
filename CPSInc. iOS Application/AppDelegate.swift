@@ -22,11 +22,15 @@ public class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotification
     private var navigationController: UINavigationController? = nil
     private let notificationCenter = UNUserNotificationCenter.current()
     
-    private var authorizedSession = false
+    //User Defaults
+    private let defaults = UserDefaults.standard
 
 
     public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        //register sync default on launch - will only happen if these have not been created on the device before
+        defaults.register(defaults: ["syncUpToDateDefault": true])
         
         firstView = MenuViewController(appDelegate: self)
         loginView = LoginViewController()
@@ -110,7 +114,6 @@ public class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotification
         // Saves changes in the application's managed object context before the application terminates.
         self.saveContext()
     }
-    
     
     
     
@@ -215,6 +218,7 @@ public class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotification
         if context.hasChanges {
             do {
                 try context.save()
+                self.setSyncUpToDate(upToDate: false)
             } catch {
                 // Replace this implementation with code to handle the error appropriately.
                 // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
@@ -233,11 +237,13 @@ public class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotification
         return notificationCenter
     }
     
-    public func setAuthorizedSession(auth: Bool){
-        self.authorizedSession = auth
+    public func setSyncUpToDate(upToDate: Bool){
+        defaults.set(upToDate, forKey: "syncUpToDateDefault")
+        firstView?.setSyncUpToDate(upToDate: upToDate)
     }
-    public func getAuthorizedSession() -> Bool{
-        return self.authorizedSession
+    
+    public func getSyncUpToDate() -> Bool{
+        return defaults.bool(forKey: "syncUpToDateDefault")
     }
 }
 

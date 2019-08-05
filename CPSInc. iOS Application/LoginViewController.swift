@@ -15,6 +15,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     private var registerView: RegisterAccountViewController? = nil
     private var accountView: AccountPageViewController? = nil
     private var appDelegate: AppDelegate? = nil
+    private var menuView: MenuViewController? = nil
     
     //UIImageView
     let logoImage = UIImageView()
@@ -51,6 +52,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         emailTextField.textColor = .black
         emailTextField.placeholder = "Email"
         emailTextField.keyboardType = .emailAddress
+        emailTextField.autocapitalizationType = .none
         emailTextField.borderStyle = .roundedRect
         emailTextField.tag = 0
         emailTextField.delegate = self
@@ -61,6 +63,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         passwordTextField.placeholder = "Password"
         passwordTextField.isSecureTextEntry = true //dots entered characters
         passwordTextField.borderStyle = .roundedRect
+        passwordTextField.autocapitalizationType = .none
         passwordTextField.tag = 1
         passwordTextField.delegate = self
         view.addSubview(passwordTextField)
@@ -117,17 +120,21 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     
-    
+    override func viewWillAppear(_ animated: Bool) {
+        emailTextField.text = ""
+        passwordTextField.text = ""
+    }
     
     
     
     // This allows you to initialise your custom UIViewController without a nib or bundle.
-    public convenience init(appDelegate: AppDelegate?) {
+    public convenience init(appDelegate: AppDelegate?, accountView: AccountPageViewController?, menuView: MenuViewController?) {
         self.init(nibName:nil, bundle:nil)
         
         self.appDelegate = appDelegate
-        registerView = RegisterAccountViewController()
-        accountView = AccountPageViewController()
+        self.menuView = menuView
+        registerView = RegisterAccountViewController(appDelegate: appDelegate, menuView: menuView)
+        self.accountView = accountView
     }
     
     // This extends the superclass.
@@ -139,7 +146,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     
     
     
@@ -159,7 +165,24 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         return true
     }
     
+    
+    
     @objc private func loginBtnPressed(){
+        
+        loginBtn.transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
+        
+        UIView.animate(withDuration: 0.5,
+                       delay: 0,
+                       usingSpringWithDamping: CGFloat(0.70),
+                       initialSpringVelocity: CGFloat(5.0),
+                       options: UIView.AnimationOptions.allowUserInteraction,
+                       animations: {
+                        self.loginBtn.transform = CGAffineTransform.identity
+        },
+                       completion: { Void in()  }
+        )
+        
+        
         if(emailTextField.text == "" || passwordTextField.text == ""){
             self.showToast(controller: self, message: "Please Enter Email & Password", seconds: 1)
             return
@@ -198,37 +221,45 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                         self.scanningIndicator.stopAnimating()
                     }
                     print("Error occured during /login RESTAPI request")
+                    self.showToast(controller: self, message: "Error: " + (error as! String), seconds: 1)
                 }
                 else{
                     DispatchQueue.main.async {
                         self.scanningIndicator.stopAnimating()
                     }
+                    
+                    self.showToast(controller: self, message: String(decoding: data!, as: UTF8.self), seconds: 1)
+                    
                     print("Response:")
                     print(response!)
                     print("Data:")
                     print(String(decoding: data!, as: UTF8.self))
                 
                     let jwtToken = ((response! as! HTTPURLResponse).allHeaderFields["Auth-Token"] as? String)
-                    
-                    print("Auth Token: ")
-                    print(jwtToken)
-                    
-                    if(jwtToken == nil){ //not authenticated - let user know and return
+                    let userID = ((response! as! HTTPURLResponse).allHeaderFields["User-Id"] as? String)
+            
+                    if(jwtToken == nil || userID == nil){ //not authenticated - let user know and return
                         DispatchQueue.main.async {
-                            self.showToast(controller: self, message: "Email or Password is Incorrect", seconds: 1)
+                            self.emailTextField.text = ""
+                            self.passwordTextField.text = ""
                         }
                         return
                     }
                         
                     else{ //authenticated - save JWT authencation token into iOS Keychain & set authorizedSession in AppDelegate to true
-                        let jwtSavedSuccessfully = KeychainWrapper.standard.set(jwtToken!, forKey: "JWT-Auth-Token")
                         
-                        if(jwtSavedSuccessfully){
-                            self.appDelegate?.setAuthorizedSession(auth: true)
-                            
-                            DispatchQueue.main.async {
+                        print("Auth Token: ")
+                        print(jwtToken!)
+                        
+                        let jwtSavedSuccessfully = KeychainWrapper.standard.set(jwtToken!, forKey: "JWT-Auth-Token") //jwt gets saved to keychain upon login
+                        
+                        let userIDSavedSuccessfully = KeychainWrapper.standard.set(userID!, forKey: "User-ID-Token") //user id gets saved to keychain upon login
+                        
+                        if(jwtSavedSuccessfully && userIDSavedSuccessfully){
+                            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)){ //go after 1 second from now you that you know the toast is complete
                                 self.navigationController?.pushViewController(self.accountView!, animated: true)
                             }
+                            
                         }
                     }
                     

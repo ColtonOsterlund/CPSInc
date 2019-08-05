@@ -19,6 +19,7 @@
 		9C1C31C722DE4BDD0057989C /* LogbookInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C31C622DE4BDD0057989C /* LogbookInstructionViewController.swift */; };
 		9C1C31C922DE4BED0057989C /* SettingsInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C31C822DE4BED0057989C /* SettingsInstructionViewController.swift */; };
 		9C33B6C322F104DB0076F492 /* AccountPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C33B6C222F104DB0076F492 /* AccountPageViewController.swift */; };
+		9C33B6C722F4E8570076F492 /* AccountInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C33B6C622F4E8570076F492 /* AccountInstructionViewController.swift */; };
 		9C373EEC22AEC48700B0FC1A /* MainInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3939DC22A05D2D008D066C /* MainInterfaceController.swift */; };
 		9C3939CF22A05D2B008D066C /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C3939CD22A05D2B008D066C /* Interface.storyboard */; };
 		9C3939D122A05D2D008D066C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C3939D022A05D2D008D066C /* Assets.xcassets */; };
@@ -152,6 +153,7 @@
 		9C1C31C622DE4BDD0057989C /* LogbookInstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogbookInstructionViewController.swift; sourceTree = "<group>"; };
 		9C1C31C822DE4BED0057989C /* SettingsInstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInstructionViewController.swift; sourceTree = "<group>"; };
 		9C33B6C222F104DB0076F492 /* AccountPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPageViewController.swift; sourceTree = "<group>"; };
+		9C33B6C622F4E8570076F492 /* AccountInstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInstructionViewController.swift; sourceTree = "<group>"; };
 		9C3939CB22A05D2B008D066C /* CPSInc. watchOS Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CPSInc. watchOS Application.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C3939CE22A05D2B008D066C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		9C3939D022A05D2D008D066C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -355,6 +357,7 @@
 				9C1C31C422DE4BD00057989C /* RunTestInstructionViewController.swift */,
 				9C1C31C622DE4BDD0057989C /* LogbookInstructionViewController.swift */,
 				9C1C31C822DE4BED0057989C /* SettingsInstructionViewController.swift */,
+				9C33B6C622F4E8570076F492 /* AccountInstructionViewController.swift */,
 				9C6F9EE0229877F2009EC1D6 /* ConnectViewController.swift */,
 				9C6F9EE222987804009EC1D6 /* TestViewController.swift */,
 				9C6F9EE42298781A009EC1D6 /* SettingsViewController.swift */,
@@ -758,6 +761,7 @@
 				9C9618DD22DF7E5A00B48713 /* Test+CoreDataClass.swift in Sources */,
 				9C9618EA22DFA76A00B48713 /* CowToCowV1ToV2CustomPolicy.swift in Sources */,
 				9C1C31C122DE40410057989C /* InstructionPageViewController.swift in Sources */,
+				9C33B6C722F4E8570076F492 /* AccountInstructionViewController.swift in Sources */,
 				9CFB11D422C51D9D003E76B5 /* TestIInfoViewController.swift in Sources */,
 				9CFB11D022C51D6F003E76B5 /* CowInfoViewController.swift in Sources */,
 				9C9618E122DF7E5A00B48713 /* Cow+CoreDataClass.swift in Sources */,

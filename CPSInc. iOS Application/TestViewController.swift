@@ -71,6 +71,11 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
     private let cancelTestBtn = UIButton()
     private var testCancelled = false
     
+    
+    private var testType: Int? = nil
+    
+    private var testQueue: DispatchQueue? = nil
+    
     //Test Settings - technically dont need these we can access them straight through settingsView
 //    var testDurationSeconds: Int? = nil //how long to run the test for before taking final value
 //    var isFinalValueTest: Bool? = nil //if true - final value test, if false - continuous value test
@@ -109,6 +114,8 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         createLayoutItems()
         setLayoutConstraints()
         setButtonListeners()
+        
+        testType = menuView!.getSettingsView().getTestType() //set test type every time view will load
         
         // *** perhapse start the test here - then restart it after pressing resetBtn and stopping it - this might fix the issue with the values not being ready in time. Try this when you have the device back to check ***
         
@@ -519,7 +526,6 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         testToSave.units = "mmol/L"
         
         testToSave.cow = menuView?.getHerdLogbookView().getCowLogbookView().getTestLogbookView().getSelectedCow()
-        
         appDelegate?.saveContext() //save w core data
         
         showToast(controller: self, message: "Test Result Has Been Saved", seconds: 1)
@@ -579,8 +585,8 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         actualTestTypeLabel.isHidden = false
         
         //resets voltage values to nil so that the start of the next test is not affected by the previous test
-        integratedVoltageValue = nil
-        differentialVoltageValue = nil
+//        integratedVoltageValue = nil
+//        differentialVoltageValue = nil
         
     }
     
@@ -728,13 +734,13 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
             incubationTimeLabel.isHidden = true
             incubationLabel.isHidden = true
             cancelTestBtn.isHidden = true
-            cancelTestBtn.isEnabled = true
+            cancelTestBtn.isEnabled = false
             
             if(menuView!.getSettingsView().getFinalContinuous() == true){
-                runFinalValueTest()
+                self.runFinalValueTest()
             }
             else{
-                runContinuousTest()
+                self.runContinuousTest()
             }
         }
        
@@ -750,149 +756,207 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
     private func runFinalValueTest(){
         //run final value test
         
-        if(wcSession!.isReachable){
-            do{
-                try wcSession?.updateApplicationContext(["BeganRunningTest":"FinalValue"])
-            }catch{
-                print("error while updating application context")
-            }
-        }
-        
-        let startTestString = "01"
-        let stopTestString = "00"
-        
-        let startTestData = Data(hexString: startTestString)
-        let stopTestData = Data(hexString: stopTestString)
-        
-        self.peripheralDevice?.writeValue(stopTestData!, for: self.startTestCharacteristic!, type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
-        peripheralDevice?.writeValue(startTestData!, for: startTestCharacteristic!, type: .withResponse) //start test
-        
-        //not sure why i need to do this here - look into this
-        //testProgressView
-        testProgressView.trackTintColor = .white
-        testProgressView.tintColor = .black
-        view.addSubview(testProgressView)
-        testProgressView.isHidden = true
-        //testProgressView
-        testProgressView.translatesAutoresizingMaskIntoConstraints = false
-        testProgressView.setProgress(1, animated: true)
-        testProgressView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        testProgressView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
-        testProgressView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.5)).isActive = true
-        testProgressView.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.02)).isActive = true
-        //testProgressView.isHidden = true
-        testProgressView.isHidden = false
-        
-        testProgressView.setProgress(0, animated: true)
-        
-        
-        pauseUntilNotNil() //pause until not nil - device starts reading
-        
-        
-        if(menuView?.getSettingsView().getTestType() == 0){
-            pauseUntilNonZero()
-        }
-        
-        
-        //not sure if this is the best method to delay - look into this
-        let currentTime = DispatchTime.now()
-        
-        DispatchQueue.main.asyncAfter(deadline: currentTime + .seconds(menuView!.getSettingsView().getTestDuration() * 1/4)){
-            self.testProgressView.setProgress(0.25, animated: true)
-        }
-        DispatchQueue.main.asyncAfter(deadline: currentTime + .seconds(menuView!.getSettingsView().getTestDuration() * 1/2 )){
-            self.testProgressView.setProgress(0.5, animated: true)
-        }
-        DispatchQueue.main.asyncAfter(deadline: currentTime + .seconds(menuView!.getSettingsView().getTestDuration() * 3/4)){
-            self.testProgressView.setProgress(0.75, animated: true)
-        }
-        DispatchQueue.main.asyncAfter(deadline: currentTime + .seconds(menuView!.getSettingsView().getTestDuration())){
-            self.testProgressView.setProgress(1, animated: true)
+ 
             
-            self.testProgressView.isHidden = true
+        DispatchQueue.main.async {
             
-            
-            var glucoseResult: Float?
-            
-            //display integratedVoltageValue before stopping the test, or else integratedVoltageValue will be reset to 0 before being displayed when the capacitor is discharged upon stopping the test
-            if(self.integratedVoltageValue == nil){
-                glucoseResult = nil
-            }
-            else if(self.integratedVoltageValue! != 0){
-                let testType = self.menuView?.getSettingsView().getTestType()
-                
-                switch testType{
-                case 0: //Immunoglobulins
-                    glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109
-                    
-                case 1: //Lactoferrin
-                    glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109
-                    
-                case 2: //Blood Calcium
-                    glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109
-                    
-                case 3: //Generic Glucose
-                    glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109
-                    
-                default:
-                    glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109
+        
+                if(self.wcSession!.isReachable){
+                    do{
+                        try self.wcSession?.updateApplicationContext(["BeganRunningTest":"FinalValue"])
+                    }catch{
+                        print("error while updating application context")
+                    }
                 }
+        
+                let startTestString = "01"
+                let stopTestString = "00"
+        
+                let startTestData = Data(hexString: startTestString)
+                let stopTestData = Data(hexString: stopTestString)
+        
+                self.peripheralDevice?.writeValue(stopTestData!, for: self.startTestCharacteristic!, type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
+                self.peripheralDevice?.writeValue(startTestData!, for: self.startTestCharacteristic!, type: .withResponse) //start test
+        
+                //not sure why i need to do this here - look into this
+                //testProgressView
+                self.testProgressView.trackTintColor = .white
+                self.testProgressView.tintColor = .black
+                self.view.addSubview(self.testProgressView)
+                self.testProgressView.isHidden = true
+                //testProgressView
+                self.testProgressView.translatesAutoresizingMaskIntoConstraints = false
+                self.testProgressView.setProgress(1, animated: true)
+                self.testProgressView.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+                self.testProgressView.centerYAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerYAnchor).isActive = true
+                self.testProgressView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.5)).isActive = true
+                self.testProgressView.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.02)).isActive = true
+                //testProgressView.isHidden = true
+                self.testProgressView.isHidden = false
+        
+                self.testProgressView.setProgress(0, animated: true)
+                
+            
+
+            var timeElapsed: Int? = nil
+            
+            self.testQueue = DispatchQueue(label: "Test Queue", attributes: .concurrent)
+            
+            let group = DispatchGroup()
+            group.enter()
+            
+            self.testQueue!.async {
+                self.pauseUntilNotNil()
+
+                if(self.testType == 0){ //this line is accessing the pickerview in settings so it has to be called on the main thread
+                    timeElapsed = self.pauseUntilNonZero()
+                }
+                
+                print("elapsed time : " + String(timeElapsed!))
+                group.leave()
             }
-            else{
-                glucoseResult = 0.00 //change this to 0.00 after the demo
-            }
+           
+            group.wait()
+            
+            self.testQueue = nil
+            
+            print("PRINT AFTER 10 SECONDS !!!!!!!!!!") //this is just a check to see if it paused syncronously
+        
+                
+                var zeroAfterTen: Bool? = nil
+                
+                if(self.integratedVoltageValue! > 0){ //find whether integratedVoltageValue is 0 after 10 seconds
+                    zeroAfterTen = false
+                }
+                else{
+                    zeroAfterTen = true
+                }
+        
+                //not sure if this is the best method to delay - look into this
+                let currentTime = DispatchTime.now()
+        
+                DispatchQueue.main.asyncAfter(deadline: currentTime + .seconds(self.menuView!.getSettingsView().getTestDuration() * 1/4)){
+                        self.testProgressView.setProgress(0.25, animated: true)
+                }
+                DispatchQueue.main.asyncAfter(deadline: currentTime + .seconds(self.menuView!.getSettingsView().getTestDuration() * 1/2 )){
+                    self.testProgressView.setProgress(0.5, animated: true)
+                }
+                DispatchQueue.main.asyncAfter(deadline: currentTime + .seconds(self.menuView!.getSettingsView().getTestDuration() * 3/4)){
+                    self.testProgressView.setProgress(0.75, animated: true)
+                }
+                DispatchQueue.main.asyncAfter(deadline: currentTime + .seconds(self.menuView!.getSettingsView().getTestDuration())){
+                    self.testProgressView.setProgress(1, animated: true)
+            
+                    self.testProgressView.isHidden = true
+            
+            
+                    var glucoseResult: Float?
+            
+                    //display integratedVoltageValue before stopping the test, or else integratedVoltageValue will be reset to 0 before being displayed when the capacitor is discharged upon stopping the test
+//                    if(self.integratedVoltageValue == nil){ //will never happen now since it waits until integratedVoltageValue is not 0 to start the test
+//                        glucoseResult = nil
+//                    }
+                    if(self.integratedVoltageValue! != 0){
+                        let testType = self.menuView?.getSettingsView().getTestType()
+                
+                        switch testType{
+                        case 0: //Immunoglobulins
+                            glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109
+                    
+                        case 1: //Lactoferrin
+                            glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109
+                    
+                        case 2: //Blood Calcium
+                          glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109
+                    
+                        case 3: //Generic Glucose
+                            glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109
+                    
+                        default:
+                            glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109
+                        }
+                    }
+                    else if(self.integratedVoltageValue! == 0 && zeroAfterTen == true){ //if it was zero for the entire length of the test - proper 0 result
+                        glucoseResult = 0.00 //change this to 0.00 after the demo
+                    }
+                    else{ //if it was 0 after 10s but not zero after 20 - too late to push in strip - give error message
+                        glucoseResult = nil
+                    }
             
             
             if(glucoseResult != nil){
-                //not sure why this needs to be done here - look into this
-                self.testResultProgressBar.trackTintColor = .white
-                //self.testResultProgressBar.tintColor = .red //will be set based on test results
-                self.view.addSubview(self.testResultProgressBar)
-                self.testResultProgressBar.isHidden = true
-                
-                self.testResultProgressBar.translatesAutoresizingMaskIntoConstraints = false
-                //testResultProgressBar.center = view.center
-                self.testProgressView.setProgress(1, animated: true)
-                self.testResultProgressBar.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-                self.testResultProgressBar.topAnchor.constraint(equalTo: self.testResultLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-                self.testResultProgressBar.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.75)).isActive = true
-                self.testResultProgressBar.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.03)).isActive = true
+                    //not sure why this needs to be done here - look into this
+                    self.testResultProgressBar.trackTintColor = .white
+                    //self.testResultProgressBar.tintColor = .red //will be set based on test results
+                    self.view.addSubview(self.testResultProgressBar)
+                    self.testResultProgressBar.isHidden = true
+                    
+                    self.testResultProgressBar.translatesAutoresizingMaskIntoConstraints = false
+                    //testResultProgressBar.center = view.center
+                    self.testProgressView.setProgress(1, animated: true)
+                    self.testResultProgressBar.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+                    self.testResultProgressBar.topAnchor.constraint(equalTo: self.testResultLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+                    self.testResultProgressBar.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.75)).isActive = true
+                    self.testResultProgressBar.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.03)).isActive = true
+
                 
                 if(glucoseResult! < Float(3.0)){
-                    self.testResultLabel.textColor = .red
-                    self.testResultProgressBar.tintColor = .red
+                    
+                        self.testResultLabel.textColor = .red
+                        self.testResultProgressBar.tintColor = .red
+                    
                 }
                 else if(glucoseResult! >= Float(3.0) && glucoseResult! < Float(4.0)){
-                    self.testResultLabel.textColor = .yellow
-                    self.testResultProgressBar.tintColor = .yellow
+                    
+                        self.testResultLabel.textColor = .yellow
+                        self.testResultProgressBar.tintColor = .yellow
+                    
                 }
                 else if(glucoseResult! >= Float(4.0) && glucoseResult! < Float(8.0)){
-                    self.testResultLabel.textColor = .green
-                    self.testResultProgressBar.tintColor = .green
+                    
+                        self.testResultLabel.textColor = .green
+                        self.testResultProgressBar.tintColor = .green
+                    
                 }
                 else if(glucoseResult! >= Float(8.0) && glucoseResult! < Float(12.0)){
-                    self.testResultLabel.textColor = .yellow
-                    self.testResultProgressBar.tintColor = .yellow
+                    
+                        self.testResultLabel.textColor = .yellow
+                        self.testResultProgressBar.tintColor = .yellow
+                    
                 }
                 else{
-                    self.testResultLabel.textColor = .red
-                    self.testResultProgressBar.tintColor = .red
+                  
+                        self.testResultLabel.textColor = .red
+                        self.testResultProgressBar.tintColor = .red
+                    
                 }
                 
-                self.testResultLabel.text = String(format: "%.2f", glucoseResult!) + " mmol/L"
-                self.testResultLabel.isHidden = false
                 
-                self.testResultProgressBar.isHidden = false
-                self.testResultProgressBar.setProgress(Float(glucoseResult! / Float(30)), animated: true)
+                    if(glucoseResult! == 0.0 && self.testType == 0){ //glucoseResult == 0 and immunoglobulins test
+                        self.testResultLabel.text = String(format: "%.2f", glucoseResult!) + "-20.00 mg/mL"
+                    }
+                    else if(self.testType == 0){ //immunoglobulins test (changes units)
+                        self.testResultLabel.text = String(format: "%.2f", glucoseResult!) + "mg/mL"
+                    }
+                    else{
+                        self.testResultLabel.text = String(format: "%.2f", glucoseResult!) + "mmol/L"
+                    }
+                    self.testResultLabel.isHidden = false
+                    
+                    self.testResultProgressBar.isHidden = false
+                    self.testResultProgressBar.setProgress(Float(glucoseResult! / Float(30)), animated: true)
+                    
+                    self.testResultToSave = glucoseResult
+                    
+                    self.saveTestBtn.isEnabled = true
+                    self.saveTestBtn.isHidden = false
                 
-                self.testResultToSave = glucoseResult
-                
-                self.saveTestBtn.isEnabled = true
-                self.saveTestBtn.isHidden = false
                 
             }
             else{ //if glucoseResult == nil
-                self.showToast(controller: self, message: "Error Occured While Testing", seconds: 1)
+                
+                    self.showToast(controller: self, message: "Error Occured While Testing. Strip May Have Been Entered Too Late After Timer Finished.", seconds: 1)
+                
             }
             
             //self.peripheralDevice?.writeValue(stopTestData!, for: self.startTestCharacteristic!, type: .withResponse) //discharge capacitor - probably better to discharge after pressing resetTestButton
@@ -905,8 +969,10 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
                 }
             }
             
-            self.resetTestBtn.isEnabled = true
-            self.resetTestBtn.isHidden = false
+          
+                self.resetTestBtn.isEnabled = true
+                self.resetTestBtn.isHidden = false
+            
             
             //send notification if app is in background
             self.appDelegate!.getNotificationCenter().getNotificationSettings { (settings) in
@@ -931,31 +997,44 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
             }
         }
         
+        }
+        
+        
+        
     }
     
     
     
     
     private func pauseUntilNotNil(){
-        while(true){
-            if(integratedVoltageValue != nil){
-                break
-            }
-            return
+        while(integratedVoltageValue == nil){
+            //do nothing
         }
+        
+        return
     }
     
     
     
     
-    private func pauseUntilNonZero(){
-        while(true){
-            print("pausing until non-zero")
-            if(integratedVoltageValue != 0){
+    private func pauseUntilNonZero() -> Int{
+        let startingTime = DispatchTime.now()
+        var endingTime = DispatchTime.now()
+        
+
+        while(Int((endingTime.uptimeNanoseconds - startingTime.uptimeNanoseconds) / 1000000000) <= 10){
+            print(Int((endingTime.uptimeNanoseconds - startingTime.uptimeNanoseconds) / 1000000000))
+            //print("integrating voltage: " + String(self.integratedVoltageValue!))
+            if(self.integratedVoltageValue != 0){
                 break //break out of the loop once the integrated voltage value is not equal to 0
             }
+            endingTime = DispatchTime.now()
+                
         }
-        return
+        
+        
+        return Int((endingTime.uptimeNanoseconds - startingTime.uptimeNanoseconds) / 1000000000) //returns difference in time in seconds
+        
     }
     
     
@@ -999,9 +1078,10 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         
         testProgressView.setProgress(0, animated: true)
         
-        
-        pauseUntilNotNil() //pause until not nil - device starts reading
-        
+        DispatchQueue.main.async {
+            self.pauseUntilNotNil()
+        }
+       
         
         //print(integratedVoltageValue)
         
@@ -1411,6 +1491,8 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
 //            wcSession!.sendMessage(["TestDurationLabel":testDurationLabel.text], replyHandler: nil, errorHandler: nil)
 //        }
         
+        
+        testType = menuView!.getSettingsView().getTestType() //set test type every time view will load
         
     }
     

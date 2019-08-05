@@ -16,7 +16,8 @@ class InstructionPageViewController: UIPageViewController, UIPageViewControllerD
             UIStoryboard(name: "InstructionsStoryboard", bundle: nil).instantiateViewController(withIdentifier: "FindDeviceInstructionViewController") as! FindDeviceInstructionViewController,
             UIStoryboard(name: "InstructionsStoryboard", bundle: nil).instantiateViewController(withIdentifier: "RunTestInstructionViewController") as! RunTestInstructionViewController,
             UIStoryboard(name: "InstructionsStoryboard", bundle: nil).instantiateViewController(withIdentifier: "LogbookInstructionViewController") as! LogbookInstructionViewController,
-            UIStoryboard(name: "InstructionsStoryboard", bundle: nil).instantiateViewController(withIdentifier: "SettingsInstructionViewController") as! SettingsInstructionViewController
+            UIStoryboard(name: "InstructionsStoryboard", bundle: nil).instantiateViewController(withIdentifier: "SettingsInstructionViewController") as! SettingsInstructionViewController,
+            UIStoryboard(name: "InstructionsStoryboard", bundle: nil).instantiateViewController(withIdentifier: "AccountInstructionViewController") as! AccountInstructionViewController
         ]
     }()
     
