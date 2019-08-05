@@ -861,7 +861,7 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
                 
                         switch testType{
                         case 0: //Immunoglobulins
-                            glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109
+                            glucoseResult = Float(Float(self.integratedVoltageValue!) * 2.3345) - 46.107
                     
                         case 1: //Lactoferrin
                             glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109
