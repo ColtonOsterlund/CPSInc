@@ -183,6 +183,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         )
         
         
+        if(Reachability.isConnectedToNetwork() == false){
+            self.showToast(controller: self, message: "No Internet Connection", seconds: 1)
+            return
+        }
+        
+        
         if(emailTextField.text == "" || passwordTextField.text == ""){
             self.showToast(controller: self, message: "Please Enter Email & Password", seconds: 1)
             return
@@ -273,6 +279,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc private func registerBtnPressed(){
+        if(Reachability.isConnectedToNetwork() == false){
+            self.showToast(controller: self, message: "No Internet Connection", seconds: 1)
+            return
+        }
+        
         navigationController?.pushViewController(registerView!, animated: true)
     }
     

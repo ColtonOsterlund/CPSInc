@@ -38,6 +38,7 @@
 		9C6F9EE322987804009EC1D6 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6F9EE222987804009EC1D6 /* TestViewController.swift */; };
 		9C6F9EE52298781A009EC1D6 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6F9EE42298781A009EC1D6 /* SettingsViewController.swift */; };
 		9C6F9EE722988B0C009EC1D6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C6F9EE622988B0C009EC1D6 /* LaunchScreen.storyboard */; };
+		9C92F36522FB257900047FA2 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C92F36422FB257900047FA2 /* Reachability.swift */; };
 		9C9618D522DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618D322DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodeld */; };
 		9C9618DD22DF7E5A00B48713 /* Test+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618D722DF7E5A00B48713 /* Test+CoreDataClass.swift */; };
 		9C9618DE22DF7E5A00B48713 /* Test+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618D822DF7E5A00B48713 /* Test+CoreDataProperties.swift */; };
@@ -181,6 +182,7 @@
 		9C6F9EE222987804009EC1D6 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		9C6F9EE42298781A009EC1D6 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		9C6F9EE622988B0C009EC1D6 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		9C92F36422FB257900047FA2 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		9C9618D422DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CPSInc__iOS_Application.xcdatamodel; sourceTree = "<group>"; };
 		9C9618D622DF7A6E00B48713 /* CPSInc__iOS_Application 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "CPSInc__iOS_Application 2.xcdatamodel"; sourceTree = "<group>"; };
 		9C9618D722DF7E5A00B48713 /* Test+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -377,6 +379,7 @@
 				9C9618DA22DF7E5A00B48713 /* Herd+CoreDataProperties.swift */,
 				9C9618DB22DF7E5A00B48713 /* Cow+CoreDataClass.swift */,
 				9C9618DC22DF7E5A00B48713 /* Cow+CoreDataProperties.swift */,
+				9C92F36422FB257900047FA2 /* Reachability.swift */,
 				9C6F9EA322985F35009EC1D6 /* AppDelegate.swift */,
 				9C1C31B622D8E1A30057989C /* EncryptedValueTransformer.swift */,
 				9C9618D322DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodeld */,
@@ -770,6 +773,7 @@
 				9C9618DE22DF7E5A00B48713 /* Test+CoreDataProperties.swift in Sources */,
 				9C1C31B322D53E580057989C /* TestChartViewController.swift in Sources */,
 				9C9618E422DF8F8600B48713 /* mappingModelV1toV2.xcmappingmodel in Sources */,
+				9C92F36522FB257900047FA2 /* Reachability.swift in Sources */,
 				9C9C949522EF76E8003E5454 /* LoginViewController.swift in Sources */,
 				9C1C31C322DE4BC20057989C /* FindDeviceInstructionViewController.swift in Sources */,
 				9C6F9EE322987804009EC1D6 /* TestViewController.swift in Sources */,

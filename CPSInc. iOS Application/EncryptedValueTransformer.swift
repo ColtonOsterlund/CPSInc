@@ -12,7 +12,7 @@ import RNCryptor
 
 @objc(EncryptedValueTransformer) //either need this or to reference the project module with dot notaiton when specifying the value transformer for the Transformable attributes in the data model
 public class EncryptedValueTransformer : ValueTransformer {
-    let password = "S@ndeepHere123"
+    var password: String = "Needs to be Changed"
 
     override public func transformedValue(_ value: Any?) -> Any? {
         guard let passedValue = value else {
@@ -37,5 +37,11 @@ public class EncryptedValueTransformer : ValueTransformer {
             print(error)
             return nil
         }
+    }
+    
+    
+    //getters/setters
+    public func setPassword(newPassword: String){
+        self.password = newPassword
     }
 }

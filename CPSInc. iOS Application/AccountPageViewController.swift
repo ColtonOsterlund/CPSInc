@@ -188,13 +188,21 @@ class AccountPageViewController: UIViewController {
     
     @objc private func logoutBtnPressed(){
         
+        if(Reachability.isConnectedToNetwork() == false){
+            self.showToast(controller: self, message: "No Internet Connection", seconds: 1)
+            return
+        }
+        
         DispatchQueue.main.async {
             self.scanningIndicator.startAnimating()
         }
         
-        //need to send request to blacklist JWT token
         
-        //print("logout btn pressed")
+        
+        //NEED TO SEND REQUEST TO BLACKLIST JWT TOKEN
+        
+        
+        
         let removeJWTSuccessfull = KeychainWrapper.standard.removeObject(forKey: "JWT-Auth-Token") //remove jwt token
         
         let removeUserIDSuccessfull = KeychainWrapper.standard.removeObject(forKey: "User-ID-Token") //remove userID token
@@ -237,7 +245,12 @@ class AccountPageViewController: UIViewController {
 
     @objc private func syncCloudBtnPressed(){ //start a sync logo
         
-        let syncQueue = DispatchQueue(label: "SyncQueue", qos: .background)
+        if(Reachability.isConnectedToNetwork() == false){
+            self.showToast(controller: self, message: "No Internet Connection", seconds: 1)
+            return
+        }
+        
+        //let syncQueue = DispatchQueue(label: "SyncQueue", qos: .background)
        // syncQueue.async {
             
             //fetch all Herds
@@ -252,11 +265,11 @@ class AccountPageViewController: UIViewController {
                     
                     
                     let jsonHerdObject: [String: Any] = [
-                        "id": herdToUpload.id,
-                        "location": herdToUpload.location,
-                        "milkingSystem": herdToUpload.milkingSystem,
-                        "pin": herdToUpload.pin,
-                        "userID": KeychainWrapper.standard.string(forKey: "User-ID-Token")
+                        "id": herdToUpload.id as Any,
+                        "location": herdToUpload.location as Any,
+                        "milkingSystem": herdToUpload.milkingSystem as Any,
+                        "pin": herdToUpload.pin as Any,
+                        "userID": KeychainWrapper.standard.string(forKey: "User-ID-Token") as Any
                     ]
                     
                     var herdJsonData: Data? = nil
@@ -332,16 +345,16 @@ class AccountPageViewController: UIViewController {
                     
                     
                     let jsonCowObject: [String: Any] = [
-                        "id": cowToUpload.id,
-                        "daysInMilk": cowToUpload.daysInMilk,
-                        "dryOffDay": cowToUpload.dryOffDay,
-                        "mastitisHistory": cowToUpload.mastitisHistory,
-                        "methodOfDryOff": cowToUpload.methodOfDryOff,
-                        "name": cowToUpload.name,
-                        "parity": cowToUpload.parity,
-                        "reproductionStatus": cowToUpload.reproductionStatus,
-                        "herdID": cowToUpload.herd!.id,
-                        "userID": KeychainWrapper.standard.string(forKey: "User-ID-Token")
+                        "id": cowToUpload.id as Any,
+                        "daysInMilk": cowToUpload.daysInMilk as Any,
+                        "dryOffDay": cowToUpload.dryOffDay as Any,
+                        "mastitisHistory": cowToUpload.mastitisHistory as Any,
+                        "methodOfDryOff": cowToUpload.methodOfDryOff as Any,
+                        "name": cowToUpload.name as Any,
+                        "parity": cowToUpload.parity as Any,
+                        "reproductionStatus": cowToUpload.reproductionStatus as Any,
+                        "herdID": cowToUpload.herd!.id as Any,
+                        "userID": KeychainWrapper.standard.string(forKey: "User-ID-Token") as Any
                     ]
                     
                     var cowJsonData: Data? = nil
@@ -421,14 +434,14 @@ class AccountPageViewController: UIViewController {
             for testToUpload in savedTestArray! {
                 
                 let jsonTestObject: [String: Any] = [
-                    "date": testToUpload.date,
-                    "dataType": testToUpload.dataType,
-                    "runtime": testToUpload.runtime,
-                    "testType": testToUpload.testType,
-                    "units": testToUpload.units,
-                    "value": testToUpload.value,
-                    "cowID": testToUpload.cow!.id,
-                    "userID": KeychainWrapper.standard.string(forKey: "User-ID-Token")
+                    "date": testToUpload.date as Any,
+                    "dataType": testToUpload.dataType as Any,
+                    "runtime": testToUpload.runtime as Any,
+                    "testType": testToUpload.testType as Any,
+                    "units": testToUpload.units as Any,
+                    "value": testToUpload.value as Any,
+                    "cowID": testToUpload.cow!.id as Any,
+                    "userID": KeychainWrapper.standard.string(forKey: "User-ID-Token") as Any
                 ]
                 
                 var testJsonData: Data? = nil
@@ -518,20 +531,24 @@ class AccountPageViewController: UIViewController {
     
     public func setSyncStatus(needsSync: Bool){
         if(needsSync){
-            syncStatusLabel.text = "    Sync Required"
-            syncStatusLabel.textColor = .red
-            previousSyncDateLabel.textColor = .red
-            syncCloudBtn.isEnabled = true
-            syncCloudBtn.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1).cgColor
-            syncCloudBtn.setTitleColor(.black, for: .normal)
+            DispatchQueue.main.async {
+                self.syncStatusLabel.text = "    Sync Required"
+                self.syncStatusLabel.textColor = .red
+                self.previousSyncDateLabel.textColor = .red
+                self.syncCloudBtn.isEnabled = true
+                self.syncCloudBtn.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1).cgColor
+                self.syncCloudBtn.setTitleColor(.black, for: .normal)
+            }
         }
         else{
-            syncStatusLabel.text = "    Up to Date"
-            syncStatusLabel.textColor = .green
-            previousSyncDateLabel.textColor = .green
-            syncCloudBtn.isEnabled = false
-            syncCloudBtn.layer.borderColor = UIColor.lightGray.cgColor
-            syncCloudBtn.setTitleColor(.lightGray, for: .normal)
+            DispatchQueue.main.async {
+                self.syncStatusLabel.text = "    Up to Date"
+                self.syncStatusLabel.textColor = .green
+                self.previousSyncDateLabel.textColor = .green
+                self.syncCloudBtn.isEnabled = false
+                self.syncCloudBtn.layer.borderColor = UIColor.lightGray.cgColor
+                self.syncCloudBtn.setTitleColor(.lightGray, for: .normal)
+            }
         }
     }
     

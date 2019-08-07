@@ -557,6 +557,7 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
             
         testResultProgressBar.isHidden = true
         testResultLabel.isHidden = true
+        self.testResultLabel.font = self.testResultLabel.font.withSize(50) //adjust font size
     
         glucoseResultTable.isHidden = true
         peripheralData.removeAll()
@@ -725,18 +726,20 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         }
         
         else if(seconds == 0 && minutes == 0){
-            
-            incubationTimer?.invalidate() //stops timer from firing
-            incubationTimer = nil //resets incubation timer to nil
-            
-            seconds = Int(incubationTimeSeconds)!
-            minutes = Int(incubationTimeMinutes)!
-            incubationTimeLabel.isHidden = true
-            incubationLabel.isHidden = true
-            cancelTestBtn.isHidden = true
-            cancelTestBtn.isEnabled = false
+
+            self.incubationTimer?.invalidate() //stops timer from firing
+            self.incubationTimer = nil //resets incubation timer to nil
+                
+            seconds = Int(self.incubationTimeSeconds)!
+            minutes = Int(self.incubationTimeMinutes)!
+            self.incubationTimeLabel.isHidden = true
+            self.incubationLabel.isHidden = true
+            self.cancelTestBtn.isHidden = true
+            self.cancelTestBtn.isEnabled = false
+
             
             if(menuView!.getSettingsView().getFinalContinuous() == true){
+                print(incubationTimeLabel.isHidden)
                 self.runFinalValueTest()
             }
             else{
@@ -759,7 +762,6 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
  
             
         DispatchQueue.main.async {
-            
         
                 if(self.wcSession!.isReachable){
                     do{
@@ -778,6 +780,8 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
                 self.peripheralDevice?.writeValue(stopTestData!, for: self.startTestCharacteristic!, type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
                 self.peripheralDevice?.writeValue(startTestData!, for: self.startTestCharacteristic!, type: .withResponse) //start test
         
+                
+            
                 //not sure why i need to do this here - look into this
                 //testProgressView
                 self.testProgressView.trackTintColor = .white
@@ -793,34 +797,42 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
                 self.testProgressView.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.02)).isActive = true
                 //testProgressView.isHidden = true
                 self.testProgressView.isHidden = false
-        
+                
                 self.testProgressView.setProgress(0, animated: true)
                 
+                self.showToast(controller: self, message: "Insert Strip", seconds: 2)
             
+            
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)){ //need to wait one extra three seconds before pausing until not nil/pausing until not 0 for the ui to update and display the progress bar and for the "Insert Strip" toast to display
+                
 
             var timeElapsed: Int? = nil
             
             self.testQueue = DispatchQueue(label: "Test Queue", attributes: .concurrent)
             
-            let group = DispatchGroup()
+            let group = DispatchGroup() //allows you to pause execution until value is not nil and non-zero
             group.enter()
             
-            self.testQueue!.async {
+            self.testQueue!.sync {
                 self.pauseUntilNotNil()
 
                 if(self.testType == 0){ //this line is accessing the pickerview in settings so it has to be called on the main thread
                     timeElapsed = self.pauseUntilNonZero()
+                    
+                    print("elapsed time : " + String(timeElapsed!))
                 }
                 
-                print("elapsed time : " + String(timeElapsed!))
                 group.leave()
             }
            
-            group.wait()
+            group.wait() //this is where the execution is paused
             
             self.testQueue = nil
             
-            print("PRINT AFTER 10 SECONDS !!!!!!!!!!") //this is just a check to see if it paused syncronously
+            if(self.testType == 0){
+                print("PRINT AFTER 10 SECONDS !!!!!!!!!!") //this is just a check to see if it paused syncronously
+            }
         
                 
                 var zeroAfterTen: Bool? = nil
@@ -933,6 +945,7 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
                 
                 
                     if(glucoseResult! == 0.0 && self.testType == 0){ //glucoseResult == 0 and immunoglobulins test
+                        self.testResultLabel.font = self.testResultLabel.font.withSize(30) //adjust font size
                         self.testResultLabel.text = String(format: "%.2f", glucoseResult!) + "-20.00 mg/mL"
                     }
                     else if(self.testType == 0){ //immunoglobulins test (changes units)
@@ -999,7 +1012,7 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         
         }
         
-        
+        }
         
     }
     

@@ -512,6 +512,10 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         )
         
         //NOT GOING TO SWITCH TO THIS ON APPLE WATCH
+        if(Reachability.isConnectedToNetwork() == false){
+            self.showToast(controller: self, message: "No Internet Connection", seconds: 1)
+            return
+        }
         
         DispatchQueue.main.async {
             self.scanningIndicator.startAnimating()
@@ -664,8 +668,10 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
             accountView!.setSyncStatus(needsSync: false)
         }
         else{
-            greenCircleView.isHidden = true
-            redCircleView.isHidden = false
+            DispatchQueue.main.async {
+                self.greenCircleView.isHidden = true
+                self.redCircleView.isHidden = false
+            }
             
             accountView!.setSyncStatus(needsSync: true)
         }
