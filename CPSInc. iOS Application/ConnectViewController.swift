@@ -271,7 +271,7 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
             showToast(controller: self, message: "Disconnected", seconds: 1)
             connectedDeviceLabel.text = "Connected Device: None"
             menuView?.setPeripheralDevice(periphDevice: nil)
-            menuView?.getTestView().setPeripheralDevice(periphDevice: nil)
+            menuView?.getTestPageView().setPeripheralDevice(periphDevice: nil)
         }
         else{
             showToast(controller: self, message: "No device connected", seconds: 1)
@@ -327,6 +327,14 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
             }
         }
         
+        if(wcSession!.isReachable){
+            do{
+                try wcSession?.updateApplicationContext(["DeviceDiscovered":"Update"])
+            }catch{
+                print("error while updating application context")
+            }
+        }
+        
     }
     
     public func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
@@ -334,9 +342,8 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
         showToast(controller: self, message: "Connected", seconds: 1)
         connectedDeviceLabel.text = "Connected to: " + peripheral.name!
         menuView?.setPeripheralDevice(periphDevice: peripheral)
-       
-        menuView?.getTestView().setPeripheralDevice(periphDevice: peripheral)
-        peripheral.delegate = menuView?.getTestView()
+        menuView?.getTestPageView().setPeripheralDevice(periphDevice: peripheral)
+        peripheral.delegate = menuView?.getTestPageView()
         peripheral.discoverServices(nil)
         
         if(wcSession!.isReachable){
@@ -346,12 +353,13 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
                 print("error while updating application context")
             }
         }
+        
     }
     
     public func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         peripheralDevice = nil
         menuView?.setPeripheralDevice(periphDevice: nil)
-        menuView?.getTestView().setPeripheralDevice(periphDevice: nil)
+        menuView?.getTestPageView().setPeripheralDevice(periphDevice: nil)
         
         if(menuView?.navigationController?.visibleViewController == self){
             showToast(controller: self, message: "Device Disconnected", seconds: 1)
@@ -360,12 +368,17 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
         else if(menuView?.navigationController?.visibleViewController == menuView){
             showToast(controller: menuView!, message: "Device Disconnected", seconds: 1)
         }
-        else if(menuView?.navigationController?.visibleViewController == menuView?.getTestView()){
-            showToast(controller: (menuView?.getTestView())!, message: "Device Disconnected", seconds: 1)
-            menuView?.getTestView().getConnectedDeviceLabel().text = "Connected to: None" //if testView is visible connectedDeviceLabel will not be changed right away - manually change it
-            menuView?.getTestView().setStripDetectVoltageValue(value: nil)
-            menuView?.getTestView().setIntegratedVoltageValue(value: nil)
-            menuView?.getTestView().setDifferentialVoltageValue(value: nil)
+        else if(menuView?.navigationController?.visibleViewController == menuView?.getTestPageView()){
+            showToast(controller: (menuView?.getTestPageView())!, message: "Device Disconnected", seconds: 1)
+            
+            for view in (menuView?.getTestPageView().getTestPages())!{
+                view.getConnectedDeviceLabel().text = "Connected to: None" //if testView is visible connectedDeviceLabel will not be changed right away - manually change it
+            }
+            
+            menuView?.getTestPageView().setStripDetectVoltageValue(value: nil)
+            menuView?.getTestPageView().setIntegratedVoltageValue(value: nil)
+            menuView?.getTestPageView().setDifferentialVoltageValue(value: nil)
+
         }
         else if(menuView?.navigationController?.visibleViewController == menuView?.getSettingsView()){
             showToast(controller: (menuView?.getSettingsView())!, message: "Device Disconnected", seconds: 1)
@@ -379,10 +392,19 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
                 print("error while updating application context")
             }
         }
+        
     }
     
     private func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: NSError?) {
         showToast(controller: self, message: "Failed to Connect", seconds: 1)
+        
+        if(wcSession!.isReachable){
+            do{
+                try wcSession?.updateApplicationContext(["FailConnect":"Error"])
+            }catch{
+                print("error while updating application context")
+            }
+        }
     }
     
     private func showToast(controller: UIViewController, message: String, seconds: Double){
@@ -506,6 +528,10 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
     
     public func setCentralManager(centralManager: CBCentralManager){
         self.centralManager = centralManager
+    }
+    
+    public func getPeripheralDevice() -> CBPeripheral?{
+        return peripheralDevice
     }
     
     public func getConnectedDeviceLabel() -> UILabel{

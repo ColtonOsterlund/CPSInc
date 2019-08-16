@@ -124,7 +124,7 @@
                         </label>
                         <picker height="35" alignment="center" focusStyle="stack" id="ZCB-pd-MMT">
                             <connections>
-                                <action selector="testTypePickerChanged:" destination="oWj-9m-iM3" id="FI5-d8-OHg"/>
+                                <action selector="testTypePickerChanged:" destination="oWj-9m-iM3" id="uDP-cj-T6o"/>
                             </connections>
                         </picker>
                     </items>
@@ -140,21 +140,7 @@
         <!--LogbookInterfaceController-->
         <scene sceneID="M0p-SA-oLq">
             <objects>
-                <controller identifier="LogbookInterfaceController" id="nIG-ic-yjs" customClass="LogbookInterfaceController" customModule="CPSInc__watchOS_Application_Extension">
-                    <items>
-                        <label alignment="left" text="Herd List:" id="Ra7-Rb-2wo">
-                            <color key="textColor" red="0.0" green="0.4549631053" blue="0.78617498829999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        </label>
-                        <picker height="125" alignment="center" focusStyle="stack" id="ddz-hl-Ldl">
-                            <connections>
-                                <action selector="testTypePickerChanged:" destination="oWj-9m-iM3" id="R5D-OS-ZsH"/>
-                            </connections>
-                        </picker>
-                    </items>
-                    <connections>
-                        <outlet property="herdListPicker" destination="ddz-hl-Ldl" id="dvn-pQ-BKZ"/>
-                    </connections>
-                </controller>
+                <controller identifier="LogbookInterfaceController" id="nIG-ic-yjs" customClass="LogbookInterfaceController" customModule="CPSInc__watchOS_Application_Extension"/>
             </objects>
             <point key="canvasLocation" x="750" y="1244"/>
         </scene>
@@ -181,17 +167,10 @@
                                 <action selector="optionsPickerValueChanged:" destination="Ool-IE-k4d" id="dCC-FU-o5m"/>
                             </connections>
                         </picker>
-                        <picker height="46" alignment="center" semanticContentAttribute="forceLeftToRight" focusStyle="stack" id="2wB-I3-NbJ">
-                            <accessibilityTraits key="accessibilityTraits" staticText="YES" updatesFrequently="YES" adjustable="YES"/>
-                            <connections>
-                                <action selector="deviceNamePickerChanged:" destination="Ool-IE-k4d" id="SgN-Jl-aYx"/>
-                            </connections>
-                        </picker>
                         <table alignment="left" id="Hcv-bd-RPx"/>
                     </items>
                     <connections>
                         <outlet property="connectedDeviceLabel" destination="2Ey-G6-vkZ" id="dcJ-lr-iLq"/>
-                        <outlet property="deviceNamePicker" destination="2wB-I3-NbJ" id="6rX-Xb-URW"/>
                         <outlet property="optionsPicker" destination="kUL-63-hgV" id="ORK-YB-rOz"/>
                     </connections>
                 </controller>
@@ -220,6 +199,13 @@
                 </controller>
             </objects>
             <point key="canvasLocation" x="1125" y="554"/>
+        </scene>
+        <!--AccountInterfaceController-->
+        <scene sceneID="SjL-nb-iFB">
+            <objects>
+                <controller identifier="AccountInterfaceController" id="uY6-Rm-Xpf" customClass="AccountInterfaceController" customModule="CPSInc__watchOS_Application_Extension"/>
+            </objects>
+            <point key="canvasLocation" x="750" y="1575"/>
         </scene>
     </scenes>
 </document>

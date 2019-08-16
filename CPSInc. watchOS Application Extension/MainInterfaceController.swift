@@ -120,6 +120,17 @@ public class MainInterfaceController: WKInterfaceController, WKCrownDelegate, WC
             
             pushController(withName: "LogbookInterfaceController", context: nil)
         }
+        else if(nextUp == 5){
+            if(session!.isReachable){
+                do{
+                    try session!.updateApplicationContext(["ChangeScreens": "Account"])
+                }catch{
+                    print("Error sending application context")
+                }
+            }
+            
+            pushController(withName: "AccountInterfaceController", context: nil)
+        }
     }
     
     
@@ -165,6 +176,9 @@ public class MainInterfaceController: WKInterfaceController, WKCrownDelegate, WC
         let logbookItem = WKPickerItem()
         logbookItem.title = "Logbook"
         pickerData.append(logbookItem)
+        let accountItem = WKPickerItem()
+        accountItem.title = "Account"
+        pickerData.append(accountItem)
         
         optionsPicker.setItems(pickerData)
         optionsPicker.setSelectedItemIndex(0)

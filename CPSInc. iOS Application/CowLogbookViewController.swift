@@ -10,10 +10,11 @@ import UIKit
 import WatchConnectivity
 import CoreData
 
-public class CowLogbookViewController: UITableViewController, WCSessionDelegate {
+public class CowLogbookViewController: UITableViewController, WCSessionDelegate, UISearchResultsUpdating {
     
     private var selectedHerd: Herd? = nil
     private var cowList = [Cow]()
+    private var filteredCows = [Cow]()
     
     private var herdLogbook: HerdLogbookViewController? = nil
     private var testLogbook: TestLogbookViewController? = nil
@@ -21,7 +22,8 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate 
     private var appDelegate: AppDelegate? = nil
     private var addCowView: AddCowViewController? = nil
     
-    
+    //UISearchControllers
+    let searchController = UISearchController(searchResultsController: nil)
     
     //UIBarButtonItems
     private var addBtn = UIBarButtonItem()
@@ -66,6 +68,13 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate 
         addBtn = UIBarButtonItem.init(barButtonSystemItem: .add, target: self, action: #selector(addBtnPressed))
      
         navigationItem.rightBarButtonItems = [addBtn]
+        
+        //searchController
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search Cow by ID"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
     }
     
     
@@ -121,27 +130,47 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate 
     
     
     public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return cowList.count
+        if(isFiltering()){
+            return filteredCows.count
+        }
+        else{
+            return cowList.count
+        }
     }
+        
     
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cowTableViewCell", for: indexPath)
         //        let peripheral = peripheralDevices[indexPath.row]
         //        cell.textLabel?.text = peripheral.name
-        cell.textLabel?.text = "Cow ID: " + cowList[indexPath.row].id!
+        if(isFiltering()){
+            cell.textLabel?.text = "Cow ID: " + filteredCows[indexPath.row].id!
+        }
+        else{
+            cell.textLabel?.text = "Cow ID: " + cowList[indexPath.row].id!
+        }
         
         return cell
     }
     
     public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        var cowToUse: Cow? = nil
+        if(isFiltering()){
+            cowToUse = filteredCows[indexPath.row]
+        }
+        else{
+            cowToUse = cowList[indexPath.row]
+        }
+        
         let selectedRowAlert = UIAlertController(title: tableView.cellForRow(at: indexPath)?.textLabel?.text, message: "Please Select One of the Following", preferredStyle: .actionSheet) //actionSheet shows on the bottom of the screen while alert comes up in the middle
         
         selectedRowAlert.addAction(UIAlertAction(title: "Cow Info", style: .default, handler: { action in
-             self.cowInfoView!.setSelectedCow(cow: self.cowList[indexPath.row])
+            self.cowInfoView!.setSelectedCow(cow: cowToUse!)
             self.navigationController?.pushViewController(self.cowInfoView!, animated: true)
         }))
         selectedRowAlert.addAction(UIAlertAction(title: "Test Listing", style: .default, handler: { action in
-            self.testLogbook!.setSelectedCow(cow: self.cowList[indexPath.row])
+            self.testLogbook!.setSelectedCow(cow: cowToUse)
             self.navigationController?.pushViewController(self.testLogbook!, animated: true)
         }))
         selectedRowAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
@@ -152,7 +181,7 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate 
                 
                 //delete all Test records associated with that Cow in the database
                 let fetchTestDeletionRequest: NSFetchRequest<Test> = Test.fetchRequest()
-                fetchTestDeletionRequest.predicate = NSPredicate(format: "cow == %@", self.cowList[indexPath.row]) //get all cows associated with the herd being deleted
+                fetchTestDeletionRequest.predicate = NSPredicate(format: "cow == %@", cowToUse!) //get all cows associated with the herd being deleted
                 
                 do{
                     let fetchedTestArray = try self.appDelegate?.persistentContainer.viewContext.fetch(fetchTestDeletionRequest)
@@ -168,7 +197,7 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate 
                 
                 
                 //Delete Cow record from database
-                self.appDelegate?.persistentContainer.viewContext.delete(self.cowList[indexPath.row])
+                self.appDelegate?.persistentContainer.viewContext.delete(cowToUse!)
                 self.appDelegate?.saveContext() //save context after cow is deleted
                 self.fetchSavedData()
                 
@@ -182,6 +211,31 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate 
         
         
         self.present(selectedRowAlert, animated: true)
+    }
+    
+    
+    
+    
+    //searchController methods
+    public func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text!)
+    }
+    
+    func searchBarIsEmpty() -> Bool {
+        // Returns true if the text is empty or nil
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+        filteredCows = cowList.filter({( cow : Cow) -> Bool in
+            return cow.id!.contains(searchText)
+        })
+        
+        tableView.reloadData()
+    }
+    
+    func isFiltering() -> Bool {
+        return searchController.isActive && !searchBarIsEmpty()
     }
     
     

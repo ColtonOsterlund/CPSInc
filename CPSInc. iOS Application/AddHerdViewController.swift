@@ -41,10 +41,12 @@ class AddHerdViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        idTextView.text = ""
-        locationTextView.text = ""
-        milkingSystemTextView.text = ""
-        pinTextView.text = ""
+//        DispatchQueue.main.async {
+//            self.idTextView.text = ""
+//            self.locationTextView.text = ""
+//            self.milkingSystemTextView.text = ""
+//            self.pinTextView.text = ""
+//        }
     }
     
     private func setupLayoutComponents(){
@@ -186,7 +188,7 @@ class AddHerdViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         //saveBtn.topAnchor.constraint(equalTo: milkingSystemPicker.bottomAnchor).isActive = true
         saveBtn.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
         saveBtn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -(UIScreen.main.bounds.height * 0.05)).isActive = true
-        saveBtn.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.05)).isActive = true
+        //saveBtn.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.05)).isActive = true
         saveBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
         saveBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         
@@ -306,6 +308,14 @@ class AddHerdViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         
             appDelegate?.saveContext()
             
+        }
+        
+        
+        DispatchQueue.main.async {
+            self.idTextView.text = ""
+            self.locationTextView.text = ""
+            self.milkingSystemTextView.text = ""
+            self.pinTextView.text = ""
         }
         
         navigationController?.popViewController(animated: true)

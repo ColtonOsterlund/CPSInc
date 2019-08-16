@@ -145,14 +145,14 @@ public class FindDeviceInterfaceController: WKInterfaceController, WKCrownDelega
     }
     
     
-    public override func willDisappear() {
-        if(session!.isReachable){
-            do{ //one of the dumbest things ive ever seen for error checking, good job apple
-                try session!.updateApplicationContext(["ChangeScreens": "Main"])
-            }catch{
-                print("Error sending application context")
-            }
-        }
+    public override func willDisappear() { //cant do this here or it will go to main every time it presents an alert
+//        if(session!.isReachable){
+//            do{ //one of the dumbest things ive ever seen for error checking, good job apple
+//                try session!.updateApplicationContext(["ChangeScreens": "Main"])
+//            }catch{
+//                print("Error sending application context")
+//            }
+//        }
     }
     
     public func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
@@ -169,10 +169,51 @@ public class FindDeviceInterfaceController: WKInterfaceController, WKCrownDelega
                self.connectedDeviceLabel.setText(applicationContext["ConnectedDeviceLabelFindDevice"] as? String)
                 self.mainIC?.getRunTestIC().setConnectedDevicesLabel(label: applicationContext["ConnectedDeviceLabelFindDevice"] as? String)
                 
+                
+                if(applicationContext["ConnectedDeviceLabelFindDevice"] as? String == "None"){
+                    let action = WKAlertAction.init(title: "Dismiss", style:.default) {
+                        self.optionsPicker.setSelectedItemIndex(0)
+                        self.optionsPickerIndex = 0
+                    }
+                    
+                    self.presentAlert(withTitle: "Disconnected", message: "Disconnected from device", preferredStyle:.actionSheet, actions: [action])
+                }
+                
+                else{
+                    let action = WKAlertAction.init(title: "Dismiss", style:.default) {
+                        self.optionsPicker.setSelectedItemIndex(0)
+                        self.optionsPickerIndex = 0
+                    }
+                    
+                    self.presentAlert(withTitle: "Connected", message: "Connected to device", preferredStyle:.actionSheet, actions: [action])
+                }
                 //self.popToRootController() happens too fast here
             }
             
             //popToRootController() happens too fast here
+        }
+        
+        else if(applicationContext["DeviceDiscovered"] != nil){
+            DispatchQueue.main.async {
+                let action = WKAlertAction.init(title: "Dismiss", style:.default) {
+                    self.optionsPicker.setSelectedItemIndex(0)
+                    self.optionsPickerIndex = 0
+                }
+                
+                self.presentAlert(withTitle: "Discovered", message: "New device discovered. View list of available devices on iPhone. Either connect to first available device here or choose device to connect from iPhone", preferredStyle:.actionSheet, actions: [action])
+            }
+            
+        }
+        
+        else if(applicationContext["FailConnect"] != nil){
+            DispatchQueue.main.async {
+                let action = WKAlertAction.init(title: "Dismiss", style:.default) {
+                    self.optionsPicker.setSelectedItemIndex(0)
+                    self.optionsPickerIndex = 0
+                }
+                
+                self.presentAlert(withTitle: "Error", message: "Connected failed. Please try again", preferredStyle:.actionSheet, actions: [action])
+            }
         }
         
     }

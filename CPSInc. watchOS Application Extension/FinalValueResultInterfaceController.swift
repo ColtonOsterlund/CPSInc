@@ -104,7 +104,7 @@ public class FinalValueResultInterfaceController: WKInterfaceController, WKCrown
         optionsPickerData.append(nothingItem)
         
         let resetItem = WKPickerItem()
-        resetItem.title = "Reset"
+        resetItem.title = "Discard"
         optionsPickerData.append(resetItem)
         
         let saveItem = WKPickerItem()

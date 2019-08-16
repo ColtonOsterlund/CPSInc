@@ -19,45 +19,52 @@ public class SettingsInterfaceController: WKInterfaceController, WKCrownDelegate
     
     @IBOutlet weak var finalVsContPicker: WKInterfacePicker!
     var finalVsContPickerData = [WKPickerItem]()
+    var finalVsContPickerIndex = 0
     
     @IBOutlet weak var testDurationPicker: WKInterfacePicker!
     var testDurationPickerData = [WKPickerItem]()
+    var testDurationPickerIndex = 0
     
     @IBOutlet weak var testTypePicker: WKInterfacePicker!
     var testTypePickerData = [WKPickerItem]()
+    var testTypePickerIndex = 0
     
     
-    @IBAction func finalVsContPickerChanged(_ value: Int) {
-        if(session!.isReachable){
-            do{
-                try session?.updateApplicationContext(["FinalContSettingsUpdate":value - 1]) // -1 to take away the "Select Option" index
-            }catch{
-                print("Error while sending application context")
-            }
-        }
+    @IBAction func finalVsContPickerChanged(_ value: Int) { //wait until picker settles to send to the phone
+//        if(session!.isReachable){
+//            do{
+//                try session?.updateApplicationContext(["FinalContSettingsUpdate":value - 1]) // -1 to take away the "Select Option" index
+//            }catch{
+//                print("Error while sending application context")
+//            }
+//        }
+        
+        finalVsContPickerIndex = value
         
     }
     
-    @IBAction func testDurationPickerChanged(_ value: Int) {
-        if(session!.isReachable){
-            do{
-                try session?.updateApplicationContext(["TestDurationSettingsUpdate":value - 1]) // -1 to take away the "Select Option" index
-            }catch{
-                print("Error while sending application context")
-            }
-        }
+    @IBAction func testDurationPickerChanged(_ value: Int) { //wait until picker settles to send to the phone
+//        if(session!.isReachable){
+//            do{
+//                try session?.updateApplicationContext(["TestDurationSettingsUpdate":value - 1]) // -1 to take away the "Select Option" index
+//            }catch{
+//                print("Error while sending application context")
+//            }
+//        }
+        
+        testDurationPickerIndex = value
         
     }
     
-    @IBAction func testTypePickerChanged(_ value: Int) {
-        if(session!.isReachable){
-            do{
-                try session?.updateApplicationContext(["TestTypeSettingsUpdate":value - 1]) // -1 to take away the "Select Option" index
-            }catch{
-                print("Error while sending application context")
-            }
-        }
-        
+    @IBAction func testTypePickerChanged(_ value: Int) { //this should only send when the picker settes
+//        if(session!.isReachable){
+//            do{
+//                try session?.updateApplicationContext(["TestTypeSettingsUpdate":value - 1]) // -1 to take away the "Select Option" index
+//            }catch{
+//                print("Error while sending application context")
+//            }
+//        }
+        testTypePickerIndex = value
     }
     
     
@@ -145,14 +152,41 @@ public class SettingsInterfaceController: WKInterfaceController, WKCrownDelegate
     
     public override func pickerDidSettle(_ picker: WKInterfacePicker) {
         if(picker == finalVsContPicker){
+            
+            if(session!.isReachable){
+                do{
+                    try session?.updateApplicationContext(["FinalContSettingsUpdate":finalVsContPickerIndex - 1]) // -1 to take away the "Select Option" index
+                }catch{
+                    print("Error while sending application context")
+                }
+            }
+            
             finalVsContPicker.resignFocus()
             testDurationPicker.focus()
         }
         else if(picker == testDurationPicker){
+            
+            if(session!.isReachable){
+                do{
+                    try session?.updateApplicationContext(["TestDurationSettingsUpdate":testDurationPickerIndex - 1]) // -1 to take away the "Select Option" index
+                }catch{
+                    print("Error while sending application context")
+                }
+            }
+            
             testDurationPicker.resignFocus()
             testTypePicker.focus()
         }
         else{
+            
+            if(session!.isReachable){
+                do{
+                    try session?.updateApplicationContext(["TestTypeSettingsUpdate":testTypePickerIndex - 1]) // -1 to take away the "Select Option" index
+                }catch{
+                    print("Error while sending application context")
+                }
+            }
+            
             testTypePicker.resignFocus()
             popToRootController()
         }

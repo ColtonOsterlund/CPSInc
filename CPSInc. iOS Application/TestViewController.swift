@@ -1,4 +1,12 @@
 //
+
+
+
+//BACKUP TO HERE
+
+
+
+
 //  TestView.swift
 //  CPSInc. iOS Application
 //
@@ -11,24 +19,25 @@ import CoreBluetooth
 import Charts //using the Charts framework - done using the tutorial https://www.appcoda.com/ios-charts-api-tutorial/
 import WatchConnectivity
 import UserNotifications
+import CoreData
 
-public class TestViewController: UIViewController, CBPeripheralDelegate, UITableViewDataSource, UITableViewDelegate, WCSessionDelegate{
+public class TestViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, WCSessionDelegate{
 
     //Bluetooth Data
-    private var centralManager: CBCentralManager? = nil
-    private var peripheralDevice: CBPeripheral? = nil
-    private var stripDetectVoltageCharacteristic: CBCharacteristic? = nil
-    private var integratedVoltageCharacteristic: CBCharacteristic? = nil
-    private var differentialVoltageCharacterisitc: CBCharacteristic? = nil
-    private var startTestCharacteristic: CBCharacteristic? = nil
-    private var stripDetectVoltageValue: Int? = nil
-    private var integratedVoltageValue: Int? = nil
-    private var differentialVoltageValue: Int? = nil
+//    private var centralManager: CBCentralManager? = nil
+//    private var peripheralDevice: CBPeripheral? = nil
+//    private var stripDetectVoltageCharacteristic: CBCharacteristic? = nil
+//    private var integratedVoltageCharacteristic: CBCharacteristic? = nil
+//    private var differentialVoltageCharacterisitc: CBCharacteristic? = nil
+//    private var startTestCharacteristic: CBCharacteristic? = nil
+//    private var stripDetectVoltageValue: Int? = nil
+//    private var integratedVoltageValue: Int? = nil
+//    private var differentialVoltageValue: Int? = nil
     
     private let incubationTimeMinutes = "00"
-    private let incubationTimeSeconds = "00"
+    private let incubationTimeSeconds = "20"
     private let notificationTimeMinutes = "00"
-    private let notificationTimeSeconds = "00"
+    private let notificationTimeSeconds = "10"
     
     //UITableView
     private let glucoseResultTable = UITableView()
@@ -38,6 +47,7 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
     //View Controllers
     private var menuView: MenuViewController? = nil
     private var appDelegate: AppDelegate? = nil
+    private var testPageController: TestPageViewController? = nil
 //    private var connectView: ConnectViewController? = nil
 //    private var settingsView: SettingsViewController? = nil
     
@@ -45,6 +55,7 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
     private let startTestBtn = UIButton()
     private let resetTestBtn = UIButton()
     private let saveTestBtn = UIButton()
+    private var addTestBtn = UIButton()
     
     //UILabels
     private let connectedDeviceLabel = UILabel()
@@ -52,6 +63,7 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
     private let testTypeLabel = UILabel()
     private let actualTestTypeLabel = UILabel()
     private let testResultLabel = UILabel()
+    private let testDateLabel = UILabel()
     
     //UIProgressView
     private let testProgressView = UIProgressView(progressViewStyle: UIProgressView.Style.default)
@@ -75,6 +87,8 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
     private var testType: Int? = nil
     
     private var testQueue: DispatchQueue? = nil
+    private var alertQueue: DispatchQueue? = nil
+    private var finalValueTestQueue: DispatchQueue? = nil
     
     //Test Settings - technically dont need these we can access them straight through settingsView
 //    var testDurationSeconds: Int? = nil //how long to run the test for before taking final value
@@ -86,12 +100,20 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
     private var testResultToSave: Float? = nil
     
     
+    private var cowToSave: Cow? = nil
+    
+    private var testDate: Date? = nil 
+    
+    private var chooseCowAtBeginning: Bool? = nil
+    
+    
     // This allows you to initialise your custom UIViewController without a nib or bundle.
-    public convenience init(menuView: MenuViewController, appDelegate: AppDelegate?) {
+    public convenience init(menuView: MenuViewController, appDelegate: AppDelegate?, testPageController: TestPageViewController?) {
         self.init(nibName:nil, bundle:nil)
         
         self.menuView = menuView
         self.appDelegate = appDelegate
+        self.testPageController = testPageController
     }
     
     // This extends the superclass.
@@ -177,6 +199,7 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
 //        }
         actualTestTypeLabel.textColor = .black
         actualTestTypeLabel.textAlignment = .center
+        actualTestTypeLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
         view.addSubview(actualTestTypeLabel)
         
         
@@ -196,9 +219,18 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         view.addSubview(testResultLabel)
         testResultLabel.isHidden = true
         
+        //testDateLabel
+        testDateLabel.text = ""
+        testDateLabel.textColor = .black
+        testDateLabel.font = testDateLabel.font.withSize(30)
+        testDateLabel.textAlignment = .center
+        view.addSubview(testDateLabel)
+        testDateLabel.isHidden = true
+        
+        
         //resetTestButton
         resetTestBtn.backgroundColor = .blue
-        resetTestBtn.setTitle("Reset Test", for: .normal)
+        resetTestBtn.setTitle("Discard Test", for: .normal)
         resetTestBtn.setTitleColor(.white, for: .normal)
         resetTestBtn.layer.borderWidth = 2
         resetTestBtn.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor
@@ -254,6 +286,17 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         view.addSubview(cancelTestBtn)
         cancelTestBtn.isEnabled = false
         cancelTestBtn.isHidden = true
+        
+        
+        addTestBtn.backgroundColor = .blue
+        addTestBtn.setTitle("New Test", for: .normal)
+        addTestBtn.setTitleColor(.white, for: .normal)
+        addTestBtn.layer.borderWidth = 2
+        addTestBtn.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor
+        view.addSubview(addTestBtn)
+        addTestBtn.isEnabled = false
+        addTestBtn.isHidden = true
+        
     }
     
     private func setLayoutConstraints(){
@@ -305,6 +348,11 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         saveTestBtn.bottomAnchor.constraint(equalTo: resetTestBtn.topAnchor, constant: -(UIScreen.main.bounds.height * 0.05)).isActive = true
         saveTestBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
         
+        addTestBtn.translatesAutoresizingMaskIntoConstraints = false
+        addTestBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        addTestBtn.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: (UIScreen.main.bounds.height * 0.025)).isActive = true
+        addTestBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.6)).isActive = true
+        
         //glucoseResultTable
         glucoseResultTable.translatesAutoresizingMaskIntoConstraints = false
         glucoseResultTable.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
@@ -332,6 +380,10 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         cancelTestBtn.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
         cancelTestBtn.topAnchor.constraint(equalTo: incubationTimeLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         cancelTestBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
+        
+        testDateLabel.translatesAutoresizingMaskIntoConstraints = false
+        testDateLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        testDateLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: (UIScreen.main.bounds.height * 0.1)).isActive = true
     }
     
     private func setButtonListeners(){
@@ -339,6 +391,7 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         resetTestBtn.addTarget(self, action: #selector(resetTestBtnPressed), for: .touchUpInside)
         saveTestBtn.addTarget(self, action: #selector(saveTestBtnPressed), for: .touchUpInside)
         cancelTestBtn.addTarget(self, action: #selector(cancelTestBtnPressed), for: .touchUpInside)
+        addTestBtn.addTarget(self, action: #selector(addTestBtnPressed), for: .touchUpInside)
     }
     
     @objc private func saveTestBtnPressed(){
@@ -357,6 +410,11 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         },
                        completion: { Void in()  }
         )
+        
+        if(chooseCowAtBeginning == true){ //cow was already chosen at beginning of test
+            self.saveTestToCow()
+            return
+        }
         
         
         let selectSavingMethodAlert = UIAlertController(title: "Save Test Results", message: "Please Select Method of Saving", preferredStyle: .actionSheet) //actionSheet shows on the bottom of the screen while alert comes up in the middle
@@ -403,7 +461,7 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
             var match: Int = 0
             for herd in (self.menuView?.getHerdLogbookView().getHerdList())!{
                 if(herdID == herd.id){
-                    self.menuView?.getHerdLogbookView().getCowLogbookView().setSelectedHerd(herd: herd) //set selected herd to have access to the correct cow list
+                    self.menuView?.getHerdLogbookView().getCowLogbookView().setSelectedHerd(herd: herd) //set selected herd to have access to the correct cow list - DONT NEED TO SET HERD TO SAVE, YOU ONLY ENTER THE HERD SO THAT YOU CAN GET THE RIGHT COW. THIS CAN BE OVERWRITTEN DOESNT MATTER
                     match = 1
                 }
             }
@@ -449,7 +507,8 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
             var match: Int = 0
             for cow in (self.menuView?.getHerdLogbookView().getCowLogbookView().getCowList())!{
                 if(cowID == cow.id){
-                    self.menuView?.getHerdLogbookView().getCowLogbookView().getTestLogbookView().setSelectedCow(cow: cow)
+                    //self.menuView?.getHerdLogbookView().getCowLogbookView().getTestLogbookView().setSelectedCow(cow: cow)
+                    self.cowToSave = cow
                     match = 1
                 }
             }
@@ -462,7 +521,12 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
                 self.present(errorAlert, animated: true)
             }
             else{
-                self.saveTestToCow()
+                if(self.chooseCowAtBeginning == false){ //else: it will call saveTestToCow() itself
+                    self.saveTestToCow()
+                }
+                else{
+                    self.startTestProcess()
+                }
             }
             
         }))
@@ -497,7 +561,7 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         print("save test")
         
         let testToSave = Test(context: (appDelegate?.persistentContainer.viewContext)!)
-        testToSave.date = Date() as NSDate //gives current date
+        testToSave.date = testDate as NSDate?
         if(menuView!.getSettingsView().getFinalContinuous() == true){
             testToSave.dataType = "Final"
         }
@@ -525,7 +589,8 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         
         testToSave.units = "mmol/L"
         
-        testToSave.cow = menuView?.getHerdLogbookView().getCowLogbookView().getTestLogbookView().getSelectedCow()
+        //testToSave.cow = menuView?.getHerdLogbookView().getCowLogbookView().getTestLogbookView().getSelectedCow()
+        testToSave.cow = cowToSave
         appDelegate?.saveContext() //save w core data
         
         showToast(controller: self, message: "Test Result Has Been Saved", seconds: 1)
@@ -553,7 +618,7 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         
         let stopTestString = "00"
         let stopTestData = Data(hexString: stopTestString)
-        self.peripheralDevice?.writeValue(stopTestData!, for: self.startTestCharacteristic!, type: .withResponse) //discharge capacitor
+        self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor
             
         testResultProgressBar.isHidden = true
         testResultLabel.isHidden = true
@@ -585,13 +650,50 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         
         actualTestTypeLabel.isHidden = false
         
+        self.chooseCowAtBeginning = nil
+        
+        self.cowToSave = nil
+        
+        self.addTestBtn.isEnabled = false
+        self.addTestBtn.isHidden = true
+        
+        self.testDateLabel.text = ""
+        self.testDateLabel.isHidden = true
+        
+        if((testPageController?.getTestPages().count)! > 1){
+            var currentPageIndex = 0
+            for page in (testPageController?.getTestPages())!{
+                if(page == self){
+                    break
+                }
+                currentPageIndex += 1
+            }
+            
+            if(currentPageIndex == 0){
+                //go to the new test page
+                self.testPageController?.setViewControllers([(self.testPageController?.getTestPages()[currentPageIndex + 1])!], direction: .forward, animated: true, completion: nil)
+                self.testPageController?.pageControl.currentPage = currentPageIndex + 1
+                
+                self.testPageController!.removePage(pageIndexToRemove: currentPageIndex)
+            }
+            
+            else{
+                //go to the new test page
+                self.testPageController?.setViewControllers([(self.testPageController?.getTestPages()[currentPageIndex - 1])!], direction: .forward, animated: true, completion: nil)
+                self.testPageController?.pageControl.currentPage = currentPageIndex - 1
+                
+                self.testPageController!.removePage(pageIndexToRemove: currentPageIndex)
+            }
+            
+        }
+        
         //resets voltage values to nil so that the start of the next test is not affected by the previous test
 //        integratedVoltageValue = nil
 //        differentialVoltageValue = nil
         
     }
     
-    @objc private func startTestBtnPressed(){
+    @objc public func startTestBtnPressed(){ //set to public so that it can be started from a seperate test
         
         startTestBtn.transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
         
@@ -606,81 +708,186 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
                        completion: { Void in()  }
         )
         
-        if(peripheralDevice == nil){
+        
+        let herdFetchRequest: NSFetchRequest<Herd> = Herd.fetchRequest()
+        var savedHerdArray: [Herd]? = nil
+        do{
+            savedHerdArray = try appDelegate?.persistentContainer.viewContext.fetch(herdFetchRequest)
+            
+        } catch{
+            print("Error during fetch request")
+        }
+        
+        let cowFetchRequest: NSFetchRequest<Cow> = Cow.fetchRequest()
+        var savedCowArray: [Cow]? = nil
+        do{
+            savedCowArray = try appDelegate?.persistentContainer.viewContext.fetch(cowFetchRequest)
+            
+        } catch{
+            print("Error during fetch request")
+        }
+        
+        if(testPageController!.getPeripheralDevice() == nil){
             showToast(controller: self, message: "No device connected", seconds: 1)
+            
+            if(wcSession!.isReachable){
+                do{
+                    try wcSession?.updateApplicationContext(["NoDevice":"Error"])
+                }catch{
+                    print("error while updating application context")
+                }
+            }
+            
             return
         }
-        else if(stripDetectVoltageValue! <= 750){ //set proper value for testing, for now this works
+        else if(testPageController!.getStripDetectVoltageValue()! <= 750){ //set proper value for testing, for now this works
             showToast(controller: self, message: "Strips not detected", seconds: 1)
+            
+            if(wcSession!.isReachable){
+                do{
+                    try wcSession?.updateApplicationContext(["NoStrips":"Error"])
+                }catch{
+                    print("error while updating application context")
+                }
+            }
+            
+            return
+        }
+        else if(savedHerdArray!.isEmpty){
+            showToast(controller: self, message: "No Herd in Logbook to Save Results", seconds: 1)
+            
+            if(wcSession!.isReachable){
+                do{
+                    try wcSession?.updateApplicationContext(["NoHerd":"Error"])
+                }catch{
+                    print("error while updating application context")
+                }
+            }
+            
+            return
+        }
+        else if(savedCowArray!.isEmpty){
+            showToast(controller: self, message: "No Cow in Logbook to Save Results", seconds: 1)
+            
+            if(wcSession!.isReachable){
+                do{
+                    try wcSession?.updateApplicationContext(["NoCow":"Error"])
+                }catch{
+                    print("error while updating application context")
+                }
+            }
+            
             return
         }
         else{
-            //disable and hide startTestBtn
-            startTestBtn.isEnabled = false
-            startTestBtn.isHidden = true
+            if(chooseCowAtBeginning == nil){ //if started from apple watch, this will be pre set to false
+                let alert = UIAlertController(title: "Choose Herd/Cow", message: "Would you like to select the Herd/Cow for this test now or later?", preferredStyle: .alert)
+        
+                alert.addAction(UIAlertAction(title: "Now", style: .default, handler: { action in
+                    self.chooseCowAtBeginning = true
+                    self.selectHerdToSaveManually()
+                }))
+        
+                alert.addAction(UIAlertAction(title: "Later", style: .cancel, handler: { action in
+                    self.chooseCowAtBeginning = false
+                    self.startTestProcess()
+                }))
+        
+                self.present(alert, animated: true)
+            }
+            else{
+                self.startTestProcess()
+            }
+        }
+    }
+    
+    
+    private func startTestProcess(){
+        
+        testDate = Date()
+        let dateformatter = DateFormatter()
+        dateformatter.dateStyle = DateFormatter.Style.short
+        dateformatter.timeStyle = DateFormatter.Style.short
+        
+        testDateLabel.text = dateformatter.string(from: testDate!)
+        testDateLabel.isHidden = false
+        
+        //disable and hide startTestBtn
+        startTestBtn.isEnabled = false
+        startTestBtn.isHidden = true
+        
+        //hide connectedDeviceLabel
+        connectedDeviceLabel.isHidden = true
             
-            //hide connectedDeviceLabel
-            connectedDeviceLabel.isHidden = true
+        //hide testDurationLabel
+        testDurationLabel.isHidden = true
             
-            //hide testDurationLabel
-            testDurationLabel.isHidden = true
+        //hide testTypeLabel
+        testTypeLabel.isHidden = true
             
-            //hide testTypeLabel
-            testTypeLabel.isHidden = true
+        //hide actualTestTypeLabel
+        actualTestTypeLabel.isHidden = true
             
-            //hide actualTestTypeLabel
-            actualTestTypeLabel.isHidden = true
+        //Set test settings - technically dont need these we can access them straight through settingsView
+        //            testDurationSeconds = settingsView?.testDurationSeconds
+        //            isFinalValueTest = settingsView?.isFinalValueTest
             
-            //Set test settings - technically dont need these we can access them straight through settingsView
-//            testDurationSeconds = settingsView?.testDurationSeconds
-//            isFinalValueTest = settingsView?.isFinalValueTest
-            
-            testCancelled = false
-            
-            incubationTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: Selector(("updateIncubationTimeString")), userInfo: nil, repeats: true)
+        testCancelled = false
             
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(((Int(incubationTimeMinutes)! * 60) + Int(incubationTimeSeconds)!) - ((Int(notificationTimeMinutes)! * 60) + Int(notificationTimeSeconds)!))){
-                if(self.testCancelled == false){
-                    //send notification if app is in background
-                    self.appDelegate!.getNotificationCenter().getNotificationSettings { (settings) in
-                        if settings.authorizationStatus == .authorized {
-                            let content = UNMutableNotificationContent()
-                            content.title = "Timer Almost Done"
-                            content.body = "Your Have " + self.notificationTimeMinutes + " Minutes and " + self.notificationTimeSeconds + " Seconds Before the Incubation Timer is Done"
-                            content.sound = UNNotificationSound.default
-                            content.badge = 1
-                        
-                            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false) //set value to send notification however long before the test is over that you want to receive that notification
-                        
-                            let identifier = "Local Timer Almost Done Notification"
-                            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-                        
-                            self.appDelegate?.getNotificationCenter().add(request) { (error) in
-                                if let error = error {
-                                    print("Error \(error.localizedDescription)")
-                                }
+        incubationTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateIncubationTimeString), userInfo: nil, repeats: true)
+        
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)){
+            if((self.testPageController?.getTestPages().count)! < 10){
+                self.addTestBtn.isEnabled = true
+                self.addTestBtn.isHidden = false
+            }
+            
+            self.cancelTestBtn.isHidden = false
+            self.cancelTestBtn.isEnabled = true
+        }
+        
+            
+            
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(((Int(incubationTimeMinutes)! * 60) + Int(incubationTimeSeconds)!) - ((Int(notificationTimeMinutes)! * 60) + Int(notificationTimeSeconds)!))){
+            if(self.testCancelled == false){
+                //send notification if app is in background
+                self.appDelegate!.getNotificationCenter().getNotificationSettings { (settings) in
+                    if settings.authorizationStatus == .authorized {
+                        let content = UNMutableNotificationContent()
+                        content.title = "Timer Almost Done"
+                        content.body = "Your Have " + self.notificationTimeMinutes + " Minutes and " + self.notificationTimeSeconds + " Seconds Before the Incubation Timer is Done"
+                        content.sound = UNNotificationSound.default
+                        content.badge = 1
+                            
+                        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false) //set value to send notification however long before the test is over that you want to receive that notification
+                            
+                        let identifier = "Local Timer Almost Done Notification"
+                        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+                            
+                        self.appDelegate?.getNotificationCenter().add(request) { (error) in
+                            if let error = error {
+                                print("Error \(error.localizedDescription)")
                             }
                         }
                     }
                 }
             }
-            
-            
-            //run and display incubation timer here - send notification when there is 60 seconds left
-            incubationLabel.isHidden = false
-            incubationTimeLabel.isHidden = false
-            cancelTestBtn.isHidden = false
-            cancelTestBtn.isEnabled = true
-            
-            
-//            if(menuView!.getSettingsView().getFinalContinuous() == true){
-//                runFinalValueTest()
-//            }
-//            else{
-//                runContinuousTest()
-//            }
         }
+            
+            
+        //run and display incubation timer here - send notification when there is 60 seconds left
+        incubationLabel.isHidden = false
+        incubationTimeLabel.isHidden = false
+            
+            
+        //            if(menuView!.getSettingsView().getFinalContinuous() == true){
+        //                runFinalValueTest()
+        //            }
+        //            else{
+        //                runContinuousTest()
+        //            }
     }
     
     
@@ -703,6 +910,9 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         
         incubationTimer?.invalidate() //stops timer from firing
         incubationTimer = nil //resets incubation timer to nil
+        
+        addTestBtn.isEnabled = false
+        addTestBtn.isHidden = true
     
         incubationTimeLabel.text = incubationTimeMinutes + ":" + incubationTimeSeconds //resets incubation timer label
         incubationTimeLabel.isHidden = true
@@ -756,12 +966,32 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
     }
     
     
+    
+    
+    @objc private func addTestBtnPressed(){
+        //FILL OUT
+        
+        self.addTestBtn.isHidden = true
+        self.addTestBtn.isEnabled = false
+        
+        let newTestView = TestViewController(menuView: self.menuView!, appDelegate: self.appDelegate, testPageController: self.testPageController)
+        wcSession!.delegate = newTestView
+        newTestView.setWCSession(session: wcSession!)
+        self.testPageController?.addPage(pageToAdd: newTestView)
+        
+        //switch to added test
+        self.testPageController?.setViewControllers([(self.testPageController?.getTestPages().last)!], direction: .forward, animated: true, completion: nil)
+        self.testPageController?.pageControl.currentPage = (self.testPageController?.getTestPages().count)! - 1
+    }
+    
+    
+    
+    
     private func runFinalValueTest(){
         //run final value test
-        
- 
+        finalValueTestQueue = DispatchQueue(label: "Final Value Test Queue", attributes: .concurrent)
             
-        DispatchQueue.main.async {
+        finalValueTestQueue!.async {
         
                 if(self.wcSession!.isReachable){
                     do{
@@ -777,11 +1007,12 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
                 let startTestData = Data(hexString: startTestString)
                 let stopTestData = Data(hexString: stopTestString)
         
-                self.peripheralDevice?.writeValue(stopTestData!, for: self.startTestCharacteristic!, type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
-                self.peripheralDevice?.writeValue(startTestData!, for: self.startTestCharacteristic!, type: .withResponse) //start test
+                self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
+                self.testPageController!.getPeripheralDevice()?.writeValue(startTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
         
                 
-            
+            DispatchQueue.main.sync {
+       
                 //not sure why i need to do this here - look into this
                 //testProgressView
                 self.testProgressView.trackTintColor = .white
@@ -799,14 +1030,16 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
                 self.testProgressView.isHidden = false
                 
                 self.testProgressView.setProgress(0, animated: true)
+            
+                self.addTestBtn.isHidden = true //hide this button before the test starts - cannot press it when test is running as the ui will be paused anyways
+                self.addTestBtn.isEnabled = false
+            
+                self.showToast(controller: self, message: "Fill Strip With Sample", seconds: 2)
+           
+            }
+            
+            //DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)){ //need to wait one extra three seconds before pausing until not nil/pausing until not 0 for the ui to update and display the progress bar and for the "Insert Strip" toast to display
                 
-                self.showToast(controller: self, message: "Insert Strip", seconds: 2)
-            
-            
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)){ //need to wait one extra three seconds before pausing until not nil/pausing until not 0 for the ui to update and display the progress bar and for the "Insert Strip" toast to display
-                
-
             var timeElapsed: Int? = nil
             
             self.testQueue = DispatchQueue(label: "Test Queue", attributes: .concurrent)
@@ -824,7 +1057,8 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
                 }
                 
                 group.leave()
-            }
+            
+            //}
            
             group.wait() //this is where the execution is paused
             
@@ -837,7 +1071,7 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
                 
                 var zeroAfterTen: Bool? = nil
                 
-                if(self.integratedVoltageValue! > 0){ //find whether integratedVoltageValue is 0 after 10 seconds
+                if(self.testPageController!.getIntegratedVoltageValue()! > 0){ //find whether integratedVoltageValue is 0 after 10 seconds
                     zeroAfterTen = false
                 }
                 else{
@@ -846,20 +1080,33 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         
                 //not sure if this is the best method to delay - look into this
                 let currentTime = DispatchTime.now()
+                
+                var testDuration = 0
+                DispatchQueue.main.sync{
+                    testDuration = self.menuView!.getSettingsView().getTestDuration() //this must be done on the ui thread because it is pulling from the pickerView in settingsView
+                }
         
-                DispatchQueue.main.asyncAfter(deadline: currentTime + .seconds(self.menuView!.getSettingsView().getTestDuration() * 1/4)){
+                self.finalValueTestQueue!.asyncAfter(deadline: currentTime + .seconds(testDuration * 1/4)){
+                    DispatchQueue.main.sync {
                         self.testProgressView.setProgress(0.25, animated: true)
+                    }
                 }
-                DispatchQueue.main.asyncAfter(deadline: currentTime + .seconds(self.menuView!.getSettingsView().getTestDuration() * 1/2 )){
-                    self.testProgressView.setProgress(0.5, animated: true)
+                self.finalValueTestQueue!.asyncAfter(deadline: currentTime + .seconds(testDuration * 1/2 )){
+                    DispatchQueue.main.sync {
+                        self.testProgressView.setProgress(0.5, animated: true)
+                    }
                 }
-                DispatchQueue.main.asyncAfter(deadline: currentTime + .seconds(self.menuView!.getSettingsView().getTestDuration() * 3/4)){
-                    self.testProgressView.setProgress(0.75, animated: true)
+                self.finalValueTestQueue!.asyncAfter(deadline: currentTime + .seconds(testDuration * 3/4)){
+                    DispatchQueue.main.sync {
+                         self.testProgressView.setProgress(0.75, animated: true)
+                    }
                 }
-                DispatchQueue.main.asyncAfter(deadline: currentTime + .seconds(self.menuView!.getSettingsView().getTestDuration())){
-                    self.testProgressView.setProgress(1, animated: true)
-            
-                    self.testProgressView.isHidden = true
+                self.finalValueTestQueue!.asyncAfter(deadline: currentTime + .seconds(testDuration)){
+                    DispatchQueue.main.sync {
+                        self.testProgressView.setProgress(1, animated: true)
+                        
+                        self.testProgressView.isHidden = true
+                    }
             
             
                     var glucoseResult: Float?
@@ -868,27 +1115,27 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
 //                    if(self.integratedVoltageValue == nil){ //will never happen now since it waits until integratedVoltageValue is not 0 to start the test
 //                        glucoseResult = nil
 //                    }
-                    if(self.integratedVoltageValue! != 0){
+                    if(self.testPageController!.getIntegratedVoltageValue()! != 0){
                         let testType = self.menuView?.getSettingsView().getTestType()
                 
                         switch testType{
                         case 0: //Immunoglobulins
-                            glucoseResult = Float(Float(self.integratedVoltageValue!) * 2.3345) - 46.107
+                            glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!) * 2.3345) - 46.107
                     
                         case 1: //Lactoferrin
-                            glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109
+                            glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!)) / 33.109
                     
                         case 2: //Blood Calcium
-                          glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109
+                          glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!)) / 33.109
                     
                         case 3: //Generic Glucose
-                            glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109
+                            glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!)) / 33.109
                     
                         default:
-                            glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109
+                            glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!)) / 33.109
                         }
                     }
-                    else if(self.integratedVoltageValue! == 0 && zeroAfterTen == true){ //if it was zero for the entire length of the test - proper 0 result
+                    else if(self.testPageController!.getIntegratedVoltageValue()! == 0 && zeroAfterTen == true){ //if it was zero for the entire length of the test - proper 0 result
                         glucoseResult = 0.00 //change this to 0.00 after the demo
                     }
                     else{ //if it was 0 after 10s but not zero after 20 - too late to push in strip - give error message
@@ -897,6 +1144,14 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
             
             
             if(glucoseResult != nil){
+                
+                    //fix negative glucose results from the voltage being too low to satisfy the equation accurately (just assume 0 in this case)
+                    if(glucoseResult! < Float(0.0)){
+                        glucoseResult = 0.00
+                    }
+                
+                
+                DispatchQueue.main.sync {
                     //not sure why this needs to be done here - look into this
                     self.testResultProgressBar.trackTintColor = .white
                     //self.testResultProgressBar.tintColor = .red //will be set based on test results
@@ -910,50 +1165,62 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
                     self.testResultProgressBar.topAnchor.constraint(equalTo: self.testResultLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
                     self.testResultProgressBar.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.75)).isActive = true
                     self.testResultProgressBar.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.03)).isActive = true
+                }
 
                 
                 if(glucoseResult! < Float(3.0)){
-                    
+                    DispatchQueue.main.sync {
                         self.testResultLabel.textColor = .red
                         self.testResultProgressBar.tintColor = .red
+                    }
                     
                 }
                 else if(glucoseResult! >= Float(3.0) && glucoseResult! < Float(4.0)){
-                    
+                    DispatchQueue.main.sync {
                         self.testResultLabel.textColor = .yellow
                         self.testResultProgressBar.tintColor = .yellow
+                    }
                     
                 }
                 else if(glucoseResult! >= Float(4.0) && glucoseResult! < Float(8.0)){
-                    
+                    DispatchQueue.main.sync{
                         self.testResultLabel.textColor = .green
                         self.testResultProgressBar.tintColor = .green
+                    }
                     
                 }
                 else if(glucoseResult! >= Float(8.0) && glucoseResult! < Float(12.0)){
-                    
+                    DispatchQueue.main.sync{
                         self.testResultLabel.textColor = .yellow
                         self.testResultProgressBar.tintColor = .yellow
-                    
+                    }
                 }
                 else{
-                  
+                    DispatchQueue.main.sync {
                         self.testResultLabel.textColor = .red
                         self.testResultProgressBar.tintColor = .red
-                    
+                    }
                 }
                 
                 
                     if(glucoseResult! == 0.0 && self.testType == 0){ //glucoseResult == 0 and immunoglobulins test
+                        DispatchQueue.main.sync{
                         self.testResultLabel.font = self.testResultLabel.font.withSize(30) //adjust font size
                         self.testResultLabel.text = String(format: "%.2f", glucoseResult!) + "-20.00 mg/mL"
+                        }
                     }
                     else if(self.testType == 0){ //immunoglobulins test (changes units)
-                        self.testResultLabel.text = String(format: "%.2f", glucoseResult!) + "mg/mL"
+                        DispatchQueue.main.sync{
+                            self.testResultLabel.text = String(format: "%.2f", glucoseResult!) + "mg/mL"
+                        }
                     }
                     else{
-                        self.testResultLabel.text = String(format: "%.2f", glucoseResult!) + "mmol/L"
+                        DispatchQueue.main.sync {
+                            self.testResultLabel.text = String(format: "%.2f", glucoseResult!) + "mmol/L"
+                        }
                     }
+                
+                DispatchQueue.main.sync {
                     self.testResultLabel.isHidden = false
                     
                     self.testResultProgressBar.isHidden = false
@@ -963,13 +1230,15 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
                     
                     self.saveTestBtn.isEnabled = true
                     self.saveTestBtn.isHidden = false
-                
+                    
+                }
+        
                 
             }
             else{ //if glucoseResult == nil
-                
-                    self.showToast(controller: self, message: "Error Occured While Testing. Strip May Have Been Entered Too Late After Timer Finished.", seconds: 1)
-                
+                DispatchQueue.main.sync{
+                    self.showToast(controller: self, message: "Error Occured While Testing. Strip May Have Been Filled With Sample Too Late After Timer Finished.", seconds: 3)
+                }
             }
             
             //self.peripheralDevice?.writeValue(stopTestData!, for: self.startTestCharacteristic!, type: .withResponse) //discharge capacitor - probably better to discharge after pressing resetTestButton
@@ -982,9 +1251,10 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
                 }
             }
             
-          
-                self.resetTestBtn.isEnabled = true
-                self.resetTestBtn.isHidden = false
+                    DispatchQueue.main.sync {
+                        self.resetTestBtn.isEnabled = true
+                        self.resetTestBtn.isHidden = false
+                    }
             
             
             //send notification if app is in background
@@ -1020,7 +1290,7 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
     
     
     private func pauseUntilNotNil(){
-        while(integratedVoltageValue == nil){
+        while(self.testPageController!.getIntegratedVoltageValue() == nil){
             //do nothing
         }
         
@@ -1038,7 +1308,7 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         while(Int((endingTime.uptimeNanoseconds - startingTime.uptimeNanoseconds) / 1000000000) <= 10){
             print(Int((endingTime.uptimeNanoseconds - startingTime.uptimeNanoseconds) / 1000000000))
             //print("integrating voltage: " + String(self.integratedVoltageValue!))
-            if(self.integratedVoltageValue != 0){
+            if(self.testPageController!.getIntegratedVoltageValue() != 0){
                 break //break out of the loop once the integrated voltage value is not equal to 0
             }
             endingTime = DispatchTime.now()
@@ -1070,8 +1340,8 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         let startTestData = Data(hexString: startTestString)
         let stopTestData = Data(hexString: stopTestString)
         
-        self.peripheralDevice?.writeValue(stopTestData!, for: self.startTestCharacteristic!, type: .withResponse) //discharge capacitor in case strips were left in after previous test and charge built up
-        peripheralDevice?.writeValue(startTestData!, for: startTestCharacteristic!, type: .withResponse)
+        self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
+        self.testPageController!.getPeripheralDevice()?.writeValue(startTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
         
         //not sure why i need to do this here - look into this
         //testProgressView
@@ -1100,12 +1370,12 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         
         readNewContinuousData() //read data at 0s first
         var timer = Timer()
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: Selector(("readNewContinuousData")), userInfo: nil, repeats: true) //fires every 1 second - readNewContinuousData runs every second starting at 1s
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(readNewContinuousData), userInfo: nil, repeats: true) //fires every 1 second - readNewContinuousData runs every second starting at 1s
         
         //testing purposes
         print("\n\nstarting test")
         var testTimer = Timer()
-        testTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: Selector(("readNewVoltage")), userInfo: nil, repeats: true)
+        testTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(readNewVoltage), userInfo: nil, repeats: true)
         
         //not sure if this is the best method to delay - look into this
         let currentTime = DispatchTime.now()
@@ -1152,7 +1422,7 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
             self.lineChartView.moveViewToX(0.0) //initially display the graph starting at index of 0
             self.lineChartView.isHidden = false
             
-            self.peripheralDevice?.writeValue(stopTestData!, for: self.startTestCharacteristic!, type: .withResponse) //discharge capacitor
+            self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
             
             //sending the final value of the result set
             if(self.wcSession!.isReachable){
@@ -1201,29 +1471,29 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         
         //print(integratedVoltageValue)
         
-        if(self.integratedVoltageValue == nil){
+        if(self.testPageController!.getIntegratedVoltageValue() == nil){
             glucoseResult = nil
         }
-        else if(self.integratedVoltageValue! != 0){ //will give positive value of glucose (depends which strip is used)
+        else if(self.testPageController!.getIntegratedVoltageValue()! != 0){ //will give positive value of glucose (depends which strip is used)
             
             //print(Float(Float(self.integratedVoltageValue!) / Float(1000)))
             let testType = self.menuView?.getSettingsView().getTestType()
             
             switch testType{
                 case 0: //Immunoglobulins
-                    glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109 //this is measured/based off the integrated voltage after 10s
+                    glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!)) / 33.109 //this is measured/based off the integrated voltage after 10s
                 
                 case 1: //Lactoferrin
-                    glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109 //this is measured/based off the integrated voltage after 10s
+                    glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!)) / 33.109 //this is measured/based off the integrated voltage after 10s
                 
                 case 2: //Blood Calcium
-                    glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109 //this is measured/based off the integrated voltage after 10s
+                    glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!)) / 33.109 //this is measured/based off the integrated voltage after 10s
                 
                 case 3: //Generic Glucose
-                    glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109 //this is measured/based off the integrated voltage after 10s
+                    glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!)) / 33.109 //this is measured/based off the integrated voltage after 10s
                 
                 default:
-                    glucoseResult = Float(Float(self.integratedVoltageValue!)) / 33.109 //this is measured/based off the integrated voltage after 10s
+                    glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!)) / 33.109 //this is measured/based off the integrated voltage after 10s
             }
         
         }
@@ -1252,11 +1522,11 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
     
     //testing purposes
     @objc private func readNewVoltage(){
-        if(integratedVoltageValue == nil){
+        if(self.testPageController!.getIntegratedVoltageValue() == nil){
             print("nil")
         }
         else{
-            print(integratedVoltageValue!)
+            print(self.testPageController!.getIntegratedVoltageValue()!)
         }
     }
     
@@ -1273,149 +1543,13 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         }
     }
     
-    public func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-        
-        //print("discovering servies")
-        
-        for service in peripheral.services! {
-            
-            //print("Service found with UUID: " + service.uuid.uuidString)
-            
-            //device information service
-            if (service.uuid.uuidString == "180A") {
-                peripheral.discoverCharacteristics(nil, for: service)
-            }
-            
-            //GAP (Generic Access Profile) for Device Name
-            // This replaces the deprecated CBUUIDGenericAccessProfileString
-            if (service.uuid.uuidString == "1800") {
-                peripheral.discoverCharacteristics(nil, for: service)
-            }
-            
-            //Custom Service
-            if (service.uuid.uuidString == "FE283188-48DF-4A0C-8A52-8F05AEC9E4C1") { //this is the CBUUID for our custom GATT Votlage service
-                
-                print("discovered custom service")
-                
-                peripheral.discoverCharacteristics(nil, for: service)
-            }
-            
-            if (service.uuid.uuidString == "1D14D6EE-FD63-4FA1-BFA4-8F47B42119F0") {
-                peripheral.discoverCharacteristics(nil, for: service)
-            }
-            
-        }
-    }
-    
-    public func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-        //get device name
-        
-        //print("discovering characteristics")
-        
-        if (service.uuid.uuidString == "1800") {
-            
-            for characteristic in service.characteristics! {
-                
-                if (characteristic.uuid.uuidString == "2A00") {
-                    peripheral.readValue(for: characteristic)
-                    //print("Found Device Name Characteristic")
-                }
-                
-            }
-            
-        }
-        
-        if (service.uuid.uuidString == "180A") {
-            
-            for characteristic in service.characteristics! {
-                
-                if (characteristic.uuid.uuidString == "2A29") {
-                    peripheral.readValue(for: characteristic)
-                   // print("Found a Device Manufacturer Name Characteristic")
-                } else if (characteristic.uuid.uuidString == "2A23") {
-                    peripheral.readValue(for: characteristic)
-                    //print("Found System ID")
-                }
-                
-            }
-            
-        }
-        
-        if (service.uuid.uuidString == "FE283188-48DF-4A0C-8A52-8F05AEC9E4C1") {
-            
-            for characteristic in service.characteristics! {
-                
-                if (characteristic.uuid.uuidString == "646B19C6-F66D-4CC2-B2FE-8EFDC1E2CC1F") { //stripDetectVoltageCharacteristic
-                    //we'll save the reference, we need it to write data
-                    stripDetectVoltageCharacteristic = characteristic
-                    
-                    //Set Notify is useful to read incoming data async
-                    peripheral.setNotifyValue(true, for: characteristic)
-                    print("found strip detect voltage charac")
-                }
-                
-                if (characteristic.uuid.uuidString == "57D8F270-B6DC-4AE7-B23D-D15C36B6ED5D") { //integratedVoltageCharacteristic
-                    //we'll save the reference, we need it to write data
-                    integratedVoltageCharacteristic = characteristic
-                    
-                    //Set Notify is useful to read incoming data async
-                    peripheral.setNotifyValue(true, for: characteristic)
-                    print("found integrated voltage charac")
-                }
-                
-                if (characteristic.uuid.uuidString == "215CBB55-C71C-42A8-BB41-066696B1AFF1") { //differentialVoltageCharacteristic
-                    //we'll save the reference, we need it to write data
-                    differentialVoltageCharacterisitc = characteristic
-                    
-                    //Set Notify is useful to read incoming data async
-                    peripheral.setNotifyValue(true, for: characteristic)
-                    print("found differential voltage charac")
-                }
-                
-                if (characteristic.uuid.uuidString == "3DC78DC9-AEB6-4596-8D1B-FA76D76D5EA1") { //capacitorDischargeCharacteristic
-                    //we'll save the reference, we need it to write data
-                    startTestCharacteristic = characteristic
-                    
-                    print("found capacitor discharge charac")
-                }
-                
-            }
-            
-        }
-        
-    }
-    
-    public func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        
-        if (characteristic.uuid.uuidString == "646B19C6-F66D-4CC2-B2FE-8EFDC1E2CC1F") { //strip detect voltage
-            if(characteristic.value != nil) {
-                let stringValue = characteristic.value!.hexEncodedString()
-                stripDetectVoltageValue = Int(exactly: Int(stringValue, radix: 16)!)
-                //print(stripDetectVoltageValue!)
-            }
-        }
-        else if(characteristic.uuid.uuidString == "57D8F270-B6DC-4AE7-B23D-D15C36B6ED5D"){ //integrated voltage
-            if(characteristic.value != nil) {
-                let stringValue = characteristic.value!.hexEncodedString()
-                integratedVoltageValue = Int(exactly: Int(stringValue, radix: 16)!)
-                //print("integrated vol = " + integratedVoltageValue!)
-            }
-        }
-        else if(characteristic.uuid.uuidString == "215CBB55-C71C-42A8-BB41-066696B1AFF1"){ //differential voltage
-            if(characteristic.value != nil) {
-                let stringValue = characteristic.value!.hexEncodedString()
-                differentialVoltageValue = Int(exactly: Int(stringValue, radix: 16)!)
-                //print("differential vol = " + differentialVoltageValue!)
-            }
-        }
-    }
     
     override public func viewWillAppear(_ animated: Bool) {
-        if(peripheralDevice == nil){
+        if(self.testPageController!.getPeripheralDevice() == nil){
             connectedDeviceLabel.text = "Connected Device: None"
         }
         else{
-            connectedDeviceLabel.text = "Connected to: " + (peripheralDevice?.name)!
+            connectedDeviceLabel.text = "Connected to: " + (self.testPageController!.getPeripheralDevice()?.name)!
         }
         
         if(menuView!.getSettingsView().getFinalContinuous() == true){
@@ -1543,9 +1677,44 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         let messageRequest = message["Msg"] as? String
         
         switch(messageRequest){
-        case "RunTestPrompt":
+        case "RunTestPrompt": //NEED TO CHANGE THIS SO THAT IT OPENS A NEW TEST WINDOW AND STARTS THE NEW TEST ON THIS TEST WINDOW
             DispatchQueue.main.async {
-                self.startTestBtnPressed()
+                if(self.startTestBtn.isEnabled){
+                    self.setChooseCowAtBeginning(bool: false)
+                    self.startTestBtnPressed()
+                }
+                    
+                else if(self.addTestBtn.isEnabled){
+                    self.addTestBtnPressed() //add test page
+                    self.testPageController?.getTestPages().last!.setChooseCowAtBeginning(bool: false) //set chooseCowAtBeginning for the test page that was added
+                    self.testPageController?.getTestPages().last!.startTestBtnPressed() //start test on the new test page that was added
+                    
+                    //go to the new test page
+                    self.testPageController?.setViewControllers([(self.testPageController?.getTestPages().last)!], direction: .forward, animated: true, completion: nil)
+                    self.testPageController?.pageControl.currentPage = (self.testPageController?.getTestPages().count)! - 1
+                    
+                }
+                    
+                else if (self.resetTestBtn.isEnabled){
+                    self.addTestBtnPressed() //add test page
+                    self.testPageController?.getTestPages().last!.setChooseCowAtBeginning(bool: false) //set chooseCowAtBeginning for the test page that was added
+                    self.testPageController?.getTestPages().last!.startTestBtnPressed() //start test on the new test page that was added
+                    
+                    //go to the new test page
+                    self.testPageController?.setViewControllers([(self.testPageController?.getTestPages().last)!], direction: .forward, animated: true, completion: nil)
+                    self.testPageController?.pageControl.currentPage = (self.testPageController?.getTestPages().count)! - 1
+                    
+                }
+                    
+                else{ //some point during the test where you cannot add another test
+                    if(self.wcSession!.isReachable){
+                        do{
+                            try self.wcSession?.updateApplicationContext(["CannotStartNewTest":"Error"])
+                        }catch{
+                            print("error while updating application context")
+                        }
+                    }
+                }
             }
             
         default:
@@ -1604,41 +1773,14 @@ public class TestViewController: UIViewController, CBPeripheralDelegate, UITable
         wcSession = session
     }
     
-    public func setCentralManager(centralManager: CBCentralManager){
-        self.centralManager = centralManager
-    }
-    
-    public func setPeripheralDevice(periphDevice: CBPeripheral?){
-        self.peripheralDevice = periphDevice
-    }
-    
     public func getConnectedDeviceLabel() -> UILabel{
         return connectedDeviceLabel
     }
     
-    public func getStripDetectVoltageValue() -> Int?{
-        return stripDetectVoltageValue
+    public func setChooseCowAtBeginning(bool: Bool){
+        chooseCowAtBeginning = bool
     }
     
-    public func getIntegratedVoltageValue() -> Int?{
-        return integratedVoltageValue
-    }
-    
-    public func getDifferentialVoltageValue() -> Int?{
-        return differentialVoltageValue
-    }
-    
-    public func setStripDetectVoltageValue(value: Int?){
-        self.stripDetectVoltageValue = value
-    }
-    
-    public func setIntegratedVoltageValue(value: Int?){
-        self.integratedVoltageValue = value
-    }
-    
-    public func setDifferentialVoltageValue(value: Int?){
-        self.differentialVoltageValue = value
-    }
 
 }
 

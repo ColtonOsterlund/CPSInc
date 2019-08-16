@@ -9,8 +9,9 @@
 import UIKit
 import SwiftKeychainWrapper
 import CoreData
+import WatchConnectivity
 
-class AccountPageViewController: UIViewController {
+class AccountPageViewController: UIViewController, WCSessionDelegate {
     
     //User Defaults
     private let defaults = UserDefaults.standard
@@ -39,6 +40,9 @@ class AccountPageViewController: UIViewController {
     private let accountDetailsBtn = UIButton()
     private let syncCloudBtn = UIButton()
     private let backupCloudBtn = UIButton()
+    
+    //WCSessions
+    private var wcSession: WCSession? = nil
     
     //UIActivityIndicatorView
     private let scanningIndicator = UIActivityIndicatorView()
@@ -86,13 +90,22 @@ class AccountPageViewController: UIViewController {
         view.addSubview(syncCloudBtn)
         syncCloudBtn.addTarget(self, action: #selector(syncCloudBtnPressed), for: .touchUpInside)
         
-        backupCloudBtn.backgroundColor = .blue
+        backupCloudBtn.backgroundColor = .gray
         backupCloudBtn.setTitle("Backup", for: .normal)
-        backupCloudBtn.setTitleColor(.white, for: .normal)
-//        backupCloudBtn.layer.borderWidth = 2
-//        backupCloudBtn.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor
+        backupCloudBtn.layer.borderWidth = 2
         view.addSubview(backupCloudBtn)
         backupCloudBtn.addTarget(self, action: #selector(backupCloudBtnPressed), for: .touchUpInside)
+        
+        if(defaults.string(forKey: "PreviousSyncDateDefault") == "None"){
+            backupCloudBtn.setTitleColor(.lightGray, for: .normal)
+            backupCloudBtn.layer.borderColor = UIColor.lightGray.cgColor
+            backupCloudBtn.isEnabled = false
+        }
+        else{
+            backupCloudBtn.setTitleColor(.black, for: .normal)
+            backupCloudBtn.layer.borderColor = UIColor.black.cgColor
+            backupCloudBtn.isEnabled = true
+        }
         
         
         syncStatusTitleLabel.attributedText = NSAttributedString(string: "Sync Status: ", attributes:
@@ -165,20 +178,23 @@ class AccountPageViewController: UIViewController {
         syncStatusLabel.topAnchor.constraint(equalTo: userLogoImageView.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.02)).isActive = true
         syncStatusLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
         
-        
-        syncCloudBtn.translatesAutoresizingMaskIntoConstraints = false
-        syncCloudBtn.topAnchor.constraint(equalTo: syncStatusTitleLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.02)).isActive = true
-        syncCloudBtn.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        syncCloudBtn.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 0.2).isActive = true
-        
-        
         previousSyncLabel.translatesAutoresizingMaskIntoConstraints = false
-        previousSyncLabel.topAnchor.constraint(equalTo: syncCloudBtn.bottomAnchor, constant: UIScreen.main.bounds.height * 0.02).isActive = true
+        previousSyncLabel.topAnchor.constraint(equalTo: syncStatusLabel.bottomAnchor, constant: UIScreen.main.bounds.height * 0.02).isActive = true
         previousSyncLabel.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
         
         previousSyncDateLabel.translatesAutoresizingMaskIntoConstraints = false
-        previousSyncDateLabel.topAnchor.constraint(equalTo: syncCloudBtn.bottomAnchor, constant: UIScreen.main.bounds.height * 0.02).isActive = true
+        previousSyncDateLabel.topAnchor.constraint(equalTo: syncStatusLabel.bottomAnchor, constant: UIScreen.main.bounds.height * 0.02).isActive = true
         previousSyncDateLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        
+        syncCloudBtn.translatesAutoresizingMaskIntoConstraints = false
+        syncCloudBtn.topAnchor.constraint(equalTo: previousSyncLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.02)).isActive = true
+        syncCloudBtn.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.075)).isActive = true
+        syncCloudBtn.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 0.2).isActive = true
+        
+        backupCloudBtn.translatesAutoresizingMaskIntoConstraints = false
+        backupCloudBtn.topAnchor.constraint(equalTo: previousSyncLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.02)).isActive = true
+        backupCloudBtn.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: (UIScreen.main.bounds.width * 0.075)).isActive = true
+        backupCloudBtn.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 0.2).isActive = true
     }
     
     @objc private func backBtnPressed(){
@@ -250,6 +266,11 @@ class AccountPageViewController: UIViewController {
             return
         }
         
+        
+        
+        DispatchQueue.main.async{
+            self.scanningIndicator.startAnimating()
+        }
         //let syncQueue = DispatchQueue(label: "SyncQueue", qos: .background)
        // syncQueue.async {
             
@@ -368,7 +389,6 @@ class AccountPageViewController: UIViewController {
                     }
                     
                     
-                    
                     var request = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/cow")!)
                     request.httpMethod = "POST"
                     request.httpBody = cowJsonData
@@ -433,8 +453,23 @@ class AccountPageViewController: UIViewController {
             //upload Cows
             for testToUpload in savedTestArray! {
                 
+                print(testToUpload.date as Any)
+                print(testToUpload.dataType as Any)
+                print(testToUpload.runtime as Any)
+                print(testToUpload.testType as Any)
+                print(testToUpload.units as Any)
+                print(testToUpload.value as Any)
+                print(testToUpload.cow!.id as Any)
+                print(KeychainWrapper.standard.string(forKey: "User-ID-Token") as Any)
+                
+                
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                let dateString = formatter.string(from: testToUpload.date! as Date)
+                
+                
                 let jsonTestObject: [String: Any] = [
-                    "date": testToUpload.date as Any,
+                    "date": dateString as Any,
                     "dataType": testToUpload.dataType as Any,
                     "runtime": testToUpload.runtime as Any,
                     "testType": testToUpload.testType as Any,
@@ -443,6 +478,7 @@ class AccountPageViewController: UIViewController {
                     "cowID": testToUpload.cow!.id as Any,
                     "userID": KeychainWrapper.standard.string(forKey: "User-ID-Token") as Any
                 ]
+                
                 
                 var testJsonData: Data? = nil
                 
@@ -454,6 +490,7 @@ class AccountPageViewController: UIViewController {
                     }
                 }
                 
+                print("test json data: " + String(decoding: testJsonData!, as: UTF8.self))
                 
                 
                 var request = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/test")!)
@@ -509,17 +546,294 @@ class AccountPageViewController: UIViewController {
         //}
         
         
-        
+        //UPDATE PREVIOUS SYNC LABEL
         let formatter = DateFormatter()
         formatter.dateFormat = "MM/dd/yyyy HH:mm"
         defaults.set(formatter.string(from: Date()), forKey: "PreviousSyncDateDefault")
         previousSyncDateLabel.text = "  " + defaults.string(forKey: "PreviousSyncDateDefault")!
         appDelegate!.setSyncUpToDate(upToDate: true) //do this at the end in case the token expires during the sync and a request is rejected then it will return from this function and never update this - so it will not say that the sync has falsely been completed
         
+        
+        //ENABLE BACKUP BUTTON (THIS IS ONLY USEFUL IF ITS THE FIRST SYNC)
+        backupCloudBtn.setTitleColor(.black, for: .normal)
+        backupCloudBtn.layer.borderColor = UIColor.black.cgColor
+        backupCloudBtn.isEnabled = true
+        
+        
+        DispatchQueue.main.async{
+            self.scanningIndicator.stopAnimating()
+        }
     }
     
     @objc private func backupCloudBtnPressed(){
         //FILL OUT
+        
+        //SEND GET REQUESTS FOR HERDS, SEND GET REQUESTS FOR COWS WITH THE HERD ID AS QUERY PARAMETERS, SEND GET REUQESTS FOR TESTS WITH THE COW ID AS QUERY PARAMETERS
+        if(Reachability.isConnectedToNetwork() == false){
+            self.showToast(controller: self, message: "No Internet Connection", seconds: 1)
+            return
+        }
+        
+        
+        DispatchQueue.main.async{
+            self.scanningIndicator.startAnimating()
+        }
+        
+        
+        //DELETE ALL PREVIOUS DATA - MAYBE BETTER TO DO THIS AFTERWARDS BUT FOR NOW THIS WILL HAVE TO DO
+        let fetchHerdDeletionRequest: NSFetchRequest<Herd> = Herd.fetchRequest()
+        
+        do{
+            let fetchedHerdArray = try self.appDelegate?.persistentContainer.viewContext.fetch(fetchHerdDeletionRequest)
+            
+            for herd in fetchedHerdArray!{
+                self.appDelegate?.persistentContainer.viewContext.delete(herd)
+            }
+        }
+        catch{
+            print("Error during fetch request")
+        }
+        
+        let fetchCowDeletionRequest: NSFetchRequest<Cow> = Cow.fetchRequest()
+        
+        do{
+            let fetchedCowArray = try self.appDelegate?.persistentContainer.viewContext.fetch(fetchCowDeletionRequest)
+            
+            for cow in fetchedCowArray!{
+                self.appDelegate?.persistentContainer.viewContext.delete(cow)
+            }
+        }
+        catch{
+            print("Error during fetch request")
+        }
+        
+        let fetchTestDeletionRequest: NSFetchRequest<Test> = Test.fetchRequest()
+        
+        do{
+            let fetchedTestArray = try self.appDelegate?.persistentContainer.viewContext.fetch(fetchTestDeletionRequest)
+            
+            for test in fetchedTestArray!{
+                self.appDelegate?.persistentContainer.viewContext.delete(test)
+            }
+        }
+        catch{
+            print("Error during fetch request")
+        }
+
+        
+        
+        
+        
+        var herdRequest = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/herd?userID=" + KeychainWrapper.standard.string(forKey: "User-ID-Token")!)!)
+        herdRequest.httpMethod = "GET"
+        herdRequest.setValue("application/json", forHTTPHeaderField: "Content-type")
+        herdRequest.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
+        
+        let herdTask = URLSession.shared.dataTask(with: herdRequest) { data, response, error in
+            if(error != nil){
+                print("Error occured during /herd RESTAPI request")
+                DispatchQueue.main.async {
+                    self.showToast(controller: self, message: "Error: " + (error as! String), seconds: 1)
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)){
+                    return
+                }
+            }
+            else{
+                
+                print("Response:")
+                print(response!)
+                print("Data:")
+                print(String(decoding: data!, as: UTF8.self))
+                
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data!, options: []) as? [[String: Any]]
+                    
+                    for herd in json! {
+                        let toSave = Herd(context: (self.appDelegate?.persistentContainer.viewContext)!)
+                        toSave.id = herd["id"] as? String
+                        toSave.location = herd["location"] as? String
+                        toSave.milkingSystem = herd["milkingSystem"] as? String
+                        toSave.pin = herd["pin"] as? String
+                        
+                        print(toSave)
+                        
+                         self.appDelegate?.saveContext()
+                    }
+
+                } catch let error as NSError {
+                    print(error.localizedDescription)
+                }
+                
+            }
+            
+            
+        }
+        
+        herdTask.resume()
+        
+        
+        
+        
+        var cowRequest = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/cow?userID=" + KeychainWrapper.standard.string(forKey: "User-ID-Token")!)!)
+        cowRequest.httpMethod = "GET"
+        cowRequest.setValue("application/json", forHTTPHeaderField: "Content-type")
+        cowRequest.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
+        
+        let cowTask = URLSession.shared.dataTask(with: cowRequest) { data, response, error in
+            if(error != nil){
+                print("Error occured during /cow RESTAPI request")
+                DispatchQueue.main.async {
+                    self.showToast(controller: self, message: "Error: " + (error as! String), seconds: 1)
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)){
+                    return
+                }
+            }
+            else{
+                
+                print("Response:")
+                print(response!)
+                print("Data:")
+                print(String(decoding: data!, as: UTF8.self))
+                
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data!, options: []) as? [[String: Any]]
+                    
+                    for cow in json! {
+                        let toSave = Cow(context: (self.appDelegate?.persistentContainer.viewContext)!)
+                        toSave.id = cow["id"] as? String
+                        toSave.daysInMilk = cow["daysInMilk"] as? String
+                        toSave.dryOffDay = cow["dryOffDay"] as? String
+                        toSave.mastitisHistory = cow["mastitisHistory"] as? String
+                        toSave.methodOfDryOff = cow["methodOfDryOff"] as? String
+                        toSave.name = cow["name"] as? String
+                        toSave.parity = cow["parity"] as? String
+                        toSave.reproductionStatus = cow["reproductionStatus"] as? String
+                        
+                        let fetchHerdRequest: NSFetchRequest<Herd> = Herd.fetchRequest()
+                        fetchHerdRequest.predicate = NSPredicate(format: "id == %@", (cow["herdID"] as! String))
+
+                        do{
+                            let fetchedHerdArray = try self.appDelegate?.persistentContainer.viewContext.fetch(fetchHerdRequest)
+
+                            toSave.herd = fetchedHerdArray![0]
+                        }
+                        catch{
+                            print("Error during fetch request")
+                        }
+                        
+                        
+                        print(toSave)
+                        
+                        self.appDelegate?.saveContext()
+                    }
+                    
+                } catch let error as NSError {
+                    print(error.localizedDescription)
+                }
+                
+            }
+            
+            
+        }
+        
+        cowTask.resume()
+        
+        
+        
+        
+        
+        var testRequest = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/test?userID=" + KeychainWrapper.standard.string(forKey: "User-ID-Token")!)!)
+        testRequest.httpMethod = "GET"
+        testRequest.setValue("application/json", forHTTPHeaderField: "Content-type")
+        testRequest.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
+        
+        let testTask = URLSession.shared.dataTask(with: testRequest) { data, response, error in
+            if(error != nil){
+                print("Error occured during /test RESTAPI request")
+                DispatchQueue.main.async {
+                    self.showToast(controller: self, message: "Error: " + (error as! String), seconds: 1)
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)){
+                    return
+                }
+            }
+            else{
+                
+                print("Response:")
+                print(response!)
+                print("Data:")
+                print(String(decoding: data!, as: UTF8.self))
+                
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data!, options: []) as? [[String: Any]]
+                    
+                    for test in json! {
+                        let toSave = Test(context: (self.appDelegate?.persistentContainer.viewContext)!)
+                        
+                        let formatter = DateFormatter()
+                        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                        
+                        toSave.date = formatter.date(from: test["date"] as! String) as NSDate?
+                        toSave.dataType = test["dataType"] as? String
+                        toSave.runtime = (test["runtime"] as! NSString).intValue as NSNumber
+                        toSave.testType = test["testType"] as? String
+                        toSave.units = test["units"] as? String
+                        toSave.value = (test["value"] as! NSString).floatValue
+
+
+                        let fetchCowRequest: NSFetchRequest<Cow> = Cow.fetchRequest()
+                        fetchCowRequest.predicate = NSPredicate(format: "id == %@", (test["cowID"] as! String))
+
+                        do{
+                            let fetchedCowArray = try self.appDelegate?.persistentContainer.viewContext.fetch(fetchCowRequest)
+
+                            toSave.cow = fetchedCowArray![0]
+                        }
+                        catch{
+                            print("Error during fetch request")
+                        }
+                        
+                        
+                        print(toSave)
+                        
+                        self.appDelegate?.saveContext()
+                        
+                        
+                    }
+                    
+                } catch let error as NSError {
+                    print(error.localizedDescription)
+                }
+                
+            }
+            
+            
+        }
+        
+        testTask.resume()
+        
+        
+        
+        //UPDATE PREVIOUS SYNC LABEL
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM/dd/yyyy HH:mm"
+        defaults.set(formatter.string(from: Date()), forKey: "PreviousSyncDateDefault")
+        previousSyncDateLabel.text = "  " + defaults.string(forKey: "PreviousSyncDateDefault")!
+        appDelegate!.setSyncUpToDate(upToDate: true) //do this at the end in case the token expires during the sync and a request is rejected then it will return from this function and never update this - so it will not say that the sync has falsely been completed
+        
+        
+        //ENABLE BACKUP BUTTON (THIS IS ONLY USEFUL IF ITS THE FIRST SYNC)
+        backupCloudBtn.setTitleColor(.lightGray, for: .normal)
+        backupCloudBtn.layer.borderColor = UIColor.lightGray.cgColor
+        backupCloudBtn.isEnabled = false
+        
+        
+        DispatchQueue.main.async{
+            self.scanningIndicator.stopAnimating()
+        }
+        
     }
     
     @objc private func accountDetailsBtnPressed(){
@@ -552,6 +866,10 @@ class AccountPageViewController: UIViewController {
         }
     }
     
+    public func setWCSession(session: WCSession?){
+        self.wcSession = session
+    }
+    
     
     
     
@@ -566,5 +884,36 @@ class AccountPageViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + seconds){
             alert.dismiss(animated: true)
         }
+    }
+    
+    
+    
+    public func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
+        if(applicationContext["ChangeScreens"] != nil){
+            switch(applicationContext["ChangeScreens"] as! String){
+            case "Main":
+                DispatchQueue.main.async {
+                    self.wcSession!.delegate = self.menuView
+                    self.menuView?.setWCSession(session: self.wcSession)
+                    
+                    self.menuView?.setInQueueView(flag: 0)
+                    self.navigationController?.popToRootViewController(animated: true)
+                }
+            default:
+                print("Default case - do nothing")
+            }
+        }
+    }
+    
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+        //fill out
+    }
+    
+    func sessionDidBecomeInactive(_ session: WCSession) {
+        //fill out
+    }
+    
+    func sessionDidDeactivate(_ session: WCSession) {
+        //fill out
     }
 }

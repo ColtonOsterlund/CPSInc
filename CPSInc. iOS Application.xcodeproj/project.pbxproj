@@ -29,6 +29,7 @@
 		9C3939E322A05D2D008D066C /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3939E222A05D2D008D066C /* ComplicationController.swift */; };
 		9C3939E522A05D2E008D066C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C3939E422A05D2E008D066C /* Assets.xcassets */; };
 		9C3939EA22A05D2E008D066C /* CPSInc. watchOS Application.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 9C3939CB22A05D2B008D066C /* CPSInc. watchOS Application.app */; };
+		9C655BC6230329E50028272F /* AccountInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C655BC5230329E50028272F /* AccountInterfaceController.swift */; };
 		9C6F9EA422985F35009EC1D6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6F9EA322985F35009EC1D6 /* AppDelegate.swift */; };
 		9C6F9EAE22985F35009EC1D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C6F9EAD22985F35009EC1D6 /* Assets.xcassets */; };
 		9C6F9EBC22985F35009EC1D6 /* CPSInc__iOS_ApplicationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6F9EBB22985F35009EC1D6 /* CPSInc__iOS_ApplicationTests.swift */; };
@@ -39,6 +40,7 @@
 		9C6F9EE52298781A009EC1D6 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6F9EE42298781A009EC1D6 /* SettingsViewController.swift */; };
 		9C6F9EE722988B0C009EC1D6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C6F9EE622988B0C009EC1D6 /* LaunchScreen.storyboard */; };
 		9C92F36522FB257900047FA2 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C92F36422FB257900047FA2 /* Reachability.swift */; };
+		9C92F36722FDC44500047FA2 /* TestPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C92F36622FDC44500047FA2 /* TestPageViewController.swift */; };
 		9C9618D522DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618D322DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodeld */; };
 		9C9618DD22DF7E5A00B48713 /* Test+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618D722DF7E5A00B48713 /* Test+CoreDataClass.swift */; };
 		9C9618DE22DF7E5A00B48713 /* Test+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618D822DF7E5A00B48713 /* Test+CoreDataProperties.swift */; };
@@ -167,6 +169,7 @@
 		9C3939E422A05D2E008D066C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9C3939E622A05D2E008D066C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9C3939E722A05D2E008D066C /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		9C655BC5230329E50028272F /* AccountInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInterfaceController.swift; sourceTree = "<group>"; };
 		9C6F9EA022985F35009EC1D6 /* CPSInc. iOS Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CPSInc. iOS Application.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C6F9EA322985F35009EC1D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9C6F9EAD22985F35009EC1D6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -183,6 +186,7 @@
 		9C6F9EE42298781A009EC1D6 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		9C6F9EE622988B0C009EC1D6 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9C92F36422FB257900047FA2 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		9C92F36622FDC44500047FA2 /* TestPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPageViewController.swift; sourceTree = "<group>"; };
 		9C9618D422DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CPSInc__iOS_Application.xcdatamodel; sourceTree = "<group>"; };
 		9C9618D622DF7A6E00B48713 /* CPSInc__iOS_Application 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "CPSInc__iOS_Application 2.xcdatamodel"; sourceTree = "<group>"; };
 		9C9618D722DF7E5A00B48713 /* Test+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -297,6 +301,7 @@
 				9CEBC3BE22AB1867009CACBA /* RunTestInterfaceController.swift */,
 				9CEBC3C022AB1884009CACBA /* SettingsInterfaceController.swift */,
 				9CFB11C222C4099F003E76B5 /* LogbookInterfaceController.swift */,
+				9C655BC5230329E50028272F /* AccountInterfaceController.swift */,
 				9CEBC3C222AB1922009CACBA /* FinalValueResultInterfaceController.swift */,
 				9C3939E022A05D2D008D066C /* NotificationController.swift */,
 				9C3939E222A05D2D008D066C /* ComplicationController.swift */,
@@ -379,6 +384,7 @@
 				9C9618DA22DF7E5A00B48713 /* Herd+CoreDataProperties.swift */,
 				9C9618DB22DF7E5A00B48713 /* Cow+CoreDataClass.swift */,
 				9C9618DC22DF7E5A00B48713 /* Cow+CoreDataProperties.swift */,
+				9C92F36622FDC44500047FA2 /* TestPageViewController.swift */,
 				9C92F36422FB257900047FA2 /* Reachability.swift */,
 				9C6F9EA322985F35009EC1D6 /* AppDelegate.swift */,
 				9C1C31B622D8E1A30057989C /* EncryptedValueTransformer.swift */,
@@ -745,6 +751,7 @@
 			files = (
 				9C373EEC22AEC48700B0FC1A /* MainInterfaceController.swift in Sources */,
 				9CEBC3BF22AB1867009CACBA /* RunTestInterfaceController.swift in Sources */,
+				9C655BC6230329E50028272F /* AccountInterfaceController.swift in Sources */,
 				9CEBC3BC22AB181C009CACBA /* FindDeviceInterfaceController.swift in Sources */,
 				9C3939E122A05D2D008D066C /* NotificationController.swift in Sources */,
 				9CFB11C322C4099F003E76B5 /* LogbookInterfaceController.swift in Sources */,
@@ -770,6 +777,7 @@
 				9C9618E122DF7E5A00B48713 /* Cow+CoreDataClass.swift in Sources */,
 				9CFB11FA22C54E53003E76B5 /* AddCowViewController.swift in Sources */,
 				9C9618E022DF7E5A00B48713 /* Herd+CoreDataProperties.swift in Sources */,
+				9C92F36722FDC44500047FA2 /* TestPageViewController.swift in Sources */,
 				9C9618DE22DF7E5A00B48713 /* Test+CoreDataProperties.swift in Sources */,
 				9C1C31B322D53E580057989C /* TestChartViewController.swift in Sources */,
 				9C9618E422DF8F8600B48713 /* mappingModelV1toV2.xcmappingmodel in Sources */,
@@ -867,7 +875,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 5.2;
+				WATCHOS_DEPLOYMENT_TARGET = 5.0;
 			};
 			name = Debug;
 		};
@@ -887,7 +895,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 5.2;
+				WATCHOS_DEPLOYMENT_TARGET = 5.0;
 			};
 			name = Release;
 		};
@@ -910,7 +918,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 5.2;
+				WATCHOS_DEPLOYMENT_TARGET = 5.0;
 			};
 			name = Debug;
 		};
@@ -933,7 +941,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 5.2;
+				WATCHOS_DEPLOYMENT_TARGET = 5.0;
 			};
 			name = Release;
 		};
@@ -1062,6 +1070,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = H5K6477XCY;
 				INFOPLIST_FILE = "CPSInc. iOS Application/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1082,6 +1091,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = H5K6477XCY;
 				INFOPLIST_FILE = "CPSInc. iOS Application/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

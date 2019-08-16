@@ -12,9 +12,10 @@ import CoreData
 import SwiftyDropbox
 import UserNotifications
 
-public class HerdLogbookViewController: UITableViewController, WCSessionDelegate {
+public class HerdLogbookViewController: UITableViewController, WCSessionDelegate, UISearchResultsUpdating {
     
     private var herdList = [Herd]()
+    private var filteredHerds = [Herd]()
     
     //ViewControllers
     private var menuView: MenuViewController? = nil
@@ -22,6 +23,9 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
     private var herdInfoView: HerdInfoViewController? = nil
     private var appDelegate: AppDelegate? = nil
     private var addHerdView: AddHerdViewController? = nil
+    
+    //UISearchControllers
+    let searchController = UISearchController(searchResultsController: nil)
     
     //WCSession
     private var wcSession: WCSession? = nil
@@ -83,6 +87,13 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
         scanningIndicator.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
         scanningIndicator.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 0.12).isActive = true
         scanningIndicator.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * 0.06).isActive = true
+        
+        //searchController
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search Herd by ID"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
     }
     
     @objc private func addBtnPressed(){
@@ -107,6 +118,11 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
     }
     
     @objc private func importBtnPressed(){
+        
+        if(Reachability.isConnectedToNetwork() == false){
+            showToast(controller: self, message: "No Internet Connection", seconds: 1)
+            return
+        }
         
         //import data from excel/csv file or google sheets document
         if(dropboxClient == nil){ //authorize client
@@ -319,28 +335,47 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
     
     
     public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return herdList.count
+        if isFiltering() {
+            return filteredHerds.count
+        }
+        else{
+            return herdList.count
+        }
     }
     
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "herdTableViewCell", for: indexPath)
 //        let peripheral = peripheralDevices[indexPath.row]
 //        cell.textLabel?.text = peripheral.name
-        cell.textLabel?.text = "Herd ID: " + herdList[indexPath.row].id!
+        if(isFiltering()){
+            cell.textLabel?.text = "Herd ID: " + filteredHerds[indexPath.row].id!
+        }
+        else{
+            cell.textLabel?.text = "Herd ID: " + herdList[indexPath.row].id!
+        }
         
         return cell
     }
     
     public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        var herdToUse: Herd? = nil
+        if(isFiltering()){
+            herdToUse = filteredHerds[indexPath.row]
+        }
+        else{
+            herdToUse = herdList[indexPath.row]
+        }
+        
         let selectedRowAlert = UIAlertController(title: tableView.cellForRow(at: indexPath)?.textLabel?.text, message: "Please Select One of the Following", preferredStyle: .actionSheet) //actionSheet shows on the bottom of the screen while alert comes up in the middle
         
         selectedRowAlert.addAction(UIAlertAction(title: "Herd Info", style: .default, handler: { action in
-            self.herdInfoView?.setSelectedHerd(herd: self.herdList[indexPath.row])
+            self.herdInfoView?.setSelectedHerd(herd: herdToUse)
             self.navigationController?.pushViewController(self.herdInfoView!, animated: true)
         }))
         selectedRowAlert.addAction(UIAlertAction(title: "Cow Listing", style: .default, handler: { action in
 
-                self.cowLogbook!.setSelectedHerd(herd: self.herdList[indexPath.row])
+                self.cowLogbook!.setSelectedHerd(herd: herdToUse)
                 self.navigationController?.pushViewController(self.cowLogbook!, animated: true)
             
         }))
@@ -352,7 +387,7 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
                 
                 //delete all Cow records associated with that Herd in the database
                 let fetchCowDeletionRequest: NSFetchRequest<Cow> = Cow.fetchRequest()
-                fetchCowDeletionRequest.predicate = NSPredicate(format: "herd == %@", self.herdList[indexPath.row]) //get all cows associated with the herd being deleted
+                fetchCowDeletionRequest.predicate = NSPredicate(format: "herd == %@", herdToUse!) //get all cows associated with the herd being deleted
                 
                 do{
                     let fetchedCowArray = try self.appDelegate?.persistentContainer.viewContext.fetch(fetchCowDeletionRequest)
@@ -384,7 +419,7 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
                 
                 
                 //Delete Herd record from database
-                self.appDelegate?.persistentContainer.viewContext.delete(self.herdList[indexPath.row])
+                self.appDelegate?.persistentContainer.viewContext.delete(herdToUse!)
                 self.appDelegate?.saveContext() //save context after element is deleted
                 self.fetchSavedData()
                 
@@ -399,6 +434,43 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
         
         self.present(selectedRowAlert, animated: true)
         
+    }
+    
+    
+    private func showToast(controller: UIViewController, message: String, seconds: Double){
+        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        alert.view.backgroundColor = UIColor.black
+        alert.view.alpha = 0.6
+        alert.view.layer.cornerRadius = 15
+        
+        controller.present(alert, animated: true)
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + seconds){
+            alert.dismiss(animated: true)
+        }
+    }
+    
+    
+    //searchController methods
+    public func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text!)
+    }
+    
+    func searchBarIsEmpty() -> Bool {
+        // Returns true if the text is empty or nil
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+        filteredHerds = herdList.filter({( herd : Herd) -> Bool in
+            return herd.id!.contains(searchText)
+        })
+        
+        tableView.reloadData()
+    }
+    
+    func isFiltering() -> Bool {
+        return searchController.isActive && !searchBarIsEmpty()
     }
     
     

@@ -27,6 +27,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     private var loginView: LoginViewController? = nil
     private var accountView: AccountPageViewController? = nil
     private var appDelegate: AppDelegate? = nil
+    private var testPageController: TestPageViewController? = nil
     
     //UIButtons
     private let findDeviceBtn = UIButton()
@@ -87,13 +88,15 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         
         //think these have to be here because it said the property initialization (global vars) are initialized before this init() function so self is not ready yet at that point
         connectView = ConnectViewController(menuView: self, appDelegate: appDelegate)
-        testView = TestViewController(menuView: self, appDelegate: appDelegate)
+        testPageController = TestPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+        testView = TestViewController(menuView: self, appDelegate: appDelegate, testPageController: testPageController)
         settingsView = SettingsViewController(menuView: self, appDelegate: appDelegate)
         logbookView = HerdLogbookViewController(menuView: self, appDelegate: appDelegate)
         instructionsView = InstructionPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         accountView = AccountPageViewController(appDelegate: appDelegate, menuView: self)
         loginView = LoginViewController(appDelegate: appDelegate, accountView: accountView, menuView: self)
         self.appDelegate = appDelegate
+        testPageController?.addPage(pageToAdd: testView)
     }
     
     // This extends the superclass.
@@ -156,7 +159,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         
         
         //USE TO FIND THE FOLDER CONTAINING THE .sqlite DATABASE
-        print(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])
+        //print(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])
         
         //to print module name for heavyweight migration
         //print(NSStringFromClass(HerdToHerdV1ToV2CustomPolicy.self).components(separatedBy:".")[0])
@@ -432,10 +435,11 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
                        completion: { Void in()  }
         )
         
+        //testPageController?.addPage(pageToAdd: testView)
         
-        navigationController?.pushViewController(testView!, animated: true) //pushes testView onto the navigationController stack
+        navigationController?.pushViewController(testPageController!, animated: true) //pushes testView onto the navigationController stack
         
-        testView!.setCentralManager(centralManager: self.centralManager!)
+        testPageController!.setCentralManager(centralManager: self.centralManager!)
         //peripheralDevice!.delegate = testView
         //testView.menuView = self
         //testView.connectView = self.connectView
@@ -513,7 +517,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         
         //NOT GOING TO SWITCH TO THIS ON APPLE WATCH
         if(Reachability.isConnectedToNetwork() == false){
-            self.showToast(controller: self, message: "No Internet Connection", seconds: 1)
+            showToast(controller: self, message: "No Internet Connection", seconds: 1)
             return
         }
         
@@ -537,7 +541,8 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
             else{
                 DispatchQueue.main.async {
                     self.scanningIndicator.stopAnimating()
-                    self.showToast(controller: self, message: String(decoding: data!, as: UTF8.self), seconds: 1)
+                    //self.showToast(controller: self, message: String(decoding: data!, as: UTF8.self), seconds: 1) //not too useful for the user, instead just print to the console
+                    print(String(decoding: data!, as: UTF8.self))
                 }
                 
                 
@@ -549,6 +554,9 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
                 if(String(decoding: data!, as: UTF8.self) == "Authenticated"){
                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)){
                         self.navigationController?.pushViewController(self.accountView!, animated: true)
+                        
+                        self.wcSession!.delegate = self.accountView
+                        self.accountView?.setWCSession(session: self.wcSession)
                     }
                 }
                 
@@ -556,10 +564,14 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
                     //IF LOGGED OUT GO TO LOGIN - IF LOGGED IN GO TO ACCOUNT SETTINGS/ACCOUNT INFO
                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)){
                         self.navigationController?.pushViewController(self.loginView!, animated: true)
+                        
+                        self.wcSession!.delegate = self.loginView
+                        self.loginView?.setWCSession(session: self.wcSession)
                     }
                 }
                 
             }
+            
         }
         
         task.resume()
@@ -625,6 +637,10 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
                 DispatchQueue.main.async {
                     self.logbookBtnPressed()
                 }
+            case "Account":
+                DispatchQueue.main.async {
+                    self.accountBtnPressed()
+                }
             default:
                 print("Default case - do nothing")
             }
@@ -632,8 +648,8 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     }
     
     //GETTERS/SETTERS
-    public func getTestView() -> TestViewController{
-        return testView!
+    public func getTestPageView() -> TestPageViewController{
+        return testPageController!
     }
     
     public func getConnectView() -> ConnectViewController{

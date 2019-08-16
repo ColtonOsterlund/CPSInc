@@ -8,8 +8,9 @@
 
 import UIKit
 import SwiftKeychainWrapper
+import WatchConnectivity
 
-class LoginViewController: UIViewController, UITextFieldDelegate {
+class LoginViewController: UIViewController, UITextFieldDelegate, WCSessionDelegate {
 
     //views
     private var registerView: RegisterAccountViewController? = nil
@@ -29,6 +30,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     //UIButtons
     let loginBtn = UIButton()
+    
+    //WCSession
+    private var wcSession: WCSession? = nil
     
     //UIActivityIndicatorView
     private let scanningIndicator = UIActivityIndicatorView()
@@ -299,6 +303,45 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + seconds){
             alert.dismiss(animated: true)
         }
+    }
+    
+    
+    
+    
+    public func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
+        if(applicationContext["ChangeScreens"] != nil){
+            switch(applicationContext["ChangeScreens"] as! String){
+            case "Main":
+                DispatchQueue.main.async {
+                    self.wcSession!.delegate = self.menuView
+                    self.menuView?.setWCSession(session: self.wcSession)
+                    
+                    self.menuView?.setInQueueView(flag: 0)
+                    self.navigationController?.popViewController(animated: true)
+                }
+            default:
+                print("Default case - do nothing")
+            }
+        }
+    }
+    
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+        //fill out
+    }
+    
+    func sessionDidBecomeInactive(_ session: WCSession) {
+        //fill out
+    }
+    
+    func sessionDidDeactivate(_ session: WCSession) {
+        //fill out
+    }
+    
+    
+    
+    //getters/setters
+    public func setWCSession(session: WCSession?){
+        self.wcSession = session
     }
 
 }

@@ -124,7 +124,7 @@ public class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotification
         
         if response.notification.request.identifier == "Local Test Finished Notification" {
             navigationController?.popToRootViewController(animated: true)
-            navigationController?.pushViewController((firstView?.getTestView())!, animated: true)
+            navigationController?.pushViewController((firstView?.getTestPageView().getTestPages()[0])!, animated: true)
         }
         else if response.notification.request.identifier == "Local Device Discovered Notification"{
             navigationController?.popToRootViewController(animated: true)
@@ -132,7 +132,7 @@ public class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotification
         }
         else if response.notification.request.identifier == "Local Timer Almost Done Notification"{
             navigationController?.popToRootViewController(animated: true)
-            navigationController?.pushViewController((firstView?.getTestView())!, animated: true)
+            navigationController?.pushViewController((firstView?.getTestPageView().getTestPages()[0])!, animated: true)
         }
         else if response.notification.request.identifier == "Import Complete Notification"{
             navigationController?.popToRootViewController(animated: true)
@@ -150,7 +150,7 @@ public class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotification
         if(notification.request.identifier == "Local Test Finished Notification" /*&& navigationController?.visibleViewController != firstView?.getTestView()*/){ //jeroen wants this to show from the view
             completionHandler([.alert, .sound])
         }
-        else if(notification.request.identifier == "Local Device Discovered Notification" && navigationController?.visibleViewController != firstView?.getConnectView()){
+        else if(notification.request.identifier == "Local Device Discovered Notification" && navigationController?.visibleViewController != firstView?.getConnectView() && navigationController?.viewControllers[(navigationController?.viewControllers.count)! - 1] != firstView?.getConnectView()){ //the last check is to check that it is not the last view in the navigationcontroller while showing a "connected" toast or a scanning indicator on ConnectView
             completionHandler([.alert, .sound])
         }
         else if(notification.request.identifier == "Local Timer Almost Done Notification" /*&& navigationController?.visibleViewController != firstView?.getTestView()*/){ //jeroen wants this to show from the view

@@ -726,6 +726,8 @@ public class SettingsViewController: UIViewController, WCSessionDelegate, UIPick
         
         else if(applicationContext["FinalContSettingsUpdate"] != nil){
             DispatchQueue.main.async {
+                self.changeFromImmunoglobulin() //initially change from immunoglobulin test, change back to immunoglobulin test at end if immunoglobulin test selected from watch
+                
                 self.finalContinuousPicker.selectRow(applicationContext["FinalContSettingsUpdate"] as! Int, inComponent: 0, animated: true)
                 
                 switch(applicationContext["FinalContSettingsUpdate"] as! Int){
@@ -769,6 +771,7 @@ public class SettingsViewController: UIViewController, WCSessionDelegate, UIPick
                 switch(applicationContext["TestTypeSettingsUpdate"] as! Int){
                     case 0:
                         self.testTypeTextView.text = "Immunoglobulins"
+                        self.changeToImmunoglobulin()
                     case 1:
                         self.testTypeTextView.text = "Lactoferrin"
                     case 2:

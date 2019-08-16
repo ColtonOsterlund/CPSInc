@@ -90,7 +90,7 @@ public class RunTestInterfaceController: WKInterfaceController, WKCrownDelegate,
         optionsPickerData.append(nothingOption)
         
         let startTestOption = WKPickerItem()
-        startTestOption.title = "Start Test"
+        startTestOption.title = "Start New Test"
         optionsPickerData.append(startTestOption)
         
         let backOption = WKPickerItem()
@@ -102,18 +102,18 @@ public class RunTestInterfaceController: WKInterfaceController, WKCrownDelegate,
     }
     
     
-    public override func willDisappear() {
-        if(backToMain == true){
-            if(session!.isReachable){
-                do{
-                    try session!.updateApplicationContext(["ChangeScreens": "Main"])
-                }catch{
-                    print("Error sending application context")
-                }
-            }
-        }
-        
-        backToMain = true
+    public override func willDisappear() { //cannot do this here or it will dissapear every time it presents an alert
+//        if(backToMain == true){
+//            if(session!.isReachable){
+//                do{
+//                    try session!.updateApplicationContext(["ChangeScreens": "Main"])
+//                }catch{
+//                    print("Error sending application context")
+//                }
+//            }
+//        }
+//
+//        backToMain = true
     }
     
     public func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
@@ -139,13 +139,92 @@ public class RunTestInterfaceController: WKInterfaceController, WKCrownDelegate,
         else if(applicationContext["BeganRunningTest"] != nil){
             DispatchQueue.main.async {
                 if(applicationContext["BeganRunningTest"] as? String == "FinalValue"){
-                    self.backToMain = false
-                    self.pushController(withName: "FinalValueResultInterfaceController", context: nil)
+//                    self.backToMain = false
+//                    self.pushController(withName: "FinalValueResultInterfaceController", context: nil)
+                    
+                    //print new test started
+                    let action = WKAlertAction.init(title: "Dismiss", style:.default) {
+                        self.optionsPicker.setSelectedItemIndex(0)
+                        self.optionsPickerIndex = 0
+                    }
+                    
+                    self.presentAlert(withTitle: "New Test Started", message: "New test started. Test can be saved to Herd/Cow once completed on the iPhone", preferredStyle:.actionSheet, actions: [action])
+                    
                 }
                 else{
-                    self.backToMain = false
-                    self.pushController(withName: "FinalValueResultInterfaceController", context: nil)
+//                    self.backToMain = false
+//                    self.pushController(withName: "FinalValueResultInterfaceController", context: nil)
+                    
+                    //print new test started
+                    DispatchQueue.main.async {
+                        let action = WKAlertAction.init(title: "Dismiss", style:.default) {
+                            self.optionsPicker.setSelectedItemIndex(0)
+                            self.optionsPickerIndex = 0
+                        }
+                        
+                        self.presentAlert(withTitle: "New Test Started", message: "New test started. Test can be saved to Herd/Cow once completed on the iPhone", preferredStyle:.actionSheet, actions: [action])
+                    }
+                    
                 }
+            }
+        }
+            
+        else if(applicationContext["NoHerd"] != nil){
+            DispatchQueue.main.async {
+                let action = WKAlertAction.init(title: "Dismiss", style:.default) {
+                    self.optionsPicker.setSelectedItemIndex(0)
+                    self.optionsPickerIndex = 0
+                }
+                
+                self.presentAlert(withTitle: "Error", message: "No Herd present in logbook to save test results to. Add this on the iPhone before starting a test", preferredStyle:.actionSheet, actions: [action])
+            }
+            
+        }
+        
+        else if(applicationContext["NoCow"] != nil){
+            DispatchQueue.main.async {
+                let action = WKAlertAction.init(title: "Dismiss", style:.default) {
+                    self.optionsPicker.setSelectedItemIndex(0)
+                    self.optionsPickerIndex = 0
+                }
+                
+                self.presentAlert(withTitle: "Error", message: "No Cow present in logbook to save test results to. Add this on the iPhone before starting a test", preferredStyle:.actionSheet, actions: [action])
+            }
+            
+        }
+        
+        else if(applicationContext["NoStrips"] != nil){
+            DispatchQueue.main.async {
+                let action = WKAlertAction.init(title: "Dismiss", style:.default) {
+                    self.optionsPicker.setSelectedItemIndex(0)
+                    self.optionsPickerIndex = 0
+                }
+                
+                self.presentAlert(withTitle: "Error", message: "No stripts detected in device", preferredStyle:.actionSheet, actions: [action])
+            }
+            
+        }
+        
+        else if(applicationContext["NoStrips"] != nil){
+            DispatchQueue.main.async {
+                let action = WKAlertAction.init(title: "Dismiss", style:.default) {
+                    self.optionsPicker.setSelectedItemIndex(0)
+                    self.optionsPickerIndex = 0
+                }
+                
+                self.presentAlert(withTitle: "Error", message: "No device connected", preferredStyle:.actionSheet, actions: [action])
+            }
+            
+        }
+            
+        else if(applicationContext["CannotStartNewTest"] != nil){
+            DispatchQueue.main.async {
+                let action = WKAlertAction.init(title: "Dismiss", style:.default) {
+                    self.optionsPicker.setSelectedItemIndex(0)
+                    self.optionsPickerIndex = 0
+                }
+                
+                self.presentAlert(withTitle: "Error", message: "New Test Cannot Be Started Yet", preferredStyle:.actionSheet, actions: [action])
             }
         }
     }

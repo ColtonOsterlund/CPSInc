@@ -1,8 +1,8 @@
 //
-//  LogbookInterfaceController.swift
+//  AccountInterfaceController.swift
 //  CPSInc. watchOS Application Extension
 //
-//  Created by Colton on 2019-06-26.
+//  Created by Colton on 2019-08-13.
 //  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
 //
 
@@ -10,11 +10,12 @@ import Foundation
 import WatchKit
 import WatchConnectivity
 
-public class LogbookInterfaceController: WKInterfaceController, WKCrownDelegate, WCSessionDelegate{
+public class AccountInterfaceController: WKInterfaceController, WKCrownDelegate, WCSessionDelegate{
     
     private var mainIC: MainInterfaceController? = nil
     private var session: WCSession? = nil
-
+    
+    
     
     override public func awake(withContext context: Any?) { //called to setup any relevant contextual data from a previous interface controller. Use this method to finish the initialization of your interface.
         super.awake(withContext: context)
@@ -32,7 +33,7 @@ public class LogbookInterfaceController: WKInterfaceController, WKCrownDelegate,
             session!.delegate = self
             session!.activate()
             
-            print("wcSession has been activated on iWatch - LogbookInterfaceController")
+            print("wcSession has been activated on iWatch - AccountInterfaceController")
         }
         
         let action = WKAlertAction.init(title: "Dismiss", style:.default) {
@@ -44,22 +45,21 @@ public class LogbookInterfaceController: WKInterfaceController, WKCrownDelegate,
                 }
             }
             self.popToRootController()
-
         }
         
-        presentAlert(withTitle: "Logbook", message: "Please See iPhone to View Logbook Data", preferredStyle:.actionSheet, actions: [action])
+        presentAlert(withTitle: "Account", message: "Please See iPhone to View Account Data", preferredStyle:.actionSheet, actions: [action])
         
     }
     
     
     public override func willDisappear() { //cannot do this because this will be activated when the alert is presented
-        //        if(session!.isReachable){
-        //            do{
-        //                try session!.updateApplicationContext(["ChangeScreens": "Main"])
-        //            }catch{
-        //                print("Error sending application context")
-        //            }
-        //        }
+//        if(session!.isReachable){
+//            do{
+//                try session!.updateApplicationContext(["ChangeScreens": "Main"])
+//            }catch{
+//                print("Error sending application context")
+//            }
+//        }
     }
     
     
@@ -68,5 +68,6 @@ public class LogbookInterfaceController: WKInterfaceController, WKCrownDelegate,
         //fill out
     }
     
-
+    
 }
+
