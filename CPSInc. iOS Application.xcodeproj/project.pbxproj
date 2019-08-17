@@ -46,14 +46,14 @@
 		9C9618DE22DF7E5A00B48713 /* Test+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618D822DF7E5A00B48713 /* Test+CoreDataProperties.swift */; };
 		9C9618DF22DF7E5A00B48713 /* Herd+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618D922DF7E5A00B48713 /* Herd+CoreDataClass.swift */; };
 		9C9618E022DF7E5A00B48713 /* Herd+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618DA22DF7E5A00B48713 /* Herd+CoreDataProperties.swift */; };
-		9C9618E122DF7E5A00B48713 /* Cow+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618DB22DF7E5A00B48713 /* Cow+CoreDataClass.swift */; };
-		9C9618E222DF7E5A00B48713 /* Cow+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618DC22DF7E5A00B48713 /* Cow+CoreDataProperties.swift */; };
 		9C9618E422DF8F8600B48713 /* mappingModelV1toV2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618E322DF8F8600B48713 /* mappingModelV1toV2.xcmappingmodel */; };
 		9C9618E822DFA75B00B48713 /* HerdToHerdV1ToV2CustomPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618E722DFA75B00B48713 /* HerdToHerdV1ToV2CustomPolicy.swift */; };
 		9C9618EA22DFA76A00B48713 /* CowToCowV1ToV2CustomPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618E922DFA76A00B48713 /* CowToCowV1ToV2CustomPolicy.swift */; };
 		9C9618EC22DFA77800B48713 /* TestToTestV1ToV2CustomPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618EB22DFA77800B48713 /* TestToTestV1ToV2CustomPolicy.swift */; };
 		9C9C949522EF76E8003E5454 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9C949422EF76E8003E5454 /* LoginViewController.swift */; };
 		9C9C949722F09AA6003E5454 /* RegisterAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9C949622F09AA6003E5454 /* RegisterAccountViewController.swift */; };
+		9CB795112307456000DB106A /* Cow+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB7950F2307456000DB106A /* Cow+CoreDataClass.swift */; };
+		9CB795122307456000DB106A /* Cow+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB795102307456000DB106A /* Cow+CoreDataProperties.swift */; };
 		9CEBC3BC22AB181C009CACBA /* FindDeviceInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEBC3BB22AB181C009CACBA /* FindDeviceInterfaceController.swift */; };
 		9CEBC3BF22AB1867009CACBA /* RunTestInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEBC3BE22AB1867009CACBA /* RunTestInterfaceController.swift */; };
 		9CEBC3C322AB1922009CACBA /* FinalValueResultInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEBC3C222AB1922009CACBA /* FinalValueResultInterfaceController.swift */; };
@@ -193,14 +193,14 @@
 		9C9618D822DF7E5A00B48713 /* Test+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		9C9618D922DF7E5A00B48713 /* Herd+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Herd+CoreDataClass.swift"; sourceTree = "<group>"; };
 		9C9618DA22DF7E5A00B48713 /* Herd+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Herd+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		9C9618DB22DF7E5A00B48713 /* Cow+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cow+CoreDataClass.swift"; sourceTree = "<group>"; };
-		9C9618DC22DF7E5A00B48713 /* Cow+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cow+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		9C9618E322DF8F8600B48713 /* mappingModelV1toV2.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = mappingModelV1toV2.xcmappingmodel; sourceTree = "<group>"; };
 		9C9618E722DFA75B00B48713 /* HerdToHerdV1ToV2CustomPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HerdToHerdV1ToV2CustomPolicy.swift; sourceTree = "<group>"; };
 		9C9618E922DFA76A00B48713 /* CowToCowV1ToV2CustomPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CowToCowV1ToV2CustomPolicy.swift; sourceTree = "<group>"; };
 		9C9618EB22DFA77800B48713 /* TestToTestV1ToV2CustomPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestToTestV1ToV2CustomPolicy.swift; sourceTree = "<group>"; };
 		9C9C949422EF76E8003E5454 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		9C9C949622F09AA6003E5454 /* RegisterAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterAccountViewController.swift; sourceTree = "<group>"; };
+		9CB7950F2307456000DB106A /* Cow+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cow+CoreDataClass.swift"; sourceTree = "<group>"; };
+		9CB795102307456000DB106A /* Cow+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cow+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		9CEBC3BB22AB181C009CACBA /* FindDeviceInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindDeviceInterfaceController.swift; sourceTree = "<group>"; };
 		9CEBC3BE22AB1867009CACBA /* RunTestInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunTestInterfaceController.swift; sourceTree = "<group>"; };
 		9CEBC3C022AB1884009CACBA /* SettingsInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInterfaceController.swift; sourceTree = "<group>"; };
@@ -382,8 +382,8 @@
 				9C9618D822DF7E5A00B48713 /* Test+CoreDataProperties.swift */,
 				9C9618D922DF7E5A00B48713 /* Herd+CoreDataClass.swift */,
 				9C9618DA22DF7E5A00B48713 /* Herd+CoreDataProperties.swift */,
-				9C9618DB22DF7E5A00B48713 /* Cow+CoreDataClass.swift */,
-				9C9618DC22DF7E5A00B48713 /* Cow+CoreDataProperties.swift */,
+				9CB7950F2307456000DB106A /* Cow+CoreDataClass.swift */,
+				9CB795102307456000DB106A /* Cow+CoreDataProperties.swift */,
 				9C92F36622FDC44500047FA2 /* TestPageViewController.swift */,
 				9C92F36422FB257900047FA2 /* Reachability.swift */,
 				9C6F9EA322985F35009EC1D6 /* AppDelegate.swift */,
@@ -767,6 +767,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C1C31C522DE4BD00057989C /* RunTestInstructionViewController.swift in Sources */,
+				9CB795122307456000DB106A /* Cow+CoreDataProperties.swift in Sources */,
 				9C33B6C322F104DB0076F492 /* AccountPageViewController.swift in Sources */,
 				9C9618DD22DF7E5A00B48713 /* Test+CoreDataClass.swift in Sources */,
 				9C9618EA22DFA76A00B48713 /* CowToCowV1ToV2CustomPolicy.swift in Sources */,
@@ -774,7 +775,6 @@
 				9C33B6C722F4E8570076F492 /* AccountInstructionViewController.swift in Sources */,
 				9CFB11D422C51D9D003E76B5 /* TestIInfoViewController.swift in Sources */,
 				9CFB11D022C51D6F003E76B5 /* CowInfoViewController.swift in Sources */,
-				9C9618E122DF7E5A00B48713 /* Cow+CoreDataClass.swift in Sources */,
 				9CFB11FA22C54E53003E76B5 /* AddCowViewController.swift in Sources */,
 				9C9618E022DF7E5A00B48713 /* Herd+CoreDataProperties.swift in Sources */,
 				9C92F36722FDC44500047FA2 /* TestPageViewController.swift in Sources */,
@@ -782,6 +782,7 @@
 				9C1C31B322D53E580057989C /* TestChartViewController.swift in Sources */,
 				9C9618E422DF8F8600B48713 /* mappingModelV1toV2.xcmappingmodel in Sources */,
 				9C92F36522FB257900047FA2 /* Reachability.swift in Sources */,
+				9CB795112307456000DB106A /* Cow+CoreDataClass.swift in Sources */,
 				9C9C949522EF76E8003E5454 /* LoginViewController.swift in Sources */,
 				9C1C31C322DE4BC20057989C /* FindDeviceInstructionViewController.swift in Sources */,
 				9C6F9EE322987804009EC1D6 /* TestViewController.swift in Sources */,
@@ -793,7 +794,6 @@
 				9CFB11D222C51D88003E76B5 /* HerdInfoViewController.swift in Sources */,
 				9C6F9EE1229877F2009EC1D6 /* ConnectViewController.swift in Sources */,
 				9C6F9EDB22986944009EC1D6 /* MenuViewController.swift in Sources */,
-				9C9618E222DF7E5A00B48713 /* Cow+CoreDataProperties.swift in Sources */,
 				9C9618E822DFA75B00B48713 /* HerdToHerdV1ToV2CustomPolicy.swift in Sources */,
 				9C1C31C922DE4BED0057989C /* SettingsInstructionViewController.swift in Sources */,
 				9C9618DF22DF7E5A00B48713 /* Herd+CoreDataClass.swift in Sources */,
@@ -1078,7 +1078,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.creativeproteinsolutions.CPSInc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -1099,7 +1099,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.creativeproteinsolutions.CPSInc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

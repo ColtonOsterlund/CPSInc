@@ -118,11 +118,12 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         view.backgroundColor = .init(red: 0, green: 0.637, blue: 0.999, alpha: 1)
         
         //if WCSession is supported by the device set up wcSession - when both sessions are open, they can communicate, when only one session is open - it may still send updates and transfer files, but those transferes happen opportunistically in the background (open the session on the phone side when the phone app is initially started)
-        
-        connectView!.setWCSession(session: self.wcSession!)
-        testView!.setWCSession(session: self.wcSession!)
-        settingsView!.setWCSession(session: self.wcSession!)
-        logbookView!.setWCSession(session: self.wcSession!)
+        if(wcSession != nil){
+            connectView!.setWCSession(session: self.wcSession!)
+            testView!.setWCSession(session: self.wcSession!)
+            settingsView!.setWCSession(session: self.wcSession!)
+            logbookView!.setWCSession(session: self.wcSession!)
+        }
         
         createLayoutItems()
         setLayoutConstraints()
@@ -414,9 +415,10 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         //connectView.menuView = self
         //connectView.testView = self.testView
         //connectView.settingsView = self.settingsView
-        
-        wcSession!.delegate = connectView
-        connectView?.setWCSession(session: wcSession)
+        if(wcSession != nil){
+            wcSession!.delegate = connectView
+            connectView?.setWCSession(session: wcSession)
+        }
     }
     
     @objc private func testBtnPressed(){ //see if you can put this in a seperate class like a listener class
@@ -444,9 +446,10 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         //testView.menuView = self
         //testView.connectView = self.connectView
         //testView.settingsView = self.settingsView
-        
-        wcSession!.delegate = testView
-        testView?.setWCSession(session: wcSession)
+        if(wcSession != nil){
+            wcSession!.delegate = testView
+            testView?.setWCSession(session: wcSession)
+        }
         
     }
 
@@ -470,9 +473,11 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         //settingsView.menuView = self
         //settingsView.connectView = self.connectView
         //settingsView.testView = self.testView
-        
+        if(wcSession != nil){
         wcSession!.delegate = settingsView
         settingsView?.setWCSession(session: wcSession)
+        }
+        
         
     }
     
@@ -492,9 +497,10 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         )
         
         navigationController?.pushViewController(logbookView!, animated: true)
-        
-        wcSession!.delegate = logbookView
-        logbookView?.setWCSession(session: wcSession)
+        if(wcSession != nil){
+            wcSession!.delegate = logbookView
+            logbookView?.setWCSession(session: wcSession)
+        }
     
     }
     
@@ -554,9 +560,10 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
                 if(String(decoding: data!, as: UTF8.self) == "Authenticated"){
                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)){
                         self.navigationController?.pushViewController(self.accountView!, animated: true)
-                        
-                        self.wcSession!.delegate = self.accountView
-                        self.accountView?.setWCSession(session: self.wcSession)
+                        if(self.wcSession != nil){
+                            self.wcSession!.delegate = self.accountView
+                            self.accountView?.setWCSession(session: self.wcSession)
+                        }
                     }
                 }
                 
@@ -564,9 +571,10 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
                     //IF LOGGED OUT GO TO LOGIN - IF LOGGED IN GO TO ACCOUNT SETTINGS/ACCOUNT INFO
                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)){
                         self.navigationController?.pushViewController(self.loginView!, animated: true)
-                        
-                        self.wcSession!.delegate = self.loginView
-                        self.loginView?.setWCSession(session: self.wcSession)
+                        if(self.wcSession != nil){
+                            self.wcSession!.delegate = self.loginView
+                            self.loginView?.setWCSession(session: self.wcSession)
+                        }
                     }
                 }
                 

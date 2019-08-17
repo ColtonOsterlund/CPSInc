@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14490.98" systemVersion="18F132" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Cow" representedClassName="Cow" syncable="YES">
+        <attribute name="dailyMilkAverage" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="daysInMilk" optional="YES" attributeType="String" valueTransformerName="EncryptedStringTransformer" syncable="YES"/>
         <attribute name="dryOffDay" optional="YES" attributeType="String" valueTransformerName="EncryptedStringTransformer" syncable="YES"/>
+        <attribute name="farmBreedingIndex" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="String" valueTransformerName="EncryptedValueTransformer" syncable="YES"/>
         <attribute name="mastitisHistory" optional="YES" attributeType="String" valueTransformerName="EncryptedValueTransformer" syncable="YES"/>
         <attribute name="methodOfDryOff" optional="YES" attributeType="String" valueTransformerName="EncryptedStringTransformer" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" valueTransformerName="EncryptedStringTransformer" syncable="YES"/>
+        <attribute name="numberTimesBred" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="parity" optional="YES" attributeType="String" valueTransformerName="EncryptedStringTransformer" syncable="YES"/>
         <attribute name="reproductionStatus" optional="YES" attributeType="String" valueTransformerName="EncryptedStringTransformer" syncable="YES"/>
         <relationship name="herd" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Herd" inverseName="cow" inverseEntity="Herd" syncable="YES"/>
@@ -29,7 +31,7 @@
         <relationship name="cow" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Cow" inverseName="testData" inverseEntity="Cow" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Cow" positionX="-54" positionY="-9" width="128" height="195"/>
+        <element name="Cow" positionX="-54" positionY="-9" width="128" height="225"/>
         <element name="Herd" positionX="-63" positionY="-18" width="128" height="120"/>
         <element name="Test" positionX="-45" positionY="81" width="128" height="150"/>
     </elements>

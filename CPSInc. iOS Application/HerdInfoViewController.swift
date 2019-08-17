@@ -288,7 +288,7 @@ class HerdInfoViewController: UIViewController, UIPickerViewDataSource, UIPicker
             print("Error during fetch request")
         }
         
-        if(savedHerdArray!.isEmpty == false){
+        if(savedHerdArray!.isEmpty == false && savedHerdArray![0] != selectedHerd){ //check that it is not checking itself - can save changes to self if not changing id, only have to check first since there will never be 2 herds with same id anyways due to these checks
             showToast(controller: self, message: "Herd Already Exists with that ID", seconds: 1)
         }
         else{

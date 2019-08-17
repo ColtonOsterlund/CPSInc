@@ -2,7 +2,7 @@
 //  Cow+CoreDataProperties.swift
 //  CPSInc. iOS Application
 //
-//  Created by Colton on 2019-07-17.
+//  Created by Colton on 2019-08-16.
 //  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
 //
 //
@@ -22,9 +22,11 @@ extension Cow {
     @NSManaged public var id: String?
     @NSManaged public var mastitisHistory: String?
     @NSManaged public var methodOfDryOff: String?
-    @NSManaged public var name: String?
     @NSManaged public var parity: String?
     @NSManaged public var reproductionStatus: String?
+    @NSManaged public var dailyMilkAverage: String?
+    @NSManaged public var numberTimesBred: String?
+    @NSManaged public var farmBreedingIndex: String?
     @NSManaged public var herd: Herd?
     @NSManaged public var testData: NSSet?
 

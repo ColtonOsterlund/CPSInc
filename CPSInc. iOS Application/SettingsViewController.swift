@@ -372,7 +372,7 @@ public class SettingsViewController: UIViewController, WCSessionDelegate, UIPick
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int){
         if(pickerView.tag == 0){
             defaults.set(row, forKey: "finalContinuousDefault") //save to userDefaults
-            
+            if(wcSession != nil){
             if(wcSession!.isReachable){
                 do{
                     try wcSession?.updateApplicationContext(["FinalContSettingsUpdate":defaults.integer(forKey: "finalContinuousDefault")])
@@ -380,10 +380,11 @@ public class SettingsViewController: UIViewController, WCSessionDelegate, UIPick
                     print("Error while sending application context")
                 }
             }
+            }
         }
         else if(pickerView.tag == 1){
             defaults.set(row, forKey: "testDurationDefault") //save to userDefaults
-            
+            if(wcSession != nil){
             if(wcSession!.isReachable){
                 do{
                     try wcSession?.updateApplicationContext(["TestDurationSettingsUpdate":defaults.integer(forKey: "testDurationDefault")])
@@ -391,16 +392,18 @@ public class SettingsViewController: UIViewController, WCSessionDelegate, UIPick
                     print("Error while sending application context")
                 }
             }
+            }
         }
         else{
             defaults.set(row, forKey: "testTypeDefault") //save to userDefaults
-            
+            if(wcSession != nil){
             if(wcSession!.isReachable){
                 do{
                     try wcSession?.updateApplicationContext(["TestTypeSettingsUpdate":defaults.integer(forKey: "testTypeDefault")])
                 }catch{
                     print("Error while sending application context")
                 }
+            }
             }
             
             if(row == 0){

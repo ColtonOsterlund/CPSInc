@@ -326,12 +326,13 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
                 }
             }
         }
-        
-        if(wcSession!.isReachable){
-            do{
-                try wcSession?.updateApplicationContext(["DeviceDiscovered":"Update"])
-            }catch{
-                print("error while updating application context")
+        if(wcSession != nil){
+            if(wcSession!.isReachable){
+                do{
+                    try wcSession?.updateApplicationContext(["DeviceDiscovered":"Update"])
+                }catch{
+                    print("error while updating application context")
+                }
             }
         }
         
@@ -345,13 +346,14 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
         menuView?.getTestPageView().setPeripheralDevice(periphDevice: peripheral)
         peripheral.delegate = menuView?.getTestPageView()
         peripheral.discoverServices(nil)
-        
+        if(wcSession != nil){
         if(wcSession!.isReachable){
             do{
                 try wcSession?.updateApplicationContext(["ConnectedDeviceLabelFindDevice":peripheral.name!])
             }catch{
                 print("error while updating application context")
             }
+        }
         }
         
     }
@@ -384,7 +386,7 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
             showToast(controller: (menuView?.getSettingsView())!, message: "Device Disconnected", seconds: 1)
         }
     
-        
+        if(wcSession != nil){
         if(wcSession!.isReachable){
             do{
                 try wcSession?.updateApplicationContext(["ConnectedDeviceLabelFindDevice":"None"])
@@ -392,18 +394,20 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
                 print("error while updating application context")
             }
         }
+        }
         
     }
     
     private func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: NSError?) {
         showToast(controller: self, message: "Failed to Connect", seconds: 1)
-        
+        if(wcSession != nil){
         if(wcSession!.isReachable){
             do{
                 try wcSession?.updateApplicationContext(["FailConnect":"Error"])
             }catch{
                 print("error while updating application context")
             }
+        }
         }
     }
     

@@ -2,7 +2,7 @@
 //  Cow+CoreDataClass.swift
 //  CPSInc. iOS Application
 //
-//  Created by Colton on 2019-07-17.
+//  Created by Colton on 2019-08-16.
 //  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
 //
 //

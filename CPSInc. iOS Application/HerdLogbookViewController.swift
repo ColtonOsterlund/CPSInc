@@ -154,7 +154,7 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
         
             for entry in responseList!.entries{
                 print(entry)
-                if(String(entry.name.suffix(4)) == ".csv"){ //check that it is a .csv file
+                if(String(entry.name.suffix(4)).lowercased() == ".csv"){ //check that it is a .csv file
                     importAlert.addAction(UIAlertAction(title: entry.name, style: .default, handler: { action in
                         //download and parse file here
                         
@@ -231,39 +231,48 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
                 for (index, attribute) in cowAttributeArray.enumerated(){
                     //switch through the header values to know where to place the attribute
                     switch(csvHeaderColumnArray[index]){
-                        case "id":
+                        case "ID":
                             cow!.id = attribute
-                        case "days in milk":
+                        case "DIM":
                             cow!.daysInMilk = attribute
-                        case "dry off day":
-                            cow!.dryOffDay = attribute
-                        case "mastitis history":
-                            cow!.mastitisHistory = attribute
-                        case "dry off":
-                            cow!.methodOfDryOff = attribute
-                        case "name":
-                            cow!.name = attribute
-                        case "parity":
+                            cow!.dryOffDay = String(305 - Int(attribute)!)
+                        case "MAVG":
+                            cow!.dailyMilkAverage = attribute
+//                        case "dry off day":
+//                            cow!.dryOffDay = attribute
+//                        case "mastitis history":
+//                            cow!.mastitisHistory = attribute
+//                        case "dry off":
+//                            cow!.methodOfDryOff = attribute
+//                        case "name":
+//                            cow!.name = attribute
+                        case "LACT":
                             cow!.parity = attribute
-                        case "reproduction status":
+                        case "RPRO":
                             cow!.reproductionStatus = attribute
+                        case "TBRD":
+                            cow!.numberTimesBred = attribute
+                        case "MFI":
+                            cow!.farmBreedingIndex = attribute
                         default:
                             break
                     }
                 }
                 
+                cow!.mastitisHistory = ""
+                cow!.methodOfDryOff = ""
                 cow!.herd = importedHerd
                 
-                if(bytes >= 8000){ //find actual number that this would be beneficial - SAVES STACK MEMORY
-                    self.appDelegate?.saveContext() //saves cow to disk memory
-                    cow = nil //removes cow from stack memory
-                }
+//                if(bytes >= 8000){ //find actual number that this would be beneficial - SAVES STACK MEMORY
+//                    self.appDelegate?.saveContext() //saves cow to disk memory
+//                    cow = nil //removes cow from stack memory
+//                }
                 
             }
             
-            if(bytes < 8000){ //find actual number that this would be beneficial - SAVES EXECUTION TIME
+            //if(bytes < 8000){ //find actual number that this would be beneficial - SAVES EXECUTION TIME
                 self.appDelegate?.saveContext() //saves all cows that were created in memory to context
-            }
+           // }
             
             DispatchQueue.main.async {
                 self.fetchSavedData() //execute on main thread at end of background thread running

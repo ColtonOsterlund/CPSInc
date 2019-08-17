@@ -125,18 +125,22 @@ public class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotification
         if response.notification.request.identifier == "Local Test Finished Notification" {
             navigationController?.popToRootViewController(animated: true)
             navigationController?.pushViewController((firstView?.getTestPageView().getTestPages()[0])!, animated: true)
+        
         }
         else if response.notification.request.identifier == "Local Device Discovered Notification"{
             navigationController?.popToRootViewController(animated: true)
             navigationController?.pushViewController((firstView?.getConnectView())!, animated: true)
+            
         }
         else if response.notification.request.identifier == "Local Timer Almost Done Notification"{
             navigationController?.popToRootViewController(animated: true)
             navigationController?.pushViewController((firstView?.getTestPageView().getTestPages()[0])!, animated: true)
+            
         }
         else if response.notification.request.identifier == "Import Complete Notification"{
             navigationController?.popToRootViewController(animated: true)
             navigationController?.pushViewController((firstView?.getHerdLogbookView())!, animated: true)
+            
         }
         
         completionHandler()

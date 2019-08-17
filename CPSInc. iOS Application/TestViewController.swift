@@ -64,6 +64,8 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
     private let actualTestTypeLabel = UILabel()
     private let testResultLabel = UILabel()
     private let testDateLabel = UILabel()
+    private let testHerdIDLabel = UILabel()
+    private let testCowIDLabel = UILabel()
     
     //UIProgressView
     private let testProgressView = UIProgressView(progressViewStyle: UIProgressView.Style.default)
@@ -227,6 +229,23 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
         view.addSubview(testDateLabel)
         testDateLabel.isHidden = true
         
+        //testHerdIDLabel
+        testHerdIDLabel.text = ""
+        testHerdIDLabel.textColor = .black
+        testHerdIDLabel.font = testDateLabel.font.withSize(30)
+        testHerdIDLabel.textAlignment = .center
+        view.addSubview(testHerdIDLabel)
+        testHerdIDLabel.isHidden = true
+        
+        //testCowIDLabel
+        testCowIDLabel.text = ""
+        testCowIDLabel.textColor = .black
+        testCowIDLabel.font = testDateLabel.font.withSize(30)
+        testCowIDLabel.textAlignment = .center
+        view.addSubview(testCowIDLabel)
+        testCowIDLabel.isHidden = true
+
+        
         
         //resetTestButton
         resetTestBtn.backgroundColor = .blue
@@ -383,7 +402,16 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
         
         testDateLabel.translatesAutoresizingMaskIntoConstraints = false
         testDateLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        testDateLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: (UIScreen.main.bounds.height * 0.1)).isActive = true
+        testDateLabel.topAnchor.constraint(equalTo: addTestBtn.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.02)).isActive = true
+        
+        testHerdIDLabel.translatesAutoresizingMaskIntoConstraints = false
+        testHerdIDLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        testHerdIDLabel.topAnchor.constraint(equalTo: testDateLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.02)).isActive = true
+        
+        testCowIDLabel.translatesAutoresizingMaskIntoConstraints = false
+        testCowIDLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        testCowIDLabel.topAnchor.constraint(equalTo: testHerdIDLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.02)).isActive = true
+        
     }
     
     private func setButtonListeners(){
@@ -450,6 +478,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
         
         //add cancel action to herd id alert
         herdIDTextAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
+            self.chooseCowAtBeginning = false
             return
         }))
         
@@ -463,6 +492,8 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                 if(herdID == herd.id){
                     self.menuView?.getHerdLogbookView().getCowLogbookView().setSelectedHerd(herd: herd) //set selected herd to have access to the correct cow list - DONT NEED TO SET HERD TO SAVE, YOU ONLY ENTER THE HERD SO THAT YOU CAN GET THE RIGHT COW. THIS CAN BE OVERWRITTEN DOESNT MATTER
                     match = 1
+                    
+                    self.testHerdIDLabel.text = "Herd ID: " + herd.id!
                 }
             }
             
@@ -496,6 +527,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
         
         //add cancel action to herd id alert
         cowIDTextAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
+            self.chooseCowAtBeginning = false
             return
         }))
         
@@ -510,6 +542,8 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                     //self.menuView?.getHerdLogbookView().getCowLogbookView().getTestLogbookView().setSelectedCow(cow: cow)
                     self.cowToSave = cow
                     match = 1
+                    
+                    self.testCowIDLabel.text = "Cow ID: " + cow.id!
                 }
             }
             
@@ -660,6 +694,12 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
         self.testDateLabel.text = ""
         self.testDateLabel.isHidden = true
         
+        self.testHerdIDLabel.text = ""
+        self.testHerdIDLabel.isHidden = true
+        
+        self.testCowIDLabel.text = ""
+        self.testCowIDLabel.isHidden = true
+        
         if((testPageController?.getTestPages().count)! > 1){
             var currentPageIndex = 0
             for page in (testPageController?.getTestPages())!{
@@ -729,7 +769,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
         
         if(testPageController!.getPeripheralDevice() == nil){
             showToast(controller: self, message: "No device connected", seconds: 1)
-            
+            if(wcSession != nil){
             if(wcSession!.isReachable){
                 do{
                     try wcSession?.updateApplicationContext(["NoDevice":"Error"])
@@ -737,12 +777,13 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                     print("error while updating application context")
                 }
             }
+            }
             
             return
         }
         else if(testPageController!.getStripDetectVoltageValue()! <= 750){ //set proper value for testing, for now this works
             showToast(controller: self, message: "Strips not detected", seconds: 1)
-            
+            if(wcSession != nil){
             if(wcSession!.isReachable){
                 do{
                     try wcSession?.updateApplicationContext(["NoStrips":"Error"])
@@ -750,12 +791,13 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                     print("error while updating application context")
                 }
             }
+            }
             
             return
         }
         else if(savedHerdArray!.isEmpty){
             showToast(controller: self, message: "No Herd in Logbook to Save Results", seconds: 1)
-            
+            if(wcSession != nil){
             if(wcSession!.isReachable){
                 do{
                     try wcSession?.updateApplicationContext(["NoHerd":"Error"])
@@ -763,18 +805,20 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                     print("error while updating application context")
                 }
             }
+            }
             
             return
         }
         else if(savedCowArray!.isEmpty){
             showToast(controller: self, message: "No Cow in Logbook to Save Results", seconds: 1)
-            
+            if(wcSession != nil){
             if(wcSession!.isReachable){
                 do{
                     try wcSession?.updateApplicationContext(["NoCow":"Error"])
                 }catch{
                     print("error while updating application context")
                 }
+            }
             }
             
             return
@@ -812,6 +856,11 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
         testDateLabel.text = dateformatter.string(from: testDate!)
         testDateLabel.isHidden = false
         
+        if(chooseCowAtBeginning == true){
+            testHerdIDLabel.isHidden = false
+            testCowIDLabel.isHidden = false
+        }
+        
         //disable and hide startTestBtn
         startTestBtn.isEnabled = false
         startTestBtn.isHidden = true
@@ -848,7 +897,16 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
             self.cancelTestBtn.isEnabled = true
         }
         
-            
+        
+        var herdID: String? = nil
+        var cowID: String? = nil
+        var timeString: String? = nil
+        
+        DispatchQueue.main.async{
+            herdID = self.testHerdIDLabel.text
+            cowID = self.testCowIDLabel.text
+            timeString = self.testDateLabel.text
+        }
             
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(((Int(incubationTimeMinutes)! * 60) + Int(incubationTimeSeconds)!) - ((Int(notificationTimeMinutes)! * 60) + Int(notificationTimeSeconds)!))){
             if(self.testCancelled == false){
@@ -857,7 +915,30 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                     if settings.authorizationStatus == .authorized {
                         let content = UNMutableNotificationContent()
                         content.title = "Timer Almost Done"
-                        content.body = "Your Have " + self.notificationTimeMinutes + " Minutes and " + self.notificationTimeSeconds + " Seconds Before the Incubation Timer is Done"
+                        if(self.chooseCowAtBeginning == false){
+                            var bodyString = "Your Have "
+                            bodyString += self.notificationTimeMinutes
+                            bodyString += " Minutes and "
+                            bodyString += self.notificationTimeSeconds
+                            bodyString += " Seconds Before the Incubation Timer is Done for Test Date: "
+                            bodyString += timeString!
+                            
+                            content.body = bodyString
+                        }
+                        else{
+                            var bodyString = "Your Have "
+                            bodyString += self.notificationTimeMinutes
+                            bodyString += " Minutes and "
+                            bodyString += self.notificationTimeSeconds
+                            bodyString += " Seconds Before the Incubation Timer is Done for "
+                            bodyString += herdID!
+                            bodyString += ", "
+                            bodyString += cowID!
+                            bodyString += ", Test Date: "
+                            bodyString += timeString!
+                            
+                            content.body = bodyString
+                        }
                         content.sound = UNNotificationSound.default
                         content.badge = 1
                             
@@ -975,8 +1056,10 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
         self.addTestBtn.isEnabled = false
         
         let newTestView = TestViewController(menuView: self.menuView!, appDelegate: self.appDelegate, testPageController: self.testPageController)
+        if(wcSession != nil){
         wcSession!.delegate = newTestView
         newTestView.setWCSession(session: wcSession!)
+        }
         self.testPageController?.addPage(pageToAdd: newTestView)
         
         //switch to added test
@@ -992,7 +1075,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
         finalValueTestQueue = DispatchQueue(label: "Final Value Test Queue", attributes: .concurrent)
             
         finalValueTestQueue!.async {
-        
+            if(self.wcSession != nil){
                 if(self.wcSession!.isReachable){
                     do{
                         try self.wcSession?.updateApplicationContext(["BeganRunningTest":"FinalValue"])
@@ -1000,6 +1083,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                         print("error while updating application context")
                     }
                 }
+            }
         
                 let startTestString = "01"
                 let stopTestString = "00"
@@ -1058,7 +1142,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                 
                 group.leave()
             
-            //}
+            }
            
             group.wait() //this is where the execution is paused
             
@@ -1242,7 +1326,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
             }
             
             //self.peripheralDevice?.writeValue(stopTestData!, for: self.startTestCharacteristic!, type: .withResponse) //discharge capacitor - probably better to discharge after pressing resetTestButton
-            
+                    if(self.wcSession != nil){
             if(self.wcSession!.isReachable){
                 do{
                     try self.wcSession?.updateApplicationContext(["FinalValueTestResult":glucoseResult!])
@@ -1250,10 +1334,22 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                     print("error while updating application context")
                 }
             }
+            }
             
                     DispatchQueue.main.sync {
                         self.resetTestBtn.isEnabled = true
                         self.resetTestBtn.isHidden = false
+                    }
+                    
+                    var herdID: String? = nil
+                    var cowID: String? = nil
+                    var timeString: String? = nil
+                    
+                    
+                    DispatchQueue.main.async{
+                        herdID = self.testHerdIDLabel.text
+                        cowID = self.testCowIDLabel.text
+                        timeString = self.testDateLabel.text
                     }
             
             
@@ -1262,7 +1358,21 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                 if settings.authorizationStatus == .authorized {
                     let content = UNMutableNotificationContent()
                     content.title = "Test Complete"
-                    content.body = "Your Test is Complete"
+                    if(self.chooseCowAtBeginning == false){
+                        var bodyString = "Your test is complete for Test Date: "
+                        bodyString += timeString!
+                        content.body = bodyString
+                    }
+                    else{
+                        var bodyString = "Your test is compelte for "
+                        bodyString += herdID!
+                        bodyString += ", "
+                        bodyString += cowID!
+                        bodyString += ", Test Date: "
+                        bodyString += timeString!
+                        
+                        content.body = bodyString
+                    }
                     content.sound = UNNotificationSound.default
                     content.badge = 1
                     
@@ -1282,7 +1392,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
         
         }
         
-        }
+        
         
     }
     
@@ -1308,7 +1418,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
         while(Int((endingTime.uptimeNanoseconds - startingTime.uptimeNanoseconds) / 1000000000) <= 10){
             print(Int((endingTime.uptimeNanoseconds - startingTime.uptimeNanoseconds) / 1000000000))
             //print("integrating voltage: " + String(self.integratedVoltageValue!))
-            if(self.testPageController!.getIntegratedVoltageValue() != 0){
+            if(self.testPageController!.getIntegratedVoltageValue()! > 15){ //if bigger than 15mV, start test
                 break //break out of the loop once the integrated voltage value is not equal to 0
             }
             endingTime = DispatchTime.now()
@@ -1325,13 +1435,14 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
     
     
     private func runContinuousTest(){
-        
+        if(wcSession != nil){
         if(wcSession!.isReachable){
             do{
                 try wcSession?.updateApplicationContext(["BeganRunningTest":"ContinuousValue"])
             }catch{
                 print("error while updating application context")
             }
+        }
         }
         
         let startTestString = "01"
@@ -1361,9 +1472,9 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
         
         testProgressView.setProgress(0, animated: true)
         
-        DispatchQueue.main.async {
-            self.pauseUntilNotNil()
-        }
+//        DispatchQueue.main.async {
+//            self.pauseUntilNotNil()
+//        }
        
         
         //print(integratedVoltageValue)
@@ -1425,12 +1536,14 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
             self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
             
             //sending the final value of the result set
+            if(self.wcSession != nil){
             if(self.wcSession!.isReachable){
                 do{
                     try self.wcSession?.updateApplicationContext(["ContinuousValueFinalTestResult":self.peripheralData.last!])
                 }catch{
                     print("error while updating application context")
                 }
+            }
             }
             
             self.testResultToSave = self.peripheralData.last
@@ -1441,12 +1554,36 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
             self.saveTestBtn.isEnabled = true
             self.saveTestBtn.isHidden = false
             
+            var herdID: String? = nil
+            var cowID: String? = nil
+            var timeString: String? = nil
+            
+            DispatchQueue.main.async{
+                herdID = self.testHerdIDLabel.text
+                cowID = self.testCowIDLabel.text
+                timeString = self.testDateLabel.text
+            }
+            
             //send notifiation if app is in background
             self.appDelegate!.getNotificationCenter().getNotificationSettings { (settings) in
                 if settings.authorizationStatus == .authorized {
                     let content = UNMutableNotificationContent()
                     content.title = "Test Complete"
-                    content.body = "Your Test is Complete"
+                    if(self.chooseCowAtBeginning == false){
+                        var bodyString = "Your test is complete for Test Date: "
+                        bodyString += timeString!
+                        content.body = bodyString
+                    }
+                    else{
+                        var bodyString = "Your test is compelte for "
+                        bodyString += herdID!
+                        bodyString += ", "
+                        bodyString += cowID!
+                        bodyString += ", Test Date: "
+                        bodyString += timeString!
+                        
+                        content.body = bodyString
+                    }
                     content.sound = UNNotificationSound.default
                     content.badge = 1
                     
@@ -1554,7 +1691,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
         
         if(menuView!.getSettingsView().getFinalContinuous() == true){
             testTypeLabel.text = "Test Type: Final Value Test"
-            
+            if(wcSession != nil){
             if(wcSession!.isReachable){
                 do{
                     try wcSession?.updateApplicationContext(["TestTypeLabelRunTest":"Final"])
@@ -1562,10 +1699,11 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                     print("error while updating application context")
                 }
             }
+            }
         }
         else{
             testTypeLabel.text = "Test Type: Continuous Test"
-            
+            if(wcSession != nil){
             if(wcSession!.isReachable){
                 do{
                     try wcSession?.updateApplicationContext(["TestTypeLabelRunTest":"Continuous"])
@@ -1573,10 +1711,11 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                     print("error while updating application context")
                 }
             }
+            }
         }
         
         testDurationLabel.text = "Test Duration: " + String(menuView!.getSettingsView().getTestDuration()) + " seconds"
-        
+        if(wcSession != nil){
         if(wcSession!.isReachable){
             //print("Sending test duration label")
             
@@ -1586,12 +1725,13 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                 print("error while updating application context")
             }
         }
+        }
         
         
         
         if(menuView?.getSettingsView().getTestType() == 0){
             actualTestTypeLabel.text = "Test Type: Immunoglobulins"
-            
+            if(wcSession != nil){
             if(wcSession!.isReachable){
                 do{
                     try wcSession?.updateApplicationContext(["TestSampleLabelRunTest":"Immunoglobulins"])
@@ -1599,10 +1739,11 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                     print("error while updating application context")
                 }
             }
+            }
         }
         else if(menuView?.getSettingsView().getTestType() == 1){
             actualTestTypeLabel.text = "Test Type: Lactoferrin"
-            
+            if(wcSession != nil){
             if(wcSession!.isReachable){
                 do{
                     try wcSession?.updateApplicationContext(["TestSampleLabelRunTest":"Lactoferrin"])
@@ -1610,10 +1751,11 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                     print("error while updating application context")
                 }
             }
+            }
         }
         else if(menuView?.getSettingsView().getTestType() == 2){
             actualTestTypeLabel.text = "Test Type: Blood Calcium"
-            
+            if(wcSession != nil){
             if(wcSession!.isReachable){
                 do{
                     try wcSession?.updateApplicationContext(["TestSampleLabelRunTest":"Blood Calcium"])
@@ -1621,16 +1763,18 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                     print("error while updating application context")
                 }
             }
+            }
         }
         else{
             actualTestTypeLabel.text = "Test Type: Glucose"
-            
+            if(wcSession != nil){
             if(wcSession!.isReachable){
                 do{
                     try wcSession?.updateApplicationContext(["TestSampleLabelRunTest":"Glucose"])
                 }catch{
                     print("error while updating application context")
                 }
+            }
             }
         }
 //        if(wcSession!.isReachable){
@@ -1707,12 +1851,14 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                 }
                     
                 else{ //some point during the test where you cannot add another test
+                    if(self.wcSession != nil){
                     if(self.wcSession!.isReachable){
                         do{
                             try self.wcSession?.updateApplicationContext(["CannotStartNewTest":"Error"])
                         }catch{
                             print("error while updating application context")
                         }
+                    }
                     }
                 }
             }
