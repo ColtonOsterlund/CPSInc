@@ -335,6 +335,14 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
                             print("Data:")
                             print(String(decoding: data!, as: UTF8.self))
                             
+                            
+                            if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
+                                self.navigationController?.popToRootViewController(animated: true)
+                                self.navigationController?.pushViewController(self.menuView!.getLoginView(), animated: true)
+                                return
+                            }
+                            
+                            
                             if(String(decoding: data!, as: UTF8.self) != "Success"){ //error occured
                                 DispatchQueue.main.async {
                                     self.showToast(controller: self, message: "Error: " + String(decoding: data!, as: UTF8.self), seconds: 1)
@@ -429,6 +437,16 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
                             print(response!)
                             print("Data:")
                             print(String(decoding: data!, as: UTF8.self))
+                            
+                            
+                            
+                            if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
+                                self.navigationController?.popToRootViewController(animated: true)
+                                self.navigationController?.pushViewController(self.menuView!.getLoginView(), animated: true)
+                                return
+                            }
+                            
+                            
                             
                             if(String(decoding: data!, as: UTF8.self) != "Success"){ //error occured
                                 DispatchQueue.main.async {
@@ -540,6 +558,16 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
                         print(response!)
                         print("Data:")
                         print(String(decoding: data!, as: UTF8.self))
+                        
+                        
+                        
+                        if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
+                            self.navigationController?.popToRootViewController(animated: true)
+                            self.navigationController?.pushViewController(self.menuView!.getLoginView(), animated: true)
+                            return
+                        }
+                        
+                        
                         
                         if(String(decoding: data!, as: UTF8.self) != "Success"){ //error occured
                             DispatchQueue.main.async {
@@ -682,6 +710,14 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
                     print("Data:")
                     print(String(decoding: data!, as: UTF8.self))
                     
+                    
+                    if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
+                        self.navigationController?.popToRootViewController(animated: true)
+                        self.navigationController?.pushViewController(self.menuView!.getLoginView(), animated: true)
+                        return
+                    }
+                    
+                    
                     do {
                         let json = try JSONSerialization.jsonObject(with: data!, options: []) as? [[String: Any]]
                         
@@ -734,6 +770,14 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
                     print(response!)
                     print("Data:")
                     print(String(decoding: data!, as: UTF8.self))
+                    
+                    
+                    if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
+                        self.navigationController?.popToRootViewController(animated: true)
+                        self.navigationController?.pushViewController(self.menuView!.getLoginView(), animated: true)
+                        return
+                    }
+                    
                     
                     do {
                         let json = try JSONSerialization.jsonObject(with: data!, options: []) as? [[String: Any]]
@@ -806,6 +850,16 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
                     print(response!)
                     print("Data:")
                     print(String(decoding: data!, as: UTF8.self))
+                    
+                    
+                    
+                    if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
+                        self.navigationController?.popToRootViewController(animated: true)
+                        self.navigationController?.pushViewController(self.menuView!.getLoginView(), animated: true)
+                        return
+                    }
+                    
+                    
                     
                     do {
                         let json = try JSONSerialization.jsonObject(with: data!, options: []) as? [[String: Any]]

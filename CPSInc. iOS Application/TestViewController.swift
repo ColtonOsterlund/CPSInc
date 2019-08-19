@@ -91,6 +91,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
     private var testQueue: DispatchQueue? = nil
     private var alertQueue: DispatchQueue? = nil
     private var finalValueTestQueue: DispatchQueue? = nil
+    private var continuousValueTestQueue: DispatchQueue? = nil
     
     //Test Settings - technically dont need these we can access them straight through settingsView
 //    var testDurationSeconds: Int? = nil //how long to run the test for before taking final value
@@ -1400,8 +1401,10 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
     
     
     private func pauseUntilNotNil(){
-        while(self.testPageController!.getIntegratedVoltageValue() == nil){
-            //do nothing
+        while(true){
+            if(self.testPageController!.getIntegratedVoltageValue() != nil){
+                break
+            }
         }
         
         return
@@ -1435,202 +1438,264 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
     
     
     private func runContinuousTest(){
-        if(wcSession != nil){
-        if(wcSession!.isReachable){
-            do{
-                try wcSession?.updateApplicationContext(["BeganRunningTest":"ContinuousValue"])
-            }catch{
-                print("error while updating application context")
-            }
-        }
-        }
         
-        let startTestString = "01"
-        let stopTestString = "00"
+        continuousValueTestQueue = DispatchQueue(label: "Continuous Value Test Queue", attributes: .concurrent)
         
-        let startTestData = Data(hexString: startTestString)
-        let stopTestData = Data(hexString: stopTestString)
+        continuousValueTestQueue?.async {
         
-        self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
-        self.testPageController!.getPeripheralDevice()?.writeValue(startTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
-        
-        //not sure why i need to do this here - look into this
-        //testProgressView
-        testProgressView.trackTintColor = .white
-        testProgressView.tintColor = .black
-        view.addSubview(testProgressView)
-        testProgressView.isHidden = true
-        //testProgressView
-        testProgressView.translatesAutoresizingMaskIntoConstraints = false
-        testProgressView.setProgress(1, animated: true)
-        testProgressView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        testProgressView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
-        testProgressView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.5)).isActive = true
-        testProgressView.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.02)).isActive = true
-        //testProgressView.isHidden = true
-        testProgressView.isHidden = false
-        
-        testProgressView.setProgress(0, animated: true)
-        
-//        DispatchQueue.main.async {
-//            self.pauseUntilNotNil()
-//        }
-       
-        
-        //print(integratedVoltageValue)
-        
-        readNewContinuousData() //read data at 0s first
-        var timer = Timer()
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(readNewContinuousData), userInfo: nil, repeats: true) //fires every 1 second - readNewContinuousData runs every second starting at 1s
-        
-        //testing purposes
-        print("\n\nstarting test")
-        var testTimer = Timer()
-        testTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(readNewVoltage), userInfo: nil, repeats: true)
-        
-        //not sure if this is the best method to delay - look into this
-        let currentTime = DispatchTime.now()
-        
-        DispatchQueue.main.asyncAfter(deadline: currentTime + .seconds(menuView!.getSettingsView().getTestDuration() * 1/4)){
-            self.testProgressView.setProgress(0.25, animated: true)
-        }
-        DispatchQueue.main.asyncAfter(deadline: currentTime + .seconds(menuView!.getSettingsView().getTestDuration() * 1/2 )){
-            self.testProgressView.setProgress(0.5, animated: true)
-        }
-        DispatchQueue.main.asyncAfter(deadline: currentTime + .seconds(menuView!.getSettingsView().getTestDuration() * 3/4)){
-            self.testProgressView.setProgress(0.75, animated: true)
-        }
-        DispatchQueue.main.asyncAfter(deadline: currentTime + .seconds(menuView!.getSettingsView().getTestDuration())){
-            timer.invalidate() //stops timer from running/firing
-            
-            //testing purposes
-            print("end of test\n\n")
-            testTimer.invalidate()
-            
-            self.testProgressView.setProgress(1, animated: true)
-            
-            self.testProgressView.isHidden = true
-            
-            //make the graph from peripheralDevice here
-            self.glucoseResultTable.reloadData()
-            self.glucoseResultTable.isHidden = false
-            
-            //populate the graph data
-            for i in 0...self.menuView!.getSettingsView().getTestDuration(){ //should only happen 0 - testDuration times
-                let dataEntry = ChartDataEntry(x: Double(i), y: Double(self.peripheralData[i]))
-                self.dataEntries.append(dataEntry)
-                
-            }
-            
-            //print graph of results here
-            self.lineChartView.isHidden = false
-            let lineChartDataSet = LineChartDataSet(entries: self.dataEntries, label: "Glucose Results")
-            let lineChartData = LineChartData(dataSet: lineChartDataSet)
-            self.lineChartView.data = lineChartData
-            self.lineChartView.xAxis.granularity = 1
-            self.lineChartView.xAxis.labelPosition = XAxis.LabelPosition.bottom
-            self.lineChartView.setVisibleXRangeMaximum(5.0) //causes you to have to scroll to see the rest of the values
-            self.lineChartView.moveViewToX(0.0) //initially display the graph starting at index of 0
-            self.lineChartView.isHidden = false
-            
-            self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
-            
-            //sending the final value of the result set
             if(self.wcSession != nil){
-            if(self.wcSession!.isReachable){
-                do{
-                    try self.wcSession?.updateApplicationContext(["ContinuousValueFinalTestResult":self.peripheralData.last!])
-                }catch{
-                    print("error while updating application context")
+                if(self.wcSession!.isReachable){
+                    do{
+                        try self.wcSession?.updateApplicationContext(["BeganRunningTest":"ContinuousValue"])
+                    }catch{
+                        print("error while updating application context")
+                    }
                 }
             }
+        
+            let startTestString = "01"
+            let stopTestString = "00"
+        
+            let startTestData = Data(hexString: startTestString)
+            let stopTestData = Data(hexString: stopTestString)
+        
+            self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
+            self.testPageController!.getPeripheralDevice()?.writeValue(startTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
+        
+            DispatchQueue.main.sync {
+                //not sure why i need to do this here - look into this
+                //testProgressView
+                self.testProgressView.trackTintColor = .white
+                self.testProgressView.tintColor = .black
+                self.view.addSubview(self.testProgressView)
+                self.testProgressView.isHidden = true
+                //testProgressView
+                self.testProgressView.translatesAutoresizingMaskIntoConstraints = false
+                self.testProgressView.setProgress(1, animated: true)
+                self.testProgressView.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+                self.testProgressView.centerYAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerYAnchor).isActive = true
+                self.testProgressView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.5)).isActive = true
+                self.testProgressView.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.02)).isActive = true
+                //testProgressView.isHidden = true
+                self.testProgressView.isHidden = false
+                
+                self.testProgressView.setProgress(0, animated: true)
+            }
+        
+            
+            self.testQueue = DispatchQueue(label: "Test Queue", attributes: .concurrent)
+            
+            let group = DispatchGroup() //allows you to pause execution until value is not nil and non-zero
+            group.enter()
+
+            self.testQueue!.sync{ //SINCE YOU ARE RUNNING SYNC HERE YOU DONT NEED THE DISPATCH GROUP TO WAIT - YOU CAN REMOVE IT
+                self.pauseUntilNotNil()
+                
+                group.leave()
+            }
+       
+            group.wait()
+        
+            //print(integratedVoltageValue)
+        
+            self.readNewContinuousData() //read data at 0s first - this should be threaded properly from inside the method - only call this method from inside a background queue
+            
+            var timer = Timer()
+            DispatchQueue.main.sync{
+                timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.readNewContinuousData), userInfo: nil, repeats: true) //fires every 1 second - readNewContinuousData runs every second starting at 1s
             }
             
-            self.testResultToSave = self.peripheralData.last
+            //testing purposes
+            print("\n\nstarting test")
             
-            
-            self.resetTestBtn.isEnabled = true
-            self.resetTestBtn.isHidden = false
-            self.saveTestBtn.isEnabled = true
-            self.saveTestBtn.isHidden = false
-            
-            var herdID: String? = nil
-            var cowID: String? = nil
-            var timeString: String? = nil
-            
-            DispatchQueue.main.async{
-                herdID = self.testHerdIDLabel.text
-                cowID = self.testCowIDLabel.text
-                timeString = self.testDateLabel.text
+            var testTimer = Timer()
+            DispatchQueue.main.sync{
+                testTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.readNewVoltage), userInfo: nil, repeats: true)
             }
             
-            //send notifiation if app is in background
-            self.appDelegate!.getNotificationCenter().getNotificationSettings { (settings) in
-                if settings.authorizationStatus == .authorized {
-                    let content = UNMutableNotificationContent()
-                    content.title = "Test Complete"
-                    if(self.chooseCowAtBeginning == false){
-                        var bodyString = "Your test is complete for Test Date: "
-                        bodyString += timeString!
-                        content.body = bodyString
+            
+        
+            //not sure if this is the best method to delay - look into this
+            let currentTime = DispatchTime.now()
+            var testDuration: Int? = nil
+            DispatchQueue.main.sync{
+                testDuration = self.menuView!.getSettingsView().getTestDuration()
+            }
+        
+            self.continuousValueTestQueue!.asyncAfter(deadline: currentTime + .seconds(testDuration! * 1/4)){
+                DispatchQueue.main.sync {
+                    self.testProgressView.setProgress(0.25, animated: true)
+                }
+            }
+            self.continuousValueTestQueue!.asyncAfter(deadline: currentTime + .seconds(testDuration! * 1/2 )){
+                DispatchQueue.main.sync {
+                    self.testProgressView.setProgress(0.5, animated: true)
+                }
+            }
+            self.continuousValueTestQueue!.asyncAfter(deadline: currentTime + .seconds(testDuration! * 3/4)){
+                DispatchQueue.main.sync {
+                    self.testProgressView.setProgress(0.75, animated: true)
+                }
+            }
+            self.continuousValueTestQueue!.asyncAfter(deadline: currentTime + .seconds(testDuration!)){
+                timer.invalidate() //stops timer from running/firing
+            
+                //testing purposes
+                print("end of test\n\n")
+                testTimer.invalidate()
+            
+                DispatchQueue.main.sync {
+                    self.testProgressView.setProgress(1, animated: true)
+                    
+                    self.testProgressView.isHidden = true
+                    
+                    //make the graph from peripheralDevice here
+                    self.glucoseResultTable.reloadData()
+                    self.glucoseResultTable.isHidden = false
+                }
+            
+                print(self.peripheralData.count)
+                
+                //populate the graph data
+                for i in 0...testDuration!{ //should only happen 0 - testDuration times
+                    let dataEntry = ChartDataEntry(x: Double(i), y: Double(self.peripheralData[i]))
+                    self.dataEntries.append(dataEntry)
+                }
+            
+                DispatchQueue.main.sync {
+                    //print graph of results here
+                    self.lineChartView.isHidden = false
+                    let lineChartDataSet = LineChartDataSet(entries: self.dataEntries, label: "Glucose Results")
+                    let lineChartData = LineChartData(dataSet: lineChartDataSet)
+                    self.lineChartView.data = lineChartData
+                    self.lineChartView.xAxis.granularity = 1
+                    self.lineChartView.xAxis.labelPosition = XAxis.LabelPosition.bottom
+                    self.lineChartView.setVisibleXRangeMaximum(5.0) //causes you to have to scroll to see the rest of the values
+                    self.lineChartView.moveViewToX(0.0) //initially display the graph starting at index of 0
+                    self.lineChartView.isHidden = false
+                }
+            
+                self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
+            
+                //sending the final value of the result set
+                if(self.wcSession != nil){
+                    if(self.wcSession!.isReachable){
+                        do{
+                            try self.wcSession?.updateApplicationContext(["ContinuousValueFinalTestResult":self.peripheralData.last!])
+                        }catch{
+                            print("error while updating application context")
+                        }
                     }
-                    else{
-                        var bodyString = "Your test is compelte for "
-                        bodyString += herdID!
-                        bodyString += ", "
-                        bodyString += cowID!
-                        bodyString += ", Test Date: "
-                        bodyString += timeString!
+                }
+            
+                self.testResultToSave = self.peripheralData.last
+            
+                DispatchQueue.main.sync {
+                    self.resetTestBtn.isEnabled = true
+                    self.resetTestBtn.isHidden = false
+                    self.saveTestBtn.isEnabled = true
+                    self.saveTestBtn.isHidden = false
+                }
+            
+                var herdID: String? = nil
+                var cowID: String? = nil
+                var timeString: String? = nil
+            
+                DispatchQueue.main.async{
+                    herdID = self.testHerdIDLabel.text
+                    cowID = self.testCowIDLabel.text
+                    timeString = self.testDateLabel.text
+                }
+            
+                //send notifiation if app is in background
+                self.appDelegate!.getNotificationCenter().getNotificationSettings { (settings) in
+                    if settings.authorizationStatus == .authorized {
+                        let content = UNMutableNotificationContent()
+                        content.title = "Test Complete"
+                        if(self.chooseCowAtBeginning == false){
+                            var bodyString = "Your test is complete for Test Date: "
+                            bodyString += timeString!
+                            content.body = bodyString
+                        }
+                        else{
+                            var bodyString = "Your test is compelte for "
+                            bodyString += herdID!
+                            bodyString += ", "
+                            bodyString += cowID!
+                            bodyString += ", Test Date: "
+                            bodyString += timeString!
                         
-                        content.body = bodyString
-                    }
-                    content.sound = UNNotificationSound.default
-                    content.badge = 1
+                            content.body = bodyString
+                        }
+                        content.sound = UNNotificationSound.default
+                        content.badge = 1
                     
-                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+                        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
                     
-                    let identifier = "Local Test Finished Notification"
-                    let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+                        let identifier = "Local Test Finished Notification"
+                        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
                     
-                    self.appDelegate?.getNotificationCenter().add(request) { (error) in
-                        if let error = error {
-                            print("Error \(error.localizedDescription)")
+                        self.appDelegate?.getNotificationCenter().add(request) { (error) in
+                            if let error = error {
+                                print("Error \(error.localizedDescription)")
+                            }
                         }
                     }
                 }
             }
-            
         }
     }
+    
+    
 
     @objc private func readNewContinuousData(){
+    
         var glucoseResult: Float?
         
         //print(integratedVoltageValue)
         
-        if(self.testPageController!.getIntegratedVoltageValue() == nil){
+        var intVoltageValue: Int? = nil
+        //DispatchQueue.main.sync {
+            intVoltageValue = self.testPageController!.getIntegratedVoltageValue()!
+        //}
+        
+        if(intVoltageValue == nil){
             glucoseResult = nil
         }
-        else if(self.testPageController!.getIntegratedVoltageValue()! != 0){ //will give positive value of glucose (depends which strip is used)
+        else if(intVoltageValue! != 0){ //will give positive value of glucose (depends which strip is used)
             
             //print(Float(Float(self.integratedVoltageValue!) / Float(1000)))
-            let testType = self.menuView?.getSettingsView().getTestType()
+            var testType: Int? = nil
+            
+           // DispatchQueue.main.sync {
+                testType = self.menuView?.getSettingsView().getTestType()
+            //}
             
             switch testType{
                 case 0: //Immunoglobulins
-                    glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!)) / 33.109 //this is measured/based off the integrated voltage after 10s
+                    //DispatchQueue.main.sync {
+                        glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!)) / 33.109 //this is measured/based off the integrated voltage after 10s
+                    //}
                 
                 case 1: //Lactoferrin
-                    glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!)) / 33.109 //this is measured/based off the integrated voltage after 10s
+                    //DispatchQueue.main.sync {
+                        glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!)) / 33.109 //this is measured/based off the integrated voltage after 10s
+                    //}
                 
                 case 2: //Blood Calcium
-                    glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!)) / 33.109 //this is measured/based off the integrated voltage after 10s
+                    //DispatchQueue.main.sync {
+                        glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!)) / 33.109 //this is measured/based off the integrated voltage after 10s
+                    //}
                 
                 case 3: //Generic Glucose
-                    glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!)) / 33.109 //this is measured/based off the integrated voltage after 10s
+                    //DispatchQueue.main.sync {
+                        glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!)) / 33.109 //this is measured/based off the integrated voltage after 10s
+                    //}
                 
                 default:
-                    glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!)) / 33.109 //this is measured/based off the integrated voltage after 10s
+                    //DispatchQueue.main.sync {
+                        glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!)) / 33.109 //this is measured/based off the integrated voltage after 10s
+                    //}
             }
         
         }
@@ -1659,11 +1724,17 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
     
     //testing purposes
     @objc private func readNewVoltage(){
-        if(self.testPageController!.getIntegratedVoltageValue() == nil){
+        
+        var intVoltageValue: Int? = nil
+        //DispatchQueue.main.sync {
+            intVoltageValue = self.testPageController!.getIntegratedVoltageValue()
+        //}
+        
+        if(intVoltageValue == nil){
             print("nil")
         }
         else{
-            print(self.testPageController!.getIntegratedVoltageValue()!)
+            print(intVoltageValue!)
         }
     }
     

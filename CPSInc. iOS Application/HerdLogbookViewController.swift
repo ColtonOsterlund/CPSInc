@@ -223,7 +223,7 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
             //iterate through csvRowArray creating a new cow for each row
             for row in csvRowArray{
                 //create new cow
-                var cow: Cow? = Cow(context: (self.appDelegate?.persistentContainer.viewContext)!)
+                let cow: Cow? = Cow(context: (self.appDelegate?.persistentContainer.viewContext)!)
                 //separate row into cow attribute array
                 let cowAttributeArray = row.components(separatedBy: ",")
                 

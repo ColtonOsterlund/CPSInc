@@ -10,7 +10,7 @@ import UIKit
 import SwiftKeychainWrapper
 import WatchConnectivity
 
-class LoginViewController: UIViewController, UITextFieldDelegate, WCSessionDelegate {
+public class LoginViewController: UIViewController, UITextFieldDelegate, WCSessionDelegate {
 
     //views
     private var registerView: RegisterAccountViewController? = nil
@@ -38,7 +38,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, WCSessionDeleg
     private let scanningIndicator = UIActivityIndicatorView()
     
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         
         self.title = "Login"
@@ -124,7 +124,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, WCSessionDeleg
     }
     
     
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         emailTextField.text = ""
         passwordTextField.text = ""
     }
@@ -132,7 +132,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, WCSessionDeleg
     
     
     // This allows you to initialise your custom UIViewController without a nib or bundle.
-    public convenience init(appDelegate: AppDelegate?, accountView: AccountPageViewController?, menuView: MenuViewController?) {
+   convenience init(appDelegate: AppDelegate?, accountView: AccountPageViewController?, menuView: MenuViewController?) {
         self.init(nibName:nil, bundle:nil)
         
         self.appDelegate = appDelegate
@@ -155,7 +155,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, WCSessionDeleg
     
     
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if(textField.tag == 0){
             //email text field
             emailTextField.endEditing(true)
@@ -325,15 +325,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate, WCSessionDeleg
         }
     }
     
-    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+    public func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         //fill out
     }
     
-    func sessionDidBecomeInactive(_ session: WCSession) {
+    public func sessionDidBecomeInactive(_ session: WCSession) {
         //fill out
     }
     
-    func sessionDidDeactivate(_ session: WCSession) {
+    public func sessionDidDeactivate(_ session: WCSession) {
         //fill out
     }
     

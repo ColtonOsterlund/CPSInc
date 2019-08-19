@@ -684,6 +684,10 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         inQueueView = flag
     }
     
+    public func getLoginView() -> LoginViewController{
+        return loginView!
+    }
+    
     public func setSyncUpToDate(upToDate: Bool){
         if(upToDate){
             greenCircleView.isHidden = false

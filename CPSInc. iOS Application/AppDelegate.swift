@@ -122,7 +122,7 @@ public class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotification
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
         
-        if response.notification.request.identifier == "Local Test Finished Notification" {
+        if response.notification.request.identifier.prefix(32) == "Local Test Finished Notification" {
             navigationController?.popToRootViewController(animated: true)
             navigationController?.pushViewController((firstView?.getTestPageView().getTestPages()[0])!, animated: true)
         
@@ -132,7 +132,7 @@ public class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotification
             navigationController?.pushViewController((firstView?.getConnectView())!, animated: true)
             
         }
-        else if response.notification.request.identifier == "Local Timer Almost Done Notification"{
+        else if response.notification.request.identifier.prefix(36) == "Local Timer Almost Done Notification"{
             navigationController?.popToRootViewController(animated: true)
             navigationController?.pushViewController((firstView?.getTestPageView().getTestPages()[0])!, animated: true)
             
