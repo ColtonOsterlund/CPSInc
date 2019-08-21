@@ -1,0 +1,6 @@
+13:52:17 **** Incremental Build of configuration GNU ARM v7.2.1 - Default for project CPSIncDeviceBootloader ****
+make -j4 all 
+make: Nothing to be done for `all'.
+
+13:52:19 Build Finished (took 1s.938ms)
+
