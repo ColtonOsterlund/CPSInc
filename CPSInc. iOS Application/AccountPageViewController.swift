@@ -214,10 +214,59 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
         }
         
         
-        
-        //NEED TO SEND REQUEST TO BLACKLIST JWT TOKEN
-        
-        
+//        let group = DispatchGroup()
+//        group.enter()
+//
+//        var request = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/user/logout")!)
+//        request.httpMethod = "POST"
+//        request.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
+//
+//        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+//            if(error != nil){
+//                print("Error occured during /logout RESTAPI request")
+//                DispatchQueue.main.async {
+//                    self.showToast(controller: self, message: "Error: " + (error as! String), seconds: 1)
+//                }
+//            }
+//            else{
+//
+//                //                        DispatchQueue.main.async {
+//                //                            self.showToast(controller: self, message: String(decoding: data!, as: UTF8.self), seconds: 1)
+//                //                        }
+//
+//
+//                print("Response:")
+//                print(response!)
+//                print("Data:")
+//                print(String(decoding: data!, as: UTF8.self))
+//
+//
+//                if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
+//                    DispatchQueue.main.async {
+//                        self.navigationController?.popToRootViewController(animated: true)
+//                        self.navigationController?.pushViewController(self.menuView!.getLoginView(), animated: true)
+//                    }
+//
+//
+//                    return
+//                }
+//
+//
+//                if(String(decoding: data!, as: UTF8.self) != "Success"){ //error occured
+//                    DispatchQueue.main.async {
+//                        self.showToast(controller: self, message: "Error: " + String(decoding: data!, as: UTF8.self), seconds: 1)
+//                    }
+//                }
+//                else{
+//                    print("Blacklisted JWT Token")
+//                    group.leave()
+//                }
+//            }
+//        }
+//
+//        task.resume()
+//
+//        group.wait()
         
         let removeJWTSuccessfull = KeychainWrapper.standard.removeObject(forKey: "JWT-Auth-Token") //remove jwt token
         
@@ -638,7 +687,6 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
                 self.showToast(controller: self, message: "No Internet Connection", seconds: 1)
                 return
             }
-            
             
             DispatchQueue.main.async{
                 self.scanningIndicator.startAnimating()

@@ -35,9 +35,9 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
 //    private var differentialVoltageValue: Int? = nil
     
     private let incubationTimeMinutes = "00"
-    private let incubationTimeSeconds = "20"
+    private let incubationTimeSeconds = "05"
     private let notificationTimeMinutes = "00"
-    private let notificationTimeSeconds = "10"
+    private let notificationTimeSeconds = "03"
     
     //UITableView
     private let glucoseResultTable = UITableView()
@@ -1498,7 +1498,10 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
         
             //print(integratedVoltageValue)
         
-            self.readNewContinuousData() //read data at 0s first - this should be threaded properly from inside the method - only call this method from inside a background queue
+            DispatchQueue.main.sync {
+                self.readNewContinuousData() 
+            }
+            
             
             var timer = Timer()
             DispatchQueue.main.sync{

@@ -11,7 +11,7 @@ import CoreBluetooth
 import QuartzCore //to be able to round the background edges on the switches
 import WatchConnectivity
 
-public class SettingsViewController: UIViewController, WCSessionDelegate, UIPickerViewDataSource, UIPickerViewDelegate{
+public class SettingsViewController: UIViewController, WCSessionDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate{
     
     //View Controllers
     private var menuView: MenuViewController? = nil
@@ -23,11 +23,15 @@ public class SettingsViewController: UIViewController, WCSessionDelegate, UIPick
     private let testTypeLabel = UILabel()
     private let testDurationLabel = UILabel()
     private let testTypePickerLabel = UILabel()
+    private let manualCalibrationLabel = UILabel()
     
     //PickerView
     private let finalContinuousPicker = UIPickerView()
     private let testDurationPicker = UIPickerView()
     private let testTypePicker = UIPickerView()
+    
+    //UISwitch
+    private let manualCalibrationSwitch = UISwitch()
     
     //User Defaults
     private let defaults = UserDefaults.standard
@@ -36,6 +40,10 @@ public class SettingsViewController: UIViewController, WCSessionDelegate, UIPick
     private let finalContinuousTextView = UILabel()
     private let testDurationTextView = UILabel()
     private let testTypeTextView = UILabel()
+    
+    //textFields
+    private let mManualCalibrationTextView = UITextField()
+    private let bManualCalibrationTextView = UITextField()
     
     //buttons
     private let selectBtn = UIButton()
@@ -93,6 +101,7 @@ public class SettingsViewController: UIViewController, WCSessionDelegate, UIPick
         defaults.register(defaults: ["finalContinuousTextViewDefault": "Final Value"])
         defaults.register(defaults: ["testDurationTextViewDefault": "5 Seconds"])
         defaults.register(defaults: ["testTypeTextViewDefault": "Immunoglobulins"])
+        defaults.register(defaults: ["manualCalibrationDefault": false])
     }
 
     // This is also necessary when extending the superclass.
@@ -127,6 +136,14 @@ public class SettingsViewController: UIViewController, WCSessionDelegate, UIPick
         testTypePickerLabel.font = UIFont.boldSystemFont(ofSize: 25.0)
         testTypePickerLabel.textAlignment = .center
         view.addSubview(testTypePickerLabel)
+        
+        let underlinedManualCalibrationLabel: NSMutableAttributedString = NSMutableAttributedString(string: "Manual Calibration:")
+        underlinedManualCalibrationLabel.addAttribute(NSAttributedString.Key.underlineStyle, value: 1, range: NSMakeRange(0, underlinedManualCalibrationLabel.length))
+        manualCalibrationLabel.attributedText = underlinedManualCalibrationLabel
+        manualCalibrationLabel.textColor = .black
+        manualCalibrationLabel.font = UIFont.boldSystemFont(ofSize: 25.0)
+        manualCalibrationLabel.textAlignment = .center
+        view.addSubview(manualCalibrationLabel)
         
         finalContinuousPicker.tag = 0
         finalContinuousPicker.backgroundColor = .gray
@@ -213,9 +230,26 @@ public class SettingsViewController: UIViewController, WCSessionDelegate, UIPick
         testTypeBtn.isEnabled = true
         view.addSubview(testTypeBtn)
         
+        manualCalibrationSwitch.setOn(defaults.bool(forKey: "manualCalibrationDefault"), animated: true)
+        manualCalibrationSwitch.addTarget(self, action: #selector(manualCalibrationSwitchStateChanged), for: .valueChanged)
+        view.addSubview(manualCalibrationSwitch)
         
+        mManualCalibrationTextView.placeholder = "Enter Slope Value (m)"
+        mManualCalibrationTextView.tag = 0
+        view.addSubview(mManualCalibrationTextView)
         
+        bManualCalibrationTextView.placeholder = "Enter Origin Value (b)"
+        bManualCalibrationTextView.tag = 1
+        view.addSubview(bManualCalibrationTextView)
         
+        if(defaults.bool(forKey: "manualCalibrationDefault") == true){
+            mManualCalibrationTextView.isHidden = false
+            bManualCalibrationTextView.isHidden = false
+        }
+        else{
+            mManualCalibrationTextView.isHidden = true
+            bManualCalibrationTextView.isHidden = true
+        }
         
         if(defaults.integer(forKey: "testTypeDefault") == 0){ //immunoglobulins
             changeToImmunoglobulin()
@@ -235,6 +269,10 @@ public class SettingsViewController: UIViewController, WCSessionDelegate, UIPick
         testTypePickerLabel.translatesAutoresizingMaskIntoConstraints = false
         testTypePickerLabel.topAnchor.constraint(equalTo: testDurationLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         testTypePickerLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.07)).isActive = true
+        
+        manualCalibrationLabel.translatesAutoresizingMaskIntoConstraints = false
+        manualCalibrationLabel.topAnchor.constraint(equalTo: testTypePickerLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        manualCalibrationLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.07)).isActive = true
         
         finalContinuousBtn.translatesAutoresizingMaskIntoConstraints = false
         finalContinuousBtn.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
@@ -298,6 +336,18 @@ public class SettingsViewController: UIViewController, WCSessionDelegate, UIPick
         selectBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.9)).isActive = true
         selectBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         
+        manualCalibrationSwitch.translatesAutoresizingMaskIntoConstraints = false
+        manualCalibrationSwitch.topAnchor.constraint(equalTo: testTypePickerLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        manualCalibrationSwitch.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.05)).isActive = true
+        
+        mManualCalibrationTextView.translatesAutoresizingMaskIntoConstraints = false
+        mManualCalibrationTextView.topAnchor.constraint(equalTo: manualCalibrationLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        mManualCalibrationTextView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.1)).isActive = true
+        
+        bManualCalibrationTextView.translatesAutoresizingMaskIntoConstraints = false
+        bManualCalibrationTextView.topAnchor.constraint(equalTo: mManualCalibrationTextView.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        bManualCalibrationTextView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.1)).isActive = true
+
         
     }
     
@@ -415,6 +465,19 @@ public class SettingsViewController: UIViewController, WCSessionDelegate, UIPick
         }
     }
     
+    @objc private func manualCalibrationSwitchStateChanged(){
+        if(manualCalibrationSwitch.isOn){
+            defaults.set(true, forKey: "manualCalibrationDefault")
+            //display y = mx + b option
+            mManualCalibrationTextView.isHidden = false
+            bManualCalibrationTextView.isHidden = false
+        }
+        else{
+            defaults.set(false, forKey: "manualCalibrationDefault")
+            mManualCalibrationTextView.isHidden = true
+            bManualCalibrationTextView.isHidden = true
+        }
+    }
     
     private func changeToImmunoglobulin(){
         //change to final value
