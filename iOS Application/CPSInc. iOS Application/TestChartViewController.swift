@@ -15,7 +15,10 @@ class TestChartViewController: UIViewController {
     private var testList = [Test]()
     
     private let lineChartView = LineChartView()
-    private var dataEntries = [ChartDataEntry]()
+    private var immunoglobulinsDataEntries = [ChartDataEntry]()
+    private var lactoferrinDataEntries = [ChartDataEntry]()
+    private var bloodCalciumDataEntries = [ChartDataEntry]()
+    private var glucoseDataEntries = [ChartDataEntry]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,70 +31,107 @@ class TestChartViewController: UIViewController {
     
     private func setupGraph(){
         
-        lineChartView.noDataText = "No Data Selected/Within Selected Date Range"
-        lineChartView.noDataFont = lineChartView.noDataFont.withSize(20)
-        lineChartView.noDataTextColor = .red
         lineChartView.backgroundColor = .white
         view.addSubview(lineChartView)
-        lineChartView.isHidden = true
         
         lineChartView.translatesAutoresizingMaskIntoConstraints = false
+        lineChartView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         lineChartView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
         lineChartView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
-        lineChartView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         lineChartView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         
         
-        print("GOT HERE 1")
+        //first sort testList in order of dates
+        testList.sort(by: { $0.date!.compare($1.date! as Date) == .orderedAscending })
+
+        //set array of dates to use on x axis
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy HH:MM"// yyyy-MM-dd"
         
-        var dateStrings = [String]()
-        var initialTimeSince1970 = Double(FP_INFINITE)
-        var finalTimeSince1970 = Double(0)
-        
+        var dateArray = [String]()
         for test in testList{
-            
-            let graphableDateAsDouble = (test.date?.timeIntervalSince1970)!
-            
-            if(graphableDateAsDouble <= initialTimeSince1970){
-                initialTimeSince1970 = graphableDateAsDouble
-            }
-            if(graphableDateAsDouble >= finalTimeSince1970){
-                finalTimeSince1970 = graphableDateAsDouble
-            }
-            
-            let dateformatter = DateFormatter()
-            dateformatter.dateStyle = DateFormatter.Style.short
-            dateformatter.timeStyle = DateFormatter.Style.short
-            dateStrings.append(String(dateformatter.string(from: test.date! as Date)))
-            
-            let dataEntry = ChartDataEntry(x: graphableDateAsDouble, y: Double(test.value))
-            self.dataEntries.append(dataEntry)
+            print("got here 1")
+            dateArray.append(dateFormatter.string(from: test.date! as Date))
         }
         
+
+        for (index, test) in testList.enumerated(){
+            
+            print("got here 2")
+            
+            if(test.testType == "Immunoglobulins"){
+                let dataEntry = ChartDataEntry(x: Double(index), y: Double(test.value))
+                immunoglobulinsDataEntries.append(dataEntry)
+            }
+            
+             else if(test.testType == "Lactoferrin"){
+                let dataEntry = ChartDataEntry(x: Double(index), y: Double(test.value))
+                lactoferrinDataEntries.append(dataEntry)
+            }
+
+            else if(test.testType == "Blood Calcium"){
+                let dataEntry = ChartDataEntry(x: Double(index), y: Double(test.value))
+                bloodCalciumDataEntries.append(dataEntry)
+            }
+
+            else{
+                let dataEntry = ChartDataEntry(x: Double(index), y: Double(test.value))
+                glucoseDataEntries.append(dataEntry)
+            }
+
+        }
         
-       
+        //IMMUNOGLOBULINS
         
-        lineChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: dateStrings)
+        let immunoglobulinsChartDataSet = LineChartDataSet(entries: immunoglobulinsDataEntries, label: "Immunoglobulins")
+        immunoglobulinsChartDataSet.circleColors = [.blue]
+        immunoglobulinsChartDataSet.colors = [.blue]
+        
+        
+        //LACTOFERRIN
+
+        let lactoferrinChartDataSet = LineChartDataSet(entries: lactoferrinDataEntries, label: "Lactoferrin")
+        lactoferrinChartDataSet.circleColors = [.red]
+        lactoferrinChartDataSet.colors = [.red]
+        
+        
+        //BLOOD CALCIUM
+        
+        let bloodCalciumChartDataSet = LineChartDataSet(entries: bloodCalciumDataEntries, label: "Blood Calcium")
+        bloodCalciumChartDataSet.circleColors = [.green]
+        bloodCalciumChartDataSet.colors = [.green]
+        
+        
+        //GLUCOSE
+      
+        let glucoseChartDataSet = LineChartDataSet(entries: glucoseDataEntries, label: "Glucose")
+        glucoseChartDataSet.circleColors = [.yellow]
+        glucoseChartDataSet.colors = [.yellow]
+        
+        
+        
+        let chartData = LineChartData(dataSets: [immunoglobulinsChartDataSet, lactoferrinChartDataSet, bloodCalciumChartDataSet, glucoseChartDataSet])
+        lineChartView.data = chartData
+        
+        lineChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: dateArray)
+       // lineChartView.xAxis.setLabelCount(dateArray.count, force: true)
+        lineChartView.xAxis.labelPosition = .bottom
         lineChartView.xAxis.granularity = 1
-        lineChartView.xAxis.labelPosition = XAxis.LabelPosition.bottom
+        lineChartView.leftAxis.granularity = 1
+        lineChartView.setVisibleXRangeMaximum(5)
+        lineChartView.setVisibleYRangeMaximum(32, axis: lineChartView.leftAxis.axisDependency)
+        lineChartView.xAxis.drawGridLinesEnabled = true
+        lineChartView.leftAxis.drawGridLinesEnabled = true
+        lineChartView.xAxis.labelRotationAngle = -90
         
+       // lineChartView.rightAxis.drawAxisLineEnabled = false
+        lineChartView.rightAxis.drawLabelsEnabled = false
         
+        lineChartView.leftAxis.drawAxisLineEnabled = true
+        lineChartView.pinchZoomEnabled = false
+        lineChartView.doubleTapToZoomEnabled = false
         
-        
-        //print graph of results here
-        let lineChartDataSet = LineChartDataSet(entries: self.dataEntries, label: "Test Results")
-        let lineChartData = LineChartData(dataSet: lineChartDataSet)
-        self.lineChartView.data = lineChartData
-//        self.lineChartView.setVisibleXRangeMinimum(initialTimeSince1970)
-//        self.lineChartView.setVisibleXRangeMaximum(finalTimeSince1970)
-//        self.lineChartView.setVisibleYRangeMinimum(Double(0), axis: lineChartView.leftAxis.axisDependency)
-//        self.lineChartView.setVisibleYRangeMaximum(Double(32), axis: lineChartView.leftAxis.axisDependency)
-//        self.lineChartView.setVisibleYRangeMinimum(Double(0), axis: lineChartView.rightAxis.axisDependency)
-//        self.lineChartView.setVisibleYRangeMaximum(Double(32), axis: lineChartView.rightAxis.axisDependency)
-        //self.lineChartView.moveViewToX(0.0) //initially display the graph starting at index of 0
-        self.lineChartView.isHidden = false
-        
-        
+        lineChartView.chartDescription?.text = ""
     }
     
     
@@ -102,7 +142,10 @@ class TestChartViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         testList.removeAll()
-        dataEntries.removeAll()
+        immunoglobulinsDataEntries.removeAll()
+        lactoferrinDataEntries.removeAll()
+        bloodCalciumDataEntries.removeAll()
+        glucoseDataEntries.removeAll()
     }
     
     

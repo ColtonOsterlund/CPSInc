@@ -123,8 +123,21 @@ public class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotification
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
         
         if response.notification.request.identifier.prefix(32) == "Local Test Finished Notification" {
+            
+            let pageID = Int(response.notification.request.identifier.suffix(1)) //will always be a number between 0-9 since you can only run 10 tests at once, so one digit is enough
+            var pageIndex = 0
+            for page in (firstView?.getTestPageView().getTestPages())!{
+                if(page.getPageID()! == pageID){
+                    break
+                }
+                pageIndex += 1
+            }
+            
+            firstView?.getTestPageView().setViewControllers([(firstView?.getTestPageView().getTestPages()[pageIndex])!], direction: .forward, animated: true, completion: nil)
+            firstView?.getTestPageView().pageControl.currentPage = pageIndex
+            
             navigationController?.popToRootViewController(animated: true)
-            navigationController?.pushViewController((firstView?.getTestPageView().getTestPages()[0])!, animated: true)
+            navigationController?.pushViewController((firstView?.getTestPageView())!, animated: true)
         
         }
         else if response.notification.request.identifier == "Local Device Discovered Notification"{
@@ -133,8 +146,21 @@ public class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotification
             
         }
         else if response.notification.request.identifier.prefix(36) == "Local Timer Almost Done Notification"{
+            
+            let pageID = Int(response.notification.request.identifier.suffix(1)) //will always be a number between 0-9 since you can only run 10 tests at once, so one digit is enough
+            var pageIndex = 0
+            for page in (firstView?.getTestPageView().getTestPages())!{
+                if(page.getPageID()! == pageID){
+                    break
+                }
+                pageIndex += 1
+            }
+            
+            firstView?.getTestPageView().setViewControllers([(firstView?.getTestPageView().getTestPages()[pageIndex])!], direction: .forward, animated: true, completion: nil)
+            firstView?.getTestPageView().pageControl.currentPage = pageIndex
+            
             navigationController?.popToRootViewController(animated: true)
-            navigationController?.pushViewController((firstView?.getTestPageView().getTestPages()[0])!, animated: true)
+            navigationController?.pushViewController((firstView?.getTestPageView())!, animated: true)
             
         }
         else if response.notification.request.identifier == "Import Complete Notification"{
@@ -151,13 +177,13 @@ public class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotification
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         
-        if(notification.request.identifier == "Local Test Finished Notification" /*&& navigationController?.visibleViewController != firstView?.getTestView()*/){ //jeroen wants this to show from the view
+        if(notification.request.identifier.prefix(32) == "Local Test Finished Notification" /*&& navigationController?.visibleViewController != firstView?.getTestView()*/){ //jeroen wants this to show from the view
             completionHandler([.alert, .sound])
         }
         else if(notification.request.identifier == "Local Device Discovered Notification" && navigationController?.visibleViewController != firstView?.getConnectView() && navigationController?.viewControllers[(navigationController?.viewControllers.count)! - 1] != firstView?.getConnectView()){ //the last check is to check that it is not the last view in the navigationcontroller while showing a "connected" toast or a scanning indicator on ConnectView
             completionHandler([.alert, .sound])
         }
-        else if(notification.request.identifier == "Local Timer Almost Done Notification" /*&& navigationController?.visibleViewController != firstView?.getTestView()*/){ //jeroen wants this to show from the view
+        else if(notification.request.identifier.prefix(36) == "Local Timer Almost Done Notification" /*&& navigationController?.visibleViewController != firstView?.getTestView()*/){ //jeroen wants this to show from the view
             completionHandler([.alert, .sound])
         }
         else if(notification.request.identifier == "Import Complete Notification" && navigationController?.visibleViewController != firstView?.getHerdLogbookView()){

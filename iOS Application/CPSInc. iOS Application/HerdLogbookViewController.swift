@@ -62,6 +62,9 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
             print("Error during fetch request")
         }
         
+        
+        herdList.sort(by: {$0.id!.localizedStandardCompare($1.id!) == .orderedAscending})
+        
         tableView.reloadData()
     }
     
@@ -220,23 +223,40 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
             //remove first row from csv row array to be left with only cow data
             csvRowArray.removeFirst()
             
+            //variable to keep track of whether end of cow info was reached in file
+            
             //iterate through csvRowArray creating a new cow for each row
             for row in csvRowArray{
-                //create new cow
-                let cow: Cow? = Cow(context: (self.appDelegate?.persistentContainer.viewContext)!)
                 //separate row into cow attribute array
                 let cowAttributeArray = row.components(separatedBy: ",")
+                
+                
+                
+             
+                DispatchQueue.main.sync {
+                    print("-" + cowAttributeArray[0] + "-")
+                }
+                
+                
+                
+                //create new cow
+                let cow: Cow? = Cow(context: (self.appDelegate?.persistentContainer.viewContext)!)
+                
                 
                 //itterate through cowAttributeArray keeping track of the index to compare with the header values to know where to place the attribute
                 for (index, attribute) in cowAttributeArray.enumerated(){
                     //switch through the header values to know where to place the attribute
+                    
                     switch(csvHeaderColumnArray[index]){
                         case "ID":
+                            print("id: " + attribute)
                             cow!.id = attribute
                         case "DIM":
+                            print("dim: " + attribute)
                             cow!.daysInMilk = attribute
                             cow!.dryOffDay = String(305 - Int(attribute)!)
                         case "MAVG":
+                            print("mavg: " + attribute)
                             cow!.dailyMilkAverage = attribute
 //                        case "dry off day":
 //                            cow!.dryOffDay = attribute
@@ -247,17 +267,23 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
 //                        case "name":
 //                            cow!.name = attribute
                         case "LACT":
+                            print("lact: " + attribute)
                             cow!.parity = attribute
                         case "RPRO":
+                            print("rpro: " + attribute)
                             cow!.reproductionStatus = attribute
                         case "TBRD":
+                            print("tbrd: " + attribute)
                             cow!.numberTimesBred = attribute
                         case "MFI":
+                            print("mfi: " + attribute)
                             cow!.farmBreedingIndex = attribute
                         default:
+                            //print("default case")
                             break
                     }
                 }
+                
                 
                 cow!.mastitisHistory = ""
                 cow!.methodOfDryOff = ""

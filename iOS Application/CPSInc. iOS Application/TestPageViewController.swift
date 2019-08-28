@@ -250,6 +250,21 @@ public class TestPageViewController: UIPageViewController, UIPageViewControllerD
     //getters/setters
     
     public func addPage(pageToAdd: TestViewController?){
+        //give the page a pageID unique to all the other pages
+        var id: Int? = 0
+        var idCleared = false
+        while(!idCleared){
+            idCleared = true
+            for page in pages{
+                if(page.getPageID()! == id!){
+                    id! += 1
+                    idCleared = false
+                }
+            }
+        }
+        
+        pageToAdd?.setPageID(id: id)
+        
         pages.append(pageToAdd!)
         pageControl.numberOfPages = pages.count
         //setViewControllers([pages[initialPage]], direction: .forward, animated: true, completion: nil)

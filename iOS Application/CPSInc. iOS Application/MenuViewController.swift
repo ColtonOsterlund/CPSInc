@@ -690,6 +690,8 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     
     public func setSyncUpToDate(upToDate: Bool){
         if(upToDate){
+            //print("DOING THIS RIGH NOW")
+            
             greenCircleView.isHidden = false
             redCircleView.isHidden = true
             
@@ -704,5 +706,10 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
             accountView!.setSyncStatus(needsSync: true)
         }
     }
+    
+    public func getAppDelegate() -> AppDelegate{
+        return appDelegate!
+    }
+
     
 }

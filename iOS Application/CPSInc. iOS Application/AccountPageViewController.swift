@@ -96,16 +96,10 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
         view.addSubview(backupCloudBtn)
         backupCloudBtn.addTarget(self, action: #selector(backupCloudBtnPressed), for: .touchUpInside)
         
-        if(defaults.string(forKey: "PreviousSyncDateDefault") == "None"){
-            backupCloudBtn.setTitleColor(.lightGray, for: .normal)
-            backupCloudBtn.layer.borderColor = UIColor.lightGray.cgColor
-            backupCloudBtn.isEnabled = false
-        }
-        else{
             backupCloudBtn.setTitleColor(.black, for: .normal)
             backupCloudBtn.layer.borderColor = UIColor.black.cgColor
             backupCloudBtn.isEnabled = true
-        }
+        
         
         
         syncStatusTitleLabel.attributedText = NSAttributedString(string: "Sync Status: ", attributes:
@@ -115,21 +109,13 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
         view.addSubview(syncStatusTitleLabel)
         
         
-        if(appDelegate!.getSyncUpToDate() == true){
-            syncStatusLabel.text = "    Up to Date"
-            syncStatusLabel.textColor = .green
-            syncCloudBtn.isEnabled = false
-            syncCloudBtn.layer.borderColor = UIColor.lightGray.cgColor
-            syncCloudBtn.setTitleColor(.lightGray, for: .normal)
-            
-        }
-        else{
+ 
             syncStatusLabel.text = "    Sync Required"
             syncStatusLabel.textColor = .red
             syncCloudBtn.isEnabled = true
             syncCloudBtn.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1).cgColor
             syncCloudBtn.setTitleColor(.black, for: .normal)
-        }
+        
         syncStatusLabel.textAlignment = .center
         view.addSubview(syncStatusLabel)
         
@@ -214,68 +200,67 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
         }
         
         
-//        let group = DispatchGroup()
-//        group.enter()
-//
-//        var request = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/user/logout")!)
-//        request.httpMethod = "POST"
-//        request.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
-//
-//        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-//            if(error != nil){
-//                print("Error occured during /logout RESTAPI request")
-//                DispatchQueue.main.async {
-//                    self.showToast(controller: self, message: "Error: " + (error as! String), seconds: 1)
-//                }
-//            }
-//            else{
-//
-//                //                        DispatchQueue.main.async {
-//                //                            self.showToast(controller: self, message: String(decoding: data!, as: UTF8.self), seconds: 1)
-//                //                        }
-//
-//
-//                print("Response:")
-//                print(response!)
-//                print("Data:")
-//                print(String(decoding: data!, as: UTF8.self))
-//
-//
-//                if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
-//                    DispatchQueue.main.async {
-//                        self.navigationController?.popToRootViewController(animated: true)
-//                        self.navigationController?.pushViewController(self.menuView!.getLoginView(), animated: true)
-//                    }
-//
-//
-//                    return
-//                }
-//
-//
-//                if(String(decoding: data!, as: UTF8.self) != "Success"){ //error occured
-//                    DispatchQueue.main.async {
-//                        self.showToast(controller: self, message: "Error: " + String(decoding: data!, as: UTF8.self), seconds: 1)
-//                    }
-//                }
-//                else{
-//                    print("Blacklisted JWT Token")
-//                    group.leave()
-//                }
-//            }
-//        }
-//
-//        task.resume()
-//
-//        group.wait()
-        
-        let removeJWTSuccessfull = KeychainWrapper.standard.removeObject(forKey: "JWT-Auth-Token") //remove jwt token
-        
-        let removeUserIDSuccessfull = KeychainWrapper.standard.removeObject(forKey: "User-ID-Token") //remove userID token
-        
-        if(removeJWTSuccessfull && removeUserIDSuccessfull){
-             navigationController?.popToViewController(menuView!, animated: true)
+        let group = DispatchGroup()
+        group.enter()
+
+        var request = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/user/logout")!)
+        request.httpMethod = "POST"
+        request.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if(error != nil){
+                print("Error occured during /logout RESTAPI request")
+                DispatchQueue.main.async {
+                    self.showToast(controller: self, message: "Error: " + (error as! String), seconds: 1)
+                }
+            }
+            else{
+
+                //                        DispatchQueue.main.async {
+                //                            self.showToast(controller: self, message: String(decoding: data!, as: UTF8.self), seconds: 1)
+                //                        }
+
+
+                print("Response:")
+                print(response!)
+                print("Data:")
+                print(String(decoding: data!, as: UTF8.self))
+
+
+                if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
+                    DispatchQueue.main.async {
+                        self.navigationController?.popToRootViewController(animated: true)
+                        self.navigationController?.pushViewController(self.menuView!.getLoginView(), animated: true)
+                    }
+                    
+                    return
+                }
+
+
+                if(String(decoding: data!, as: UTF8.self) != "Success"){ //error occured
+                    DispatchQueue.main.async {
+                        self.showToast(controller: self, message: "Error: " + String(decoding: data!, as: UTF8.self), seconds: 1)
+                    }
+                }
+                else{
+                    print("Blacklisted JWT Token")
+                    group.leave()
+                }
+            }
         }
+
+        task.resume()
+
+        group.wait()
         
+        
+        //let removeJWTSuccessfull = KeychainWrapper.standard.removeObject(forKey: "JWT-Auth-Token") //remove jwt token
+        
+        //let removeUserIDSuccessfull = KeychainWrapper.standard.removeObject(forKey: "User-ID-Token") //remove userID token
+        
+        //if(removeJWTSuccessfull && removeUserIDSuccessfull){
+            navigationController?.popToViewController(menuView!, animated: true)
+        //}
         
         DispatchQueue.main.async {
             self.scanningIndicator.stopAnimating()
@@ -310,7 +295,8 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
 
     @objc private func syncCloudBtnPressed(){ //start a sync logo
         
-        let group = DispatchGroup() //allows you to pause execution until value is not nil and non-zero
+        var returnToMain = false
+        
         
         if(Reachability.isConnectedToNetwork() == false){
             self.showToast(controller: self, message: "No Internet Connection", seconds: 1)
@@ -324,9 +310,70 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
         }
         //let syncQueue = DispatchQueue(label: "SyncQueue", qos: .background)
        // syncQueue.async {
-        
+        let group = DispatchGroup()
         group.enter()
-        print("entering group - syncing herds")
+        
+        //delete previous records
+        var request = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/sync")!)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-type")
+        request.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
+        request.setValue(KeychainWrapper.standard.string(forKey: "User-ID-Token"), forHTTPHeaderField: "user-id")
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if(error != nil){
+                print("Error occured during /login RESTAPI request")
+                DispatchQueue.main.async {
+                    self.showToast(controller: self, message: "Error: " + (error as! String), seconds: 1)
+                }
+                
+            }
+            else{
+                
+                //                        DispatchQueue.main.async {
+                //                            self.showToast(controller: self, message: String(decoding: data!, as: UTF8.self), seconds: 1)
+                //
+                //                        }
+                //
+                
+                print("Response:")
+                print(response!)
+                print("Data:")
+                print(String(decoding: data!, as: UTF8.self))
+                
+                
+                
+                if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
+                    DispatchQueue.main.async {
+                        self.navigationController?.popToRootViewController(animated: true)
+                        self.navigationController?.pushViewController(self.menuView!.getLoginView(), animated: true)
+                        
+                    }
+                    return
+                    
+                }
+                
+                
+                
+                if(String(decoding: data!, as: UTF8.self) != "Success"){ //error occured
+                    DispatchQueue.main.async {
+                        self.showToast(controller: self, message: "Error: " + String(decoding: data!, as: UTF8.self), seconds: 1)
+                    }
+                    return //return from function - end sync
+                }
+                
+                group.leave()
+                
+            }
+            
+            
+            //                    print("left group - syncing tests")
+        }
+        
+        task.resume()
+        
+        group.wait()
+        
         
             //fetch all Herds
             let herdFetchRequest: NSFetchRequest<Herd> = Herd.fetchRequest()
@@ -334,6 +381,66 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
             
             do{
                 savedHerdArray = try self.appDelegate?.persistentContainer.viewContext.fetch(herdFetchRequest)
+                
+                if(savedHerdArray!.isEmpty){
+                    
+                    var request = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/herd")!)
+                    request.httpMethod = "POST"
+                    request.setValue("application/json", forHTTPHeaderField: "Content-type")
+                    request.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
+                    request.setValue(KeychainWrapper.standard.string(forKey: "User-ID-Token"), forHTTPHeaderField: "user-id")
+                    
+                    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                        if(error != nil){
+                            print("Error occured during /login RESTAPI request")
+                            DispatchQueue.main.async {
+                                self.showToast(controller: self, message: "Error: " + (error as! String), seconds: 1)
+                            }
+                            
+                        }
+                        else{
+                            
+                            //                        DispatchQueue.main.async {
+                            //                            self.showToast(controller: self, message: String(decoding: data!, as: UTF8.self), seconds: 1)
+                            //
+                            //                        }
+                            //
+                            
+                            print("Response:")
+                            print(response!)
+                            print("Data:")
+                            print(String(decoding: data!, as: UTF8.self))
+                            
+                            
+                            
+                            if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
+                                DispatchQueue.main.async {
+                                    self.navigationController?.popToRootViewController(animated: true)
+                                    self.navigationController?.pushViewController(self.menuView!.getLoginView(), animated: true)
+                                    
+                                }
+                                return
+                                
+                            }
+                            
+                            
+                            
+                            if(String(decoding: data!, as: UTF8.self) != "Success"){ //error occured
+                                DispatchQueue.main.async {
+                                    self.showToast(controller: self, message: "Error: " + String(decoding: data!, as: UTF8.self), seconds: 1)
+                                }
+                                return //return from function - end sync
+                            }
+                            
+                        }
+                        
+                        //                    group.leave()
+                        //                    print("left group - syncing tests")
+                    }
+                    
+                    task.resume()
+                    
+                }
                 
                 //upload Herds
                 for herdToUpload in savedHerdArray! {
@@ -364,6 +471,7 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
                     request.httpBody = herdJsonData
                     request.setValue("application/json", forHTTPHeaderField: "Content-type")
                     request.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
+                    request.setValue(KeychainWrapper.standard.string(forKey: "User-ID-Token"), forHTTPHeaderField: "user-id")
                     
                     let task = URLSession.shared.dataTask(with: request) { data, response, error in
                         if(error != nil){
@@ -386,8 +494,7 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
                             
                             
                             if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
-                                self.navigationController?.popToRootViewController(animated: true)
-                                self.navigationController?.pushViewController(self.menuView!.getLoginView(), animated: true)
+                                returnToMain = true
                                 return
                             }
                             
@@ -401,7 +508,6 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
                             }
                         }
                         
-                        group.leave()
                         print("left group - syncing herds")
                     }
                     
@@ -418,9 +524,15 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
             }
             
         
-        group.wait()
         
-        group.enter()
+        if(returnToMain == true){
+            DispatchQueue.main.async {
+                self.navigationController?.popToViewController(self.menuView!, animated: true)
+            }
+        }
+            
+        else{
+        
         print("entered group - syncing cows")
         
             //fetch all cows
@@ -429,6 +541,68 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
             
             do{
                 savedCowArray = try self.appDelegate?.persistentContainer.viewContext.fetch(cowFetchRequest)
+                
+                
+                if(savedCowArray!.isEmpty){
+                    
+                    var request = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/cow")!)
+                    request.httpMethod = "POST"
+                    request.setValue("application/json", forHTTPHeaderField: "Content-type")
+                    request.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
+                    request.setValue(KeychainWrapper.standard.string(forKey: "User-ID-Token"), forHTTPHeaderField: "user-id")
+                    
+                    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                        if(error != nil){
+                            print("Error occured during /login RESTAPI request")
+                            DispatchQueue.main.async {
+                                self.showToast(controller: self, message: "Error: " + (error as! String), seconds: 1)
+                            }
+                            
+                        }
+                        else{
+                            
+                            //                        DispatchQueue.main.async {
+                            //                            self.showToast(controller: self, message: String(decoding: data!, as: UTF8.self), seconds: 1)
+                            //
+                            //                        }
+                            //
+                            
+                            print("Response:")
+                            print(response!)
+                            print("Data:")
+                            print(String(decoding: data!, as: UTF8.self))
+                            
+                            
+                            
+                            if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
+                                DispatchQueue.main.async {
+                                    self.navigationController?.popToRootViewController(animated: true)
+                                    self.navigationController?.pushViewController(self.menuView!.getLoginView(), animated: true)
+                                    
+                                }
+                                return
+                                
+                            }
+                            
+                            
+                            
+                            if(String(decoding: data!, as: UTF8.self) != "Success"){ //error occured
+                                DispatchQueue.main.async {
+                                    self.showToast(controller: self, message: "Error: " + String(decoding: data!, as: UTF8.self), seconds: 1)
+                                }
+                                return //return from function - end sync
+                            }
+                            
+                        }
+                        
+                        //                    group.leave()
+                        //                    print("left group - syncing tests")
+                    }
+                    
+                    task.resume()
+                    
+                }
+                
                 
                 //upload Cows
                 for cowToUpload in savedCowArray! {
@@ -465,6 +639,7 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
                     request.httpBody = cowJsonData
                     request.setValue("application/json", forHTTPHeaderField: "Content-type")
                     request.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
+                    request.setValue(KeychainWrapper.standard.string(forKey: "User-ID-Token"), forHTTPHeaderField: "user-id")
                     
                     let task = URLSession.shared.dataTask(with: request) { data, response, error in
                         if(error != nil){
@@ -490,9 +665,9 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
                             
                             
                             if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
-                                self.navigationController?.popToRootViewController(animated: true)
-                                self.navigationController?.pushViewController(self.menuView!.getLoginView(), animated: true)
+                                returnToMain = true
                                 return
+                                
                             }
                             
                             
@@ -506,7 +681,6 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
                             
                         }
                         
-                        group.leave()
                         print("left group - syncing cows")
                     }
                     
@@ -524,7 +698,15 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
             
             ///////////////////////////////////////////////
         
-        group.wait()
+            
+        }
+        
+        if(returnToMain == true){
+            DispatchQueue.main.async {
+                self.navigationController?.popToViewController(self.menuView!, animated: true)
+            }
+        }
+        else{
 //        group.enter()
 //        print("entered group - syncing tests")
         
@@ -534,6 +716,67 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
         
         do{
             savedTestArray = try self.appDelegate?.persistentContainer.viewContext.fetch(testFetchRequest)
+            
+            
+            if(savedTestArray!.isEmpty){
+                
+                var request = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/test")!)
+                request.httpMethod = "POST"
+                request.setValue("application/json", forHTTPHeaderField: "Content-type")
+                request.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
+                request.setValue(KeychainWrapper.standard.string(forKey: "User-ID-Token"), forHTTPHeaderField: "user-id")
+                
+                let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                    if(error != nil){
+                        print("Error occured during /login RESTAPI request")
+                        DispatchQueue.main.async {
+                            self.showToast(controller: self, message: "Error: " + (error as! String), seconds: 1)
+                        }
+                        
+                    }
+                    else{
+                        
+                        //                        DispatchQueue.main.async {
+                        //                            self.showToast(controller: self, message: String(decoding: data!, as: UTF8.self), seconds: 1)
+                        //
+                        //                        }
+                        //
+                        
+                        print("Response:")
+                        print(response!)
+                        print("Data:")
+                        print(String(decoding: data!, as: UTF8.self))
+                        
+                        
+                        
+                        if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
+                            DispatchQueue.main.async {
+                                self.navigationController?.popToRootViewController(animated: true)
+                                self.navigationController?.pushViewController(self.menuView!.getLoginView(), animated: true)
+                                
+                            }
+                            return
+                            
+                        }
+                        
+                        
+                        
+                        if(String(decoding: data!, as: UTF8.self) != "Success"){ //error occured
+                            DispatchQueue.main.async {
+                                self.showToast(controller: self, message: "Error: " + String(decoding: data!, as: UTF8.self), seconds: 1)
+                            }
+                            return //return from function - end sync
+                        }
+                        
+                    }
+                    
+                    //                    group.leave()
+                    //                    print("left group - syncing tests")
+                }
+                
+                task.resume()
+                
+            }
             
 //            print("saved test first value: " + savedTestArray![0].dataType!)
 //            print("saved test first value cow id: " + savedTestArray![0].cow!.id!)
@@ -586,6 +829,7 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
                 request.httpBody = testJsonData
                 request.setValue("application/json", forHTTPHeaderField: "Content-type")
                 request.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
+                request.setValue(KeychainWrapper.standard.string(forKey: "User-ID-Token"), forHTTPHeaderField: "user-id")
                 
                 let task = URLSession.shared.dataTask(with: request) { data, response, error in
                     if(error != nil){
@@ -611,9 +855,13 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
                         
                         
                         if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
-                            self.navigationController?.popToRootViewController(animated: true)
-                            self.navigationController?.pushViewController(self.menuView!.getLoginView(), animated: true)
+                            DispatchQueue.main.async {
+                                self.navigationController?.popToRootViewController(animated: true)
+                                self.navigationController?.pushViewController(self.menuView!.getLoginView(), animated: true)
+                                
+                            }
                             return
+                            
                         }
                         
                         
@@ -642,6 +890,7 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
             }
             return
         }
+            
 
         
         //}
@@ -653,21 +902,22 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
         formatter.dateFormat = "MM/dd/yyyy HH:mm"
         defaults.set(formatter.string(from: Date()), forKey: "PreviousSyncDateDefault")
         previousSyncDateLabel.text = "  " + defaults.string(forKey: "PreviousSyncDateDefault")!
-        appDelegate!.setSyncUpToDate(upToDate: true) //do this at the end in case the token expires during the sync and a request is rejected then it will return from this function and never update this - so it will not say that the sync has falsely been completed
+            DispatchQueue.main.async {
+                self.appDelegate!.setSyncUpToDate(upToDate: true) //do this at the end in case the token expires during the sync and a request is rejected then it will return from this function and never update this - so it will not say that the sync has falsely been completed
+            }
         
         
-        //ENABLE BACKUP BUTTON (THIS IS ONLY USEFUL IF ITS THE FIRST SYNC)
-        backupCloudBtn.setTitleColor(.black, for: .normal)
-        backupCloudBtn.layer.borderColor = UIColor.black.cgColor
-        backupCloudBtn.isEnabled = true
         
-        
+        }
+            
         DispatchQueue.main.async{
             self.scanningIndicator.stopAnimating()
         }
     }
     
     @objc private func backupCloudBtnPressed(){
+        
+        var returnToMain = false
         
         
         let backupAlert = UIAlertController(title: "Backup", message: "This will back up from the previous sync. Any recent data that has not been synced may be lost", preferredStyle: .alert) //actionSheet shows on the bottom of the screen while alert comes up in the middle
@@ -760,9 +1010,10 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
                     
                     
                     if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
-                        self.navigationController?.popToRootViewController(animated: true)
-                        self.navigationController?.pushViewController(self.menuView!.getLoginView(), animated: true)
+                        returnToMain = true
+                        group.leave()
                         return
+                        
                     }
                     
                     
@@ -794,6 +1045,14 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
             
             
             group.wait()
+            
+            if(returnToMain == true){
+                DispatchQueue.main.async {
+                    self.navigationController?.popToViewController(self.menuView!, animated: true)
+                }
+            }
+            else{
+            
             group.enter()
             
             
@@ -821,8 +1080,8 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
                     
                     
                     if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
-                        self.navigationController?.popToRootViewController(animated: true)
-                        self.navigationController?.pushViewController(self.menuView!.getLoginView(), animated: true)
+                        returnToMain = true
+                        group.leave()
                         return
                     }
                     
@@ -875,7 +1134,15 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
             
             group.wait()
             //        group.enter()
+                
+            }
             
+            if(returnToMain == true){
+                DispatchQueue.main.async {
+                    self.navigationController?.popToViewController(self.menuView!, animated: true)
+                }
+            }
+            else{
             
             var testRequest = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/test?userID=" + KeychainWrapper.standard.string(forKey: "User-ID-Token")!)!)
             testRequest.httpMethod = "GET"
@@ -902,8 +1169,11 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
                     
                     
                     if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
-                        self.navigationController?.popToRootViewController(animated: true)
-                        self.navigationController?.pushViewController(self.menuView!.getLoginView(), animated: true)
+                        DispatchQueue.main.async {
+                            self.navigationController?.popToRootViewController(animated: true)
+                            self.navigationController?.pushViewController(self.menuView!.getLoginView(), animated: true)
+                        }
+                        
                         return
                     }
                     
@@ -960,17 +1230,21 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
             //        group.wait()
             
             //UPDATE PREVIOUS SYNC LABEL
+                
+               print("GOT HERE E E E E E")
+                
+                
             let formatter = DateFormatter()
             formatter.dateFormat = "MM/dd/yyyy HH:mm"
-            self.defaults.set(formatter.string(from: Date()), forKey: "PreviousSyncDateDefault")
-            self.previousSyncDateLabel.text = "  " + self.defaults.string(forKey: "PreviousSyncDateDefault")!
-            self.appDelegate!.setSyncUpToDate(upToDate: true) //do this at the end in case the token expires during the sync and a request is rejected then it will return from this function and never update this - so it will not say that the sync has falsely been completed
-            
-            
-            //ENABLE BACKUP BUTTON (THIS IS ONLY USEFUL IF ITS THE FIRST SYNC)
-            self.backupCloudBtn.setTitleColor(.lightGray, for: .normal)
-            self.backupCloudBtn.layer.borderColor = UIColor.lightGray.cgColor
-            self.backupCloudBtn.isEnabled = false
+            //self.defaults.set(formatter.string(from: Date()), forKey: "PreviousSyncDateDefault")
+            //self.previousSyncDateLabel.text = "  " + self.defaults.string(forKey: "PreviousSyncDateDefault")!
+                DispatchQueue.main.async {
+                    self.appDelegate!.setSyncUpToDate(upToDate: true)
+                }
+             //do this at the end in case the token expires during the sync and a request is rejected then it will return from this function and never update this - so it will not say that the sync has falsely been completed
+            //self.setSyncStatus(needsSync: false)
+                
+            }
             
             
             DispatchQueue.main.async{
@@ -998,9 +1272,6 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
                 self.syncStatusLabel.text = "    Sync Required"
                 self.syncStatusLabel.textColor = .red
                 self.previousSyncDateLabel.textColor = .red
-                self.syncCloudBtn.isEnabled = true
-                self.syncCloudBtn.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1).cgColor
-                self.syncCloudBtn.setTitleColor(.black, for: .normal)
             }
         }
         else{
@@ -1008,9 +1279,6 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
                 self.syncStatusLabel.text = "    Up to Date"
                 self.syncStatusLabel.textColor = .green
                 self.previousSyncDateLabel.textColor = .green
-                self.syncCloudBtn.isEnabled = false
-                self.syncCloudBtn.layer.borderColor = UIColor.lightGray.cgColor
-                self.syncCloudBtn.setTitleColor(.lightGray, for: .normal)
             }
         }
     }

@@ -110,6 +110,13 @@ public class SettingsViewController: UIViewController, WCSessionDelegate, UIPick
     }
     
     private func createLayoutItems(){
+        
+        let bar = UIToolbar()
+        bar.sizeToFit()
+        let flex = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let done = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(doneKeyboardBtnPressed))
+        bar.items = [flex, done]
+        
         //testTypeLabel
         let underlinedTestTypeLabelString: NSMutableAttributedString =  NSMutableAttributedString(string: "Final Vs. Cont:")
         underlinedTestTypeLabelString.addAttribute(NSAttributedString.Key.underlineStyle, value: 1, range: NSMakeRange(0, underlinedTestTypeLabelString.length))
@@ -236,10 +243,16 @@ public class SettingsViewController: UIViewController, WCSessionDelegate, UIPick
         
         mManualCalibrationTextView.placeholder = "Enter Slope Value (m)"
         mManualCalibrationTextView.tag = 0
+        mManualCalibrationTextView.backgroundColor = .white
+        mManualCalibrationTextView.inputAccessoryView = bar
+        mManualCalibrationTextView.keyboardType = .default
         view.addSubview(mManualCalibrationTextView)
         
         bManualCalibrationTextView.placeholder = "Enter Origin Value (b)"
         bManualCalibrationTextView.tag = 1
+        bManualCalibrationTextView.backgroundColor = .white
+        bManualCalibrationTextView.inputAccessoryView = bar
+        bManualCalibrationTextView.keyboardType = .default
         view.addSubview(bManualCalibrationTextView)
         
         if(defaults.bool(forKey: "manualCalibrationDefault") == true){
@@ -258,6 +271,9 @@ public class SettingsViewController: UIViewController, WCSessionDelegate, UIPick
     }
     
     private func setLayoutConstraints(){
+        
+        
+        
         testTypeLabel.translatesAutoresizingMaskIntoConstraints = false
         testTypeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         testTypeLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.07)).isActive = true
@@ -343,10 +359,14 @@ public class SettingsViewController: UIViewController, WCSessionDelegate, UIPick
         mManualCalibrationTextView.translatesAutoresizingMaskIntoConstraints = false
         mManualCalibrationTextView.topAnchor.constraint(equalTo: manualCalibrationLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         mManualCalibrationTextView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.1)).isActive = true
+        mManualCalibrationTextView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
+        
         
         bManualCalibrationTextView.translatesAutoresizingMaskIntoConstraints = false
         bManualCalibrationTextView.topAnchor.constraint(equalTo: mManualCalibrationTextView.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         bManualCalibrationTextView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.1)).isActive = true
+        bManualCalibrationTextView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
+       
 
         
     }
@@ -580,6 +600,11 @@ public class SettingsViewController: UIViewController, WCSessionDelegate, UIPick
                        completion: { Void in()  }
         )
         
+        
+        mManualCalibrationTextView.isHidden = true
+        bManualCalibrationTextView.isHidden = true
+
+        
         testTypeLabel.textColor = .blue
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1){
@@ -610,6 +635,9 @@ public class SettingsViewController: UIViewController, WCSessionDelegate, UIPick
                        completion: { Void in()  }
         )
         
+        mManualCalibrationTextView.isHidden = true
+        bManualCalibrationTextView.isHidden = true
+        
         testDurationLabel.textColor = .blue
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1){
@@ -639,6 +667,9 @@ public class SettingsViewController: UIViewController, WCSessionDelegate, UIPick
         },
                        completion: { Void in()  }
         )
+        
+        mManualCalibrationTextView.isHidden = true
+        bManualCalibrationTextView.isHidden = true
         
         testTypePickerLabel.textColor = .blue
         
@@ -753,6 +784,12 @@ public class SettingsViewController: UIViewController, WCSessionDelegate, UIPick
             testDurationBtn.isEnabled = true
 //            finalContinuousTextView.isEditable = true
 //            testDurationTextView.isEditable = true
+            
+            if(manualCalibrationSwitch.isOn){
+                //display y = mx + b option
+                mManualCalibrationTextView.isHidden = false
+                bManualCalibrationTextView.isHidden = false
+            }
         }
         
         if(defaults.integer(forKey: "testTypeDefault") == 0){
@@ -853,6 +890,10 @@ public class SettingsViewController: UIViewController, WCSessionDelegate, UIPick
         }
     }
     
+    @objc private func doneKeyboardBtnPressed(){
+        view.endEditing(true)
+    }
+    
     
     //GETTERS/SETTERS
     
@@ -896,6 +937,34 @@ public class SettingsViewController: UIViewController, WCSessionDelegate, UIPick
     public func getTestType() -> Int{
         //returns 0 if Immunoglobulins, 1 if Lactoferin, 2 if Blood Calcium, 3 if Generic Glucose
         return testTypePicker.selectedRow(inComponent: 0)
+    }
+    
+    public func getManualCalibrationSwitchValue() -> Bool{
+        return defaults.bool(forKey: "manualCalibrationDefault")
+    }
+    
+    public func getManCalMVal() -> Float{
+        if(mManualCalibrationTextView.text == nil){
+            return 0.0
+        }
+        else if(mManualCalibrationTextView.text! == ""){
+            return 0.0
+        }
+        else{
+            return Float(mManualCalibrationTextView.text!)!
+        }
+    }
+    
+    public func getManCalBVal() -> Float{
+        if(bManualCalibrationTextView.text == nil){
+            return 0.0
+        }
+        else if(bManualCalibrationTextView.text! == ""){
+            return 0.0
+        }
+        else{
+            return Float(bManualCalibrationTextView.text!)!
+        }
     }
     
     

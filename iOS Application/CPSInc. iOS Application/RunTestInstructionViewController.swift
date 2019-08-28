@@ -44,8 +44,9 @@ class RunTestInstructionViewController: UIViewController {
             + "\n\n4) One test timer has completed, test results will be displayed on the screen"
             + "\n\n5) To save the test result, press the 'Save Test' button"
             + "\n\n6) You can either save tests by selecting the Herd & the Cow for which the test was performed from a list or manually entering the Herd ID and Cow ID"
-            + "\n\n7) To reset the test without saving the results, simply press the 'Reset Test' button"
+            + "\n\n7) To reset the test without saving the results, simply press the 'Discard Test' button"
             + "\n\n8) To view saved test results, see: 'Logbook Instructions'"
+            + "\n\n9) If device disconnects pre-test, the test will not run until a device is reconnected or the app is restarted. If the device disconnects during the test, this will result in an erronous test"
         instructionLabel.numberOfLines = 0
         instructionLabel.lineBreakMode = .byWordWrapping
         instructionLabel.textAlignment = .left

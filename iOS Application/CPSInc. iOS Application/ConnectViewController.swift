@@ -363,6 +363,7 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
         menuView?.setPeripheralDevice(periphDevice: nil)
         menuView?.getTestPageView().setPeripheralDevice(periphDevice: nil)
         
+        
         if(menuView?.navigationController?.visibleViewController == self){
             showToast(controller: self, message: "Device Disconnected", seconds: 1)
             connectedDeviceLabel.text = "Connected to: None" //if connectView is visible connectedDeviceLabel will not be changed right away - manually change it
@@ -378,8 +379,11 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
             }
             
             menuView?.getTestPageView().setStripDetectVoltageValue(value: nil)
-            menuView?.getTestPageView().setIntegratedVoltageValue(value: nil)
-            menuView?.getTestPageView().setDifferentialVoltageValue(value: nil)
+            for test in (menuView?.getTestPageView().getTestPages())!{
+                test.deviceDisconnected()
+            }
+//            menuView?.getTestPageView().setIntegratedVoltageValue(value: nil)
+//            menuView?.getTestPageView().setDifferentialVoltageValue(value: nil)
 
         }
         else if(menuView?.navigationController?.visibleViewController == menuView?.getSettingsView()){
@@ -395,6 +399,7 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
             }
         }
         }
+        
         
     }
     

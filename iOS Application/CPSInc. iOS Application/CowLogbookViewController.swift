@@ -53,6 +53,7 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate,
         }
         
         //IMPLEMENT SORTING ALGORITHM TO SORT COWS BY ID - NOT ALWAYS NECESSARILY SAVED IN ORDER IF USING THE EXECUTION TIME SAIVNG METHOD OF PARSING DATA
+        cowList.sort(by: {$0.id!.localizedStandardCompare($1.id!) == .orderedAscending})
         
         tableView.reloadData()
     }

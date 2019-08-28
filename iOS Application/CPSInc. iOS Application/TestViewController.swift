@@ -35,14 +35,20 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
 //    private var differentialVoltageValue: Int? = nil
     
     private let incubationTimeMinutes = "00"
-    private let incubationTimeSeconds = "05"
+    private let incubationTimeSeconds = "20"
     private let notificationTimeMinutes = "00"
-    private let notificationTimeSeconds = "03"
+    private let notificationTimeSeconds = "10"
+    
+    
+    private var disconnectedDevice = false
     
     //UITableView
     private let glucoseResultTable = UITableView()
     private let herdListTable = UITableView()
     private let cowListTable = UITableView()
+    
+    //pageID
+    private var pageID: Int? = nil
     
     //View Controllers
     private var menuView: MenuViewController? = nil
@@ -102,6 +108,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
     
     private var testResultToSave: Float? = nil
     
+    private var herdToSave: Herd? = nil
     
     private var cowToSave: Cow? = nil
     
@@ -454,11 +461,6 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
             
         }))
         
-        selectSavingMethodAlert.addAction(UIAlertAction(title: "Select Herd/Cow from List", style: .default, handler: { action in
-            //select herd and cow from list to save test to
-            self.selectHerdToSaveFromList()
-            
-        }))
         selectSavingMethodAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
         
         
@@ -494,6 +496,8 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                     self.menuView?.getHerdLogbookView().getCowLogbookView().setSelectedHerd(herd: herd) //set selected herd to have access to the correct cow list - DONT NEED TO SET HERD TO SAVE, YOU ONLY ENTER THE HERD SO THAT YOU CAN GET THE RIGHT COW. THIS CAN BE OVERWRITTEN DOESNT MATTER
                     match = 1
                     
+                    self.herdToSave = herd
+                    
                     self.testHerdIDLabel.text = "Herd ID: " + herd.id!
                 }
             }
@@ -501,6 +505,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
             if(match == 0){ //check if no match was made
                 let errorAlert = UIAlertController(title: "Herd ID", message: "Herd Does Not Exist With That ID", preferredStyle: .alert)
                 errorAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
+                    self.chooseCowAtBeginning = false
                     return
                 }))
                 self.present(errorAlert, animated: true)
@@ -537,14 +542,32 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
         cowIDTextAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak cowIDTextAlert] (_) in
             cowID = cowIDTextAlert?.textFields![0].text
             
+            
+            
+            let fetchRequest: NSFetchRequest<Cow> = Cow.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "herd == %@", self.herdToSave!) //list the cows from the selected herd
+            var savedCowArray: [Cow]? = nil
+            
+            do{
+                savedCowArray = try self.appDelegate?.persistentContainer.viewContext.fetch(fetchRequest)
+            } catch{
+                print("Error during fetch request")
+            }
+            
+            
+            
+            
             var match: Int = 0
-            for cow in (self.menuView?.getHerdLogbookView().getCowLogbookView().getCowList())!{
-                if(cowID == cow.id){
-                    //self.menuView?.getHerdLogbookView().getCowLogbookView().getTestLogbookView().setSelectedCow(cow: cow)
-                    self.cowToSave = cow
-                    match = 1
-                    
-                    self.testCowIDLabel.text = "Cow ID: " + cow.id!
+            
+            if(savedCowArray != nil){
+                for cow in savedCowArray!{
+                    if(cowID == cow.id){
+                        //self.menuView?.getHerdLogbookView().getCowLogbookView().getTestLogbookView().setSelectedCow(cow: cow)
+                        self.cowToSave = cow
+                        match = 1
+                        
+                        self.testCowIDLabel.text = "Cow ID: " + cow.id!
+                    }
                 }
             }
             
@@ -650,6 +673,8 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
         },
                        completion: { Void in()  }
         )
+        
+        disconnectedDevice = false
         
         let stopTestString = "00"
         let stopTestData = Data(hexString: stopTestString)
@@ -896,6 +921,12 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
             
             self.cancelTestBtn.isHidden = false
             self.cancelTestBtn.isEnabled = true
+            
+            
+            
+            if(self.disconnectedDevice == true){
+                self.cancelTestBtnPressed()
+            }
         }
         
         
@@ -945,7 +976,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                             
                         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false) //set value to send notification however long before the test is over that you want to receive that notification
                             
-                        let identifier = "Local Timer Almost Done Notification"
+                        let identifier = "Local Timer Almost Done Notification" + String(self.pageID!)
                         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
                             
                         self.appDelegate?.getNotificationCenter().add(request) { (error) in
@@ -989,6 +1020,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
         )
         
         testCancelled = true
+        disconnectedDevice = false
         
         incubationTimer?.invalidate() //stops timer from firing
         incubationTimer = nil //resets incubation timer to nil
@@ -1095,7 +1127,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                 self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
                 self.testPageController!.getPeripheralDevice()?.writeValue(startTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
         
-                
+            
             DispatchQueue.main.sync {
        
                 //not sure why i need to do this here - look into this
@@ -1187,10 +1219,25 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                     }
                 }
                 self.finalValueTestQueue!.asyncAfter(deadline: currentTime + .seconds(testDuration)){
+                    
+                    var isManualCalibration = false
+                    var manualMVal: Float = 0.0
+                    var manualBVal: Float = 0.0
+                    var testType = 0
+                    
                     DispatchQueue.main.sync {
                         self.testProgressView.setProgress(1, animated: true)
                         
                         self.testProgressView.isHidden = true
+                        
+                        isManualCalibration = (self.menuView?.getSettingsView().getManualCalibrationSwitchValue())!
+                        
+                        if(isManualCalibration){
+                            manualMVal = (self.menuView?.getSettingsView().getManCalMVal())!
+                            manualBVal = (self.menuView?.getSettingsView().getManCalBVal())!
+                        }
+                        
+                        testType = (self.menuView?.getSettingsView().getTestType())!
                     }
             
             
@@ -1201,23 +1248,46 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
 //                        glucoseResult = nil
 //                    }
                     if(self.testPageController!.getIntegratedVoltageValue()! != 0){
-                        let testType = self.menuView?.getSettingsView().getTestType()
-                
                         switch testType{
                         case 0: //Immunoglobulins
-                            glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!) * 2.3345) - 46.107
+                            if(isManualCalibration){
+                                glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!) * manualMVal) + manualBVal
+                            }
+                            else{
+                                glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!) * 2.3345) - 46.107
+                            }
                     
                         case 1: //Lactoferrin
-                            glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!)) / 33.109
+                            if(isManualCalibration){
+                                glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!) * manualMVal) + manualBVal
+                            }
+                            else{
+                                glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!)) / 33.109
+                            }
                     
                         case 2: //Blood Calcium
-                          glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!)) / 33.109
+                            if(isManualCalibration){
+                                glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!) * manualMVal) + manualBVal
+                            }
+                            else{
+                                glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!)) / 33.109
+                            }
                     
                         case 3: //Generic Glucose
-                            glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!)) / 33.109
-                    
+                            if(isManualCalibration){
+                                glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!) * manualMVal) + manualBVal
+                            }
+                            else{
+                                glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!)) / 33.109
+                            }
+                            
                         default:
-                            glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!)) / 33.109
+                            if(isManualCalibration){
+                                glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!) * manualMVal) + manualBVal
+                            }
+                            else{
+                                glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!)) / 33.109
+                            }
                         }
                     }
                     else if(self.testPageController!.getIntegratedVoltageValue()! == 0 && zeroAfterTen == true){ //if it was zero for the entire length of the test - proper 0 result
@@ -1316,6 +1386,10 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                     self.saveTestBtn.isEnabled = true
                     self.saveTestBtn.isHidden = false
                     
+                    if(self.disconnectedDevice == true){
+                        self.showToast(controller: self, message: "Device Disconnected During Test. This Could be a False Result", seconds: 3)
+                    }
+                    
                 }
         
                 
@@ -1379,7 +1453,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                     
                     let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
                     
-                    let identifier = "Local Test Finished Notification"
+                    let identifier = "Local Test Finished Notification" + String(self.pageID!)
                     let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
                     
                     self.appDelegate?.getNotificationCenter().add(request) { (error) in
@@ -1479,7 +1553,11 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                 //testProgressView.isHidden = true
                 self.testProgressView.isHidden = false
                 
+                self.addTestBtn.isHidden = true //hide this button before the test starts - cannot press it when test is running as the ui will be paused anyways
+                self.addTestBtn.isEnabled = false
+                
                 self.testProgressView.setProgress(0, animated: true)
+                
             }
         
             
@@ -1574,7 +1652,15 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                     self.lineChartView.xAxis.granularity = 1
                     self.lineChartView.xAxis.labelPosition = XAxis.LabelPosition.bottom
                     self.lineChartView.setVisibleXRangeMaximum(5.0) //causes you to have to scroll to see the rest of the values
+                    self.lineChartView.setVisibleYRangeMaximum(32.0, axis: self.lineChartView.leftAxis.axisDependency) //causes you to have to scroll to see the rest of the values
+                    //self.lineChartView.setVisibleYRangeMaximum(32.0, axis: self.lineChartView.rightAxis.axisDependency) //causes you to have to scroll to see the rest of the values
+                    
+                    self.lineChartView.rightAxis.drawAxisLineEnabled = false
+                    self.lineChartView.rightAxis.drawLabelsEnabled = false
+                    
                     self.lineChartView.moveViewToX(0.0) //initially display the graph starting at index of 0
+                    self.lineChartView.moveViewToY(0.0, axis: self.lineChartView.leftAxis.axisDependency)
+                    //self.lineChartView.moveViewToY(0.0, axis: self.lineChartView.rightAxis.axisDependency)
                     self.lineChartView.isHidden = false
                 }
             
@@ -1598,6 +1684,11 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                     self.resetTestBtn.isHidden = false
                     self.saveTestBtn.isEnabled = true
                     self.saveTestBtn.isHidden = false
+                    
+                    
+                    if(self.disconnectedDevice == true){
+                        self.showToast(controller: self, message: "Device Disconnected During Test. This Could be a False Result", seconds: 3)
+                    }
                 }
             
                 var herdID: String? = nil
@@ -1635,7 +1726,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                     
                         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
                     
-                        let identifier = "Local Test Finished Notification"
+                        let identifier = "Local Test Finished Notification" + String(self.pageID!)
                         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
                     
                         self.appDelegate?.getNotificationCenter().add(request) { (error) in
@@ -2000,6 +2091,26 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
     public func setChooseCowAtBeginning(bool: Bool){
         chooseCowAtBeginning = bool
     }
+    
+    public func setPageID(id: Int?){
+        pageID = id
+    }
+    
+    public func getPageID() -> Int?{
+        return pageID
+    }
+    
+    
+    
+    public func deviceDisconnected(){
+        self.disconnectedDevice = true
+        
+        if(self.cancelTestBtn.isHidden == false){
+            self.cancelTestBtnPressed()
+        }
+    }
+    
+    
     
 
 }

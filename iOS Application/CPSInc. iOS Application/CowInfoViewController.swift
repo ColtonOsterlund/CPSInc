@@ -603,6 +603,8 @@ class CowInfoViewController: UIViewController, UIPickerViewDataSource, UIPickerV
             cow.dailyMilkAverage = dailyMilkAverageTextView.text
             cow.parity = parityTextView.text
             cow.reproductionStatus = reproductionStatusTextView.text
+            cow.numberTimesBred = numberOfTimesBredTextView.text
+            cow.farmBreedingIndex = farmBreedingIndexTextView.text
             cow.herd = cowLogbookView?.getSelectedHerd()
             
             //save test resuts from old cow record to new cow record

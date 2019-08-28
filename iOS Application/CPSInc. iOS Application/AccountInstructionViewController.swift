@@ -38,7 +38,9 @@ class AccountInstructionViewController: UIViewController {
         imageView.image = UIImage(named: "userLOGO")
         contentView.addSubview(imageView)
         
-        instructionLabel.text = "Instructions Coming Soon"
+        instructionLabel.text = "1) The dot above the Account button on the menu page will be green if there have been no changes to your logbook since previous sync, and red if not"
+        + "\n\n2) To send all data from your phones local logbook to the cloud, use the Sync button"
+        + "\n\n3) To backup the data on your phones local logbook from the most recent Sync, use the Backup button"
         instructionLabel.numberOfLines = 0
         instructionLabel.lineBreakMode = .byWordWrapping
         instructionLabel.textAlignment = .left

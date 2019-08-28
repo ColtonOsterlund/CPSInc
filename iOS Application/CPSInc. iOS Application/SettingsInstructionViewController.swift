@@ -40,6 +40,8 @@ class SettingsInstructionViewController: UIViewController {
         
         instructionLabel.text = "1) To change the desired setting, press the respective underlined setting label and scroll through to the desired new setting"
         + "\n\n2) Once desired new setting is in focus, press the 'Select' button to save your changes"
+        + "\n\n3) To turn on Manual Calibration Mode, flip the Manual Calibration switch, then enter the correct values for m and b in the standard line equation y = mx + b"
+       
         instructionLabel.numberOfLines = 0
         instructionLabel.lineBreakMode = .byWordWrapping
         instructionLabel.textAlignment = .left
