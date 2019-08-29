@@ -6,6 +6,8 @@
 //  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
 //
 
+//THIS VIEW CONTROLLER DEALS WITH THE INSTRUCTION PAGE FOR THE CONNECT DEVICE INSTRUCTIONS
+
 import UIKit
 
 class FindDeviceInstructionViewController: UIViewController {

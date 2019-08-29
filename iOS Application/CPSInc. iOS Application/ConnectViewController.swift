@@ -6,6 +6,8 @@
 //  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
 //
 
+//THIS VIEW CONTROLLER DEALS WITH THE CONNECT TO DEVICE SCREEN SEEN AFTER PRESSING THE "FIND DEVICE" BUTTON FROM THE MAIN MENU SCREEN
+
 import UIKit
 import CoreBluetooth
 import WatchConnectivity
@@ -306,7 +308,7 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
         
         self.peripheralTableView.reloadData()
         
-        self.appDelegate!.getNotificationCenter().getNotificationSettings { (settings) in
+        self.appDelegate!.getNotificationCenter().getNotificationSettings { (settings) in //send notificaiton that device was discovered
             if settings.authorizationStatus == .authorized {
                 let content = UNMutableNotificationContent()
                 content.title = "Device Discovered"

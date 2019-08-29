@@ -6,6 +6,8 @@
 //  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
 //
 
+//THIS VIEW CONTROLLER DEALS WITH DISPLAYING THE HERD INFO TO ADD AFTER PRESSING THE "ADD HERD" BUTTON IN THE HERD LOGBOOK
+
 import UIKit
 import CoreData
 

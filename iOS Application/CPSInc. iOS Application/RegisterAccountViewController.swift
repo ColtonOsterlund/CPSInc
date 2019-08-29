@@ -6,6 +6,8 @@
 //  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
 //
 
+//THIS VIEW CONTROLLER DEALS WITH THE REGISTER ACCOUNT SCREEN WHEN PUSHING THE "CREATE ACCOUNT" BUTTON FROM THE LOGIN SCREEN
+
 import UIKit
 import SwiftKeychainWrapper
 

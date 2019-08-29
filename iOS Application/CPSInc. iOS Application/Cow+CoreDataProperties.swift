@@ -7,6 +7,8 @@
 //
 //
 
+//CLASS FOR COW OBJECT
+
 import Foundation
 import CoreData
 

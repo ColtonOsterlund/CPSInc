@@ -6,6 +6,8 @@
 //  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
 //
 
+//THIS VIEW CONTROLLER DEALS WITH DISPLAYING THE HERD INFO WHEN HERD SELECTED
+
 import UIKit
 import CoreData
 

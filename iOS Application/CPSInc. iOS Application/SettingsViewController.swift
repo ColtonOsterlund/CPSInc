@@ -6,6 +6,8 @@
 //  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
 //
 
+//THIS VIEW CONTROLLER DEALS WITH THE SETTINGS SCREEN SEEN AFTER PRESSING THE "SETTINGS" BUTTON FROM THE MAIN MENU SCREEN
+
 import UIKit
 import CoreBluetooth
 import QuartzCore //to be able to round the background edges on the switches

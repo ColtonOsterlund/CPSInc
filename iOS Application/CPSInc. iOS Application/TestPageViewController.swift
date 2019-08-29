@@ -6,6 +6,8 @@
 //  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
 //
 
+//THIS PAGEVIEWCONTROLLER CONTROLS THE PAGE SWIPING FEATURE AND RUNNING OF MULTIPLE SIMULTANEOUS TEST PAGES FEATURE
+
 import Foundation
 import UIKit
 import WatchConnectivity

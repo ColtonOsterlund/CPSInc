@@ -5,6 +5,7 @@
 //  Created by Colton on 2019-07-30.
 //  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
 //
+//THIS VIEW CONTROLLER DEALS WITH THE ACCOUNT SCREEN SEEN AFTER LOGGING INTO YOUR ACCOUNT
 
 import UIKit
 import SwiftKeychainWrapper
@@ -929,7 +930,7 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
         
         backupAlert.addAction(UIAlertAction(title: "Backup", style: .destructive, handler: { action in
             //FILL OUT
-            let group = DispatchGroup() //allows you to pause execution until value is not nil and non-zero
+            let group = DispatchGroup() //allows you to pause execution so that cows are not loaded in before herds and tests are not loaded in before cows - cows need the herd as a property and tests need the cow as a property, this is why you have to do it this way
             
             
             //SEND GET REQUESTS FOR HERDS, SEND GET REQUESTS FOR COWS WITH THE HERD ID AS QUERY PARAMETERS, SEND GET REUQESTS FOR TESTS WITH THE COW ID AS QUERY PARAMETERS

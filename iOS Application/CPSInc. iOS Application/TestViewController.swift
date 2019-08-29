@@ -1,11 +1,3 @@
-//
-
-
-
-//BACKUP TO HERE
-
-
-
 
 //  TestView.swift
 //  CPSInc. iOS Application
@@ -13,6 +5,8 @@
 //  Created by Colton on 2019-05-24.
 //  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
 //
+
+//THIS VIEW CONTROLLER DEALS WITH THE RUN TEST SCREEN SEEN AFTER PRESSING THE "RUN TEST" BUTTON FROM THE MAIN MENU SCREEN
 
 import UIKit
 import CoreBluetooth
@@ -23,23 +17,30 @@ import CoreData
 
 public class TestViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, WCSessionDelegate{
 
-    //Bluetooth Data
-//    private var centralManager: CBCentralManager? = nil
-//    private var peripheralDevice: CBPeripheral? = nil
-//    private var stripDetectVoltageCharacteristic: CBCharacteristic? = nil
-//    private var integratedVoltageCharacteristic: CBCharacteristic? = nil
-//    private var differentialVoltageCharacterisitc: CBCharacteristic? = nil
-//    private var startTestCharacteristic: CBCharacteristic? = nil
-//    private var stripDetectVoltageValue: Int? = nil
-//    private var integratedVoltageValue: Int? = nil
-//    private var differentialVoltageValue: Int? = nil
     
+    
+    
+    //FOR YONG - CHANGE THESE TO CHANGE THE INCUBATION TIMER AND THE NOTIFICATION TIME TO WARN THE END OF TEST
     private let incubationTimeMinutes = "00"
     private let incubationTimeSeconds = "20"
     private let notificationTimeMinutes = "00"
     private let notificationTimeSeconds = "10"
     
+    //FOR YONG - CHANGE THIS (NUMBER OF SECONDS) FOR HOW LONG TO WAIT BEFORE NEW TEST STARTED
+    private let timeBetweenTests = 2
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    //set to true if device did disconnect during the test - checked at the end of test to display if the test would be an erronous result
     private var disconnectedDevice = false
     
     //UITableView
@@ -600,7 +601,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
     
     
     
-    private func selectHerdToSaveFromList(){
+    private func selectHerdToSaveFromList(){ //this was never implemented
         
         //FILL OUT
         
@@ -608,14 +609,14 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     
-    private func selectCowToSaveFromList(){
+    private func selectCowToSaveFromList(){ //this was never implemented
         
         //FILL OUT
         
     }
     
     
-    private func saveTestToCow(){
+    private func saveTestToCow(){ //save test to the cow that was chosen
         print("save test")
         
         let testToSave = Test(context: (appDelegate?.persistentContainer.viewContext)!)
@@ -659,7 +660,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
     
     
     
-    @objc private func resetTestBtnPressed(){
+    @objc private func resetTestBtnPressed(){ //resets everything at the end of a test to re-run a test from the same testing screen
         
         resetTestBtn.transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
         
@@ -760,7 +761,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     @objc public func startTestBtnPressed(){ //set to public so that it can be started from a seperate test
-        
+        //starts the testing process
         startTestBtn.transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
         
         UIView.animate(withDuration: 0.5,
@@ -808,6 +809,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
             return
         }
         else if(testPageController!.getStripDetectVoltageValue()! <= 750){ //set proper value for testing, for now this works
+            //this is set to 750 since one of the devices only has a strip detect voltage of 1/2 VDD, the other has a strip detect voltage of VDD. 75O gives a lot of room for any noise at the bottom end and also is low enough to detect when a strip is inserted (essentially 1/4 VDD)
             showToast(controller: self, message: "Strips not detected", seconds: 1)
             if(wcSession != nil){
             if(wcSession!.isReachable){
@@ -872,7 +874,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     
-    private func startTestProcess(){
+    private func startTestProcess(){ //AFTER EVERYTHING IS SET UP FOR A TEST THIS IS RUN WHICH STARTS THE TESTING PROCESS
         
         testDate = Date()
         let dateformatter = DateFormatter()
@@ -913,7 +915,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
         incubationTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateIncubationTimeString), userInfo: nil, repeats: true)
         
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)){
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(self.timeBetweenTests)){
             if((self.testPageController?.getTestPages().count)! < 10){
                 self.addTestBtn.isEnabled = true
                 self.addTestBtn.isHidden = false
@@ -939,7 +941,8 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
             cowID = self.testCowIDLabel.text
             timeString = self.testDateLabel.text
         }
-            
+        
+        //send notification that incubation timer is almost complete
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(((Int(incubationTimeMinutes)! * 60) + Int(incubationTimeSeconds)!) - ((Int(notificationTimeMinutes)! * 60) + Int(notificationTimeSeconds)!))){
             if(self.testCancelled == false){
                 //send notification if app is in background
@@ -1004,7 +1007,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     
-    @objc private func cancelTestBtnPressed(){
+    @objc private func cancelTestBtnPressed(){ //this is used to cancel the test during the incubation timer stage
         
         cancelTestBtn.transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
         
@@ -1038,7 +1041,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     
-    @objc private func updateIncubationTimeString(){
+    @objc private func updateIncubationTimeString(){ //this is used to update the string dealing with the incubation timer to give the look that the timer is counting down. It also reads the string to deal with the specific cases (what is suppose to happen at what times)
         let timerTextArray = incubationTimeLabel.text!.components(separatedBy: ":")
         
         var minutes = Int(timerTextArray[0])
@@ -1082,7 +1085,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
     
     
     
-    @objc private func addTestBtnPressed(){
+    @objc private func addTestBtnPressed(){ //this adds a page to the testPageViewController where you can start another test
         //FILL OUT
         
         self.addTestBtn.isHidden = true
@@ -1103,9 +1106,9 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
     
     
     
-    private func runFinalValueTest(){
+    private func runFinalValueTest(){ //if final value test is set in settings this testing process will run
         //run final value test
-        finalValueTestQueue = DispatchQueue(label: "Final Value Test Queue", attributes: .concurrent)
+        finalValueTestQueue = DispatchQueue(label: "Final Value Test Queue", attributes: .concurrent) //runs on a background thread so that you can run multiple tests at once - also has to pause for 10 seconds at one point and this would cause the UI to pause if it were running on the main thread
             
         finalValueTestQueue!.async {
             if(self.wcSession != nil){
@@ -1203,6 +1206,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                     testDuration = self.menuView!.getSettingsView().getTestDuration() //this must be done on the ui thread because it is pulling from the pickerView in settingsView
                 }
         
+            //upadte the progress bar - make it appear that test is running
                 self.finalValueTestQueue!.asyncAfter(deadline: currentTime + .seconds(testDuration * 1/4)){
                     DispatchQueue.main.sync {
                         self.testProgressView.setProgress(0.25, animated: true)
@@ -1225,35 +1229,35 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                     var manualBVal: Float = 0.0
                     var testType = 0
                     
-                    DispatchQueue.main.sync {
+                    DispatchQueue.main.sync { //getting things from settings deals with reading from UIPickers which needs to be done on the UIThread (main thread)
                         self.testProgressView.setProgress(1, animated: true)
                         
                         self.testProgressView.isHidden = true
                         
-                        isManualCalibration = (self.menuView?.getSettingsView().getManualCalibrationSwitchValue())!
+                        isManualCalibration = (self.menuView?.getSettingsView().getManualCalibrationSwitchValue())! //check if manual calibration is set in the settings
                         
                         if(isManualCalibration){
-                            manualMVal = (self.menuView?.getSettingsView().getManCalMVal())!
-                            manualBVal = (self.menuView?.getSettingsView().getManCalBVal())!
+                            manualMVal = (self.menuView?.getSettingsView().getManCalMVal())! //if manual calibration is set in the settings then get the proper slope value
+                            manualBVal = (self.menuView?.getSettingsView().getManCalBVal())! //if manual calibration is set in the settings then get the proper origin value
                         }
                         
                         testType = (self.menuView?.getSettingsView().getTestType())!
                     }
             
             
-                    var glucoseResult: Float?
+                    var glucoseResult: Float? //this should in fact say "FINAL result" instead of "glucose result" - this will be the final result after conversion from mV to whichever unit being measured (immunoglobulins, lactoferrin, blood calcium or glucose)
             
                     //display integratedVoltageValue before stopping the test, or else integratedVoltageValue will be reset to 0 before being displayed when the capacitor is discharged upon stopping the test
 //                    if(self.integratedVoltageValue == nil){ //will never happen now since it waits until integratedVoltageValue is not 0 to start the test
 //                        glucoseResult = nil
 //                    }
-                    if(self.testPageController!.getIntegratedVoltageValue()! != 0){
+                    if(self.testPageController!.getIntegratedVoltageValue()! != 0){ //these equations will convert the value from a voltage to an interpreted result for the user
                         switch testType{
                         case 0: //Immunoglobulins
-                            if(isManualCalibration){
+                            if(isManualCalibration){//if manual calibration set it will use the manual m and b values
                                 glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!) * manualMVal) + manualBVal
                             }
-                            else{
+                            else{ //if manual calibration not set it will use this equation
                                 glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!) * 2.3345) - 46.107
                             }
                     
@@ -1298,7 +1302,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                     }
             
             
-            if(glucoseResult != nil){
+            if(glucoseResult != nil){ //if it is nil it will show that there was an error - if not nil then probably not an error unless disconnectedDevice is set to true which it will check for
                 
                     //fix negative glucose results from the voltage being too low to satisfy the equation accurately (just assume 0 in this case)
                     if(glucoseResult! < Float(0.0)){
@@ -1473,7 +1477,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
     
     
     
-    
+    //will puase execution of the test until it reads a non-nil value from the device
     private func pauseUntilNotNil(){
         while(true){
             if(self.testPageController!.getIntegratedVoltageValue() != nil){
@@ -1486,7 +1490,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
     
     
     
-    
+    //will pause execution of the test until it reads a non-zero value from the device
     private func pauseUntilNonZero() -> Int{
         let startingTime = DispatchTime.now()
         var endingTime = DispatchTime.now()
@@ -1510,7 +1514,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
     
     
     
-    
+    //if continuous test is set in settings this testing process will run
     private func runContinuousTest(){
         
         continuousValueTestQueue = DispatchQueue(label: "Continuous Value Test Queue", attributes: .concurrent)
@@ -1582,7 +1586,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
             
             
             var timer = Timer()
-            DispatchQueue.main.sync{
+            DispatchQueue.main.sync{ //reads new continuous value data from the device
                 timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.readNewContinuousData), userInfo: nil, repeats: true) //fires every 1 second - readNewContinuousData runs every second starting at 1s
             }
             
@@ -1590,7 +1594,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
             print("\n\nstarting test")
             
             var testTimer = Timer()
-            DispatchQueue.main.sync{
+            DispatchQueue.main.sync{ //reads new voltage value from the device - this is for testing purposes (printing the voltage values to the debug panel)
                 testTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.readNewVoltage), userInfo: nil, repeats: true)
             }
             
@@ -1603,6 +1607,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                 testDuration = self.menuView!.getSettingsView().getTestDuration()
             }
         
+            //update progress bar to show that test is running
             self.continuousValueTestQueue!.asyncAfter(deadline: currentTime + .seconds(testDuration! * 1/4)){
                 DispatchQueue.main.sync {
                     self.testProgressView.setProgress(0.25, animated: true)
@@ -1630,7 +1635,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                     
                     self.testProgressView.isHidden = true
                     
-                    //make the graph from peripheralDevice here
+                   
                     self.glucoseResultTable.reloadData()
                     self.glucoseResultTable.isHidden = false
                 }
@@ -1765,7 +1770,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
                 testType = self.menuView?.getSettingsView().getTestType()
             //}
             
-            switch testType{
+            switch testType{ //continuous results will not use the manual calibration - only final results will. Continuous will always use the equations that are hardcoded in here
                 case 0: //Immunoglobulins
                     //DispatchQueue.main.sync {
                         glucoseResult = Float(Float(self.testPageController!.getIntegratedVoltageValue()!)) / 33.109 //this is measured/based off the integrated voltage after 10s
@@ -1816,7 +1821,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
         //dataXEntry += 1 //corresponds to the amount of seconds into the test that its been
     }
     
-    //testing purposes
+    //testing purposes - will print voltage values to the screen
     @objc private func readNewVoltage(){
         
         var intVoltageValue: Int? = nil

@@ -6,6 +6,8 @@
 //  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
 //
 
+//THIS CLASS IS TO DETERMINE WHETHER THE DEVICE IS CONNECTED TO THE INTERNET OR NOT 
+
 import Foundation
 import SystemConfiguration
 

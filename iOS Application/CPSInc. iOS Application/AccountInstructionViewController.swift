@@ -6,6 +6,8 @@
 //  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
 //
 
+//THIS VIEW CONTROLLER DEALS WITH THE INSTRUCTIONS FOR THE ACCOUNT PAGE INSTRUCTIONS
+
 import UIKit
 
 class AccountInstructionViewController: UIViewController {

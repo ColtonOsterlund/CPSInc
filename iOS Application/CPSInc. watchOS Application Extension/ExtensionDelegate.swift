@@ -6,6 +6,8 @@
 //  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
 //
 
+//APP DELEGATE FOR WATCH APP. 
+
 import WatchKit
 
 class ExtensionDelegate: NSObject, WKExtensionDelegate {

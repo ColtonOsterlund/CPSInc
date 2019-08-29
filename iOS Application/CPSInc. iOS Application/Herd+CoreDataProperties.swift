@@ -7,6 +7,8 @@
 //
 //
 
+//CLASS FOR HERD OBJECT
+
 import Foundation
 import CoreData
 

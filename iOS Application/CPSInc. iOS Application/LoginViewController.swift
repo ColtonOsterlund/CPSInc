@@ -6,6 +6,8 @@
 //  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
 //
 
+//THIS VIEW CONTROLLER DEALS WITH THE LOGIN SCREEN WHEN PUSHING THE ACCOUNT BUTTON FROM THE MAIN SCREEN (IF DIRECTED TO THE LOGIN SCREEN)
+
 import UIKit
 import SwiftKeychainWrapper
 import WatchConnectivity
@@ -48,6 +50,8 @@ public class LoginViewController: UIViewController, UITextFieldDelegate, WCSessi
         setLayoutConstraints()
     }
     
+    
+    //SETUP ALL BUTTONS AND COMPONENTS
     private func setupComponents(){
         logoImage.image = UIImage(named: "CPSLogo")
         view.addSubview(logoImage)
@@ -90,6 +94,7 @@ public class LoginViewController: UIViewController, UITextFieldDelegate, WCSessi
         view.addSubview(scanningIndicator)
     }
     
+    //SETUP ALL CONSTRAINTS FOR COMPONENTS
     private func setLayoutConstraints(){
         logoImage.translatesAutoresizingMaskIntoConstraints = false
         logoImage.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
@@ -124,7 +129,7 @@ public class LoginViewController: UIViewController, UITextFieldDelegate, WCSessi
     }
     
     
-    override public func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) { //RESET THE EMAIL AND PASSWORD TEXTS FIELDS TO NOTHING WHEN VIEW APPEARS
         emailTextField.text = ""
         passwordTextField.text = ""
     }
@@ -172,7 +177,7 @@ public class LoginViewController: UIViewController, UITextFieldDelegate, WCSessi
     
     
     @objc private func loginBtnPressed(){
-        
+        //ANIMATES THE BUTTON PRESS
         loginBtn.transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
         
         UIView.animate(withDuration: 0.5,
@@ -187,7 +192,7 @@ public class LoginViewController: UIViewController, UITextFieldDelegate, WCSessi
         )
         
         
-        if(Reachability.isConnectedToNetwork() == false){
+        if(Reachability.isConnectedToNetwork() == false){ //CHECKS THAT THE APP HAS INTERNET CONNECTION
             self.showToast(controller: self, message: "No Internet Connection", seconds: 1)
             return
         }

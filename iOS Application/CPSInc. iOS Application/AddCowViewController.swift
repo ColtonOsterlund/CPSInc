@@ -6,6 +6,8 @@
 //  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
 //
 
+//THIS VIEW CONTROLLER DEALS WITH DISPLAYING THE COW INFO TO ADD AFTER PRESSING THE "ADD COW" BUTTON IN THE COW LOGBOOK
+
 import UIKit
 import CoreData
 

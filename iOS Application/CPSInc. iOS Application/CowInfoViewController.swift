@@ -6,6 +6,8 @@
 //  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
 //
 
+//THIS VIEW CONTROLLER DEALS WITH DISPLAYING THE COW INFO WHEN COW SELECTED
+
 import UIKit
 import CoreData
 

@@ -6,6 +6,8 @@
 //  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
 //
 
+//THIS WKINTERFACECONTROLLER DEALS WITH THE LOGBOOK SCREEN OF THE WATCH APP
+
 import Foundation
 import WatchKit
 import WatchConnectivity

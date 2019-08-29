@@ -6,6 +6,8 @@
 //  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
 //
 
+//THIS VIEW CONTROLLER DEALS WITH THE INSTRUCTION PAGE FOR THE RUN TEST INSTRUCTIONS
+
 import UIKit
 
 class RunTestInstructionViewController: UIViewController {

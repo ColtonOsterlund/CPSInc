@@ -6,6 +6,8 @@
 //  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
 //
 
+//THIS WKINTERFACECONTROLLER DEALS WITH THE MAIN MENU OF THE WATCH APP
+
 import WatchKit
 import Foundation
 import WatchConnectivity

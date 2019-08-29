@@ -5,6 +5,7 @@
 //  Created by Colton on 2019-06-07.
 //  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
 //
+//THIS WKINTERFACECONTROLLER DEALS WITH THE CONNECT TO DEVICE SCREEN OF THE WATCH APP
 
 import WatchKit
 import Foundation

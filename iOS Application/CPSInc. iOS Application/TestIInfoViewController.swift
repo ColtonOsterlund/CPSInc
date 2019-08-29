@@ -6,6 +6,8 @@
 //  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
 //
 
+//THIS VIEW CONTROLLER DEALS WITH DISPLAYING THE TEST INFO WHEN TEST SELECTED
+
 import UIKit
 
 class TestInfoViewController: UIViewController {

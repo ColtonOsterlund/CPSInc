@@ -6,6 +6,8 @@
 //  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
 //
 
+//THIS TABLE VIEW CONTROLLER DEALS WITH THE TABLE OF TESTS IN THE LOGBOOK
+
 import UIKit
 import WatchConnectivity
 import CoreData

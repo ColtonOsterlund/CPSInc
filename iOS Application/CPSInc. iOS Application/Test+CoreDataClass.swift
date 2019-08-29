@@ -7,6 +7,8 @@
 //
 //
 
+//CLASS FOR TEST OBJECT 
+
 import Foundation
 import CoreData
 

@@ -6,6 +6,8 @@
 //  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
 //
 
+//THIS VIEW CONTROLLER DEALS WITH THE GRAPH VIEW WHEN TESTS FROM THE LOGBOOK ARE GRAPHED
+
 import UIKit
 import Charts
 

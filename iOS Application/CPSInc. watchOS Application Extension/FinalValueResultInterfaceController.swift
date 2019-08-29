@@ -6,6 +6,8 @@
 //  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
 //
 
+//THIS WKINTERFACECONTROLLER DEALS WITH THE DISPLAY OF RESULTS SCREEN OF THE WATCH APP - THIS IS NOT BEING USED IN THIS VERSION
+
 import WatchKit
 import Foundation
 import WatchConnectivity

@@ -6,6 +6,8 @@
 //  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
 //
 
+//APP DELEGATE TO HANDLE LAUNCHING THE APP, NOTIFICATIONS, CORE DATA, WATCH CONNECTIVITY
+
 import UIKit
 import CoreData
 import WatchConnectivity

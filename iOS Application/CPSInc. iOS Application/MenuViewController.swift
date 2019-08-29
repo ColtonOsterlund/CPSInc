@@ -6,6 +6,8 @@
 //  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
 //
 
+//THIS VIEW CONTROLLER DEALS WITH THE MAIN MENU VIEW OF THE APPLICATION
+
 import UIKit
 import CoreBluetooth
 import WatchConnectivity
@@ -133,6 +135,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         centralManager = CBCentralManager(delegate: self, queue: nil) //central manager for bluetooth connectivity
         
         
+        //this was used for if wanting to switch to a view controller from something that was not the menu, it would set it to the next inQueue view to not mess up the navigationController stack, this is not being used anymore i dont believe
         if(inQueueView == 0){
             //do nothing
         }
@@ -532,7 +535,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         }
         
         //CHECK THAT JWT HAS NOT EXPIRED - IF IT HAS SET APPDELEGATES AUTHORIZEDSESSION TO FALSE
-        var request = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/user/authenticate")!)
+        var request = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/user/authenticate")!) //authenticate path just used to check that the jwt has not expired
         request.httpMethod = "GET"
         request.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
         
@@ -557,7 +560,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
                 print("Data:")
                 print(String(decoding: data!, as: UTF8.self))
                 
-                if(String(decoding: data!, as: UTF8.self) == "Authenticated"){
+                if(String(decoding: data!, as: UTF8.self) == "Authenticated"){ //if authenticated switch to account view
                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)){
                         self.navigationController?.pushViewController(self.accountView!, animated: true)
                         if(self.wcSession != nil){
