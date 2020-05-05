@@ -4,5 +4,15 @@
     <string name="creative_protein_solutions_inc_menuString">Creative Protein Solutions Inc.</string>
     <string name="visit_website_menuString">
         <a href="https://creativeproteinsolutions.com/"><u>Visit Website</u></a>
-    </string> <!--the HTML underline tag isn't recognized by the Android viewer but this should work when running on a real Android phone-->
+    </string>
+    <string name="button_to_connect_to_a_device">Button to connect to a device</string>
+    <string name="find_a_device">Find a Device</string>
+    <string name="run_a_test">Run a Test</string>
+    <string name="logbook">Logbook</string>
+    <string name="account">Account</string>
+    <string name="configure_settings">Configure Settings</string>
+    <string name="button_to_run_a_test">Button to run a test</string>
+    <string name="button_to_view_logbook">Button to view logbook</string>
+    <string name="button_to_view_account">Button to view account</string>
+    <string name="button_to_configure_settings">Button to configure settings</string> <!--the HTML underline tag isn't recognized by the Android viewer but this should work when running on a real Android phone-->
 </resources>
