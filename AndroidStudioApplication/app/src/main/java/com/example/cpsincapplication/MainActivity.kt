@@ -1,5 +1,6 @@
 package com.example.cpsincapplication
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -44,31 +45,36 @@ class MainActivity : AppCompatActivity() {
 
     val findDeviceBtnOnClickListener = object: View.OnClickListener {
         override fun onClick(view: View) {
-
+            val intent = Intent(this@MainActivity, FindDeviceActivity::class.java)
+            startActivity(intent)
         }
     }
 
     val runTestBtnOnClickListener = object: View.OnClickListener {
         override fun onClick(view: View) {
-
+            val intent = Intent(this@MainActivity, RunTestActivity::class.java)
+            startActivity(intent)
         }
     }
 
     val logbookBtnOnClickListener = object: View.OnClickListener {
         override fun onClick(view: View) {
-
+            val intent = Intent(this@MainActivity, LogbookActivity::class.java)
+            startActivity(intent)
         }
     }
 
     val accountBtnOnClickListener = object: View.OnClickListener {
         override fun onClick(view: View) {
-
+            val intent = Intent(this@MainActivity, AccountActivity::class.java)
+            startActivity(intent)
         }
     }
 
     val settingsBtnOnClickListener = object: View.OnClickListener {
         override fun onClick(view: View) {
-
+            val intent = Intent(this@MainActivity, SettingsActivity::class.java)
+            startActivity(intent)
         }
     }
 
