@@ -14,5 +14,6 @@
     <string name="button_to_run_a_test">Button to run a test</string>
     <string name="button_to_view_logbook">Button to view logbook</string>
     <string name="button_to_view_account">Button to view account</string>
-    <string name="button_to_configure_settings">Button to configure settings</string> <!--the HTML underline tag isn't recognized by the Android viewer but this should work when running on a real Android phone-->
+    <string name="button_to_configure_settings">Button to configure settings</string>
+    <string name="instructions">Instructions</string> <!--the HTML underline tag isn't recognized by the Android viewer but this should work when running on a real Android phone-->
 </resources>
