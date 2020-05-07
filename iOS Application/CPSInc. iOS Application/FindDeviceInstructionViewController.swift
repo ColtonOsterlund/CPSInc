@@ -40,7 +40,7 @@ class FindDeviceInstructionViewController: UIViewController {
         imageView.image = UIImage(named: "device")
         contentView.addSubview(imageView)
         
-        instructionLabel.text = "\n\n1) Have a CPSInc. handheld device ready and close by to your phone"
+        instructionLabel.text = "\n\n1) ave a CPSInc. handheld device ready and close by to your phone"
           + "\n\n2) Turn the switch on the CPSInc. device to the ON position"
             + "\n\n3) Turn on the bluetooth capabilities on your phone"
             + "\n\n4) Press the 'Find Device' button from the menu screen. If nothing comes up immediately, press the 'Search for Devices' button to refresh"
