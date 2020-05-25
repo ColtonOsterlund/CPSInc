@@ -1,0 +1,6 @@
+13:37:26 **** Incremental Build of configuration GNU ARM v7.2.1 - Default for project test ****
+make -j4 all 
+make: Nothing to be done for `all'.
+
+13:37:28 Build Finished (took 1s.586ms)
+

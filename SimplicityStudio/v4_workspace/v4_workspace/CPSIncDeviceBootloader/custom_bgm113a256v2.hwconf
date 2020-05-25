@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ASCII"?>
+<device:XMLDevice xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:device="http://www.silabs.com/ss/hwconfig/document/device.ecore" name="BGM113A256V2" partId="mcu.arm.efr32.bg1.bgm113a256v2" contextId="com.silabs.sdk.stack.super:2.5.5._310455071">
+  <mode name="DefaultMode">
+    <property object="BTL_BUTTON" propertyId="ABPeripheral.included" value="true"/>
+    <property object="CMU" propertyId="ABPeripheral.included" value="true"/>
+    <property object="DCDC" propertyId="ABPeripheral.included" value="true"/>
+    <property object="DefaultMode" propertyId="mode.diagramLocation" value="100, 100"/>
+    <property object="PORTIO" propertyId="portio.usart0.enable.cts" value="Enabled"/>
+    <property object="PORTIO" propertyId="portio.usart0.enable.rts" value="Enabled"/>
+    <property object="PORTIO" propertyId="portio.usart0.enable.rx" value="Enabled"/>
+    <property object="PORTIO" propertyId="portio.usart0.enable.tx" value="Enabled"/>
+    <property object="PORTIO" propertyId="portio.usart0.location.usart0_ctsloc" value="23"/>
+    <property object="PORTIO" propertyId="portio.usart0.location.usart0_rtsloc" value="21"/>
+    <property object="PORTIO" propertyId="portio.usart0.location.usart0_rxloc" value="15"/>
+    <property object="PORTIO" propertyId="portio.usart0.location.usart0_txloc" value="15"/>
+    <property object="SERIAL" propertyId="ABPeripheral.included" value="true"/>
+    <property object="SERIAL" propertyId="SERIAL.BSP_SERIAL_APP_PORT.MOD" value="USART0"/>
+    <property object="USART0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="USART0" propertyId="USART.BSP_USART_CTS.PIN" value="PF3"/>
+    <property object="USART0" propertyId="USART.BSP_USART_MISO.PIN" value="PC11"/>
+    <property object="USART0" propertyId="USART.BSP_USART_MOSI.PIN" value="PC10"/>
+    <property object="USART0" propertyId="USART.BSP_USART_RTS.PIN" value="PF2"/>
+    <property object="USART0" propertyId="USART.BSP_USART_RX.PIN" value="PC11"/>
+    <property object="USART0" propertyId="USART.BSP_USART_TX.PIN" value="PC10"/>
+    <property object="USART0" propertyId="USART.HAL_USART_FREQUENCY.INT" value="6400000"/>
+    <property object="USART1" propertyId="USART.HAL_USART_FREQUENCY.INT" value="6400000"/>
+    <property object="VCOM" propertyId="ABPeripheral.included" value="true"/>
+  </mode>
+  <modeTransition>
+    <property object="RESET &#x2192; DefaultMode" propertyId="modeTransition.source" value="RESET"/>
+    <property object="RESET &#x2192; DefaultMode" propertyId="modeTransition.target" value="DefaultMode"/>
+  </modeTransition>
+</device:XMLDevice>
