@@ -1,6 +1,0 @@
-14:05:34 **** Incremental Build of configuration GNU ARM v7.2.1 - Default for project CPSIncDeviceApplication ****
-make -j4 all 
-make: Nothing to be done for `all'.
-
-14:05:36 Build Finished (took 1s.729ms)
-
