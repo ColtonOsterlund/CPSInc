@@ -168,10 +168,24 @@ public class TestPageViewController: UIPageViewController, UIPageViewControllerD
                 
                 if (characteristic.uuid.uuidString == "2A29") {
                     peripheral.readValue(for: characteristic)
-                    // print("Found a Device Manufacturer Name Characteristic")
+                    print("Found a Device Manufacturer Name Characteristic")
+                    //appDelegate!.addToPeripheralWhitelist(modelNumberToAdd: String(decoding: characteristic.value!, as: UTF8.self))
                 } else if (characteristic.uuid.uuidString == "2A23") {
                     peripheral.readValue(for: characteristic)
-                    //print("Found System ID")
+                    print("Found System ID")
+                    //appDelegate!.addToPeripheralWhitelist(modelNumberToAdd: String(decoding: characteristic.value!, as: UTF8.self))
+                }
+                else if (characteristic.uuid.uuidString == "2A24"){
+                    peripheral.readValue(for: characteristic)
+                    print("Found Model Number Characteristic")
+                    //we now do the below with a service UUID so that it can be seen without having to connect
+//                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0){
+//                        print(characteristic.value)
+//                        self.appDelegate!.addToPeripheralWhitelist(modelNumberToAdd: String(decoding: characteristic.value!, as: UTF8.self))
+//                    }
+                    
+                    //print(self.appDelegate!)
+                    //appDelegate!.addToPeripheralWhitelist(modelNumberToAdd: String(decoding: characteristic.value!, as: UTF8.self))
                 }
                 
             }
@@ -185,6 +199,8 @@ public class TestPageViewController: UIPageViewController, UIPageViewControllerD
                 if (characteristic.uuid.uuidString == "646B19C6-F66D-4CC2-B2FE-8EFDC1E2CC1F") { //stripDetectVoltageCharacteristic
                     //we'll save the reference, we need it to write data
                     stripDetectVoltageCharacteristic = characteristic
+                    
+                    //print(characteristic.value) - this prints null also
                     
                     //Set Notify is useful to read incoming data async
                     peripheral.setNotifyValue(true, for: characteristic)
@@ -213,7 +229,15 @@ public class TestPageViewController: UIPageViewController, UIPageViewControllerD
                     //we'll save the reference, we need it to write data
                     startTestCharacteristic = characteristic
                     
+                    //print(characteristic.value) - this prints null also
+                    
                     print("found capacitor discharge charac")
+                }
+                
+                if (characteristic.uuid.uuidString == "9F8E337A-5E94-4916-B725-3C1570B4C425") { //capacitorDischargeCharacteristic
+                    //we'll save the reference, we need it to write data
+                    peripheral.readValue(for: characteristic)
+                    print("found device id charac")
                 }
                 
             }
@@ -270,6 +294,13 @@ public class TestPageViewController: UIPageViewController, UIPageViewControllerD
         pages.append(pageToAdd!)
         pageControl.numberOfPages = pages.count
         //setViewControllers([pages[initialPage]], direction: .forward, animated: true, completion: nil)
+    }
+    
+    public func setAppDelegate(appDelegate: AppDelegate?){
+        print("setting app delegate")
+        print(appDelegate!)
+        self.appDelegate = appDelegate;
+        print(self.appDelegate!)
     }
     
     public func removePage(pageIndexToRemove: Int){

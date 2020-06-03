@@ -39,6 +39,11 @@
 		9C6F9EE322987804009EC1D6 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6F9EE222987804009EC1D6 /* TestViewController.swift */; };
 		9C6F9EE52298781A009EC1D6 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6F9EE42298781A009EC1D6 /* SettingsViewController.swift */; };
 		9C6F9EE722988B0C009EC1D6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C6F9EE622988B0C009EC1D6 /* LaunchScreen.storyboard */; };
+		9C74FA052474895900D46738 /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C74FA032474895900D46738 /* Intents.framework */; };
+		9C74FA062474895900D46738 /* IntentsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C74FA042474895900D46738 /* IntentsUI.framework */; };
+		9C74FA08247833D600D46738 /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 9C74FA07247833D600D46738 /* Intents.intentdefinition */; };
+		9C74FA0A2488368E00D46738 /* ShopifyStoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C74FA092488368E00D46738 /* ShopifyStoreViewController.swift */; };
+		9C74FA0C2488370800D46738 /* SkeletonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C74FA0B2488370800D46738 /* SkeletonViewController.swift */; };
 		9C92F36522FB257900047FA2 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C92F36422FB257900047FA2 /* Reachability.swift */; };
 		9C92F36722FDC44500047FA2 /* TestPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C92F36622FDC44500047FA2 /* TestPageViewController.swift */; };
 		9C9618D522DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9C9618D322DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodeld */; };
@@ -185,6 +190,12 @@
 		9C6F9EE222987804009EC1D6 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		9C6F9EE42298781A009EC1D6 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		9C6F9EE622988B0C009EC1D6 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		9C74FA022474886D00D46738 /* CPSInc. iOS Application.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "CPSInc. iOS Application.entitlements"; sourceTree = "<group>"; };
+		9C74FA032474895900D46738 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
+		9C74FA042474895900D46738 /* IntentsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IntentsUI.framework; path = System/Library/Frameworks/IntentsUI.framework; sourceTree = SDKROOT; };
+		9C74FA07247833D600D46738 /* Intents.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = Intents.intentdefinition; sourceTree = "<group>"; };
+		9C74FA092488368E00D46738 /* ShopifyStoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopifyStoreViewController.swift; sourceTree = "<group>"; };
+		9C74FA0B2488370800D46738 /* SkeletonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonViewController.swift; sourceTree = "<group>"; };
 		9C92F36422FB257900047FA2 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		9C92F36622FDC44500047FA2 /* TestPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPageViewController.swift; sourceTree = "<group>"; };
 		9C9618D422DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CPSInc__iOS_Application.xcdatamodel; sourceTree = "<group>"; };
@@ -243,7 +254,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C74FA052474895900D46738 /* Intents.framework in Frameworks */,
 				36E9ACFF9C25576E61827930 /* Pods_CPSInc__iOS_Application.framework in Frameworks */,
+				9C74FA062474895900D46738 /* IntentsUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,6 +329,8 @@
 		9C39DE3B22A580D00029F806 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9C74FA032474895900D46738 /* Intents.framework */,
+				9C74FA042474895900D46738 /* IntentsUI.framework */,
 				F2D1556416CD3A065738418B /* Pods_CPSInc__iOS_Application.framework */,
 				48C160BB3C7EC2343ABF7C45 /* Pods_CPSInc__iOS_ApplicationTests.framework */,
 				D0BBFC0EFE67C421E13704E5 /* Pods_CPSInc__iOS_ApplicationUITests.framework */,
@@ -328,6 +343,7 @@
 		9C6F9E9722985F35009EC1D6 = {
 			isa = PBXGroup;
 			children = (
+				9C74FA07247833D600D46738 /* Intents.intentdefinition */,
 				9C6F9EA222985F35009EC1D6 /* CPSInc. iOS Application */,
 				9C6F9EBA22985F35009EC1D6 /* CPSInc. iOS ApplicationTests */,
 				9C6F9EC522985F35009EC1D6 /* CPSInc. iOS ApplicationUITests */,
@@ -354,6 +370,7 @@
 		9C6F9EA222985F35009EC1D6 /* CPSInc. iOS Application */ = {
 			isa = PBXGroup;
 			children = (
+				9C74FA022474886D00D46738 /* CPSInc. iOS Application.entitlements */,
 				9C6F9EE622988B0C009EC1D6 /* LaunchScreen.storyboard */,
 				9C1C31BE22DE3DD80057989C /* InstructionsStoryboard.storyboard */,
 				9C1C31C022DE40410057989C /* InstructionPageViewController.swift */,
@@ -371,8 +388,8 @@
 				9C33B6C222F104DB0076F492 /* AccountPageViewController.swift */,
 				9CFB11C022C3F937003E76B5 /* HerdLogbookViewController.swift */,
 				9CFB11CB22C4216D003E76B5 /* CowLogbookViewController.swift */,
-				9CFB11CD22C42196003E76B5 /* TestLogbookViewController.swift */,
 				9CFB11D122C51D88003E76B5 /* HerdInfoViewController.swift */,
+				9CFB11CD22C42196003E76B5 /* TestLogbookViewController.swift */,
 				9CFB11CF22C51D6F003E76B5 /* CowInfoViewController.swift */,
 				9CFB11D322C51D9D003E76B5 /* TestIInfoViewController.swift */,
 				9CFB11F722C54E44003E76B5 /* AddHerdViewController.swift */,
@@ -395,6 +412,8 @@
 				9C9618EB22DFA77800B48713 /* TestToTestV1ToV2CustomPolicy.swift */,
 				9C6F9EAD22985F35009EC1D6 /* Assets.xcassets */,
 				9C6F9EB222985F35009EC1D6 /* Info.plist */,
+				9C74FA092488368E00D46738 /* ShopifyStoreViewController.swift */,
+				9C74FA0B2488370800D46738 /* SkeletonViewController.swift */,
 			);
 			path = "CPSInc. iOS Application";
 			sourceTree = "<group>";
@@ -777,6 +796,7 @@
 				9CFB11D022C51D6F003E76B5 /* CowInfoViewController.swift in Sources */,
 				9CFB11FA22C54E53003E76B5 /* AddCowViewController.swift in Sources */,
 				9C9618E022DF7E5A00B48713 /* Herd+CoreDataProperties.swift in Sources */,
+				9C74FA0C2488370800D46738 /* SkeletonViewController.swift in Sources */,
 				9C92F36722FDC44500047FA2 /* TestPageViewController.swift in Sources */,
 				9C9618DE22DF7E5A00B48713 /* Test+CoreDataProperties.swift in Sources */,
 				9C1C31B322D53E580057989C /* TestChartViewController.swift in Sources */,
@@ -784,10 +804,12 @@
 				9C92F36522FB257900047FA2 /* Reachability.swift in Sources */,
 				9CB795112307456000DB106A /* Cow+CoreDataClass.swift in Sources */,
 				9C9C949522EF76E8003E5454 /* LoginViewController.swift in Sources */,
+				9C74FA0A2488368E00D46738 /* ShopifyStoreViewController.swift in Sources */,
 				9C1C31C322DE4BC20057989C /* FindDeviceInstructionViewController.swift in Sources */,
 				9C6F9EE322987804009EC1D6 /* TestViewController.swift in Sources */,
 				9C9618D522DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodeld in Sources */,
 				9CFB11CE22C42196003E76B5 /* TestLogbookViewController.swift in Sources */,
+				9C74FA08247833D600D46738 /* Intents.intentdefinition in Sources */,
 				9CFB11C122C3F937003E76B5 /* HerdLogbookViewController.swift in Sources */,
 				9C9618EC22DFA77800B48713 /* TestToTestV1ToV2CustomPolicy.swift in Sources */,
 				9CFB11F822C54E44003E76B5 /* AddHerdViewController.swift in Sources */,
@@ -1067,6 +1089,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "CPSInc. iOS Application/CPSInc. iOS Application.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = H5K6477XCY;
 				INFOPLIST_FILE = "CPSInc. iOS Application/Info.plist";
@@ -1088,6 +1111,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "CPSInc. iOS Application/CPSInc. iOS Application.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = H5K6477XCY;
 				INFOPLIST_FILE = "CPSInc. iOS Application/Info.plist";

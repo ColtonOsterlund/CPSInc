@@ -30,23 +30,27 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     private var accountView: AccountPageViewController? = nil
     private var appDelegate: AppDelegate? = nil
     private var testPageController: TestPageViewController? = nil
+    private var shopView: ShopifyStoreViewController? = nil
     
     //UIButtons
-    private let findDeviceBtn = UIButton()
+    //private let findDeviceBtn = UIButton()
     private let testBtn = UIButton()
     private let settingsBtn = UIButton()
     private let logbookBtn = UIButton()
     private let accountBtn = UIButton()
+    private let shopBtn = UIButton()
     
     //UIBarButtons
-     private var instructionBtn = UIBarButtonItem()
+    private var instructionBtn = UIBarButtonItem()
+    private var findDeviceBtn = UIBarButtonItem()
     
     //UIImages
-    private let findDeviceBtnImage = UIImage(named: "device")
+    //private let findDeviceBtnImage = UIImage(named: "device")
     private let testBtnImage = UIImage(named: "bloodDropCartoonImage")
     private let settingsBtnImage = UIImage(named: "settingsWheel")
     private let logbookBtnImage = UIImage(named: "logbook")
     private let accountBtnImage = UIImage(named: "userLOGO")
+    private let shopBtnImage = UIImage(named: "shoppingCart")
     private let greenCircleImage = UIImage(named: "green_circle")
     private let redCircleImage = UIImage(named: "red_circle")
     
@@ -61,6 +65,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     private let logbookLabel = UILabel()
     private let logoLabel = UILabel()
     private let accountLabel = UILabel()
+    private let shopLabel = UILabel()
     
     //UIActivityIndicatorView
     private let scanningIndicator = UIActivityIndicatorView()
@@ -91,9 +96,11 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         //think these have to be here because it said the property initialization (global vars) are initialized before this init() function so self is not ready yet at that point
         connectView = ConnectViewController(menuView: self, appDelegate: appDelegate)
         testPageController = TestPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+        testPageController?.setAppDelegate(appDelegate: appDelegate)
         testView = TestViewController(menuView: self, appDelegate: appDelegate, testPageController: testPageController)
         settingsView = SettingsViewController(menuView: self, appDelegate: appDelegate)
         logbookView = HerdLogbookViewController(menuView: self, appDelegate: appDelegate)
+        shopView = ShopifyStoreViewController(appDelegate: appDelegate, menuView: self)
         instructionsView = InstructionPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         accountView = AccountPageViewController(appDelegate: appDelegate, menuView: self)
         loginView = LoginViewController(appDelegate: appDelegate, accountView: accountView, menuView: self)
@@ -133,6 +140,10 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     
         //let bluetoothQueue: DispatchQueue = DispatchQueue(label: "bluetooth queue", attributes: .concurrent) //apparently cannot use a dispatch queue since UITableView MUST be updated from the main thread
         centralManager = CBCentralManager(delegate: self, queue: nil) //central manager for bluetooth connectivity
+        
+        //centralManager delegate can be set to connectView right away as nothing from menuView does anything with it before a device is connected (I believe) - this is redone when findDevice button is pressed for the sake of leaving it there in case this crashes and burns
+        centralManager?.delegate = connectView //make connectView the delegate for centralManager
+        connectView!.setCentralManager(centralManager: self.centralManager!)
         
         
         //this was used for if wanting to switch to a view controller from something that was not the menu, it would set it to the next inQueue view to not mess up the navigationController stack, this is not being used anymore i dont believe
@@ -189,13 +200,13 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         scrollView.addSubview(contentView)
         
         
-        findDeviceBtn.setBackgroundImage(findDeviceBtnImage, for: .normal)
-        contentView.addSubview(findDeviceBtn)
+        //findDeviceBtn.setBackgroundImage(findDeviceBtnImage, for: .normal)
+        //contentView.addSubview(findDeviceBtn)
         
-        findDeviceLabel.text = "Find a Device"
-        findDeviceLabel.textColor = .black
-        findDeviceLabel.textAlignment = .center
-        contentView.addSubview(findDeviceLabel)
+//        findDeviceLabel.text = "Find a Device"
+//        findDeviceLabel.textColor = .black
+//        findDeviceLabel.textAlignment = .center
+//        contentView.addSubview(findDeviceLabel)
         
         testBtn.setBackgroundImage(testBtnImage, for: .normal)
         contentView.addSubview(testBtn)
@@ -235,6 +246,14 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         accountLabel.textAlignment = .center
         contentView.addSubview(accountLabel)
         
+        shopBtn.setBackgroundImage(shopBtnImage, for: .normal)
+        contentView.addSubview(shopBtn)
+        
+        shopLabel.text = "Store"
+        shopLabel.textColor = .black
+        shopLabel.textAlignment = .center
+        contentView.addSubview(shopLabel)
+        
         
         // Set the 'click here' substring to be the link
         attributedString.setAttributes([.link: url], range: NSMakeRange(0, 13))
@@ -253,8 +272,10 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         
         
         instructionBtn = UIBarButtonItem.init(title: "Instructions", style: .done, target: self, action: #selector(instructionsBtnPressed))
+        findDeviceBtn = UIBarButtonItem.init(title: "Find a Device", style: .done, target: self, action: #selector(findDeviceBtnPressed))
         
         navigationItem.rightBarButtonItems = [instructionBtn]
+        navigationItem.leftBarButtonItems = [findDeviceBtn]
         
         scanningIndicator.center = self.view.center
         scanningIndicator.style = UIActivityIndicatorView.Style.gray
@@ -283,21 +304,21 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         //view.translatesAutoresizingMaskIntoConstraints = false //need to do this individually for every component instead
         
         //findDeviceBtn
-        findDeviceBtn.translatesAutoresizingMaskIntoConstraints = false
-        findDeviceBtn.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25) ).isActive = true
-        //findDeviceBtn.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 75).isActive = true //this constant value is dependant on the screen resolution
-        findDeviceBtn.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: (UIScreen.main.bounds.height * 0.25) - ((UIScreen.main.bounds.height * 0.15) / 2)).isActive = true //this constant value is dependant on the screen resolution
-        findDeviceBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.3)).isActive = true
-        findDeviceBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.15)).isActive = true
+//        findDeviceBtn.translatesAutoresizingMaskIntoConstraints = false
+//        findDeviceBtn.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25) ).isActive = true
+//        //findDeviceBtn.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 75).isActive = true //this constant value is dependant on the screen resolution
+//        findDeviceBtn.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: (UIScreen.main.bounds.height * 0.25) - ((UIScreen.main.bounds.height * 0.15) / 2)).isActive = true //this constant value is dependant on the screen resolution
+//        findDeviceBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.3)).isActive = true
+//        findDeviceBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.15)).isActive = true
         
         //findDeviceLabel
-        findDeviceLabel.translatesAutoresizingMaskIntoConstraints = false
-        findDeviceLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25) ).isActive = true
-        findDeviceLabel.topAnchor.constraint(equalTo: findDeviceBtn.bottomAnchor, constant: 10).isActive = true
+//        findDeviceLabel.translatesAutoresizingMaskIntoConstraints = false
+//        findDeviceLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25) ).isActive = true
+//        findDeviceLabel.topAnchor.constraint(equalTo: findDeviceBtn.bottomAnchor, constant: 10).isActive = true
         
         //testBtn
         testBtn.translatesAutoresizingMaskIntoConstraints = false
-        testBtn.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: (UIScreen.main.bounds.width * 0.25) ).isActive = true
+        testBtn.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25) ).isActive = true
         //testBtn.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
          testBtn.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: (UIScreen.main.bounds.height * 0.25) - ((UIScreen.main.bounds.height * 0.15) / 2)).isActive = true //this
         testBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.3)).isActive = true
@@ -305,46 +326,58 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         
         //testLabel
         testLabel.translatesAutoresizingMaskIntoConstraints = false
-        testLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: (UIScreen.main.bounds.width * 0.25) ).isActive = true
+        testLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25) ).isActive = true
         testLabel.topAnchor.constraint(equalTo: testBtn.bottomAnchor, constant: 10).isActive = true
         
         
         //settingsBtn
         accountBtn.translatesAutoresizingMaskIntoConstraints = false
-        accountBtn.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: (UIScreen.main.bounds.width * 0.25) ).isActive = true
+        accountBtn.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25) ).isActive = true
         //settingsBtn.topAnchor.constraint(equalTo: testBtn.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.15)).isActive = true //this constant value is dependant on the screen resolution
         //settingsBtn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -75).isActive = true //this constant value is dependant on the screen resolution
-        accountBtn.topAnchor.constraint(equalTo: findDeviceLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.15)).isActive = true //this
+        accountBtn.topAnchor.constraint(equalTo: testLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.15)).isActive = true //this
         accountBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.3)).isActive = true
         accountBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.15)).isActive = true
         
         //settingsLabel
         accountLabel.translatesAutoresizingMaskIntoConstraints = false
-        accountLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: (UIScreen.main.bounds.width * 0.25)).isActive = true
+        accountLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25)).isActive = true
         accountLabel.topAnchor.constraint(equalTo: accountBtn.bottomAnchor, constant: 10).isActive = true
         
         
         logbookBtn.translatesAutoresizingMaskIntoConstraints = false
-        logbookBtn.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25) ).isActive = true
-        logbookBtn.topAnchor.constraint(equalTo: findDeviceLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.15)).isActive = true
+        logbookBtn.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: (UIScreen.main.bounds.width * 0.25) ).isActive = true
+        logbookBtn.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: (UIScreen.main.bounds.height * 0.25) - ((UIScreen.main.bounds.height * 0.15) / 2)).isActive = true //this
         logbookBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.3)).isActive = true
         logbookBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.15)).isActive = true
         
         logbookLabel.translatesAutoresizingMaskIntoConstraints = false
-        logbookLabel.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25)).isActive = true
+        logbookLabel.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: (UIScreen.main.bounds.width * 0.25)).isActive = true
         logbookLabel.topAnchor.constraint(equalTo: logbookBtn.bottomAnchor, constant: 10).isActive = true
         
         
         settingsBtn.translatesAutoresizingMaskIntoConstraints = false
-        settingsBtn.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25) ).isActive = true
+        settingsBtn.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: (UIScreen.main.bounds.width * 0.25) ).isActive = true
         settingsBtn.topAnchor.constraint(equalTo: logbookLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.15)).isActive = true
         settingsBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.3)).isActive = true
         settingsBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.15)).isActive = true
         
         
         settingsLabel.translatesAutoresizingMaskIntoConstraints = false
-        settingsLabel.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25)).isActive = true
+        settingsLabel.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: (UIScreen.main.bounds.width * 0.25)).isActive = true
         settingsLabel.topAnchor.constraint(equalTo: settingsBtn.bottomAnchor, constant: 10).isActive = true
+        
+        
+        shopBtn.translatesAutoresizingMaskIntoConstraints = false
+        shopBtn.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25) ).isActive = true
+        shopBtn.topAnchor.constraint(equalTo: accountLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.15)).isActive = true
+        shopBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.3)).isActive = true
+        shopBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.15)).isActive = true
+        
+        
+        shopLabel.translatesAutoresizingMaskIntoConstraints = false
+        shopLabel.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25)).isActive = true
+        shopLabel.topAnchor.constraint(equalTo: shopBtn.bottomAnchor, constant: 10).isActive = true
         
         
         logoLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -382,12 +415,12 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     }
     
     private func setButtonListeners(){
-        findDeviceBtn.addTarget(self, action: #selector(findDeviceBtnPressed), for: .touchUpInside) //see if you can put the action function in a seperate class like a listener class
+        //findDeviceBtn.addTarget(self, action: #selector(findDeviceBtnPressed), for: .touchUpInside) //see if you can put the action function in a seperate class like a listener class
         testBtn.addTarget(self, action: #selector(testBtnPressed), for: .touchUpInside) //see if you can put the action function in a seperate class like a listener class
         settingsBtn.addTarget(self, action: #selector(settingsBtnPressed), for: .touchUpInside) //see if you can put the action function in a seperate class like a listener class
         logbookBtn.addTarget(self, action: #selector(logbookBtnPressed), for: .touchUpInside)
-        
         accountBtn.addTarget(self, action: #selector(accountBtnPressed), for: .touchUpInside)
+        shopBtn.addTarget(self, action: #selector(shopBtnPressed), for: .touchUpInside)
     }
     
     @objc private func findDeviceBtnPressed(){ //see if you can put this in a seperate class like a listener class
@@ -395,18 +428,18 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         
         
         
-        findDeviceBtn.transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
-
-        UIView.animate(withDuration: 0.5,
-                       delay: 0,
-                       usingSpringWithDamping: CGFloat(0.70),
-                       initialSpringVelocity: CGFloat(5.0),
-                       options: UIView.AnimationOptions.allowUserInteraction,
-                       animations: {
-                        self.findDeviceBtn.transform = CGAffineTransform.identity
-        },
-                       completion: { Void in()  }
-        )
+//        findDeviceBtn.transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
+//
+//        UIView.animate(withDuration: 0.5,
+//                       delay: 0,
+//                       usingSpringWithDamping: CGFloat(0.70),
+//                       initialSpringVelocity: CGFloat(5.0),
+//                       options: UIView.AnimationOptions.allowUserInteraction,
+//                       animations: {
+//                        self.findDeviceBtn.transform = CGAffineTransform.identity
+//        },
+//                       completion: { Void in()  }
+//        )
     
         
         
@@ -423,6 +456,33 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
             connectView?.setWCSession(session: wcSession)
         }
     }
+    
+    
+    
+    
+    
+    @objc private func shopBtnPressed(){
+        shopBtn.transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
+        
+        UIView.animate(withDuration: 0.5,
+                        delay: 0,
+                        usingSpringWithDamping: CGFloat(0.70),
+                        initialSpringVelocity: CGFloat(5.0),
+                        options: UIView.AnimationOptions.allowUserInteraction,
+                        animations: {
+                        self.shopBtn.transform = CGAffineTransform.identity
+        },
+                        completion: { Void in()  }
+        )
+        
+        
+        navigationController?.pushViewController(shopView!, animated: true) //pushes shopView onto the navigationController stack
+        
+    }
+    
+    
+    
+    
     
     @objc private func testBtnPressed(){ //see if you can put this in a seperate class like a listener class
         

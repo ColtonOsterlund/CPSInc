@@ -14,6 +14,7 @@ import Charts //using the Charts framework - done using the tutorial https://www
 import WatchConnectivity
 import UserNotifications
 import CoreData
+import IntentsUI
 
 public class TestViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, WCSessionDelegate{
 
@@ -429,6 +430,27 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
         saveTestBtn.addTarget(self, action: #selector(saveTestBtnPressed), for: .touchUpInside)
         cancelTestBtn.addTarget(self, action: #selector(cancelTestBtnPressed), for: .touchUpInside)
         addTestBtn.addTarget(self, action: #selector(addTestBtnPressed), for: .touchUpInside)
+        
+        
+        if #available(iOS 12.0, *) { //all of these steps have to be done together within this code block for scope reasons - this is why its done here
+            let addToSiriBtn = INUIAddVoiceShortcutButton(style: .blackOutline)
+            view.addSubview(addToSiriBtn)
+            addToSiriBtn.translatesAutoresizingMaskIntoConstraints = false
+            addToSiriBtn.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+            addToSiriBtn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+            addToSiriBtn.addTarget(self, action: #selector(addToSiriBtnPressed), for: .touchUpInside)
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    
+    @objc private func addToSiriBtnPressed(){
+        if #available(iOS 12.0, *) {
+            activateActivity()
+            presentAddToSiriViewController()
+        } else {
+            // Fallback on earlier versions
+        }
     }
     
     @objc private func saveTestBtnPressed(){
@@ -760,7 +782,12 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
         
     }
     
-    @objc public func startTestBtnPressed(){ //set to public so that it can be started from a seperate test
+    
+    
+    
+    //THIS SETS UP ALL THE PARAMETERS TO START THE ACTUAL TEST PROCESS
+    
+    @objc public func startTestBtnPressed(){ //set to public so that it can be started from a seperate test - as well as started from app delegate from siri 
         //starts the testing process
         startTestBtn.transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
         
@@ -774,6 +801,9 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
         },
                        completion: { Void in()  }
         )
+        
+        
+
         
         
         let herdFetchRequest: NSFetchRequest<Herd> = Herd.fetchRequest()
@@ -793,6 +823,8 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
         } catch{
             print("Error during fetch request")
         }
+        
+        print(testPageController!.getStripDetectVoltageValue() as! Int)
         
         if(testPageController!.getPeripheralDevice() == nil){
             showToast(controller: self, message: "No device connected", seconds: 1)
@@ -874,6 +906,12 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     
+    
+    
+    
+    
+    //THIS IS THE ACTUAL TEST PROCESS
+    
     private func startTestProcess(){ //AFTER EVERYTHING IS SET UP FOR A TEST THIS IS RUN WHICH STARTS THE TESTING PROCESS
         
         testDate = Date()
@@ -910,100 +948,102 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
         //            isFinalValueTest = settingsView?.isFinalValueTest
             
         testCancelled = false
-            
-            
-        incubationTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateIncubationTimeString), userInfo: nil, repeats: true)
         
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(self.timeBetweenTests)){
-            if((self.testPageController?.getTestPages().count)! < 10){
-                self.addTestBtn.isEnabled = true
-                self.addTestBtn.isHidden = false
-            }
-            
-            self.cancelTestBtn.isHidden = false
-            self.cancelTestBtn.isEnabled = true
+        //FROM HERE THE TEST PROCESS WILL BE SLIGHTLY DIFFERENT WITH NEW DEVICE - THIS WILL BE FIGURED OUT ONCE WE HAVE THE DEVICE
             
             
-            
-            if(self.disconnectedDevice == true){
-                self.cancelTestBtnPressed()
-            }
-        }
-        
-        
-        var herdID: String? = nil
-        var cowID: String? = nil
-        var timeString: String? = nil
-        
-        DispatchQueue.main.async{
-            herdID = self.testHerdIDLabel.text
-            cowID = self.testCowIDLabel.text
-            timeString = self.testDateLabel.text
-        }
-        
-        //send notification that incubation timer is almost complete
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(((Int(incubationTimeMinutes)! * 60) + Int(incubationTimeSeconds)!) - ((Int(notificationTimeMinutes)! * 60) + Int(notificationTimeSeconds)!))){
-            if(self.testCancelled == false){
-                //send notification if app is in background
-                self.appDelegate!.getNotificationCenter().getNotificationSettings { (settings) in
-                    if settings.authorizationStatus == .authorized {
-                        let content = UNMutableNotificationContent()
-                        content.title = "Timer Almost Done"
-                        if(self.chooseCowAtBeginning == false){
-                            var bodyString = "Your Have "
-                            bodyString += self.notificationTimeMinutes
-                            bodyString += " Minutes and "
-                            bodyString += self.notificationTimeSeconds
-                            bodyString += " Seconds Before the Incubation Timer is Done for Test Date: "
-                            bodyString += timeString!
-                            
-                            content.body = bodyString
-                        }
-                        else{
-                            var bodyString = "Your Have "
-                            bodyString += self.notificationTimeMinutes
-                            bodyString += " Minutes and "
-                            bodyString += self.notificationTimeSeconds
-                            bodyString += " Seconds Before the Incubation Timer is Done for "
-                            bodyString += herdID!
-                            bodyString += ", "
-                            bodyString += cowID!
-                            bodyString += ", Test Date: "
-                            bodyString += timeString!
-                            
-                            content.body = bodyString
-                        }
-                        content.sound = UNNotificationSound.default
-                        content.badge = 1
-                            
-                        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false) //set value to send notification however long before the test is over that you want to receive that notification
-                            
-                        let identifier = "Local Timer Almost Done Notification" + String(self.pageID!)
-                        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-                            
-                        self.appDelegate?.getNotificationCenter().add(request) { (error) in
-                            if let error = error {
-                                print("Error \(error.localizedDescription)")
-                            }
-                        }
-                    }
-                }
-            }
-        }
-            
-            
-        //run and display incubation timer here - send notification when there is 60 seconds left
-        incubationLabel.isHidden = false
-        incubationTimeLabel.isHidden = false
-            
-            
-        //            if(menuView!.getSettingsView().getFinalContinuous() == true){
-        //                runFinalValueTest()
-        //            }
-        //            else{
-        //                runContinuousTest()
-        //            }
+//        incubationTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateIncubationTimeString), userInfo: nil, repeats: true)
+//
+//
+//        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(self.timeBetweenTests)){
+//            if((self.testPageController?.getTestPages().count)! < 10){
+//                self.addTestBtn.isEnabled = true
+//                self.addTestBtn.isHidden = false
+//            }
+//
+//            self.cancelTestBtn.isHidden = false
+//            self.cancelTestBtn.isEnabled = true
+//
+//
+//
+//            if(self.disconnectedDevice == true){
+//                self.cancelTestBtnPressed()
+//            }
+//        }
+//
+//
+//        var herdID: String? = nil
+//        var cowID: String? = nil
+//        var timeString: String? = nil
+//
+//        DispatchQueue.main.async{
+//            herdID = self.testHerdIDLabel.text
+//            cowID = self.testCowIDLabel.text
+//            timeString = self.testDateLabel.text
+//        }
+//
+//        //send notification that incubation timer is almost complete
+//        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(((Int(incubationTimeMinutes)! * 60) + Int(incubationTimeSeconds)!) - ((Int(notificationTimeMinutes)! * 60) + Int(notificationTimeSeconds)!))){
+//            if(self.testCancelled == false){
+//                //send notification if app is in background
+//                self.appDelegate!.getNotificationCenter().getNotificationSettings { (settings) in
+//                    if settings.authorizationStatus == .authorized {
+//                        let content = UNMutableNotificationContent()
+//                        content.title = "Timer Almost Done"
+//                        if(self.chooseCowAtBeginning == false){
+//                            var bodyString = "Your Have "
+//                            bodyString += self.notificationTimeMinutes
+//                            bodyString += " Minutes and "
+//                            bodyString += self.notificationTimeSeconds
+//                            bodyString += " Seconds Before the Incubation Timer is Done for Test Date: "
+//                            bodyString += timeString!
+//
+//                            content.body = bodyString
+//                        }
+//                        else{
+//                            var bodyString = "Your Have "
+//                            bodyString += self.notificationTimeMinutes
+//                            bodyString += " Minutes and "
+//                            bodyString += self.notificationTimeSeconds
+//                            bodyString += " Seconds Before the Incubation Timer is Done for "
+//                            bodyString += herdID!
+//                            bodyString += ", "
+//                            bodyString += cowID!
+//                            bodyString += ", Test Date: "
+//                            bodyString += timeString!
+//
+//                            content.body = bodyString
+//                        }
+//                        content.sound = UNNotificationSound.default
+//                        content.badge = 1
+//
+//                        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false) //set value to send notification however long before the test is over that you want to receive that notification
+//
+//                        let identifier = "Local Timer Almost Done Notification" + String(self.pageID!)
+//                        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+//
+//                        self.appDelegate?.getNotificationCenter().add(request) { (error) in
+//                            if let error = error {
+//                                print("Error \(error.localizedDescription)")
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//
+//        //run and display incubation timer here - send notification when there is 60 seconds left
+//        incubationLabel.isHidden = false
+//        incubationTimeLabel.isHidden = false
+//
+//
+//        //            if(menuView!.getSettingsView().getFinalContinuous() == true){
+//        //                runFinalValueTest()
+//        //            }
+//        //            else{
+//        //                runContinuousTest()
+//        //            }
     }
     
     
@@ -1856,7 +1896,7 @@ public class TestViewController: UIViewController, UITableViewDataSource, UITabl
             connectedDeviceLabel.text = "Connected Device: None"
         }
         else{
-            connectedDeviceLabel.text = "Connected to: " + (self.testPageController!.getPeripheralDevice()?.name)!
+            connectedDeviceLabel.text = "Connected to: " + ((self.testPageController!.getPeripheralDevice()?.name)!)
         }
         
         if(menuView!.getSettingsView().getFinalContinuous() == true){
@@ -2156,4 +2196,57 @@ extension Data {
         self = data
     }
     
+}
+
+@available(iOS 12.0, *)
+extension TestViewController {
+
+    func activateActivity(){
+        userActivity = NSUserActivity(activityType: "RunATest")
+        let title = "Run a CPS Test"
+        userActivity?.title = title
+        userActivity?.userInfo = ["id": title]
+        userActivity?.suggestedInvocationPhrase = "Run a CPS Test"
+        userActivity?.isEligibleForPrediction = true
+        userActivity?.persistentIdentifier = title
+        
+        userActivity?.isEligibleForSearch = true
+        userActivity?.isEligibleForPrediction = true
+        
+        self.userActivity = userActivity
+        userActivity?.becomeCurrent()
+    }
+    
+    func presentAddToSiriViewController() {
+        guard let userActivity = self.userActivity else { return }
+        let shortcut = INShortcut(userActivity: userActivity)
+        let viewController = INUIAddVoiceShortcutViewController(shortcut: shortcut)
+        viewController.modalPresentationStyle = .formSheet
+        viewController.delegate = self
+        present(viewController, animated: true, completion: nil)
+    }
+}
+
+
+@available(iOS 12.0, *)
+extension TestViewController: INUIAddVoiceShortcutViewControllerDelegate {
+    public func addVoiceShortcutViewController(_ controller: INUIAddVoiceShortcutViewController, didFinishWith voiceShortcut: INVoiceShortcut?, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    public func addVoiceShortcutViewControllerDidCancel(_ controller: INUIAddVoiceShortcutViewController) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    func editVoiceShortcutViewController(_ controller: INUIEditVoiceShortcutViewController, didUpdate voiceShortcut: INVoiceShortcut?, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    func editVoiceShortcutViewController(_ controller: INUIEditVoiceShortcutViewController, didDeleteVoiceShortcutWithIdentifier deletedVoiceShortcutIdentifier: UUID) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    func editVoiceShortcutViewControllerDidCancel(_ controller: INUIEditVoiceShortcutViewController) {
+        controller.dismiss(animated: true, completion: nil)
+    }
 }

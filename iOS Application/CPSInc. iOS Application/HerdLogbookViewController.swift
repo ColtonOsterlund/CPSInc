@@ -14,6 +14,7 @@ import CoreData
 import SwiftyDropbox
 import UserNotifications
 
+
 public class HerdLogbookViewController: UITableViewController, WCSessionDelegate, UISearchResultsUpdating {
     
     private var herdList = [Herd]()

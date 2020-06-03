@@ -24,6 +24,8 @@ public class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotification
     private var navigationController: UINavigationController? = nil
     private let notificationCenter = UNUserNotificationCenter.current()
     
+    
+    
     //User Defaults
     private let defaults = UserDefaults.standard
 
@@ -63,6 +65,7 @@ public class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotification
         
         
         DropboxClientsManager.setupWithAppKey("ml7w1ed7ooeqyqa")
+        
         
         return true
     }
@@ -147,6 +150,11 @@ public class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotification
             navigationController?.pushViewController((firstView?.getConnectView())!, animated: true)
             
         }
+        else if response.notification.request.identifier == "Local Device Connected Notification"{
+            navigationController?.popToRootViewController(animated: true)
+            navigationController?.pushViewController((firstView?.getConnectView())!, animated: true)
+            
+        }
         else if response.notification.request.identifier.prefix(36) == "Local Timer Almost Done Notification"{
             
             let pageID = Int(response.notification.request.identifier.suffix(1)) //will always be a number between 0-9 since you can only run 10 tests at once, so one digit is enough
@@ -183,6 +191,9 @@ public class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotification
             completionHandler([.alert, .sound])
         }
         else if(notification.request.identifier == "Local Device Discovered Notification" && navigationController?.visibleViewController != firstView?.getConnectView() && navigationController?.viewControllers[(navigationController?.viewControllers.count)! - 1] != firstView?.getConnectView()){ //the last check is to check that it is not the last view in the navigationcontroller while showing a "connected" toast or a scanning indicator on ConnectView
+            completionHandler([.alert, .sound])
+        }
+        else if(notification.request.identifier == "Local Device Connected Notification" && navigationController?.visibleViewController != firstView?.getConnectView() && navigationController?.viewControllers[(navigationController?.viewControllers.count)! - 1] != firstView?.getConnectView()){ //the last check is to check that it is not the last view in the navigationcontroller while showing a "connected" toast or a scanning indicator on ConnectView
             completionHandler([.alert, .sound])
         }
         else if(notification.request.identifier.prefix(36) == "Local Timer Almost Done Notification" /*&& navigationController?.visibleViewController != firstView?.getTestView()*/){ //jeroen wants this to show from the view
@@ -277,5 +288,25 @@ public class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotification
     public func getSyncUpToDate() -> Bool{
         return defaults.bool(forKey: "syncUpToDateDefault")
     }
+    
+    
+    
+    //MARK: -Siri
+    public func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+        
+        //print(userActivity.activityType)
+        
+        if(userActivity.activityType == "SearchForDevices"){
+            navigationController?.pushViewController(self.firstView!.getConnectView(), animated: true)
+        }
+        
+        if(userActivity.activityType == "RunATest"){
+            navigationController?.pushViewController(self.firstView!.getTestPageView(), animated: true)
+        }
+        
+        return false
+    }
+    
+    
 }
 

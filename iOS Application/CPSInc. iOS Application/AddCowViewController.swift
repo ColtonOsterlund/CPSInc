@@ -11,6 +11,7 @@
 import UIKit
 import CoreData
 
+
 class AddCowViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextViewDelegate {
     
     //scrolling

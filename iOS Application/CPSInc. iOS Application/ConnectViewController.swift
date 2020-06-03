@@ -12,8 +12,12 @@ import UIKit
 import CoreBluetooth
 import WatchConnectivity
 import UserNotifications
+import UIKit
+import IntentsUI
+
 
 public class ConnectViewController: UIViewController, CBCentralManagerDelegate, UITableViewDataSource, UITableViewDelegate, WCSessionDelegate{
+    
     
     //Bluetooth Data
     private var centralManager: CBCentralManager? = nil
@@ -43,6 +47,10 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
     //WCSession
     private var wcSession: WCSession? = nil
     
+    //User Defaults
+    private let defaults = UserDefaults.standard
+    
+    private var searchForKnowBluetoothDevicesFlag: Bool = true //set as true by default so that it starts searching upon the app opening up
     
     // This allows you to initialise your custom UIViewController without a nib or bundle.
     public convenience init(menuView: MenuViewController?, appDelegate: AppDelegate?) {
@@ -50,6 +58,13 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
         
         self.menuView = menuView
         self.appDelegate = appDelegate
+        
+        defaults.register(defaults: ["BluetoothPeripheralWhitelist": [Any]()])
+        
+        //start scanning for known bluetooth peripherals here - this will happen when app opens and this page is created
+        //create background thread that searches and connects if found
+        self.scanForKnownDevices()
+        
     }
 
     // This extends the superclass.
@@ -62,6 +77,16 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
         fatalError("init(coder:) has not been implemented") // or see Roman Sausarnes's answer
     }
     
+    override public func viewDidAppear(_ animated: Bool) {
+        searchForKnowBluetoothDevicesFlag = false //when view appears, it stops auto searching
+    }
+
+    override public func viewDidDisappear(_ animated: Bool) {
+        if(menuView?.getTestPageView().getPeripheralDevice() == nil){ //only rescan if not connected when leaving
+            searchForKnowBluetoothDevicesFlag = true //when view dissapears, it starts auto searching again
+            scanForKnownDevices()
+        }
+    }
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -72,6 +97,11 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
         createLayoutItems()
         setLayoutConstraints()
         setButtonListeners()
+
+        
+        //NotificationCenter.default.addObserver(self, selector: #selector(self.searchForDevicesBtnPressed), name: NSNotification.Name("SearchForDevices"), object: nil)
+        
+        //self.setSearchForKnownBluetoothDevicesFlag(flag: false) //turn off automatic bluetooth searching/connecting in appDelegate
         
         if(centralManager?.state == .poweredOn){
             //AUTOMATICALLY SCAN FOR DEVICES ONCE VIEW LOADS
@@ -119,6 +149,7 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
     }
     
     private func createLayoutItems(){
+        
 //        searchForDevicesBtn.frame = CGRect(x: (UIScreen.main.bounds.width / 2) - 100, y: (UIScreen.main.bounds.height / 7) - 20, width: 200, height: 40)
         searchForDevicesBtn.backgroundColor = .blue
         searchForDevicesBtn.setTitle("Search for Devices", for: .normal)
@@ -136,6 +167,7 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
         disconnectFromDeviceBtn.layer.borderWidth = 2
         disconnectFromDeviceBtn.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor
         view.addSubview(disconnectFromDeviceBtn)
+        
         
         //setup UITableView
 //        peripheralTableView.frame = CGRect(x: (UIScreen.main.bounds.width / 2) - 150, y: ((UIScreen.main.bounds.height / 7) * 1.5) - 20, width: 300, height: 500)
@@ -169,11 +201,11 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
     private func setLayoutConstraints(){
         //searchForDevicesBtn
         searchForDevicesBtn.translatesAutoresizingMaskIntoConstraints = false
-        searchForDevicesBtn.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        searchForDevicesBtn.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.275)).isActive = true
         searchForDevicesBtn.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true //this constant value is dependant on the screen resolution
         //searchForDevicesBtn.bottomAnchor.constraint(equalTo: peripheralTableView.topAnchor, constant: -35).isActive = true //this constant value is dependant on the screen resolution
         searchForDevicesBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        searchForDevicesBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.9)).isActive = true
+        searchForDevicesBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.45)).isActive = true
         
         
         //disconnectFromDeviceBtn
@@ -207,16 +239,37 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
         scanningIndicator.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 0.12).isActive = true
         scanningIndicator.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * 0.06).isActive = true
         
-        
-        
+                
     }
     
     private func setButtonListeners(){
         searchForDevicesBtn.addTarget(self, action: #selector(searchForDevicesBtnPressed), for: .touchUpInside) //see if you can put the action function in a seperate class like a listener class
         disconnectFromDeviceBtn.addTarget(self, action: #selector(disconnectFromDevicesBtnPressed), for: .touchUpInside) //see if you can put the action function in a seperate class like a listener class
+        
+        if #available(iOS 12.0, *) { //all of these steps have to be done together within this code block for scope reasons - this is why its done here
+            let addToSiriBtn = INUIAddVoiceShortcutButton(style: .blackOutline)
+            view.addSubview(addToSiriBtn)
+            addToSiriBtn.translatesAutoresizingMaskIntoConstraints = false
+            addToSiriBtn.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.275)).isActive = true
+            addToSiriBtn.centerYAnchor.constraint(equalTo: searchForDevicesBtn.centerYAnchor).isActive = true
+            addToSiriBtn.addTarget(self, action: #selector(addToSiriBtnPressed), for: .touchUpInside)
+        } else {
+            // Fallback on earlier versions
+        }
+        
     }
     
-    @objc private func searchForDevicesBtnPressed(){
+    
+    @objc private func addToSiriBtnPressed(){
+        if #available(iOS 12.0, *) {
+            activateActivity()
+            presentAddToSiriViewController()
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    
+    @objc public func searchForDevicesBtnPressed(){ //has to be public so that it can be called from AppDelegate when accessed through Siri
         
         searchForDevicesBtn.transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
         
@@ -287,7 +340,7 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "peripheralTableViewCell", for: indexPath)
         let peripheral = peripheralDevices[indexPath.row]
-        cell.textLabel?.text = peripheral.name
+        cell.textLabel?.text = peripheral.name! + " " + peripheral.identifier.uuidString
         
         return cell
     }
@@ -300,123 +353,204 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
     
     public func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         
-        print(peripheral.name!)
+        DispatchQueue.main.async{
         
-        if(!peripheralDevices.contains(peripheral)) {
-            peripheralDevices.append(peripheral)
-        }
-        
-        self.peripheralTableView.reloadData()
-        
-        self.appDelegate!.getNotificationCenter().getNotificationSettings { (settings) in //send notificaiton that device was discovered
-            if settings.authorizationStatus == .authorized {
-                let content = UNMutableNotificationContent()
-                content.title = "Device Discovered"
-                content.body = "A New Device Was Discovered"
-                content.sound = UNNotificationSound.default
-                content.badge = 1
-                
-                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-                
-                let identifier = "Local Device Discovered Notification"
-                let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-                
-                self.appDelegate?.getNotificationCenter().add(request) { (error) in
-                    if let error = error {
-                        print("Error \(error.localizedDescription)")
+
+            print(peripheral.name!)
+                   
+            if(!self.peripheralDevices.contains(peripheral)) {
+                self.peripheralDevices.append(peripheral)
+            }
+                   
+            self.peripheralTableView.reloadData()
+                   
+            self.appDelegate!.getNotificationCenter().getNotificationSettings { (settings) in //send notificaiton that device was discovered
+                if settings.authorizationStatus == .authorized {
+                    let content = UNMutableNotificationContent()
+                    content.title = "Device Discovered"
+                    content.body = "A New Device Was Discovered"
+                    content.sound = UNNotificationSound.default
+                    content.badge = 1
+                           
+                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+                           
+                    let identifier = "Local Device Discovered Notification"
+                    let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+                           
+                    self.appDelegate?.getNotificationCenter().add(request) { (error) in
+                        if let error = error {
+                            print("Error \(error.localizedDescription)")
+                        }
                     }
                 }
             }
+            if(self.wcSession != nil){
+                if(self.wcSession!.isReachable){
+                           do{
+                            try self.wcSession?.updateApplicationContext(["DeviceDiscovered":"Update"])
+                           }catch{
+                               print("error while updating application context")
+                           }
+                       }
+                   }
+        
         }
-        if(wcSession != nil){
-            if(wcSession!.isReachable){
-                do{
-                    try wcSession?.updateApplicationContext(["DeviceDiscovered":"Update"])
-                }catch{
-                    print("error while updating application context")
+        
+        if(searchForKnowBluetoothDevicesFlag){
+            
+            let bluetoothPeripheralModelNumberWhitelist:[Any] = self.defaults.array(forKey: "BluetoothPeripheralWhitelist")!
+
+            //check that value isn't already in the whitelist
+            for value in bluetoothPeripheralModelNumberWhitelist{
+                if(peripheral.identifier.uuidString == value as! String){ //device ID matches that stored in the whitelist
+                    //connect to this device
+                    //self.peripheralDevice = peripheral //you need to keep a reference to the peripheral object to satisfy the API
+                    //it is keeping a reference in the tableView now
+                    self.centralManager?.connect(peripheral, options: nil) //centralManager will connect to device
+                    searchForKnowBluetoothDevicesFlag = false
                 }
             }
+            
         }
         
     }
     
+    
     public func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        peripheralDevice = peripheral
-        showToast(controller: self, message: "Connected", seconds: 1)
-        connectedDeviceLabel.text = "Connected to: " + peripheral.name!
-        menuView?.setPeripheralDevice(periphDevice: peripheral)
-        menuView?.getTestPageView().setPeripheralDevice(periphDevice: peripheral)
-        peripheral.delegate = menuView?.getTestPageView()
-        peripheral.discoverServices(nil)
-        if(wcSession != nil){
-        if(wcSession!.isReachable){
-            do{
-                try wcSession?.updateApplicationContext(["ConnectedDeviceLabelFindDevice":peripheral.name!])
-            }catch{
-                print("error while updating application context")
+        
+        DispatchQueue.main.async {
+            
+            self.searchForKnowBluetoothDevicesFlag = false //if connected no matter what dont search
+            
+        
+            self.peripheralDevice = peripheral
+            self.showToast(controller: self, message: "Connected", seconds: 1)
+            self.connectedDeviceLabel.text = "Connected to: " + peripheral.name!
+            self.menuView?.setPeripheralDevice(periphDevice: peripheral)
+            self.menuView?.getTestPageView().setPeripheralDevice(periphDevice: peripheral)
+            peripheral.delegate = self.menuView?.getTestPageView()
+            peripheral.discoverServices(nil)
+            
+            for view in (self.menuView?.getTestPageView().getTestPages())!{
+                view.getConnectedDeviceLabel().text = "Connected to: " + peripheral.name! //if testView is visible connectedDeviceLabel will not be changed right away - manually change it
             }
-        }
+            
+            if(self.wcSession != nil){
+                if(self.wcSession!.isReachable){
+                do{
+                    try self.wcSession?.updateApplicationContext(["ConnectedDeviceLabelFindDevice":peripheral.name!])
+                }catch{
+                    print("error while updating application context")
+                }
+            }
+            }
+         
+            //save peripheral UUID to whitelist (if not already saved) - this will allow you to reconnect later without having to go into the app to connect
+            self.addToPeripheralWhitelist(modelNumberToAdd: peripheral.identifier.uuidString) //add Model Number to bluetooth peripheral whitelist
+            
+            
+            
+            self.appDelegate!.getNotificationCenter().getNotificationSettings { (settings) in //send notificaiton that device was discovered
+                if settings.authorizationStatus == .authorized {
+                    let content = UNMutableNotificationContent()
+                    content.title = "Device Connected"
+                    content.body = peripheral.name! + " " + peripheral.identifier.uuidString + " Connected"
+                    content.sound = UNNotificationSound.default
+                    content.badge = 1
+                    
+                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+                    
+                    let identifier = "Local Device Connected Notification"
+                    let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+                    
+                    self.appDelegate?.getNotificationCenter().add(request) { (error) in
+                        if let error = error {
+                            print("Error \(error.localizedDescription)")
+                        }
+                    }
+                }
+            }
+            
+            
+            
         }
         
     }
     
     public func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
-        peripheralDevice = nil
-        menuView?.setPeripheralDevice(periphDevice: nil)
-        menuView?.getTestPageView().setPeripheralDevice(periphDevice: nil)
         
+        DispatchQueue.main.async{
         
-        if(menuView?.navigationController?.visibleViewController == self){
-            showToast(controller: self, message: "Device Disconnected", seconds: 1)
-            connectedDeviceLabel.text = "Connected to: None" //if connectView is visible connectedDeviceLabel will not be changed right away - manually change it
-        }
-        else if(menuView?.navigationController?.visibleViewController == menuView){
-            showToast(controller: menuView!, message: "Device Disconnected", seconds: 1)
-        }
-        else if(menuView?.navigationController?.visibleViewController == menuView?.getTestPageView()){
-            showToast(controller: (menuView?.getTestPageView())!, message: "Device Disconnected", seconds: 1)
+            self.peripheralDevice = nil
+            self.menuView?.setPeripheralDevice(periphDevice: nil)
+            self.menuView?.getTestPageView().setPeripheralDevice(periphDevice: nil)
             
-            for view in (menuView?.getTestPageView().getTestPages())!{
-                view.getConnectedDeviceLabel().text = "Connected to: None" //if testView is visible connectedDeviceLabel will not be changed right away - manually change it
-            }
             
-            menuView?.getTestPageView().setStripDetectVoltageValue(value: nil)
-            for test in (menuView?.getTestPageView().getTestPages())!{
-                test.deviceDisconnected()
+            if(self.menuView?.navigationController?.visibleViewController == self){
+                self.showToast(controller: self, message: "Device Disconnected", seconds: 1)
+                self.connectedDeviceLabel.text = "Connected to: None" //if connectView is visible connectedDeviceLabel will not be changed right away - manually change it
             }
-//            menuView?.getTestPageView().setIntegratedVoltageValue(value: nil)
-//            menuView?.getTestPageView().setDifferentialVoltageValue(value: nil)
+            else if(self.menuView?.navigationController?.visibleViewController == self.menuView){
+                self.showToast(controller: self.menuView!, message: "Device Disconnected", seconds: 1)
+            }
+            else if(self.menuView?.navigationController?.visibleViewController == self.menuView?.getTestPageView()){
+                self.showToast(controller: (self.menuView?.getTestPageView())!, message: "Device Disconnected", seconds: 1)
+                
+                for view in (self.menuView?.getTestPageView().getTestPages())!{
+                    view.getConnectedDeviceLabel().text = "Connected to: None" //if testView is visible connectedDeviceLabel will not be changed right away - manually change it
+                }
+                
+                self.menuView?.getTestPageView().setStripDetectVoltageValue(value: nil)
+                for test in (self.menuView?.getTestPageView().getTestPages())!{
+                    test.deviceDisconnected()
+                }
+    //            menuView?.getTestPageView().setIntegratedVoltageValue(value: nil)
+    //            menuView?.getTestPageView().setDifferentialVoltageValue(value: nil)
 
-        }
-        else if(menuView?.navigationController?.visibleViewController == menuView?.getSettingsView()){
-            showToast(controller: (menuView?.getSettingsView())!, message: "Device Disconnected", seconds: 1)
-        }
-    
-        if(wcSession != nil){
-        if(wcSession!.isReachable){
-            do{
-                try wcSession?.updateApplicationContext(["ConnectedDeviceLabelFindDevice":"None"])
-            }catch{
-                print("error while updating application context")
+            }
+            else if(self.menuView?.navigationController?.visibleViewController == self.menuView?.getSettingsView()){
+                self.showToast(controller: (self.menuView?.getSettingsView())!, message: "Device Disconnected", seconds: 1)
+            }
+        
+            if(self.wcSession != nil){
+                if(self.wcSession!.isReachable){
+                do{
+                    try self.wcSession?.updateApplicationContext(["ConnectedDeviceLabelFindDevice":"None"])
+                }catch{
+                    print("error while updating application context")
+                }
+            }
+            }
+            
+            if(!self.isBeingPresented){ //if disconnected but still on screen dont search
+                self.searchForKnowBluetoothDevicesFlag = true
+                self.scanForKnownDevices()
             }
         }
-        }
-        
         
     }
     
     private func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: NSError?) {
-        showToast(controller: self, message: "Failed to Connect", seconds: 1)
-        if(wcSession != nil){
-        if(wcSession!.isReachable){
-            do{
-                try wcSession?.updateApplicationContext(["FailConnect":"Error"])
-            }catch{
-                print("error while updating application context")
+        
+        DispatchQueue.main.async {
+                
+            self.showToast(controller: self, message: "Failed to Connect", seconds: 1)
+            if(self.wcSession != nil){
+                if(self.wcSession!.isReachable){
+                do{
+                    try self.wcSession?.updateApplicationContext(["FailConnect":"Error"])
+                }catch{
+                    print("error while updating application context")
+                }
             }
-        }
+            }
+            
+            self.searchForKnowBluetoothDevicesFlag = true
+            self.scanForKnownDevices()
         }
     }
+    
+    
     
     private func showToast(controller: UIViewController, message: String, seconds: Double){
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
@@ -549,4 +683,118 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
         return connectedDeviceLabel
     }
     
+    
+    
+    
+    
+    //MARK: - CoreBluetooth from AppDelegate
+    
+    public func addToPeripheralWhitelist(modelNumberToAdd: String){
+        var bluetoothPeripheralModelNumberWhitelist:[Any] = defaults.array(forKey: "BluetoothPeripheralWhitelist")!
+        
+        //check that value isn't already in the whitelist
+        for value in bluetoothPeripheralModelNumberWhitelist{
+            if(modelNumberToAdd == value as! String){
+                print(modelNumberToAdd + " already exists in whitelist")
+                return
+            }
+        }
+        
+        bluetoothPeripheralModelNumberWhitelist.append(modelNumberToAdd) //append modelNumber of paired peripheral to the whitelist to reconnect upon opening the app
+        print("saved: " + modelNumberToAdd + " to whitelist\n")
+        
+        defaults.set(bluetoothPeripheralModelNumberWhitelist, forKey: "BluetoothPeripheralWhitelist")
+        print("saved whitelist to UserDefaults")
+        
+    }
+    
+    public func setSearchForKnownBluetoothDevicesFlag(flag: Bool){ //if this flag is set to 1: search for bluetooth devices. If set to 0: do not search for bluetooth devices
+        self.searchForKnowBluetoothDevicesFlag = flag
+        if(flag){
+            self.scanForKnownDevices()
+        }
+    }
+    
+    public func scanForKnownDevices(){
+        
+        let dispatchQueue = DispatchQueue(label: "BluetoothScanKnownDevicesBackgroundThread", qos: .background)
+        dispatchQueue.async{
+            
+            while(self.searchForKnowBluetoothDevicesFlag){
+                //scan for bluetooth devices
+                if(self.centralManager?.state == .poweredOn){
+                    self.centralManager?.scanForPeripherals(withServices: [CBUUID(string: self.voltageServiceCBUUID)]) //change to CBUUID for our custom GATT Service
+                }
+                
+            }
+            
+        }
+    }
+    
+    
+    
+    
+    
+    //MARK: -Siri
+    
 }
+
+
+
+
+@available(iOS 12.0, *)
+extension ConnectViewController {
+
+    func activateActivity(){
+        userActivity = NSUserActivity(activityType: "SearchForDevices")
+        let title = "Search For CPS Devices"
+        userActivity?.title = title
+        userActivity?.userInfo = ["id": title]
+        userActivity?.suggestedInvocationPhrase = "Search For CPS Devices"
+        userActivity?.isEligibleForPrediction = true
+        userActivity?.persistentIdentifier = title
+        
+        userActivity?.isEligibleForSearch = true
+        userActivity?.isEligibleForPrediction = true
+        
+        self.userActivity = userActivity
+        userActivity?.becomeCurrent()
+    }
+    
+    func presentAddToSiriViewController() {
+        guard let userActivity = self.userActivity else { return }
+        let shortcut = INShortcut(userActivity: userActivity)
+        let viewController = INUIAddVoiceShortcutViewController(shortcut: shortcut)
+        viewController.modalPresentationStyle = .formSheet
+        viewController.delegate = self
+        present(viewController, animated: true, completion: nil)
+    }
+}
+
+
+@available(iOS 12.0, *)
+extension ConnectViewController: INUIAddVoiceShortcutViewControllerDelegate {
+    public func addVoiceShortcutViewController(_ controller: INUIAddVoiceShortcutViewController, didFinishWith voiceShortcut: INVoiceShortcut?, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    public func addVoiceShortcutViewControllerDidCancel(_ controller: INUIAddVoiceShortcutViewController) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    func editVoiceShortcutViewController(_ controller: INUIEditVoiceShortcutViewController, didUpdate voiceShortcut: INVoiceShortcut?, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    func editVoiceShortcutViewController(_ controller: INUIEditVoiceShortcutViewController, didDeleteVoiceShortcutWithIdentifier deletedVoiceShortcutIdentifier: UUID) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    func editVoiceShortcutViewControllerDidCancel(_ controller: INUIEditVoiceShortcutViewController) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+}
+
+
+
+

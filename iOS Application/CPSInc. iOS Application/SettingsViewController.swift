@@ -13,6 +13,7 @@ import CoreBluetooth
 import QuartzCore //to be able to round the background edges on the switches
 import WatchConnectivity
 
+
 public class SettingsViewController: UIViewController, WCSessionDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate{
     
     //View Controllers
@@ -81,7 +82,7 @@ public class SettingsViewController: UIViewController, WCSessionDelegate, UIPick
 //        }
     }
     
-    // This allows you to initialise your custom UIViewController without a nib or bundle.
+    // This allows you to initialise your custom UIViewController witho@available(iOS 12.0, *)
     public convenience init(menuView: MenuViewController, appDelegate: AppDelegate?) {
         self.init(nibName:nil, bundle:nil)
         
