@@ -32,10 +32,6 @@ void initBoard(void)
   CMU_ClockEnable(cmuClock_USART0, true);
   // Enable GPIO clock source
   CMU_ClockEnable(cmuClock_GPIO, true);
-
   // Place custom board initialization code here.
-  CMU_ClockEnable(cmuClock_ADC0, true); //enabling clock for the Analog to Digital Converter in the BGM113
-  CMU_ClockEnable(cmuClock_HFPER, true); //enabling clock for the Digital to Analog Converter in the BGM113 (IDAC is a HFPERCLK peripheral)
-  CMU_ClockEnable(cmuClock_IDAC0, true); //enabling clock for the Digital to Analog Converter in the BGM113
 }
 
