@@ -41,7 +41,6 @@
 		9C6F9EE722988B0C009EC1D6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C6F9EE622988B0C009EC1D6 /* LaunchScreen.storyboard */; };
 		9C74FA052474895900D46738 /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C74FA032474895900D46738 /* Intents.framework */; };
 		9C74FA062474895900D46738 /* IntentsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C74FA042474895900D46738 /* IntentsUI.framework */; };
-		9C74FA08247833D600D46738 /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 9C74FA07247833D600D46738 /* Intents.intentdefinition */; };
 		9C74FA0A2488368E00D46738 /* ShopifyStoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C74FA092488368E00D46738 /* ShopifyStoreViewController.swift */; };
 		9C74FA0C2488370800D46738 /* SkeletonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C74FA0B2488370800D46738 /* SkeletonViewController.swift */; };
 		9C92F36522FB257900047FA2 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C92F36422FB257900047FA2 /* Reachability.swift */; };
@@ -193,7 +192,6 @@
 		9C74FA022474886D00D46738 /* CPSInc. iOS Application.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "CPSInc. iOS Application.entitlements"; sourceTree = "<group>"; };
 		9C74FA032474895900D46738 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		9C74FA042474895900D46738 /* IntentsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IntentsUI.framework; path = System/Library/Frameworks/IntentsUI.framework; sourceTree = SDKROOT; };
-		9C74FA07247833D600D46738 /* Intents.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = Intents.intentdefinition; sourceTree = "<group>"; };
 		9C74FA092488368E00D46738 /* ShopifyStoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopifyStoreViewController.swift; sourceTree = "<group>"; };
 		9C74FA0B2488370800D46738 /* SkeletonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonViewController.swift; sourceTree = "<group>"; };
 		9C92F36422FB257900047FA2 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
@@ -343,7 +341,6 @@
 		9C6F9E9722985F35009EC1D6 = {
 			isa = PBXGroup;
 			children = (
-				9C74FA07247833D600D46738 /* Intents.intentdefinition */,
 				9C6F9EA222985F35009EC1D6 /* CPSInc. iOS Application */,
 				9C6F9EBA22985F35009EC1D6 /* CPSInc. iOS ApplicationTests */,
 				9C6F9EC522985F35009EC1D6 /* CPSInc. iOS ApplicationUITests */,
@@ -809,7 +806,6 @@
 				9C6F9EE322987804009EC1D6 /* TestViewController.swift in Sources */,
 				9C9618D522DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodeld in Sources */,
 				9CFB11CE22C42196003E76B5 /* TestLogbookViewController.swift in Sources */,
-				9C74FA08247833D600D46738 /* Intents.intentdefinition in Sources */,
 				9CFB11C122C3F937003E76B5 /* HerdLogbookViewController.swift in Sources */,
 				9C9618EC22DFA77800B48713 /* TestToTestV1ToV2CustomPolicy.swift in Sources */,
 				9CFB11F822C54E44003E76B5 /* AddHerdViewController.swift in Sources */,
