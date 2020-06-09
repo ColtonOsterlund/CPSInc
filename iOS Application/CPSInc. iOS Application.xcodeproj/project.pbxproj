@@ -18,6 +18,10 @@
 		9C1C31C522DE4BD00057989C /* RunTestInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C31C422DE4BD00057989C /* RunTestInstructionViewController.swift */; };
 		9C1C31C722DE4BDD0057989C /* LogbookInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C31C622DE4BDD0057989C /* LogbookInstructionViewController.swift */; };
 		9C1C31C922DE4BED0057989C /* SettingsInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C31C822DE4BED0057989C /* SettingsInstructionViewController.swift */; };
+		9C2903E624895D2500571602 /* mobile-buy-sdk-ios in Resources */ = {isa = PBXBuildFile; fileRef = 9C2903E524895D2500571602 /* mobile-buy-sdk-ios */; };
+		9C29040224897DE200571602 /* Buy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C2903F424896BFC00571602 /* Buy.framework */; };
+		9C29040324897DE200571602 /* Buy.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9C2903F424896BFC00571602 /* Buy.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9C290405248ED3D500571602 /* ShopifyProductPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C290404248ED3D500571602 /* ShopifyProductPageViewController.swift */; };
 		9C33B6C322F104DB0076F492 /* AccountPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C33B6C222F104DB0076F492 /* AccountPageViewController.swift */; };
 		9C33B6C722F4E8570076F492 /* AccountInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C33B6C622F4E8570076F492 /* AccountInstructionViewController.swift */; };
 		9C373EEC22AEC48700B0FC1A /* MainInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3939DC22A05D2D008D066C /* MainInterfaceController.swift */; };
@@ -41,7 +45,7 @@
 		9C6F9EE722988B0C009EC1D6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C6F9EE622988B0C009EC1D6 /* LaunchScreen.storyboard */; };
 		9C74FA052474895900D46738 /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C74FA032474895900D46738 /* Intents.framework */; };
 		9C74FA062474895900D46738 /* IntentsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C74FA042474895900D46738 /* IntentsUI.framework */; };
-		9C74FA0A2488368E00D46738 /* ShopifyStoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C74FA092488368E00D46738 /* ShopifyStoreViewController.swift */; };
+		9C74FA0A2488368E00D46738 /* ShopifyStorePagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C74FA092488368E00D46738 /* ShopifyStorePagesViewController.swift */; };
 		9C74FA0C2488370800D46738 /* SkeletonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C74FA0B2488370800D46738 /* SkeletonViewController.swift */; };
 		9C92F36522FB257900047FA2 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C92F36422FB257900047FA2 /* Reachability.swift */; };
 		9C92F36722FDC44500047FA2 /* TestPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C92F36622FDC44500047FA2 /* TestPageViewController.swift */; };
@@ -76,6 +80,55 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		9C2903F324896BFC00571602 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9C2903E924896BFC00571602 /* Buy.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9AEF60F31E5F42D90067FA90;
+			remoteInfo = Buy;
+		};
+		9C2903F524896BFC00571602 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9C2903E924896BFC00571602 /* Buy.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9AC2EFC81F6818180037E0D7;
+			remoteInfo = "Buy watchOS";
+		};
+		9C2903F724896BFC00571602 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9C2903E924896BFC00571602 /* Buy.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9AF256421F6FEE50005BB0C9;
+			remoteInfo = "Buy tvOS";
+		};
+		9C2903F924896BFC00571602 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9C2903E924896BFC00571602 /* Buy.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9A4068DC1E8E7658000254CD;
+			remoteInfo = Pay;
+		};
+		9C2903FB24896BFC00571602 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9C2903E924896BFC00571602 /* Buy.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9AFA38EA1E64850A0056C5AA;
+			remoteInfo = BuyTests;
+		};
+		9C2903FD24896BFC00571602 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9C2903E924896BFC00571602 /* Buy.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9A4068E41E8E7659000254CD;
+			remoteInfo = PayTests;
+		};
+		9C2903FF24896C1700571602 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9C2903E924896BFC00571602 /* Buy.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 9AEF60F21E5F42D90067FA90;
+			remoteInfo = Buy;
+		};
 		9C3939D922A05D2D008D066C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9C6F9E9822985F35009EC1D6 /* Project object */;
@@ -135,6 +188,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				9C29040324897DE200571602 /* Buy.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -159,6 +213,9 @@
 		9C1C31C422DE4BD00057989C /* RunTestInstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunTestInstructionViewController.swift; sourceTree = "<group>"; };
 		9C1C31C622DE4BDD0057989C /* LogbookInstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogbookInstructionViewController.swift; sourceTree = "<group>"; };
 		9C1C31C822DE4BED0057989C /* SettingsInstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInstructionViewController.swift; sourceTree = "<group>"; };
+		9C2903E524895D2500571602 /* mobile-buy-sdk-ios */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "mobile-buy-sdk-ios"; sourceTree = "<group>"; };
+		9C2903E924896BFC00571602 /* Buy.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Buy.xcodeproj; path = "mobile-buy-sdk-ios/Buy.xcodeproj"; sourceTree = "<group>"; };
+		9C290404248ED3D500571602 /* ShopifyProductPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopifyProductPageViewController.swift; sourceTree = "<group>"; };
 		9C33B6C222F104DB0076F492 /* AccountPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPageViewController.swift; sourceTree = "<group>"; };
 		9C33B6C622F4E8570076F492 /* AccountInstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInstructionViewController.swift; sourceTree = "<group>"; };
 		9C3939CB22A05D2B008D066C /* CPSInc. watchOS Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CPSInc. watchOS Application.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -192,7 +249,7 @@
 		9C74FA022474886D00D46738 /* CPSInc. iOS Application.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "CPSInc. iOS Application.entitlements"; sourceTree = "<group>"; };
 		9C74FA032474895900D46738 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		9C74FA042474895900D46738 /* IntentsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IntentsUI.framework; path = System/Library/Frameworks/IntentsUI.framework; sourceTree = SDKROOT; };
-		9C74FA092488368E00D46738 /* ShopifyStoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopifyStoreViewController.swift; sourceTree = "<group>"; };
+		9C74FA092488368E00D46738 /* ShopifyStorePagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopifyStorePagesViewController.swift; sourceTree = "<group>"; };
 		9C74FA0B2488370800D46738 /* SkeletonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonViewController.swift; sourceTree = "<group>"; };
 		9C92F36422FB257900047FA2 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		9C92F36622FDC44500047FA2 /* TestPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPageViewController.swift; sourceTree = "<group>"; };
@@ -253,6 +310,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C74FA052474895900D46738 /* Intents.framework in Frameworks */,
+				9C29040224897DE200571602 /* Buy.framework in Frameworks */,
 				36E9ACFF9C25576E61827930 /* Pods_CPSInc__iOS_Application.framework in Frameworks */,
 				9C74FA062474895900D46738 /* IntentsUI.framework in Frameworks */,
 			);
@@ -280,6 +338,7 @@
 		9419B193965A617EAE0710E8 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
+				9C2903E524895D2500571602 /* mobile-buy-sdk-ios */,
 				5321C5443DCD9901BC3318A2 /* Pods-CPSInc. iOS Application.debug.xcconfig */,
 				7D7B351882ADCD72B35E65C8 /* Pods-CPSInc. iOS Application.release.xcconfig */,
 				C5DE34F001EB2253F15533C0 /* Pods-CPSInc. iOS ApplicationTests.debug.xcconfig */,
@@ -292,6 +351,19 @@
 				A7B0512BBF2101ABB4F1FD07 /* Pods-CPSInc. watchOS Application Extension.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		9C2903EA24896BFC00571602 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9C2903F424896BFC00571602 /* Buy.framework */,
+				9C2903F624896BFC00571602 /* Buy.framework */,
+				9C2903F824896BFC00571602 /* Buy.framework */,
+				9C2903FA24896BFC00571602 /* Pay.framework */,
+				9C2903FC24896BFC00571602 /* BuyTests.xctest */,
+				9C2903FE24896BFC00571602 /* PayTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		9C3939CC22A05D2B008D066C /* CPSInc. watchOS Application */ = {
@@ -347,6 +419,7 @@
 				9C3939CC22A05D2B008D066C /* CPSInc. watchOS Application */,
 				9C3939DB22A05D2D008D066C /* CPSInc. watchOS Application Extension */,
 				9C6F9EA122985F35009EC1D6 /* Products */,
+				9C2903E924896BFC00571602 /* Buy.xcodeproj */,
 				9C39DE3B22A580D00029F806 /* Frameworks */,
 				9419B193965A617EAE0710E8 /* Pods */,
 			);
@@ -409,8 +482,9 @@
 				9C9618EB22DFA77800B48713 /* TestToTestV1ToV2CustomPolicy.swift */,
 				9C6F9EAD22985F35009EC1D6 /* Assets.xcassets */,
 				9C6F9EB222985F35009EC1D6 /* Info.plist */,
-				9C74FA092488368E00D46738 /* ShopifyStoreViewController.swift */,
+				9C74FA092488368E00D46738 /* ShopifyStorePagesViewController.swift */,
 				9C74FA0B2488370800D46738 /* SkeletonViewController.swift */,
+				9C290404248ED3D500571602 /* ShopifyProductPageViewController.swift */,
 			);
 			path = "CPSInc. iOS Application";
 			sourceTree = "<group>";
@@ -488,6 +562,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				9C29040024896C1700571602 /* PBXTargetDependency */,
 				9C3939E922A05D2E008D066C /* PBXTargetDependency */,
 			);
 			name = "CPSInc. iOS Application";
@@ -586,6 +661,12 @@
 			mainGroup = 9C6F9E9722985F35009EC1D6;
 			productRefGroup = 9C6F9EA122985F35009EC1D6 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 9C2903EA24896BFC00571602 /* Products */;
+					ProjectRef = 9C2903E924896BFC00571602 /* Buy.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				9C6F9E9F22985F35009EC1D6 /* CPSInc. iOS Application */,
@@ -596,6 +677,51 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		9C2903F424896BFC00571602 /* Buy.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Buy.framework;
+			remoteRef = 9C2903F324896BFC00571602 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9C2903F624896BFC00571602 /* Buy.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Buy.framework;
+			remoteRef = 9C2903F524896BFC00571602 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9C2903F824896BFC00571602 /* Buy.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Buy.framework;
+			remoteRef = 9C2903F724896BFC00571602 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9C2903FA24896BFC00571602 /* Pay.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Pay.framework;
+			remoteRef = 9C2903F924896BFC00571602 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9C2903FC24896BFC00571602 /* BuyTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = BuyTests.xctest;
+			remoteRef = 9C2903FB24896BFC00571602 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9C2903FE24896BFC00571602 /* PayTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = PayTests.xctest;
+			remoteRef = 9C2903FD24896BFC00571602 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		9C3939C922A05D2B008D066C /* Resources */ = {
@@ -621,6 +747,7 @@
 			files = (
 				9C6F9EE722988B0C009EC1D6 /* LaunchScreen.storyboard in Resources */,
 				9C1C31BF22DE3DD80057989C /* InstructionsStoryboard.storyboard in Resources */,
+				9C2903E624895D2500571602 /* mobile-buy-sdk-ios in Resources */,
 				9C6F9EAE22985F35009EC1D6 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -782,6 +909,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C290405248ED3D500571602 /* ShopifyProductPageViewController.swift in Sources */,
 				9C1C31C522DE4BD00057989C /* RunTestInstructionViewController.swift in Sources */,
 				9CB795122307456000DB106A /* Cow+CoreDataProperties.swift in Sources */,
 				9C33B6C322F104DB0076F492 /* AccountPageViewController.swift in Sources */,
@@ -801,7 +929,7 @@
 				9C92F36522FB257900047FA2 /* Reachability.swift in Sources */,
 				9CB795112307456000DB106A /* Cow+CoreDataClass.swift in Sources */,
 				9C9C949522EF76E8003E5454 /* LoginViewController.swift in Sources */,
-				9C74FA0A2488368E00D46738 /* ShopifyStoreViewController.swift in Sources */,
+				9C74FA0A2488368E00D46738 /* ShopifyStorePagesViewController.swift in Sources */,
 				9C1C31C322DE4BC20057989C /* FindDeviceInstructionViewController.swift in Sources */,
 				9C6F9EE322987804009EC1D6 /* TestViewController.swift in Sources */,
 				9C9618D522DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodeld in Sources */,
@@ -843,6 +971,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		9C29040024896C1700571602 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Buy;
+			targetProxy = 9C2903FF24896C1700571602 /* PBXContainerItemProxy */;
+		};
 		9C3939DA22A05D2D008D066C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 9C3939D622A05D2D008D066C /* CPSInc. watchOS Application Extension */;
@@ -1083,7 +1216,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5321C5443DCD9901BC3318A2 /* Pods-CPSInc. iOS Application.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "CPSInc. iOS Application/CPSInc. iOS Application.entitlements";
 				CODE_SIGN_STYLE = Automatic;
@@ -1105,7 +1237,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7D7B351882ADCD72B35E65C8 /* Pods-CPSInc. iOS Application.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "CPSInc. iOS Application/CPSInc. iOS Application.entitlements";
 				CODE_SIGN_STYLE = Automatic;

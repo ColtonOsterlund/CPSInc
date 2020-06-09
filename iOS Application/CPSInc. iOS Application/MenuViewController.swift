@@ -13,6 +13,7 @@ import CoreBluetooth
 import WatchConnectivity
 import SwiftKeychainWrapper
 import CoreGraphics
+import Buy
 
 public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCSessionDelegate{
     
@@ -30,7 +31,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     private var accountView: AccountPageViewController? = nil
     private var appDelegate: AppDelegate? = nil
     private var testPageController: TestPageViewController? = nil
-    private var shopView: ShopifyStoreViewController? = nil
+    private var shopView: ShopifyStorePagesViewController? = nil
     
     //UIButtons
     //private let findDeviceBtn = UIButton()
@@ -86,6 +87,10 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     //WCSession
     private var wcSession: WCSession? = nil
     
+    //Buy SDK client
+    let client = Graph.Client(shopDomain: "creative-protein-solutions.myshopify.com", apiKey: "28893d9e78d310dde27dde211fa414d7")
+    
+    
     private var inQueueView = 0
     
     
@@ -100,10 +105,11 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         testView = TestViewController(menuView: self, appDelegate: appDelegate, testPageController: testPageController)
         settingsView = SettingsViewController(menuView: self, appDelegate: appDelegate)
         logbookView = HerdLogbookViewController(menuView: self, appDelegate: appDelegate)
-        shopView = ShopifyStoreViewController(appDelegate: appDelegate, menuView: self)
+        shopView = ShopifyStorePagesViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+        shopView!.setMenuView(menuView: self)
         instructionsView = InstructionPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         accountView = AccountPageViewController(appDelegate: appDelegate, menuView: self)
-        loginView = LoginViewController(appDelegate: appDelegate, accountView: accountView, menuView: self)
+        loginView = LoginViewController(appDelegate: appDelegate, accountView: accountView, menuView: self, storeView: shopView)
         self.appDelegate = appDelegate
         testPageController?.addPage(pageToAdd: testView)
     }
@@ -475,8 +481,95 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
                         completion: { Void in()  }
         )
         
+        //check that they have an internet connection first
+        if(Reachability.isConnectedToNetwork() == false){
+            showToast(controller: self, message: "No Internet Connection", seconds: 1)
+            return
+        }
         
-        navigationController?.pushViewController(shopView!, animated: true) //pushes shopView onto the navigationController stack
+        DispatchQueue.main.async {
+            self.scanningIndicator.startAnimating()
+        }
+        
+        //CHECK THAT JWT HAS NOT EXPIRED - IF IT HAS SET APPDELEGATES AUTHORIZEDSESSION TO FALSE
+        var request = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/user/authenticate")!) //authenticate path just used to check that the jwt has not expired
+        request.httpMethod = "GET"
+        request.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if(error != nil){
+                DispatchQueue.main.async {
+                    self.scanningIndicator.stopAnimating()
+                    print("Error occured during /login RESTAPI request")
+                    self.showToast(controller: self, message: "Error: " + (error as! String), seconds: 1)
+                }
+            }
+            else{
+                DispatchQueue.main.async {
+                    self.scanningIndicator.stopAnimating()
+                    //self.showToast(controller: self, message: String(decoding: data!, as: UTF8.self), seconds: 1) //not too useful for the user, instead just print to the console
+                    print(String(decoding: data!, as: UTF8.self))
+                }
+                
+                
+                print("Response:")
+                print(response!)
+                print("Data:")
+                print(String(decoding: data!, as: UTF8.self))
+                
+                if(String(decoding: data!, as: UTF8.self) == "Authenticated"){ //if authenticated switch to account view
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)){
+                        //authenticated, go to store
+                        
+                        //query for the number of products in the store and add this many pages to the page set
+                        let query = Storefront.buildQuery { $0
+                            .products(first: 10) { $0
+                                .edges{$0
+                                    .node{$0
+                                        .id() //just get the id's of all products
+                                    }
+                                }
+                            }
+                        }
+                        
+                        let shopifyTask = self.client.queryGraphWith(query) { response, error in
+                            if let response = response {
+                                
+                                //empty the page count before re-querying for pages
+                                self.shopView!.removePages()
+                                
+                                for product in response.products.edges{
+                                    self.shopView?.addPage(pageIDToAdd: product.node.id.rawValue as String)
+                                }
+                                
+                                self.navigationController?.pushViewController(self.shopView!, animated: true) //pushes shopView onto the navigationController stack
+                                
+                            } else {
+                                print(error!)
+                            }
+                        }
+                        shopifyTask.resume()
+                        
+                    }
+                }
+                
+                else{
+                    //IF LOGGED OUT GO TO LOGIN - IF LOGGED IN GO TO ACCOUNT SETTINGS/ACCOUNT INFO
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)){
+                        //not authenticated, set token on login to go to store and then go to login
+                        self.loginView!.setAccountOrStore(aOrS: true)
+                        
+                        self.navigationController?.pushViewController(self.loginView!, animated: true)
+                        
+                    }
+                }
+                
+            }
+            
+        }
+        
+        task.resume()
+        
         
     }
     
@@ -633,6 +726,9 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
                 else{
                     //IF LOGGED OUT GO TO LOGIN - IF LOGGED IN GO TO ACCOUNT SETTINGS/ACCOUNT INFO
                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)){
+                        //set token in login to go to account view
+                        self.loginView!.setAccountOrStore(aOrS: false)
+                        
                         self.navigationController?.pushViewController(self.loginView!, animated: true)
                         if(self.wcSession != nil){
                             self.wcSession!.delegate = self.loginView

@@ -11,15 +11,19 @@
 import UIKit
 import SwiftKeychainWrapper
 import WatchConnectivity
+import Buy
 
 
 public class LoginViewController: UIViewController, UITextFieldDelegate, WCSessionDelegate {
 
+    private var accountOrStore: Bool = false //false = account, true = store
+    
     //views
     private var registerView: RegisterAccountViewController? = nil
     private var accountView: AccountPageViewController? = nil
     private var appDelegate: AppDelegate? = nil
     private var menuView: MenuViewController? = nil
+    private var storeView: ShopifyStorePagesViewController? = nil
     
     //UIImageView
     let logoImage = UIImageView()
@@ -39,6 +43,9 @@ public class LoginViewController: UIViewController, UITextFieldDelegate, WCSessi
     
     //UIActivityIndicatorView
     private let scanningIndicator = UIActivityIndicatorView()
+    
+    //Buy SDK client
+    let client = Graph.Client(shopDomain: "creative-protein-solutions.myshopify.com", apiKey: "28893d9e78d310dde27dde211fa414d7")
     
     
     override public func viewDidLoad() {
@@ -138,13 +145,14 @@ public class LoginViewController: UIViewController, UITextFieldDelegate, WCSessi
     
     
     // This allows you to initialise your custom UIViewController without a nib or bundle.
-   convenience init(appDelegate: AppDelegate?, accountView: AccountPageViewController?, menuView: MenuViewController?) {
+    convenience init(appDelegate: AppDelegate?, accountView: AccountPageViewController?, menuView: MenuViewController?, storeView: ShopifyStorePagesViewController?) {
         self.init(nibName:nil, bundle:nil)
         
         self.appDelegate = appDelegate
         self.menuView = menuView
         registerView = RegisterAccountViewController(appDelegate: appDelegate, menuView: menuView)
         self.accountView = accountView
+        self.storeView = storeView
     }
     
     // This extends the superclass.
@@ -235,16 +243,18 @@ public class LoginViewController: UIViewController, UITextFieldDelegate, WCSessi
                 if(error != nil){
                     DispatchQueue.main.async {
                         self.scanningIndicator.stopAnimating()
+                        self.showToast(controller: self, message: "Error: " + (error as! String), seconds: 1)
                     }
                     print("Error occured during /login RESTAPI request")
-                    self.showToast(controller: self, message: "Error: " + (error as! String), seconds: 1)
+                    
                 }
                 else{
                     DispatchQueue.main.async {
                         self.scanningIndicator.stopAnimating()
+                        self.showToast(controller: self, message: String(decoding: data!, as: UTF8.self), seconds: 1)
                     }
                     
-                    self.showToast(controller: self, message: String(decoding: data!, as: UTF8.self), seconds: 1)
+                    
                     
                     print("Response:")
                     print(response!)
@@ -273,7 +283,41 @@ public class LoginViewController: UIViewController, UITextFieldDelegate, WCSessi
                         
                         if(jwtSavedSuccessfully && userIDSavedSuccessfully){
                             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)){ //go after 1 second from now you that you know the toast is complete
-                                self.navigationController?.pushViewController(self.accountView!, animated: true)
+                                if(!self.accountOrStore){
+                                    self.navigationController?.pushViewController(self.accountView!, animated: true)
+                                }
+                                else{
+                                    
+                                    //query for the number of products in the store and add this many pages to the page set
+                                    let query = Storefront.buildQuery { $0
+                                        .products(first: 10) { $0
+                                            .edges{$0
+                                                .node{$0
+                                                    .id() //just get the id's of all products
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                    let shopifyTask = self.client.queryGraphWith(query) { response, error in
+                                        if let response = response {
+                                            
+                                            //empty the page count before re-querying for pages
+                                            self.storeView!.removePages()
+                                            
+                                            for product in response.products.edges{
+                                                self.storeView?.addPage(pageIDToAdd: product.node.id.rawValue as String)
+                                            }
+                                            
+                                            self.navigationController?.pushViewController(self.storeView!, animated: true) //pushes shopView onto the navigationController stack
+                                            
+                                        } else {
+                                            print(error!)
+                                        }
+                                    }
+                                    shopifyTask.resume()
+                                    
+                                }
                             }
                             
                         }
@@ -348,6 +392,10 @@ public class LoginViewController: UIViewController, UITextFieldDelegate, WCSessi
     //getters/setters
     public func setWCSession(session: WCSession?){
         self.wcSession = session
+    }
+    
+    public func setAccountOrStore(aOrS: Bool){
+        accountOrStore = aOrS //false = account, true = store
     }
 
 }
