@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<list key="installedFeatures">
+		<item value="org.eclipse.emf.common:2.11.1.v20160208-0816"/>
+		<item value="org.eclipse.emf.ecore:2.11.1.v20150805-0538"/>
+		<item value="org.eclipse.help:2.1.1.v20150904-0015"/>
+		<item value="org.eclipse.platform:4.5.1.v20150904-0015"/>
+		<item value="org.eclipse.rcp:4.5.1.v20150904-0015"/>
+	</list>
+	<section name="ExternalProjectImportWizard">
+		<item value="false" key="WizardProjectsImportPage.STORE_NESTED_PROJECTS"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
+		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="C:\Users\colto\SimplicityStudio\v4_workspace"/>
+			<item value="D:\Summer Research\Git Repository"/>
+		</list>
+		<list key="WizardProjectsImportPage.STORE_ARCHIVES">
+			<item value=""/>
+		</list>
+	</section>
+	<section name="SaveAsDialogSettings">
+		<item value="1138" key="DIALOG_WIDTH"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-24|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="802" key="DIALOG_HEIGHT"/>
+		<item value="812" key="DIALOG_X_ORIGIN"/>
+		<item value="351" key="DIALOG_Y_ORIGIN"/>
+	</section>
+</section>

@@ -1,0 +1,6 @@
+16:22:09 **** Incremental Build of configuration GNU ARM v7.2.1 - Default for project soc-ibeacon ****
+make -j4 all 
+make: Nothing to be done for `all'.
+
+16:22:11 Build Finished (took 1s.484ms)
+

@@ -1,0 +1,6 @@
+14:36:29 **** Incremental Build of configuration GNU ARM v7.2.1 - Default - BGM111A256V2 for project soc-thermometer_6 ****
+make -j4 all 
+make: Nothing to be done for `all'.
+
+14:36:31 Build Finished (took 1s.730ms)
+

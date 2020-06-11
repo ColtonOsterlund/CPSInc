@@ -1,0 +1,6 @@
+16:14:28 **** Incremental Build of configuration GNU ARM v7.2.1 - Default for project soc-empty_3 ****
+make -j4 all 
+make: Nothing to be done for `all'.
+
+16:14:30 Build Finished (took 1s.676ms)
+
