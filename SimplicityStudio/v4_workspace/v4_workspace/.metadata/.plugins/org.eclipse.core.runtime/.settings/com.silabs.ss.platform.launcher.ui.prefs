@@ -1,2 +1,0 @@
-eclipse.preferences.version=1
-preferredSDKMapping={"mcu.arm.efr32.bg1.efr32bg1b232f256gm48 \: brd4300a\:0.0.0.A03 brd4001a\:0.0.0.A01"\:"com.silabs.sdk.stack.super\:2.5.5._310455071","mcu.arm.efr32.bg1.bgm113a256v2 \: brd4001a\:0.0.0.A01"\:"com.silabs.sdk.stack.super\:2.5.5._310455071"," \: brd4001a\:0.0.0.A01 brd8010a\:0.0.0.A02"\:"com.silabs.sdk.stack.super\:2.5.5._310455071"," \: brd4300a\:0.0.0.A03 brd4001a\:0.0.0.A01"\:"com.silabs.sdk.stack.super\:2.5.5._310455071"}

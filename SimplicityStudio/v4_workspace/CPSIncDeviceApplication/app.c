@@ -58,7 +58,7 @@ ADC_InitSingle_TypeDef initSingle = ADC_INITSINGLE_DEFAULT;
 
 //global flag to indicate whether or not peripheral device has requested to run a test
 uint8 testFlag;
-uint8 currentMotorState = 0;
+int currentMotorState = 0;
 
 //global var used as flag to indicate test is running
 int testRunning = 0;
@@ -74,9 +74,10 @@ void appMain(gecko_configuration_t *pconfig)
 
   initSWOPrinting(); /* Initialize debug prints VIA PRINTF() FUNCTION. Note: debug prints are off by default. See DEBUG_LEVEL in app.h */
   	  	  	  	  	  //needs a \n character to print, must have something to do with when/how its flushing
-//  printf("DEBUG PRINT TEST\n");
-  printSWO("PRINT TEST");
-  flushSWO();
+  //printf("DEBUG PRINT TEST\n");
+
+  printSWO("PRINT TEST\r\n");
+  //flushSWO();
 
   //USE printSWO() and swoFlush() FOR DEBUG PRINTING TO THE SWO CONSOLE***
 
@@ -203,9 +204,9 @@ void appMain(gecko_configuration_t *pconfig)
     	  else if(evt->data.handle == 2){ //timer for motor control
     		  switchMotorState();
     	  }
-    	  else if(evt->data.handle == 3){ //timer for reading temp control
-    		  readTemperatureSensorDataPrintToConsole();
-    	  }
+//    	  else if(evt->data.handle == 3){ //timer for reading temp control
+//    		  readTemperatureSensorDataPrintToConsole();
+//    	  }
 
     	break;
 
@@ -291,16 +292,22 @@ void readTemperatureSensorDataPrintToConsole(){
 	printSWO("temperature: %d °C\r\n", temperatureData); //print the temperature to the SWO console
 
 }
-
+//
 void switchMotorState(){
-	if(currentMotorState == 0){
-	  GPIO_PinOutSet(gpioPortD, 15); //set motor switch pin to high
-	  currentMotorState = 1;
-	}
-	else if(currentMotorState == 1){
-	  GPIO_PinOutClear(gpioPortD, 15); //reset motor switch pin to low
-	  currentMotorState = 0;
-	}
+
+	GPIO_PinOutToggle(gpioPortD, 15); //this should toggle the pin LOW to HIGH
+
+//	printSWO("Switching motor state\r\n");
+//	printSWO("Switching motor state\r\n");
+//
+//	if(currentMotorState == 0){
+//	  GPIO_PinOutSet(gpioPortD, 15); //set motor switch pin to high
+//	  currentMotorState = 1;
+//	}
+//	else if(currentMotorState == 1){
+//	  GPIO_PinOutClear(gpioPortD, 15); //reset motor switch pin to low
+//	  currentMotorState = 0;
+//	}
 }
 
 
