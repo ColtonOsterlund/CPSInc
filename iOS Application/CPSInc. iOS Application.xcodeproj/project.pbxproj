@@ -22,6 +22,7 @@
 		9C29040224897DE200571602 /* Buy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C2903F424896BFC00571602 /* Buy.framework */; };
 		9C29040324897DE200571602 /* Buy.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9C2903F424896BFC00571602 /* Buy.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9C290405248ED3D500571602 /* ShopifyProductPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C290404248ED3D500571602 /* ShopifyProductPageViewController.swift */; };
+		9C2904072493E71100571602 /* ShopifyCheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C2904062493E71100571602 /* ShopifyCheckoutViewController.swift */; };
 		9C33B6C322F104DB0076F492 /* AccountPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C33B6C222F104DB0076F492 /* AccountPageViewController.swift */; };
 		9C33B6C722F4E8570076F492 /* AccountInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C33B6C622F4E8570076F492 /* AccountInstructionViewController.swift */; };
 		9C373EEC22AEC48700B0FC1A /* MainInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3939DC22A05D2D008D066C /* MainInterfaceController.swift */; };
@@ -216,6 +217,7 @@
 		9C2903E524895D2500571602 /* mobile-buy-sdk-ios */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "mobile-buy-sdk-ios"; sourceTree = "<group>"; };
 		9C2903E924896BFC00571602 /* Buy.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Buy.xcodeproj; path = "mobile-buy-sdk-ios/Buy.xcodeproj"; sourceTree = "<group>"; };
 		9C290404248ED3D500571602 /* ShopifyProductPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopifyProductPageViewController.swift; sourceTree = "<group>"; };
+		9C2904062493E71100571602 /* ShopifyCheckoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopifyCheckoutViewController.swift; sourceTree = "<group>"; };
 		9C33B6C222F104DB0076F492 /* AccountPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPageViewController.swift; sourceTree = "<group>"; };
 		9C33B6C622F4E8570076F492 /* AccountInstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInstructionViewController.swift; sourceTree = "<group>"; };
 		9C3939CB22A05D2B008D066C /* CPSInc. watchOS Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CPSInc. watchOS Application.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -475,16 +477,17 @@
 				9C92F36422FB257900047FA2 /* Reachability.swift */,
 				9C6F9EA322985F35009EC1D6 /* AppDelegate.swift */,
 				9C1C31B622D8E1A30057989C /* EncryptedValueTransformer.swift */,
-				9C9618D322DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodeld */,
 				9C9618E322DF8F8600B48713 /* mappingModelV1toV2.xcmappingmodel */,
 				9C9618E722DFA75B00B48713 /* HerdToHerdV1ToV2CustomPolicy.swift */,
 				9C9618E922DFA76A00B48713 /* CowToCowV1ToV2CustomPolicy.swift */,
 				9C9618EB22DFA77800B48713 /* TestToTestV1ToV2CustomPolicy.swift */,
-				9C6F9EAD22985F35009EC1D6 /* Assets.xcassets */,
-				9C6F9EB222985F35009EC1D6 /* Info.plist */,
 				9C74FA092488368E00D46738 /* ShopifyStorePagesViewController.swift */,
 				9C74FA0B2488370800D46738 /* SkeletonViewController.swift */,
 				9C290404248ED3D500571602 /* ShopifyProductPageViewController.swift */,
+				9C2904062493E71100571602 /* ShopifyCheckoutViewController.swift */,
+				9C9618D322DEB96A00B48713 /* CPSInc__iOS_Application.xcdatamodeld */,
+				9C6F9EAD22985F35009EC1D6 /* Assets.xcassets */,
+				9C6F9EB222985F35009EC1D6 /* Info.plist */,
 			);
 			path = "CPSInc. iOS Application";
 			sourceTree = "<group>";
@@ -927,6 +930,7 @@
 				9C1C31B322D53E580057989C /* TestChartViewController.swift in Sources */,
 				9C9618E422DF8F8600B48713 /* mappingModelV1toV2.xcmappingmodel in Sources */,
 				9C92F36522FB257900047FA2 /* Reachability.swift in Sources */,
+				9C2904072493E71100571602 /* ShopifyCheckoutViewController.swift in Sources */,
 				9CB795112307456000DB106A /* Cow+CoreDataClass.swift in Sources */,
 				9C9C949522EF76E8003E5454 /* LoginViewController.swift in Sources */,
 				9C74FA0A2488368E00D46738 /* ShopifyStorePagesViewController.swift in Sources */,

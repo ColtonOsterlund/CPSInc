@@ -12,7 +12,11 @@ import Buy
 class ShopifyProductPageViewController: UIViewController {
     
     //pageID
-    private var pageID: String? = nil
+    private var pageID: String? = nil //product ID
+    private var variantID: String? = nil //variant ID
+    
+    private var checkoutView: ShopifyCheckoutViewController? = nil
+    private var shopPageViewController: ShopifyStorePagesViewController? = nil
     
     //The Graph.Client is a network layer built on top of URLSession that executes query and mutation requests. It also simplifies polling and retrying requests
     let client = Graph.Client(shopDomain: "creative-protein-solutions.myshopify.com", apiKey: "28893d9e78d310dde27dde211fa414d7")
@@ -32,10 +36,13 @@ class ShopifyProductPageViewController: UIViewController {
     private let scanningIndicator = UIActivityIndicatorView()
     
     // This allows you to initialise your custom UIViewController without a nib or bundle.
-    public convenience init(pageID: String?) {
+    public convenience init(pageID: String?, variantID: String?, checkoutViewController: ShopifyCheckoutViewController?, shopPageViewController: ShopifyStorePagesViewController?) {
         self.init(nibName:nil, bundle:nil)
 
         self.pageID = pageID
+        self.variantID = variantID
+        self.checkoutView = checkoutViewController
+        self.shopPageViewController = shopPageViewController
     }
     
     // This extends the superclass.
@@ -207,9 +214,54 @@ class ShopifyProductPageViewController: UIViewController {
     
     
     @objc private func addToCartBtnPressed(){
-        //TODO
+        
+        let alert = UIAlertController(title: "Quantity", message: "Enter amount: ", preferredStyle: .alert)
+        alert.addTextField { (textField) in
+            textField.placeholder = "Quantity"
+            textField.keyboardType = .numberPad
+        }
+
+        alert.addAction(UIAlertAction(title: "Submit", style: .default, handler: { [weak alert] (_) in
+            guard let textField = alert?.textFields?[0], let userText = textField.text else { return }
+            
+            let quantity = Int(userText)
+            if(quantity == nil){
+                self.showToast(controller: self, message: "Not a valid number", seconds: 1)
+            }
+            else if(quantity == 0){
+                return
+            }
+            else{
+                
+                self.checkoutView?.addItemToCart(itemID: self.variantID!, itemName: self.titleLabel.text!, quantity: quantity!)
+                
+                for i in 1...quantity!{
+                    self.shopPageViewController?.addItemToCart()
+                }
+ 
+                self.showToast(controller: self, message: "Item Added to Cart", seconds: 1)
+
+            }
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+
+        self.present(alert, animated: true, completion: nil)
+        
     }
     
+    
+    private func showToast(controller: UIViewController, message: String, seconds: Double){
+        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        alert.view.backgroundColor = UIColor.black
+        alert.view.alpha = 0.6
+        alert.view.layer.cornerRadius = 15
+        
+        controller.present(alert, animated: true)
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + seconds){
+            alert.dismiss(animated: true)
+        }
+    }
     
     
 }

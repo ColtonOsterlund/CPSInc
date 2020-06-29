@@ -527,6 +527,13 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
                                 .edges{$0
                                     .node{$0
                                         .id() //just get the id's of all products
+                                        .variants(first: 10){ $0
+                                            .edges{ $0
+                                                .node{ $0
+                                                    .id()
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -539,7 +546,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
                                 self.shopView!.removePages()
                                 
                                 for product in response.products.edges{
-                                    self.shopView?.addPage(pageIDToAdd: product.node.id.rawValue as String)
+                                    self.shopView?.addPage(productIDToAdd: product.node.id.rawValue as String, variantIDToAdd: product.node.variants.edges[0].node.id.rawValue as String)
                                 }
                                 
                                 self.navigationController?.pushViewController(self.shopView!, animated: true) //pushes shopView onto the navigationController stack
