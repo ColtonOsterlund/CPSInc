@@ -15,6 +15,9 @@ class ShopifyStorePagesViewController: UIPageViewController, UIPageViewControlle
     
     private var menuView: MenuViewController? = nil
     private var appDelegate: AppDelegate? = nil
+    private var checkoutView: ShopifyCheckoutViewController? = nil
+    
+    private var itemsInCart: String = "0"
     
     let initialPage = 0
     
@@ -35,16 +38,19 @@ class ShopifyStorePagesViewController: UIPageViewController, UIPageViewControlle
         
         self.appDelegate = appDelegate
         self.menuView = menuView
+        self.checkoutView = ShopifyCheckoutViewController(storeView: self)
     }
     
     
     
     override func viewDidAppear(_ animated: Bool) {
-    
+        setViewControllers([pages[initialPage]], direction: .forward, animated: true, completion: nil) //reset to first page of store every time
+        pageControl.currentPage = 0
     }
     
     override func viewWillAppear(_ animated: Bool) {
         setViewControllers([pages[initialPage]], direction: .forward, animated: true, completion: nil) //reset to first page of store every time
+        pageControl.currentPage = 0
     }
     
     
@@ -72,7 +78,7 @@ class ShopifyStorePagesViewController: UIPageViewController, UIPageViewControlle
         pageControl.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 0.1).isActive = true
         pageControl.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * 0.1).isActive = true
         
-        checkoutBtn = UIBarButtonItem.init(title: "Checkout", style: .done, target: self, action: #selector(checkoutBtnPressed))
+        checkoutBtn = UIBarButtonItem.init(title: "Checkout: " + itemsInCart, style: .done, target: self, action: #selector(checkoutBtnPressed))
         navigationItem.rightBarButtonItems = [checkoutBtn]
         backBtn = UIBarButtonItem.init(title: "Menu", style: .done, target: self, action: #selector(backBtnPressed))
         navigationItem.leftBarButtonItem = backBtn
@@ -82,6 +88,7 @@ class ShopifyStorePagesViewController: UIPageViewController, UIPageViewControlle
         
         super.init(transitionStyle: style, navigationOrientation: navigationOrientation, options: options)
         
+        self.checkoutView = ShopifyCheckoutViewController(storeView: self)
     }
     
     required init?(coder: NSCoder) {
@@ -90,7 +97,7 @@ class ShopifyStorePagesViewController: UIPageViewController, UIPageViewControlle
     
     
     @objc private func checkoutBtnPressed(){
-        //TODO 
+        navigationController?.pushViewController(self.checkoutView!, animated: true)
     }
     
     
@@ -129,10 +136,10 @@ class ShopifyStorePagesViewController: UIPageViewController, UIPageViewControlle
         self.pageControl.currentPage = pages.firstIndex(of: pageContentViewController as! ShopifyProductPageViewController)!
     }
     
-    public func addPage(pageIDToAdd: String){
+    public func addPage(productIDToAdd: String, variantIDToAdd: String){
         //give the page a pageID unique to all the other pages
     
-        let pageToAdd = ShopifyProductPageViewController(pageID: pageIDToAdd)
+        let pageToAdd = ShopifyProductPageViewController(pageID: productIDToAdd, variantID: variantIDToAdd, checkoutViewController: self.checkoutView, shopPageViewController: self)
 
         pages.append(pageToAdd)
         pageControl.numberOfPages = pages.count
@@ -145,6 +152,19 @@ class ShopifyStorePagesViewController: UIPageViewController, UIPageViewControlle
     
     public func setMenuView(menuView: MenuViewController?){
         self.menuView = menuView
+    }
+    
+    public func addItemToCart(){
+        var num = Int(itemsInCart)
+        num = num! + 1
+        itemsInCart = String(num!)
+        checkoutBtn.title = "Checkout: " + itemsInCart
+    }
+    
+    public func removeAllItemsFromCart(){
+        let num = 0
+        itemsInCart = String(num)
+        checkoutBtn.title = "Checkout: " + itemsInCart
     }
     
 }

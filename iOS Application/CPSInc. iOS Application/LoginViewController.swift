@@ -112,19 +112,19 @@ public class LoginViewController: UIViewController, UITextFieldDelegate, WCSessi
         
         emailTextField.translatesAutoresizingMaskIntoConstraints = false
         emailTextField.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        emailTextField.topAnchor.constraint(equalTo: logoImage.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.2)).isActive = true
+        emailTextField.topAnchor.constraint(equalTo: logoImage.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         emailTextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
-        emailTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.03)).isActive = true
+        emailTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.06)).isActive = true
         
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false
         passwordTextField.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
         passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         passwordTextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
-        passwordTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.03)).isActive = true
+        passwordTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.06)).isActive = true
     
         loginBtn.translatesAutoresizingMaskIntoConstraints = false
         loginBtn.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        loginBtn.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.1)).isActive = true
+        loginBtn.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         loginBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.3)).isActive = true
         loginBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         
@@ -283,41 +283,109 @@ public class LoginViewController: UIViewController, UITextFieldDelegate, WCSessi
                         
                         if(jwtSavedSuccessfully && userIDSavedSuccessfully){
                             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)){ //go after 1 second from now you that you know the toast is complete
-                                if(!self.accountOrStore){
-                                    self.navigationController?.pushViewController(self.accountView!, animated: true)
+                                
+                                //login to shopify account and get the access token
+                                print("Email: " + self.emailTextField.text!)
+                                print("Password: " + self.passwordTextField.text!)
+                                
+                                let input = Storefront.CustomerAccessTokenCreateInput.create(
+                                    email: self.emailTextField.text!,
+                                    password: self.passwordTextField.text!
+                                )
+                                
+                                let mutation = Storefront.buildMutation{ $0
+                                    .customerAccessTokenCreate(input: input){ $0
+                                        .customerAccessToken{ $0
+                                            .accessToken()
+                                            .expiresAt()
+                                        }
+                                        .customerUserErrors{ $0
+                                            .field()
+                                            .message()
+                                        }
+                                    }
                                 }
-                                else{
+                                
+                                
+                                
+                                let task = self.client.mutateGraphWith(mutation) { result, error in
+                                    guard error == nil else{
+                                        //handle request errors
+                                        print("A request error occured logging into Shopify customer account")
+                                        print(error!)
+                                        return
+                                    }
                                     
-                                    //query for the number of products in the store and add this many pages to the page set
-                                    let query = Storefront.buildQuery { $0
-                                        .products(first: 10) { $0
-                                            .edges{$0
-                                                .node{$0
-                                                    .id() //just get the id's of all products
+                                    guard let userError = result?.customerAccessTokenCreate?.customerUserErrors else{
+                                        //handle user errors
+                                        print("A user error occured logging into Shopify customer account")
+                                        return
+                                    }
+                                    
+                                    //handle proper creation
+                                    print("Shopify customer account succesfully authenticated")
+                                    print(result?.customerAccessTokenCreate?.customerAccessToken?.accessToken)
+                                    
+                                    let shopifyAccessTokenSavedSuccessfully = KeychainWrapper.standard.set((result?.customerAccessTokenCreate?.customerAccessToken!.accessToken)!, forKey: "Shopify-Access-Token") //jwt gets saved to keychain upon login
+                                    
+                                    print((result?.customerAccessTokenCreate?.customerAccessToken!.expiresAt)!)
+                                    
+                                    if(shopifyAccessTokenSavedSuccessfully){
+                                        print("Succesfully saved shopify access token to keychain")
+                                    }
+                                    else{
+                                        print("error saving shopify access token to keychain")
+                                        return
+                                    }
+                                    
+                                    
+                                    if(!self.accountOrStore){
+                                        self.navigationController?.pushViewController(self.accountView!, animated: true)
+                                    }
+                                    else{
+                                        
+                                        //query for the number of products in the store and add this many pages to the page set
+                                        let query = Storefront.buildQuery { $0
+                                            .products(first: 10) { $0
+                                                .edges{$0
+                                                    .node{$0
+                                                        .id() //just get the id's of all products
+                                                        .variants(first: 10){ $0
+                                                            .edges{ $0
+                                                                .node{ $0
+                                                                    .id()
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
+                                        
+                                        let shopifyTask = self.client.queryGraphWith(query) { response, error in
+                                            if let response = response {
+                                                
+                                                //empty the page count before re-querying for pages
+                                                self.storeView!.removePages()
+                                                
+                                                for product in response.products.edges{
+                                                    self.storeView?.addPage(productIDToAdd: product.node.id.rawValue as String, variantIDToAdd: product.node.variants.edges[0].node.id.rawValue as String)
+                                                }
+                                                
+                                                self.navigationController?.pushViewController(self.storeView!, animated: true) //pushes shopView onto the navigationController stack
+                                                
+                                            } else {
+                                                print(error!)
+                                            }
+                                        }
+                                        shopifyTask.resume()
+                                        
                                     }
                                     
-                                    let shopifyTask = self.client.queryGraphWith(query) { response, error in
-                                        if let response = response {
-                                            
-                                            //empty the page count before re-querying for pages
-                                            self.storeView!.removePages()
-                                            
-                                            for product in response.products.edges{
-                                                self.storeView?.addPage(pageIDToAdd: product.node.id.rawValue as String)
-                                            }
-                                            
-                                            self.navigationController?.pushViewController(self.storeView!, animated: true) //pushes shopView onto the navigationController stack
-                                            
-                                        } else {
-                                            print(error!)
-                                        }
-                                    }
-                                    shopifyTask.resume()
                                     
                                 }
+                                task.resume()
+                                
                             }
                             
                         }

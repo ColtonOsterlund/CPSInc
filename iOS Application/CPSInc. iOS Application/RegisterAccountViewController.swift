@@ -10,6 +10,7 @@
 
 import UIKit
 import SwiftKeychainWrapper
+import Buy
 
 
 class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
@@ -21,8 +22,31 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
     //UIImageView
     let logoImage = UIImageView()
     
+    //UIScrollView
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
+    
     //UITextFields
+    let firstNameTextField = UITextField()
+    let lastNameTextField = UITextField()
     let emailTextField = UITextField()
+    let phoneCountryCodeTextField = UITextField()
+    let phoneAreaCodeTextField = UITextField()
+    let phoneFirstThreeDigitTextField = UITextField()
+    let phoneLastFourDigitTextField = UITextField()
+    let phonePlusLabel = UILabel()
+    let phoneDashOneLabel = UILabel()
+    let phoneDashTwoLabel = UILabel()
+    let phoneDashThreeLabel = UILabel()
+    let phoneLabel = UILabel()
+    
+    let address1TextField = UITextField()
+    let address2TextField = UITextField()
+    let cityTextField = UITextField()
+    let countryTextField = UITextField()
+    let provinceTextField = UITextField()
+    let zipCodeTextField = UITextField()
+    
     let usernameTextField = UITextField()
     let passwordTextField = UITextField()
     let passwordCompareTextField = UITextField()
@@ -32,6 +56,9 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
     
     //UIActivityIndicatorView
     private let scanningIndicator = UIActivityIndicatorView()
+    
+    //Buy SDK client
+    let client = Graph.Client(shopDomain: "creative-protein-solutions.myshopify.com", apiKey: "28893d9e78d310dde27dde211fa414d7")
     
     
     // This allows you to initialise your custom UIViewController without a nib or bundle.
@@ -65,8 +92,35 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
     
     
     private func setupLayoutComponents(){
-        logoImage.image = UIImage(named: "CPSLogo")
-        view.addSubview(logoImage)
+//        logoImage.image = UIImage(named: "CPSLogo")
+//        view.addSubview(logoImage)
+        
+        scrollView.backgroundColor = .init(red: 0, green: 0.637, blue: 0.999, alpha: 1)
+        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 1.4)
+        scrollView.frame = view.bounds
+        view.addSubview(scrollView)
+        
+        contentView.backgroundColor = .init(red: 0, green: 0.637, blue: 0.999, alpha: 1)
+        contentView.frame.size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 2)
+        scrollView.addSubview(contentView)
+        
+        firstNameTextField.backgroundColor = .white
+        firstNameTextField.textColor = .black
+        firstNameTextField.placeholder = "First Name"
+        firstNameTextField.autocapitalizationType = .words
+        firstNameTextField.borderStyle = .roundedRect
+        firstNameTextField.tag = 0
+        firstNameTextField.delegate = self
+        contentView.addSubview(firstNameTextField)
+        
+        lastNameTextField.backgroundColor = .white
+        lastNameTextField.textColor = .black
+        lastNameTextField.placeholder = "Last Name"
+        lastNameTextField.autocapitalizationType = .words
+        lastNameTextField.borderStyle = .roundedRect
+        lastNameTextField.tag = 4
+        lastNameTextField.delegate = self
+        contentView.addSubview(lastNameTextField)
         
         emailTextField.backgroundColor = .white
         emailTextField.textColor = .black
@@ -74,9 +128,133 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
         emailTextField.keyboardType = .emailAddress
         emailTextField.autocapitalizationType = .none
         emailTextField.borderStyle = .roundedRect
-        emailTextField.tag = 0
+        emailTextField.tag = 5
         emailTextField.delegate = self
-        view.addSubview(emailTextField)
+        contentView.addSubview(emailTextField)
+        
+        phonePlusLabel.text = "+"
+        phonePlusLabel.textColor = .black
+        phonePlusLabel.textAlignment = .center
+        phonePlusLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
+        contentView.addSubview(phonePlusLabel)
+        
+        phoneLabel.text = "Phone:"
+        phoneLabel.textColor = .gray
+        phoneLabel.textAlignment = .center
+        //phoneLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
+        contentView.addSubview(phoneLabel)
+        
+        phoneDashOneLabel.text = "-"
+        phoneDashOneLabel.textColor = .black
+        phoneDashOneLabel.textAlignment = .center
+        phoneDashOneLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
+        contentView.addSubview(phoneDashOneLabel)
+        
+        phoneDashTwoLabel.text = "-"
+        phoneDashTwoLabel.textColor = .black
+        phoneDashTwoLabel.textAlignment = .center
+        phoneDashTwoLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
+        contentView.addSubview(phoneDashTwoLabel)
+        
+        phoneDashThreeLabel.text = "-"
+        phoneDashThreeLabel.textColor = .black
+        phoneDashThreeLabel.textAlignment = .center
+        phoneDashThreeLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
+        contentView.addSubview(phoneDashThreeLabel)
+        
+        phoneCountryCodeTextField.backgroundColor = .white
+        phoneCountryCodeTextField.textColor = .black
+        phoneCountryCodeTextField.placeholder = "x"
+        phoneCountryCodeTextField.keyboardType = .numberPad
+        phoneCountryCodeTextField.autocapitalizationType = .none
+        phoneCountryCodeTextField.borderStyle = .roundedRect
+        phoneCountryCodeTextField.tag = 6
+        phoneCountryCodeTextField.delegate = self
+        contentView.addSubview(phoneCountryCodeTextField)
+        
+        phoneAreaCodeTextField.backgroundColor = .white
+        phoneAreaCodeTextField.textColor = .black
+        phoneAreaCodeTextField.placeholder = "xxx"
+        phoneAreaCodeTextField.keyboardType = .numberPad
+        phoneAreaCodeTextField.autocapitalizationType = .none
+        phoneAreaCodeTextField.borderStyle = .roundedRect
+        phoneAreaCodeTextField.tag = 13
+        phoneAreaCodeTextField.delegate = self
+        contentView.addSubview(phoneAreaCodeTextField)
+        
+        phoneFirstThreeDigitTextField.backgroundColor = .white
+        phoneFirstThreeDigitTextField.textColor = .black
+        phoneFirstThreeDigitTextField.placeholder = "xxx"
+        phoneFirstThreeDigitTextField.keyboardType = .numberPad
+        phoneFirstThreeDigitTextField.autocapitalizationType = .none
+        phoneFirstThreeDigitTextField.borderStyle = .roundedRect
+        phoneFirstThreeDigitTextField.tag = 14
+        phoneFirstThreeDigitTextField.delegate = self
+        contentView.addSubview(phoneFirstThreeDigitTextField)
+        
+        phoneLastFourDigitTextField.backgroundColor = .white
+        phoneLastFourDigitTextField.textColor = .black
+        phoneLastFourDigitTextField.placeholder = "xxxx"
+        phoneLastFourDigitTextField.keyboardType = .numberPad
+        phoneLastFourDigitTextField.autocapitalizationType = .none
+        phoneLastFourDigitTextField.borderStyle = .roundedRect
+        phoneLastFourDigitTextField.tag = 15
+        phoneLastFourDigitTextField.delegate = self
+        contentView.addSubview(phoneLastFourDigitTextField)
+        
+        address1TextField.backgroundColor = .white
+        address1TextField.textColor = .black
+        address1TextField.placeholder = "Street Address"
+        address1TextField.autocapitalizationType = .words
+        address1TextField.borderStyle = .roundedRect
+        address1TextField.tag = 7
+        address1TextField.delegate = self
+        contentView.addSubview(address1TextField)
+        
+        address2TextField.backgroundColor = .white
+        address2TextField.textColor = .black
+        address2TextField.placeholder = "Unit Number (if applicable)"
+        address2TextField.autocapitalizationType = .words
+        address2TextField.borderStyle = .roundedRect
+        address2TextField.tag = 8
+        address2TextField.delegate = self
+        contentView.addSubview(address2TextField)
+        
+        cityTextField.backgroundColor = .white
+        cityTextField.textColor = .black
+        cityTextField.placeholder = "City"
+        cityTextField.autocapitalizationType = .words
+        cityTextField.borderStyle = .roundedRect
+        cityTextField.tag = 9
+        cityTextField.delegate = self
+        contentView.addSubview(cityTextField)
+        
+        countryTextField.backgroundColor = .white
+        countryTextField.textColor = .black
+        countryTextField.placeholder = "Country"
+        countryTextField.autocapitalizationType = .words
+        countryTextField.borderStyle = .roundedRect
+        countryTextField.tag = 10
+        countryTextField.delegate = self
+        contentView.addSubview(countryTextField)
+        
+        provinceTextField.backgroundColor = .white
+        provinceTextField.textColor = .black
+        provinceTextField.placeholder = "Province/State"
+        provinceTextField.autocapitalizationType = .words
+        provinceTextField.borderStyle = .roundedRect
+        provinceTextField.tag = 11
+        provinceTextField.delegate = self
+        contentView.addSubview(provinceTextField)
+        
+        zipCodeTextField.backgroundColor = .white
+        zipCodeTextField.textColor = .black
+        zipCodeTextField.placeholder = "Zip Code"
+        zipCodeTextField.autocapitalizationType = .allCharacters
+        zipCodeTextField.borderStyle = .roundedRect
+        zipCodeTextField.tag = 12
+        zipCodeTextField.delegate = self
+        contentView.addSubview(zipCodeTextField)
         
         usernameTextField.backgroundColor = .white
         usernameTextField.textColor = .black
@@ -85,7 +263,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
         usernameTextField.borderStyle = .roundedRect
         usernameTextField.tag = 1
         usernameTextField.delegate = self
-        view.addSubview(usernameTextField)
+        contentView.addSubview(usernameTextField)
         
         passwordTextField.backgroundColor = .white
         passwordTextField.textColor = .black
@@ -95,7 +273,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
         passwordTextField.autocapitalizationType = .none
         passwordTextField.tag = 2
         passwordTextField.delegate = self
-        view.addSubview(passwordTextField)
+        contentView.addSubview(passwordTextField)
         
         passwordCompareTextField.backgroundColor = .white
         passwordCompareTextField.textColor = .black
@@ -105,7 +283,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
         passwordCompareTextField.borderStyle = .roundedRect
         passwordCompareTextField.tag = 3
         passwordCompareTextField.delegate = self
-        view.addSubview(passwordCompareTextField)
+        contentView.addSubview(passwordCompareTextField)
         
         registerAccountBtn.setTitle("Register Account", for: .normal)
         registerAccountBtn.backgroundColor = .blue
@@ -113,7 +291,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
         registerAccountBtn.layer.borderWidth = 2
         registerAccountBtn.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor //white
         registerAccountBtn.addTarget(self, action: #selector(registerAccountBtnPressed), for: .touchUpInside)
-        view.addSubview(registerAccountBtn)
+        contentView.addSubview(registerAccountBtn)
         
         
         scanningIndicator.center = self.view.center
@@ -124,39 +302,141 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
     }
     
     private func setupLayoutConstraints(){
-        logoImage.translatesAutoresizingMaskIntoConstraints = false
-        logoImage.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        logoImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: (UIScreen.main.bounds.height * 0.1)).isActive = true
-        logoImage.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.15)).isActive = true
-        logoImage.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.35)).isActive = true
+//        logoImage.translatesAutoresizingMaskIntoConstraints = false
+//        logoImage.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+//        logoImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: (UIScreen.main.bounds.height * 0.1)).isActive = true
+//        logoImage.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.15)).isActive = true
+//        logoImage.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.35)).isActive = true
+        
+        firstNameTextField.translatesAutoresizingMaskIntoConstraints = false
+        firstNameTextField.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        firstNameTextField.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
+        firstNameTextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
+        firstNameTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        
+        lastNameTextField.translatesAutoresizingMaskIntoConstraints = false
+        lastNameTextField.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        lastNameTextField.topAnchor.constraint(equalTo: firstNameTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
+        lastNameTextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
+        lastNameTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         
         emailTextField.translatesAutoresizingMaskIntoConstraints = false
-        emailTextField.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        emailTextField.topAnchor.constraint(equalTo: logoImage.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        emailTextField.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        emailTextField.topAnchor.constraint(equalTo: lastNameTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
         emailTextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
-        emailTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.03)).isActive = true
+        emailTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        
+        phoneLabel.translatesAutoresizingMaskIntoConstraints = false
+        phoneLabel.leftAnchor.constraint(equalTo: emailTextField.leftAnchor).isActive = true
+        phoneLabel.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
+        phoneLabel.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.15)).isActive = true
+        phoneLabel.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        
+        phonePlusLabel.translatesAutoresizingMaskIntoConstraints = false
+        phonePlusLabel.leftAnchor.constraint(equalTo: phoneLabel.rightAnchor, constant: (UIScreen.main.bounds.width * 0.01)).isActive = true
+        phonePlusLabel.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
+        phonePlusLabel.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.03)).isActive = true
+        phonePlusLabel.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        
+        phoneCountryCodeTextField.translatesAutoresizingMaskIntoConstraints = false
+        phoneCountryCodeTextField.leftAnchor.constraint(equalTo: phonePlusLabel.rightAnchor, constant: (UIScreen.main.bounds.width * 0.01)).isActive = true
+        phoneCountryCodeTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
+        phoneCountryCodeTextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.075)).isActive = true
+        phoneCountryCodeTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        
+        phoneDashOneLabel.translatesAutoresizingMaskIntoConstraints = false
+        phoneDashOneLabel.leftAnchor.constraint(equalTo: phoneCountryCodeTextField.rightAnchor).isActive = true
+        phoneDashOneLabel.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
+        phoneDashOneLabel.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.025)).isActive = true
+        phoneDashOneLabel.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        
+        phoneAreaCodeTextField.translatesAutoresizingMaskIntoConstraints = false
+        phoneAreaCodeTextField.leftAnchor.constraint(equalTo: phoneDashOneLabel.rightAnchor).isActive = true
+        phoneAreaCodeTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
+        phoneAreaCodeTextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.14)).isActive = true
+        phoneAreaCodeTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        
+        phoneDashTwoLabel.translatesAutoresizingMaskIntoConstraints = false
+        phoneDashTwoLabel.leftAnchor.constraint(equalTo: phoneAreaCodeTextField.rightAnchor).isActive = true
+        phoneDashTwoLabel.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
+        phoneDashTwoLabel.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.025)).isActive = true
+        phoneDashTwoLabel.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        
+        phoneFirstThreeDigitTextField.translatesAutoresizingMaskIntoConstraints = false
+        phoneFirstThreeDigitTextField.leftAnchor.constraint(equalTo: phoneDashTwoLabel.rightAnchor).isActive = true
+        phoneFirstThreeDigitTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
+        phoneFirstThreeDigitTextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.14)).isActive = true
+        phoneFirstThreeDigitTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        
+        phoneDashThreeLabel.translatesAutoresizingMaskIntoConstraints = false
+        phoneDashThreeLabel.leftAnchor.constraint(equalTo: phoneFirstThreeDigitTextField.rightAnchor).isActive = true
+        phoneDashThreeLabel.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
+        phoneDashThreeLabel.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.025)).isActive = true
+        phoneDashThreeLabel.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        
+        phoneLastFourDigitTextField.translatesAutoresizingMaskIntoConstraints = false
+        phoneLastFourDigitTextField.leftAnchor.constraint(equalTo: phoneDashThreeLabel.rightAnchor).isActive = true
+        phoneLastFourDigitTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
+        phoneLastFourDigitTextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.17)).isActive = true
+        phoneLastFourDigitTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         
         usernameTextField.translatesAutoresizingMaskIntoConstraints = false
-        usernameTextField.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        usernameTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        usernameTextField.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        usernameTextField.topAnchor.constraint(equalTo: phoneCountryCodeTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
         usernameTextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
-        usernameTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.03)).isActive = true
+        usernameTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false
-        passwordTextField.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        passwordTextField.topAnchor.constraint(equalTo: usernameTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        passwordTextField.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        passwordTextField.topAnchor.constraint(equalTo: usernameTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
         passwordTextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
-        passwordTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.03)).isActive = true
+        passwordTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         
         passwordCompareTextField.translatesAutoresizingMaskIntoConstraints = false
-        passwordCompareTextField.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        passwordCompareTextField.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        passwordCompareTextField.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        passwordCompareTextField.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
         passwordCompareTextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
-        passwordCompareTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.03)).isActive = true
+        passwordCompareTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        
+        address1TextField.translatesAutoresizingMaskIntoConstraints = false
+        address1TextField.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        address1TextField.topAnchor.constraint(equalTo: passwordCompareTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
+        address1TextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
+        address1TextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        
+        address2TextField.translatesAutoresizingMaskIntoConstraints = false
+        address2TextField.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        address2TextField.topAnchor.constraint(equalTo: address1TextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
+        address2TextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
+        address2TextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        
+        cityTextField.translatesAutoresizingMaskIntoConstraints = false
+        cityTextField.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        cityTextField.topAnchor.constraint(equalTo: address2TextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
+        cityTextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
+        cityTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        
+        provinceTextField.translatesAutoresizingMaskIntoConstraints = false
+        provinceTextField.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        provinceTextField.topAnchor.constraint(equalTo: cityTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
+        provinceTextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
+        provinceTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        
+        countryTextField.translatesAutoresizingMaskIntoConstraints = false
+        countryTextField.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        countryTextField.topAnchor.constraint(equalTo: provinceTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
+        countryTextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
+        countryTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        
+        zipCodeTextField.translatesAutoresizingMaskIntoConstraints = false
+        zipCodeTextField.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        zipCodeTextField.topAnchor.constraint(equalTo: countryTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
+        zipCodeTextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
+        zipCodeTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         
         registerAccountBtn.translatesAutoresizingMaskIntoConstraints = false
-        registerAccountBtn.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        registerAccountBtn.topAnchor.constraint(equalTo: passwordCompareTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.1)).isActive = true
+        registerAccountBtn.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        registerAccountBtn.topAnchor.constraint(equalTo: zipCodeTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.08)).isActive = true
         registerAccountBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.5)).isActive = true
         registerAccountBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         
@@ -173,10 +453,22 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
     
     
     override func viewWillAppear(_ animated: Bool) {
+        firstNameTextField.text = ""
+        lastNameTextField.text = ""
         emailTextField.text = ""
+        phoneCountryCodeTextField.text = ""
+        phoneAreaCodeTextField.text = ""
+        phoneFirstThreeDigitTextField.text = ""
+        phoneLastFourDigitTextField.text = ""
         usernameTextField.text = ""
         passwordTextField.text = ""
         passwordCompareTextField.text = ""
+        address1TextField.text = ""
+        address2TextField.text = ""
+        cityTextField.text = ""
+        provinceTextField.text = ""
+        countryTextField.text = ""
+        zipCodeTextField.text = ""
     }
     
     
@@ -200,7 +492,8 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
         
         
         //client side checks
-        if(emailTextField.text == "" || usernameTextField.text == "" || passwordTextField.text == "" || passwordCompareTextField.text == ""){
+        if(firstNameTextField.text == "" || lastNameTextField.text == "" || emailTextField.text == "" || usernameTextField.text == "" || passwordTextField.text == "" || passwordCompareTextField.text == "" || address1TextField.text == "" || cityTextField.text == "" || countryTextField.text == "" || provinceTextField.text == "" ||
+            zipCodeTextField.text == ""){
             
             self.showToast(controller: self, message: "Please Fill in All Fields to Register Account", seconds: 1)
             
@@ -230,7 +523,16 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
         let jsonRegisterObject: [String: Any] = [
             "username": usernameTextField.text!,
             "email": emailTextField.text!,
-            "password": passwordTextField.text!
+            "password": passwordTextField.text!,
+            "firstName": firstNameTextField.text!,
+            "lastName": lastNameTextField.text!,
+            "phone": "+" + phoneCountryCodeTextField.text! + phoneAreaCodeTextField.text! + phoneFirstThreeDigitTextField.text! + phoneLastFourDigitTextField.text!,
+            "address1": address1TextField.text!,
+            "address2": address2TextField.text!,
+            "city": cityTextField.text!,
+            "country": countryTextField.text!,
+            "province": provinceTextField.text!,
+            "zipCode": zipCodeTextField.text!
         ]
         
         
@@ -241,6 +543,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                 registerJSONData = try JSONSerialization.data(withJSONObject: jsonRegisterObject, options: [])
             }catch{
                 print("Problem while serializing jsonLoginObject")
+                self.showToast(controller: self, message: "A problem occured", seconds: 1)
             }
         }
         
@@ -256,6 +559,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                 DispatchQueue.main.async {
                     self.scanningIndicator.stopAnimating()
                     self.showToast(controller: self, message: "Error: " + (error as! String), seconds: 1)
+                    return
                 }
                 print("Error occured during /register RESTAPI request")
             }
@@ -277,9 +581,23 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                 if(userID == nil){ //something happened - username/email already taken or not verified- let user know and return
                     DispatchQueue.main.async {
                         self.emailTextField.text = ""
+                        self.firstNameTextField.text = ""
+                        self.lastNameTextField.text = ""
+                        self.phoneCountryCodeTextField.text = ""
+                        self.phoneAreaCodeTextField.text = ""
+                        self.phoneFirstThreeDigitTextField.text = ""
+                        self.phoneLastFourDigitTextField.text = ""
                         self.usernameTextField.text = ""
                         self.passwordTextField.text = ""
                         self.passwordCompareTextField.text = ""
+                        self.address1TextField.text = ""
+                        self.address2TextField.text = ""
+                        self.cityTextField.text = ""
+                        self.countryTextField.text = ""
+                        self.provinceTextField.text = ""
+                        self.zipCodeTextField.text = ""
+                        
+                        self.showToast(controller: self, message: "An error happened, please retry", seconds: 1)
                     }
                     return
                 }
@@ -289,9 +607,310 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                     print("User ID: ")
                     print(userID!)
                     
-                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)){ //go after 1 second from now you that you know the toast is complete
-                        self.navigationController?.popViewController(animated: true)
+                    var email: String? = nil
+                    var password: String? = nil
+                    var firstName: String? = nil
+                    var lastName: String? = nil
+                    var phone: String? = nil
+                    var address1: String? = nil
+                    var address2: String? = nil
+                    var city: String? = nil
+                    var country: String? = nil
+                    var province: String? = nil
+                    var zipCode: String? = nil
+                    
+                    DispatchQueue.main.sync{
+                        email = self.emailTextField.text
+                        password = self.passwordTextField.text
+                        firstName = self.firstNameTextField.text
+                        lastName = self.lastNameTextField.text
+                        phone = "+" + self.phoneCountryCodeTextField.text! + self.phoneAreaCodeTextField.text! + self.phoneFirstThreeDigitTextField.text! + self.phoneLastFourDigitTextField.text!
+                        address1 = self.address1TextField.text
+                        address2 = self.address2TextField.text
+                        city = self.cityTextField.text
+                        country = self.countryTextField.text
+                        province = self.provinceTextField.text
+                        zipCode = self.zipCodeTextField.text
                     }
+                    
+                    //CREATE THE USER'S SHOPIFY ACCOUNT RIGHT HERE - WHEN THEY REGISTER AN ACCOUNT THIS REGISTERS A NEW SHOPIFY ACCOUNT FOR THEM AS WELL
+                    let customerCreateInput = Storefront.CustomerCreateInput.create(
+                        email: email!,
+                        password: password!,
+                        firstName: .value(firstName!),
+                        lastName: .value(lastName!),
+                        phone: .value(phone!),
+                        acceptsMarketing: .value(true)
+                    )
+                    
+                    let customerCreateMutation = Storefront.buildMutation{ $0
+                        .customerCreate(input: customerCreateInput){ $0
+                            .customer{ $0
+                                .id()
+                                .email()
+                                .firstName()
+                                .lastName()
+                                .phone()
+                                .acceptsMarketing()
+                            }
+                            .customerUserErrors{ $0
+                                .field()
+                                .message()
+                            }
+                        }
+                    
+                    }
+                    
+                    
+                    let customerCreateTask = self.client.mutateGraphWith(customerCreateMutation) { result, error in
+
+                        print(result)
+
+                        guard error == nil else{
+                            //handle request errors
+                            print("A request error occured creating Shopify customer account")
+                            print(error!)
+                            
+                            DispatchQueue.main.async {
+                                                   self.emailTextField.text = ""
+                                                   self.firstNameTextField.text = ""
+                                                   self.lastNameTextField.text = ""
+                                                   self.phoneCountryCodeTextField.text = ""
+                                                   self.phoneAreaCodeTextField.text = ""
+                                                   self.phoneFirstThreeDigitTextField.text = ""
+                                                   self.phoneLastFourDigitTextField.text = ""
+                                                   self.usernameTextField.text = ""
+                                                   self.passwordTextField.text = ""
+                                                   self.passwordCompareTextField.text = ""
+                                                   self.address1TextField.text = ""
+                                                   self.address2TextField.text = ""
+                                                   self.cityTextField.text = ""
+                                                   self.countryTextField.text = ""
+                                                   self.provinceTextField.text = ""
+                                                   self.zipCodeTextField.text = ""
+                                                   
+                                                   self.showToast(controller: self, message: "An error happened, please retry", seconds: 1)
+                                               }
+                            
+                            return
+                        }
+                        
+                        guard let userError = result?.customerCreate?.customerUserErrors else{
+                            //handle user errors
+                            print("A user error occured creating Shopify customer account")
+                            print(result?.customerCreate?.userErrors.first?.message)
+                            
+                            
+                            DispatchQueue.main.async {
+                                                   self.emailTextField.text = ""
+                                                   self.firstNameTextField.text = ""
+                                                   self.lastNameTextField.text = ""
+                                                   self.phoneCountryCodeTextField.text = ""
+                                                   self.phoneAreaCodeTextField.text = ""
+                                                   self.phoneFirstThreeDigitTextField.text = ""
+                                                   self.phoneLastFourDigitTextField.text = ""
+                                                   self.usernameTextField.text = ""
+                                                   self.passwordTextField.text = ""
+                                                   self.passwordCompareTextField.text = ""
+                                                   self.address1TextField.text = ""
+                                                   self.address2TextField.text = ""
+                                                   self.cityTextField.text = ""
+                                                   self.countryTextField.text = ""
+                                                   self.provinceTextField.text = ""
+                                                   self.zipCodeTextField.text = ""
+                                                   
+                                                   self.showToast(controller: self, message: "An error happened, please retry", seconds: 1)
+                                               }
+                            
+                            return
+                        }
+                        
+                        //print(result?.customerCreate?.customerUserErrors.first?.message)
+                        
+                        let loginInput = Storefront.CustomerAccessTokenCreateInput.create(
+                            email: self.emailTextField.text!,
+                            password: self.passwordTextField.text!
+                        )
+                        
+                        let loginMutation = Storefront.buildMutation{ $0
+                            .customerAccessTokenCreate(input: loginInput){ $0
+                                .customerAccessToken{ $0
+                                    .accessToken()
+                                    .expiresAt()
+                                }
+                                .customerUserErrors{ $0
+                                    .field()
+                                    .message()
+                                }
+                            }
+                        }
+                        
+                        let loginTask = self.client.mutateGraphWith(loginMutation) { result, error in
+                            
+                            print(result)
+                            
+                                guard error == nil else{
+                                    //handle request errors
+                                    print("A request error occured creating Shopify customer account")
+                                    print(error!)
+                                    
+                                    DispatchQueue.main.async {
+                                                           self.emailTextField.text = ""
+                                                           self.firstNameTextField.text = ""
+                                                           self.lastNameTextField.text = ""
+                                                           self.phoneCountryCodeTextField.text = ""
+                                                           self.phoneAreaCodeTextField.text = ""
+                                                           self.phoneFirstThreeDigitTextField.text = ""
+                                                           self.phoneLastFourDigitTextField.text = ""
+                                                           self.usernameTextField.text = ""
+                                                           self.passwordTextField.text = ""
+                                                           self.passwordCompareTextField.text = ""
+                                                           self.address1TextField.text = ""
+                                                           self.address2TextField.text = ""
+                                                           self.cityTextField.text = ""
+                                                           self.countryTextField.text = ""
+                                                           self.provinceTextField.text = ""
+                                                           self.zipCodeTextField.text = ""
+                                                           
+                                                           self.showToast(controller: self, message: "An error happened, please retry", seconds: 1)
+                                                       }
+                                    
+                                    return
+                                }
+                                               
+                                guard let userError = result?.customerAccessTokenCreate?.customerUserErrors else{
+                                    //handle user errors
+                                    print("A user error occured creating Shopify customer account")
+                                    
+                                    DispatchQueue.main.async {
+                                                           self.emailTextField.text = ""
+                                                           self.firstNameTextField.text = ""
+                                                           self.lastNameTextField.text = ""
+                                                           self.phoneCountryCodeTextField.text = ""
+                                                           self.phoneAreaCodeTextField.text = ""
+                                                           self.phoneFirstThreeDigitTextField.text = ""
+                                                           self.phoneLastFourDigitTextField.text = ""
+                                                           self.usernameTextField.text = ""
+                                                           self.passwordTextField.text = ""
+                                                           self.passwordCompareTextField.text = ""
+                                                           self.address1TextField.text = ""
+                                                           self.address2TextField.text = ""
+                                                           self.cityTextField.text = ""
+                                                           self.countryTextField.text = ""
+                                                           self.provinceTextField.text = ""
+                                                           self.zipCodeTextField.text = ""
+                                                           
+                                                           self.showToast(controller: self, message: "An error happened, please retry", seconds: 1)
+                                                       }
+                                    
+                                    return
+                                }
+                            
+                            let accessToken = (result?.customerAccessTokenCreate?.customerAccessToken!.accessToken)!
+                            
+                            let addressInput = Storefront.MailingAddressInput.create(
+                                address1: .value(address1!),
+                                address2: .value(address2!),
+                                city: .value(city!),
+                                country: .value(country!),
+                                firstName: .value(firstName!),
+                                lastName: .value(lastName!),
+                                phone: .value(phone!),
+                                province: .value(province!),
+                                zip: .value(zipCode!)
+                            )
+                            
+                            let addressMutation = Storefront.buildMutation{ $0
+                                .customerAddressCreate(customerAccessToken: accessToken, address: addressInput){ $0
+                                    .customerAddress{ $0
+                                        .id()
+                                        .address1()
+                                    }
+                                    .customerUserErrors { $0
+                                        .field()
+                                        .message()
+                                    }
+                                }
+                                
+                            }
+                            
+                            let addressTask = self.client.mutateGraphWith(addressMutation) { result, error in
+                                guard error == nil else{
+                                    //handle request errors
+                                    print("A request error occured creating Shopify customer account")
+                                    print(error!)
+                                    
+                                    DispatchQueue.main.async {
+                                                           self.emailTextField.text = ""
+                                                           self.firstNameTextField.text = ""
+                                                           self.lastNameTextField.text = ""
+                                                           self.phoneCountryCodeTextField.text = ""
+                                                           self.phoneAreaCodeTextField.text = ""
+                                                           self.phoneFirstThreeDigitTextField.text = ""
+                                                           self.phoneLastFourDigitTextField.text = ""
+                                                           self.usernameTextField.text = ""
+                                                           self.passwordTextField.text = ""
+                                                           self.passwordCompareTextField.text = ""
+                                                           self.address1TextField.text = ""
+                                                           self.address2TextField.text = ""
+                                                           self.cityTextField.text = ""
+                                                           self.countryTextField.text = ""
+                                                           self.provinceTextField.text = ""
+                                                           self.zipCodeTextField.text = ""
+                                                           
+                                                           self.showToast(controller: self, message: "An error happened, please retry", seconds: 1)
+                                                       }
+                                    
+                                    return
+                                }
+                                           
+                                guard let userError = result?.customerAddressCreate?.customerUserErrors else{
+                                    //handle user errors
+                                    print("A user error occured creating Shopify customer account")
+                                    
+                                    DispatchQueue.main.async {
+                                                           self.emailTextField.text = ""
+                                                           self.firstNameTextField.text = ""
+                                                           self.lastNameTextField.text = ""
+                                                           self.phoneCountryCodeTextField.text = ""
+                                                           self.phoneAreaCodeTextField.text = ""
+                                                           self.phoneFirstThreeDigitTextField.text = ""
+                                                           self.phoneLastFourDigitTextField.text = ""
+                                                           self.usernameTextField.text = ""
+                                                           self.passwordTextField.text = ""
+                                                           self.passwordCompareTextField.text = ""
+                                                           self.address1TextField.text = ""
+                                                           self.address2TextField.text = ""
+                                                           self.cityTextField.text = ""
+                                                           self.countryTextField.text = ""
+                                                           self.provinceTextField.text = ""
+                                                           self.zipCodeTextField.text = ""
+                                                           
+                                                           self.showToast(controller: self, message: "An error happened, please retry", seconds: 1)
+                                                       }
+                                    
+                                    return
+                                }
+                                
+                                //handle proper creation
+                                print("Shopify customer account succesfully created")
+                                
+                                
+                                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)){ //go after 1 second from now you that you know the toast is complete
+                                    self.navigationController?.popViewController(animated: true)
+                                }
+                                
+                            }
+                            addressTask.resume()
+                            
+                        }
+                        loginTask.resume()
+                        
+                    }
+                    
+                    customerCreateTask.resume()
+                    
+                    
                 }
                 
             }
@@ -339,6 +958,42 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
             //usernametext field
             passwordCompareTextField.endEditing(true)
             
+        }
+        else if(textField.tag == 4){
+            firstNameTextField.endEditing(true)
+        }
+        else if(textField.tag == 5){
+            lastNameTextField.endEditing(true)
+        }
+        else if(textField.tag == 6){
+            phoneCountryCodeTextField.endEditing(true)
+        }
+        else if(textField.tag == 7){
+            address1TextField.endEditing(true)
+        }
+        else if(textField.tag == 8){
+            address2TextField.endEditing(true)
+        }
+        else if(textField.tag == 9){
+            cityTextField.endEditing(true)
+        }
+        else if(textField.tag == 10){
+            countryTextField.endEditing(true)
+        }
+        else if(textField.tag == 11){
+            provinceTextField.endEditing(true)
+        }
+        else if(textField.tag == 12){
+            zipCodeTextField.endEditing(true)
+        }
+        else if(textField.tag == 13){
+            phoneAreaCodeTextField.endEditing(true)
+        }
+        else if(textField.tag == 14){
+            phoneFirstThreeDigitTextField.endEditing(true)
+        }
+        else if(textField.tag == 15){
+            phoneLastFourDigitTextField.endEditing(true)
         }
         return true
     }
