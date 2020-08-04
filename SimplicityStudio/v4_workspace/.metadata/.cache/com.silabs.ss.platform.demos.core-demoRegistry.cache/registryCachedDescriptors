@@ -132,7 +132,7 @@
     <properties key="demos.imageFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.4/app/bluetooth/appbuilder/sample-apps-bin/ncp-btmesh-empty-target-brd4180a-gcc.hex"/>
     <properties key="demos.bootloaderFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.4/platform/bootloader/sample-apps/bootloader-uart-bgapi/efr32mg21a020f1024im32-brd4180a/bootloader-uart-bgapi.s37"/>
     <properties key="demos.blurb" value="Bluetooth Mesh: NCP (Network co-processor) Empty target application. Responds to an NCP Host's BT Mesh BGAPI commands, and generates BGAPI events."/>
-    <properties key="core.partCompatibility" value=".*efr32(m)g(2){0,1}(1)(a)(020)f(1024)(i)(m)(32)()"/>
+    <properties key="core.partCompatibility" value=".*efr32(m)g(2)(1)(a)(020)f(1024)(i)(m)(32)()"/>
     <properties key="core.boardCompatibility" value="brd4180a"/>
     <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.btmesh:1.4.3._620725456"/>
     <properties key="core.category" value="Bluetooth Mesh 1.4.3.0"/>
@@ -147,7 +147,7 @@
     <properties key="demos.imageFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.4/app/bluetooth/appbuilder/sample-apps-bin/ncp-btmesh-empty-target-brd4181a-gcc.hex"/>
     <properties key="demos.bootloaderFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.4/platform/bootloader/sample-apps/bootloader-uart-bgapi/efr32mg21a010f1024im32-brd4181a/bootloader-uart-bgapi.s37"/>
     <properties key="demos.blurb" value="Bluetooth Mesh: NCP (Network co-processor) Empty target application. Responds to an NCP Host's BT Mesh BGAPI commands, and generates BGAPI events."/>
-    <properties key="core.partCompatibility" value=".*efr32(m)g(2){0,1}(1)(a)(010)f(1024)(i)(m)(32)()"/>
+    <properties key="core.partCompatibility" value=".*efr32(m)g(2)(1)(a)(010)f(1024)(i)(m)(32)()"/>
     <properties key="core.boardCompatibility" value="brd4181a"/>
     <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.btmesh:1.4.3._620725456"/>
     <properties key="core.category" value="Bluetooth Mesh 1.4.3.0"/>
@@ -685,7 +685,7 @@
     <properties key="demos.imageFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.4/app/bluetooth/appbuilder/sample-apps-bin/ncp-secure-btmesh-empty-target-brd4180a-gcc.hex"/>
     <properties key="demos.bootloaderFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.4/platform/bootloader/sample-apps/bootloader-uart-bgapi/efr32mg21a020f1024im32-brd4180a/bootloader-uart-bgapi.s37"/>
     <properties key="demos.blurb" value="Bluetooth Mesh: Secure NCP (Network co-processor) Empty target application. Responds to an Secure NCP Host's BT Mesh BGAPI commands, and generates BGAPI events."/>
-    <properties key="core.partCompatibility" value=".*efr32(m)g(2){0,1}(1)(a)(020)f(1024)(i)(m)(32)()"/>
+    <properties key="core.partCompatibility" value=".*efr32(m)g(2)(1)(a)(020)f(1024)(i)(m)(32)()"/>
     <properties key="core.boardCompatibility" value="brd4180a"/>
     <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.btmesh:1.4.3._620725456"/>
     <properties key="core.category" value="Bluetooth Mesh 1.4.3.0"/>
@@ -700,7 +700,7 @@
     <properties key="demos.imageFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.4/app/bluetooth/appbuilder/sample-apps-bin/ncp-secure-btmesh-empty-target-brd4181a-gcc.hex"/>
     <properties key="demos.bootloaderFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.4/platform/bootloader/sample-apps/bootloader-uart-bgapi/efr32mg21a010f1024im32-brd4181a/bootloader-uart-bgapi.s37"/>
     <properties key="demos.blurb" value="Bluetooth Mesh: Secure NCP (Network co-processor) Empty target application. Responds to an Secure NCP Host's BT Mesh BGAPI commands, and generates BGAPI events."/>
-    <properties key="core.partCompatibility" value=".*efr32(m)g(2){0,1}(1)(a)(010)f(1024)(i)(m)(32)()"/>
+    <properties key="core.partCompatibility" value=".*efr32(m)g(2)(1)(a)(010)f(1024)(i)(m)(32)()"/>
     <properties key="core.boardCompatibility" value="brd4181a"/>
     <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.btmesh:1.4.3._620725456"/>
     <properties key="core.category" value="Bluetooth Mesh 1.4.3.0"/>
@@ -1232,7 +1232,7 @@
     <properties key="demos.imageFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.4/app/bluetooth/appbuilder/sample-apps-bin/soc-btmesh-empty-brd4180a-gcc.hex"/>
     <properties key="demos.bootloaderFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.4/platform/bootloader/sample-apps/bootloader-storage-internal-single/efr32mg21a010f1024im32-brd4181a/bootloader-storage-internal-single.s37"/>
     <properties key="demos.blurb" value="Bluetooth Mesh: SOC Empty application. It contains a skeleton project that can be used as starting point for Mesh SoC projects. Initially the device will be configured as an unprovisioned Mesh Node, which starts unprovisioned beaconing waiting to be provisioned."/>
-    <properties key="core.partCompatibility" value=".*efr32(m)g(2){0,1}(1)(a)(020)f(1024)(i)(m)(32)()"/>
+    <properties key="core.partCompatibility" value=".*efr32(m)g(2)(1)(a)(020)f(1024)(i)(m)(32)()"/>
     <properties key="core.boardCompatibility" value="brd4180a"/>
     <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.btmesh:1.4.3._620725456"/>
     <properties key="core.category" value="Bluetooth Mesh 1.4.3.0"/>
@@ -1247,7 +1247,7 @@
     <properties key="demos.imageFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.4/app/bluetooth/appbuilder/sample-apps-bin/soc-btmesh-empty-brd4181a-gcc.hex"/>
     <properties key="demos.bootloaderFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.4/platform/bootloader/sample-apps/bootloader-storage-internal-single/efr32mg21a010f1024im32-brd4181a/bootloader-storage-internal-single.s37"/>
     <properties key="demos.blurb" value="Bluetooth Mesh: SOC Empty application. It contains a skeleton project that can be used as starting point for Mesh SoC projects. Initially the device will be configured as an unprovisioned Mesh Node, which starts unprovisioned beaconing waiting to be provisioned."/>
-    <properties key="core.partCompatibility" value=".*efr32(m)g(2){0,1}(1)(a)(010)f(1024)(i)(m)(32)()"/>
+    <properties key="core.partCompatibility" value=".*efr32(m)g(2)(1)(a)(010)f(1024)(i)(m)(32)()"/>
     <properties key="core.boardCompatibility" value="brd4181a"/>
     <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.btmesh:1.4.3._620725456"/>
     <properties key="core.category" value="Bluetooth Mesh 1.4.3.0"/>
@@ -1787,7 +1787,7 @@
     <properties key="demos.imageFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.4/app/bluetooth/appbuilder/sample-apps-bin/soc-btmesh-light-brd4180a-gcc.hex"/>
     <properties key="demos.bootloaderFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.4/platform/bootloader/sample-apps/bootloader-storage-internal-single/efr32mg21a010f1024im32-brd4181a/bootloader-storage-internal-single.s37"/>
     <properties key="demos.blurb" value="Bluetooth Mesh: Light Example. This is an out-of-the-box Software Demo where the LEDs of the WSTK are switched on and off triggered by push button presses. It is based on the Bluetooth Mesh Generic On/Off Model and Light Lightness Model."/>
-    <properties key="core.partCompatibility" value=".*efr32(m)g(2){0,1}(1)(a)(020)f(1024)(i)(m)(32)()"/>
+    <properties key="core.partCompatibility" value=".*efr32(m)g(2)(1)(a)(020)f(1024)(i)(m)(32)()"/>
     <properties key="core.boardCompatibility" value="brd4180a"/>
     <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.btmesh:1.4.3._620725456"/>
     <properties key="core.category" value="Bluetooth Mesh 1.4.3.0"/>
@@ -1802,7 +1802,7 @@
     <properties key="demos.imageFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.4/app/bluetooth/appbuilder/sample-apps-bin/soc-btmesh-light-brd4181a-gcc.hex"/>
     <properties key="demos.bootloaderFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.4/platform/bootloader/sample-apps/bootloader-storage-internal-single/efr32mg21a010f1024im32-brd4181a/bootloader-storage-internal-single.s37"/>
     <properties key="demos.blurb" value="Bluetooth Mesh: Light Example. This is an out-of-the-box Software Demo where the LEDs of the WSTK are switched on and off triggered by push button presses. It is based on the Bluetooth Mesh Generic On/Off Model and Light Lightness Model."/>
-    <properties key="core.partCompatibility" value=".*efr32(m)g(2){0,1}(1)(a)(010)f(1024)(i)(m)(32)()"/>
+    <properties key="core.partCompatibility" value=".*efr32(m)g(2)(1)(a)(010)f(1024)(i)(m)(32)()"/>
     <properties key="core.boardCompatibility" value="brd4181a"/>
     <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.btmesh:1.4.3._620725456"/>
     <properties key="core.category" value="Bluetooth Mesh 1.4.3.0"/>
@@ -2342,7 +2342,7 @@
     <properties key="demos.imageFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.4/app/bluetooth/appbuilder/sample-apps-bin/soc-btmesh-switch-brd4180a-gcc.hex"/>
     <properties key="demos.bootloaderFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.4/platform/bootloader/sample-apps/bootloader-storage-internal-single/efr32mg21a010f1024im32-brd4181a/bootloader-storage-internal-single.s37"/>
     <properties key="demos.blurb" value="Bluetooth Mesh: Switch Example. This is an out-of-the-box Software Demo where the LEDs of the WSTK are switched on and off triggered by push button presses. It is based on the Bluetooth Mesh Generic On/Off Model and Light Lightness Model."/>
-    <properties key="core.partCompatibility" value=".*efr32(m)g(2){0,1}(1)(a)(020)f(1024)(i)(m)(32)()"/>
+    <properties key="core.partCompatibility" value=".*efr32(m)g(2)(1)(a)(020)f(1024)(i)(m)(32)()"/>
     <properties key="core.boardCompatibility" value="brd4180a"/>
     <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.btmesh:1.4.3._620725456"/>
     <properties key="core.category" value="Bluetooth Mesh 1.4.3.0"/>
@@ -2357,7 +2357,7 @@
     <properties key="demos.imageFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.4/app/bluetooth/appbuilder/sample-apps-bin/soc-btmesh-switch-brd4181a-gcc.hex"/>
     <properties key="demos.bootloaderFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.4/platform/bootloader/sample-apps/bootloader-storage-internal-single/efr32mg21a010f1024im32-brd4181a/bootloader-storage-internal-single.s37"/>
     <properties key="demos.blurb" value="Bluetooth Mesh: Switch Example. This is an out-of-the-box Software Demo where the LEDs of the WSTK are switched on and off triggered by push button presses. It is based on the Bluetooth Mesh Generic On/Off Model and Light Lightness Model."/>
-    <properties key="core.partCompatibility" value=".*efr32(m)g(2){0,1}(1)(a)(010)f(1024)(i)(m)(32)()"/>
+    <properties key="core.partCompatibility" value=".*efr32(m)g(2)(1)(a)(010)f(1024)(i)(m)(32)()"/>
     <properties key="core.boardCompatibility" value="brd4181a"/>
     <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.btmesh:1.4.3._620725456"/>
     <properties key="core.category" value="Bluetooth Mesh 1.4.3.0"/>
@@ -3170,7 +3170,7 @@
     <properties key="demos.imageFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/app/bluetooth/appbuilder/sample-apps-bin/ncp-empty-target-brd4180a-iar.hex"/>
     <properties key="demos.bootloaderFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/platform/bootloader/sample-apps/bootloader-uart-bgapi/efr32mg21a020f1024im32-brd4180a/bootloader-uart-bgapi.s37"/>
     <properties key="demos.blurb" value="Bluetooth: NCP (Network co-processor) target application with no GATT services included."/>
-    <properties key="core.partCompatibility" value=".*efr32(m)g(2){0,1}(1)(a)(020)f(1024)(i)(m)(32)()"/>
+    <properties key="core.partCompatibility" value=".*efr32(m)g(2)(1)(a)(020)f(1024)(i)(m)(32)()"/>
     <properties key="core.boardCompatibility" value="brd4180a"/>
     <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.super:2.5.5._310455071"/>
     <properties key="core.category" value="Bluetooth (NCP)"/>
@@ -3185,7 +3185,7 @@
     <properties key="demos.imageFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/app/bluetooth/appbuilder/sample-apps-bin/ncp-empty-target-brd4181a-iar.hex"/>
     <properties key="demos.bootloaderFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/platform/bootloader/sample-apps/bootloader-uart-bgapi/efr32mg21a010f1024im32-brd4181a/bootloader-uart-bgapi.s37"/>
     <properties key="demos.blurb" value="Bluetooth: NCP (Network co-processor) target application with no GATT services included."/>
-    <properties key="core.partCompatibility" value=".*efr32(m)g(2){0,1}(1)(a)(010)f(1024)(i)(m)(32)()"/>
+    <properties key="core.partCompatibility" value=".*efr32(m)g(2)(1)(a)(010)f(1024)(i)(m)(32)()"/>
     <properties key="core.boardCompatibility" value="brd4181a"/>
     <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.super:2.5.5._310455071"/>
     <properties key="core.category" value="Bluetooth (NCP)"/>
@@ -3964,7 +3964,7 @@
     <properties key="demos.imageFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/app/bluetooth/appbuilder/sample-apps-bin/soc-empty-rail-dmp-brd4180a-iar.hex"/>
     <properties key="demos.bootloaderFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/platform/bootloader/sample-apps/bootloader-storage-internal-single/efr32mg21a010f1024im32-brd4181a/bootloader-storage-internal-single.s37"/>
     <properties key="demos.blurb" value="Bluetooth: A minimal project structure, used as a starting point for custom Dynamic-Multiprotocol applications. The project has the basic functionality enabling peripheral connectivity, without GATT services. It runs on top of Micrium OS RTOS and multiprotocol RAIL."/>
-    <properties key="core.partCompatibility" value=".*efr32(m)g(2){0,1}(1)(a)(020)f(1024)(i)(m)(32)()"/>
+    <properties key="core.partCompatibility" value=".*efr32(m)g(2)(1)(a)(020)f(1024)(i)(m)(32)()"/>
     <properties key="core.boardCompatibility" value="brd4180a"/>
     <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.super:2.5.5._310455071"/>
     <properties key="core.category" value="Dynamic Multiprotocol"/>
@@ -3979,7 +3979,7 @@
     <properties key="demos.imageFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/app/bluetooth/appbuilder/sample-apps-bin/soc-empty-rail-dmp-brd4181a-iar.hex"/>
     <properties key="demos.bootloaderFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/platform/bootloader/sample-apps/bootloader-storage-internal-single/efr32mg21a010f1024im32-brd4181a/bootloader-storage-internal-single.s37"/>
     <properties key="demos.blurb" value="Bluetooth: A minimal project structure, used as a starting point for custom Dynamic-Multiprotocol applications. The project has the basic functionality enabling peripheral connectivity, without GATT services. It runs on top of Micrium OS RTOS and multiprotocol RAIL."/>
-    <properties key="core.partCompatibility" value=".*efr32(m)g(2){0,1}(1)(a)(010)f(1024)(i)(m)(32)()"/>
+    <properties key="core.partCompatibility" value=".*efr32(m)g(2)(1)(a)(010)f(1024)(i)(m)(32)()"/>
     <properties key="core.boardCompatibility" value="brd4181a"/>
     <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.super:2.5.5._310455071"/>
     <properties key="core.category" value="Dynamic Multiprotocol"/>
@@ -4714,7 +4714,7 @@
     <properties key="demos.imageFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/app/bluetooth/appbuilder/sample-apps-bin/soc-empty-brd4180a-iar.hex"/>
     <properties key="demos.bootloaderFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/platform/bootloader/sample-apps/bootloader-storage-internal-single/efr32mg21a010f1024im32-brd4181a/bootloader-storage-internal-single.s37"/>
     <properties key="demos.blurb" value="Bluetooth: A minimal project structure, used as a starting point for custom applications. The project has the basic functionality enabling peripheral connectivity, without GATT services."/>
-    <properties key="core.partCompatibility" value=".*efr32(m)g(2){0,1}(1)(a)(020)f(1024)(i)(m)(32)()"/>
+    <properties key="core.partCompatibility" value=".*efr32(m)g(2)(1)(a)(020)f(1024)(i)(m)(32)()"/>
     <properties key="core.boardCompatibility" value="brd4180a"/>
     <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.super:2.5.5._310455071"/>
     <properties key="core.category" value="Bluetooth (SoC) Basic"/>
@@ -4744,7 +4744,7 @@
     <properties key="demos.imageFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/app/bluetooth/appbuilder/sample-apps-bin/soc-empty-brd4181a-iar.hex"/>
     <properties key="demos.bootloaderFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/platform/bootloader/sample-apps/bootloader-storage-internal-single/efr32mg21a010f1024im32-brd4181a/bootloader-storage-internal-single.s37"/>
     <properties key="demos.blurb" value="Bluetooth: A minimal project structure, used as a starting point for custom applications. The project has the basic functionality enabling peripheral connectivity, without GATT services."/>
-    <properties key="core.partCompatibility" value=".*efr32(m)g(2){0,1}(1)(a)(010)f(1024)(i)(m)(32)()"/>
+    <properties key="core.partCompatibility" value=".*efr32(m)g(2)(1)(a)(010)f(1024)(i)(m)(32)()"/>
     <properties key="core.boardCompatibility" value="brd4181a"/>
     <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.super:2.5.5._310455071"/>
     <properties key="core.category" value="Bluetooth (SoC) Basic"/>
@@ -5644,7 +5644,7 @@
     <properties key="demos.imageFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/app/bluetooth/appbuilder/sample-apps-bin/soc-rangetest-rail-dmp-std-brd4180a-iar.hex"/>
     <properties key="demos.bootloaderFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/platform/bootloader/sample-apps/bootloader-storage-internal-single/efr32mg21a010f1024im32-brd4181a/bootloader-storage-internal-single.s37"/>
     <properties key="demos.blurb" value="Bluetooth: RAIL (Standard PHY) Range Test with Bluetooth connectivity. Supported std PHYs for range measurement: BLE 125kbps / BLE 500kbps / BLE 1Mbps / BLE 2Mbps / IEEE802.15.4 250kbps. It runs on top of Micrium OS RTOS and multiprotocol RAIL."/>
-    <properties key="core.partCompatibility" value=".*efr32(m)g(2){0,1}(1)(a)(020)f(1024)(i)(m)(32)()"/>
+    <properties key="core.partCompatibility" value=".*efr32(m)g(2)(1)(a)(020)f(1024)(i)(m)(32)()"/>
     <properties key="core.boardCompatibility" value="brd4180a"/>
     <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.super:2.5.5._310455071"/>
     <properties key="core.category" value="Dynamic Multiprotocol"/>
@@ -5659,7 +5659,7 @@
     <properties key="demos.imageFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/app/bluetooth/appbuilder/sample-apps-bin/soc-rangetest-rail-dmp-std-brd4181a-iar.hex"/>
     <properties key="demos.bootloaderFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/platform/bootloader/sample-apps/bootloader-storage-internal-single/efr32mg21a010f1024im32-brd4181a/bootloader-storage-internal-single.s37"/>
     <properties key="demos.blurb" value="Bluetooth: RAIL (Standard PHY) Range Test with Bluetooth connectivity. Supported std PHYs for range measurement: BLE 125kbps / BLE 500kbps / BLE 1Mbps / BLE 2Mbps / IEEE802.15.4 250kbps. It runs on top of Micrium OS RTOS and multiprotocol RAIL."/>
-    <properties key="core.partCompatibility" value=".*efr32(m)g(2){0,1}(1)(a)(010)f(1024)(i)(m)(32)()"/>
+    <properties key="core.partCompatibility" value=".*efr32(m)g(2)(1)(a)(010)f(1024)(i)(m)(32)()"/>
     <properties key="core.boardCompatibility" value="brd4181a"/>
     <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.super:2.5.5._310455071"/>
     <properties key="core.category" value="Dynamic Multiprotocol"/>
@@ -6349,7 +6349,7 @@
     <properties key="demos.imageFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/app/bluetooth/appbuilder/sample-apps-bin/soc-smartPhone-brd4180a-iar.hex"/>
     <properties key="demos.bootloaderFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/platform/bootloader/sample-apps/bootloader-storage-internal-single/efr32mg21a010f1024im32-brd4181a/bootloader-storage-internal-single.s37"/>
     <properties key="demos.blurb" value="Bluetooth: For use with the Silicon Labs Smart Phone App. Demonstrates the Health Thermometer Profile, Proximity Profile, and implements an iBeacon device that sends non-connectible advertisements in iBeacon format."/>
-    <properties key="core.partCompatibility" value=".*efr32(m)g(2){0,1}(1)(a)(020)f(1024)(i)(m)(32)()"/>
+    <properties key="core.partCompatibility" value=".*efr32(m)g(2)(1)(a)(020)f(1024)(i)(m)(32)()"/>
     <properties key="core.boardCompatibility" value="brd4180a"/>
     <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.super:2.5.5._310455071"/>
     <properties key="core.category" value="Bluetooth (SoC) Advanced"/>
@@ -6364,7 +6364,7 @@
     <properties key="demos.imageFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/app/bluetooth/appbuilder/sample-apps-bin/soc-smartPhone-brd4181a-iar.hex"/>
     <properties key="demos.bootloaderFile" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/platform/bootloader/sample-apps/bootloader-storage-internal-single/efr32mg21a010f1024im32-brd4181a/bootloader-storage-internal-single.s37"/>
     <properties key="demos.blurb" value="Bluetooth: For use with the Silicon Labs Smart Phone App. Demonstrates the Health Thermometer Profile, Proximity Profile, and implements an iBeacon device that sends non-connectible advertisements in iBeacon format."/>
-    <properties key="core.partCompatibility" value=".*efr32(m)g(2){0,1}(1)(a)(010)f(1024)(i)(m)(32)()"/>
+    <properties key="core.partCompatibility" value=".*efr32(m)g(2)(1)(a)(010)f(1024)(i)(m)(32)()"/>
     <properties key="core.boardCompatibility" value="brd4181a"/>
     <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.super:2.5.5._310455071"/>
     <properties key="core.category" value="Bluetooth (SoC) Advanced"/>

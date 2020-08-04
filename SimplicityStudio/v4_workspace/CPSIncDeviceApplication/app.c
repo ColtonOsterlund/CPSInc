@@ -43,6 +43,7 @@ static uint8_t boot_to_dfu = 0; //device firmware upgrade
 
 //ADC global vars
 uint32_t adcData;
+uint16 temperatureData;
 uint16 stripDetectVoltage;
 int16 differentialVoltage;
 int16 integratedVoltage;
@@ -91,6 +92,9 @@ void appMain(gecko_configuration_t *pconfig)
   GPIO_PinOutSet(gpioPortD, 13); //initially set SWITCH pin to LOW
   //printSWO("\n\n%d\n\n", GPIO_PinOutGet(gpioPortD, 13));
 
+  GPIO_PinModeSet(gpioPortC, 11, gpioModeInputPullFilter, 1); //digital input - battery pin
+  GPIO_PinModeSet(gpioPortD, 15, gpioModePushPull, 1); //digital output - motor pin
+
 
   //initializing IDAC
 //  IDAC_Init_TypeDef init = IDAC_INIT_DEFAULT;
@@ -101,6 +105,34 @@ void appMain(gecko_configuration_t *pconfig)
 
   /* Initialize stack */
   gecko_init(pconfig); //initializes bluetooth stack I believe? - look up where this function is implemented
+
+
+  testRunning = 1;
+  gecko_cmd_hardware_set_soft_timer(327680, 2, 0); //fires every 10s - switches motor control
+  //gecko_cmd_hardware_set_soft_timer(6554, 3, 0); //fires every 1/5s - reads temp data and prints to SWO console
+  //gecko_cmd_hardware_set_soft_timer(6554, 4, 0); //fires every 1/5s - reads battery data and prints to SWO console
+  gecko_cmd_hardware_set_soft_timer(6554, 0, 0); //sets a soft timer that fires every 1/5 seconds. The strip detect
+          												//will be updated upon each firing of the timer, and it will
+          												//notify the phone user when it detects that a strip has been inserted.
+          												//Phone user must do a read upon connection to check if strip was
+          												//inserted before connection.
+          												//Will also notify phone user if the value changes after the strip has
+          												//been detected indicating that the strip has been removed.
+  	  	  	  	  	  	  	  	  	  	  	  	  	  	  //Also prints integrated voltage and differential voltage to SWO Console for testing purposes
+
+
+
+  //IMPORTANT FOR TESTING WITHOUT USING THE APP: You can run one test at a time per debug session. After a test is ran, the capacitor needs to discharge on the device.
+  //Usually the discharging of the capacitor is handled by the app, but since you are running tests without connecting to the app,
+  //you need to manually discharge the capacitor after every test.
+  //STEPS TO DO THIS:
+  // 1) Run a debug session normally and perform test, reading out the integrated voltage values from the SWO Debug prints
+  // 2) When you finish reading the integrated voltage prints and you deem the test has been running long enough for sufficient data - stop the debug session, comment out the "testRunning = 1;" line above and uncomment the "dischargeCapacitor();" line below
+  // 3) Run a new debug session, you do not need to run it for very long but at least make sure that it reached the point in the code where the "dischargeCapacitor()" line was called and give it sufficient time to complete the timer interrupt request inside this function (1s prior to function being called)
+  // 4) Close that debug session, uncomment the "testRunning = 1;" line above and comment out the "dischargeCapacitor();" line below and re-run a new debug session to start a new test
+
+  //dischargeCapacitor()
+
 
   while (1) {
     /* Event pointer for handling events */
@@ -146,7 +178,7 @@ void appMain(gecko_configuration_t *pconfig)
         printSWO("connection opened\r\n");
 
         //second argument is the timer handle to be returned upon termination of the timer, third argument is the mode: 0 - repeating, 1 - runs once
-        gecko_cmd_hardware_set_soft_timer(6554, 0, 0); //sets a soft timer that fires every second. The strip detect
+        //gecko_cmd_hardware_set_soft_timer(6554, 0, 0); //sets a soft timer that fires every second. The strip detect
         												//will be updated upon each firing of the timer, and it will
         												//notify the phone user when it detects that a strip has been inserted.
         												//Phone user must do a read upon connection to check if strip was
@@ -162,29 +194,41 @@ void appMain(gecko_configuration_t *pconfig)
       case gecko_evt_hardware_soft_timer_id: //this will trigger when the soft timer in the gecko_evt_le_connection_opened_id fires (once every second)
 
     	  if(evt->data.handle == 0){ //timer from gecko_evt_le_connection_opened_id event
-    		  readStripDetectVoltage();
-    		  updateStripDetectVoltage();
-    		  notifyStripDetectVoltage();
+    	      		  readStripDetectVoltage();
+    	      		  updateStripDetectVoltage();
+    	      		  notifyStripDetectVoltage();
 
-    		  if(testRunning == 1){
-    			  readIntegratedVoltage();
-    			  updateIntegratedVoltage();
-    			  notifyIntegratedVoltage();
+    	      		  readTemperatureSensorDataPrintToConsole();
+    	      		  readBatteryDataPrintToConsole();
 
-    			  readDifferentialVoltage();
-    			  updateDifferentialVoltage();
-    			  notifyDifferentialVoltage();
-    		  }
-    	  }
-    	  else if(evt->data.handle == 1){ //timer from dischargeCapacitor()
-    		  //try this using IDAC instead
-    		  GPIO_PinOutClear(gpioPortD, 13); //reset SWITCH pin to LOW
+    	      		  if(testRunning == 1){
+    	      			  readIntegratedVoltage();
+    	      			  updateIntegratedVoltage();
+    	      			  notifyIntegratedVoltage();
 
-    		  //printSWO("\n\n%d\n\n", GPIO_PinOutGet(gpioPortD, 13));
+    	      			  readDifferentialVoltage();
+    	      			  updateDifferentialVoltage();
+    	      			  notifyDifferentialVoltage();
+    	      		  }
+    	      	  }
+    	      	  else if(evt->data.handle == 1){ //timer from dischargeCapacitor()
+    	      		  //try this using IDAC instead
+    	      		  GPIO_PinOutClear(gpioPortD, 13); //reset SWITCH pin to LOW
 
-    		  //IDAC_OutEnable(IDAC0, true); //disable IDAC output
+    	      		  //printSWO("\n\n%d\n\n", GPIO_PinOutGet(gpioPortD, 13));
 
-    	  }
+    	      		  //IDAC_OutEnable(IDAC0, true); //disable IDAC output
+
+    	      	  }
+    	      	  else if(evt->data.handle == 2){ //timer for motor control
+    	      		  switchMotorState();
+    	      	  }
+    	      	  else if(evt->data.handle == 3){ //timer for reading temp control
+    	      		  readTemperatureSensorDataPrintToConsole();
+    	      	  }
+    	      	  else if(evt->data.handle == 4){ //timer for reading battery data
+    	      		  readBatteryDataPrintToConsole();
+    	      	  }
 
     	break;
 
@@ -251,6 +295,45 @@ void appMain(gecko_configuration_t *pconfig)
     }
   }
 }
+
+
+void readBatteryDataPrintToConsole(){
+	int battData = GPIO_PinInGet(gpioPortC, 11);
+	printSWO("Battery: %d\r\n", battData); //prints the battery data to the SWO console
+}
+
+void readTemperatureSensorDataPrintToConsole(){
+	initSingle.posSel = adcPosSelAPORT3XCH8; //this is the PA0 pin that the Temperature Sensor is connected to - see ADC Reference Manual and the BGM113 Data Sheet
+	initSingle.negSel = adcNegSelVSS;
+
+	ADC_InitSingle(ADC0, &initSingle); //initializing adc single sample mode
+	ADC_Start(ADC0, adcStartSingle); //starting adc single sample
+	while((ADC_IntGet(ADC0) & ADC_IF_SINGLE) != ADC_IF_SINGLE); //unsure of this looping condition - look into this - something to do with ADC interrupts
+	adcData = ADC_DataSingleGet(ADC0); //get the value of the single sample from the adc
+	temperatureData = (uint16)(adcData * 3700 / 4096); //convert the value from the single sample from the adc into a readable temperature(adc signal goes from 0 - 4096, our voltage goes from 0-3700mV)
+	printSWO("temperature: %d °C\r\n", temperatureData); //print the temperature to the SWO console
+
+}
+//
+void switchMotorState(){
+
+	GPIO_PinOutToggle(gpioPortD, 15); //this should toggle the pin LOW to HIGH
+
+//	printSWO("Switching motor state\r\n");
+//	printSWO("Switching motor state\r\n");
+//
+//	if(currentMotorState == 0){
+//	  GPIO_PinOutSet(gpioPortD, 15); //set motor switch pin to high
+//	  currentMotorState = 1;
+//	}
+//	else if(currentMotorState == 1){
+//	  GPIO_PinOutClear(gpioPortD, 15); //reset motor switch pin to low
+//	  currentMotorState = 0;
+//	}
+}
+
+
+
 
 void readStripDetectVoltage(){ //needs function prototype
 	//pin PA1 (the strip detect) was set in the ADC to be the positive input for Single Channel Mode, the channel for the negative input is VSS

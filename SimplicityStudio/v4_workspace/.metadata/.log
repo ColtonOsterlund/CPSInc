@@ -376,3 +376,1410 @@ Command-line arguments:  -os win32 -ws win32 -arch x86_64 -data C:\Users\colto\D
 
 !ENTRY org.eclipse.cdt.dsf.ui 2 0 2020-07-02 13:37:30.772
 !MESSAGE Unable to locate file: C:\Users\colto\SimplicityStudio\v4_workspace\soc-empty_3\hardware\kit\common\drivers\pg_retargetswo.c
+!SESSION 2020-07-02 14:27:26.313 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_92
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_CA
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-07-02 14:27:32.912
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH) in Python
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-07-02 14:27:32.922
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH)/bin in Python
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-07-02 14:27:36.120
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/sdks_gecko_sdk_suite_v2.5_.studio_demos.xml for key com.silabs.sdk.stack.super:2.5.3./demosFile/0
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-07-02 14:27:36.136
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/slThread_docContent.xml for key com.silabs.sdk.stack.super:2.5.3..com.silabs.sdk.stack.thread:2.9.3.0/docsFile/-1
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-02 14:27:41.064
+!MESSAGE Unknown board 'BRD4165B' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-02 14:27:41.064
+!MESSAGE Unknown board 'BRD4171A' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-02 14:27:41.189
+!MESSAGE Unknown architecture(s) [efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+gcc] in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-02 14:27:41.189
+!MESSAGE Unknown board 'BRD4165A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-02 14:27:41.189
+!MESSAGE Unknown board 'BRD4165B' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-02 14:27:41.205
+!MESSAGE Unknown board 'BRD4171A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-02 14:27:41.205
+!MESSAGE Unknown board 'BRD4176A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-02 14:27:41.220
+!MESSAGE Unknown architecture(s) [EFR32BG13P632F512IM48, EFR32FG13P231F512IM48, EFR32MG13P732F512IM48, EFR32MG13P733F512IM48, EFR32MG13P832F512GM48, EFR32MG13P832F512IM48, EFR32MG13P932F512GM48, EFR32MG13P932F512IM48, EFR32FG14V132F256GM32, EFR32FG14V132F256GM48, EFR32BG21B010F1024IM32, EFR32BG21B010F512IM32, EFR32BG21B010F768IM32, EFR32BG21B020F1024IM32, EFR32BG21B020F512IM32, EFR32BG21B020F768IM32, EFR32MG21B010F1024IM32, EFR32MG21B010F512IM32, EFR32MG21B010F768IM32, EFR32MG21B020F1024IM32, EFR32MG21B020F512IM32, EFR32MG21B020F768IM32, RM21Z000F1024IM32] in framework flex
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-07-02 14:27:46.137
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-02 14:27:47.528
+!MESSAGE Invalid discovery key: null
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-07-02 14:27:54.803
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 1 0 2020-07-02 14:28:15.070
+!MESSAGE Launching SiAgent (Silicon Labs TCF Agent)
+
+!ENTRY org.eclipse.cdt.debug.edc 4 0 2020-07-02 14:28:21.660
+!MESSAGE Unknown context [rc.root.000440131964] is reported in suspended event. Make sure TCF agent has reported contextAdded event first.
+
+!ENTRY org.eclipse.cdt.dsf.ui 2 0 2020-07-02 14:28:23.428
+!MESSAGE Unable to locate file: C:\Users\colto\SimplicityStudio\v4_workspace\soc-empty_3\hardware\kit\common\drivers\pg_retargetswo.c
+!SESSION 2020-07-02 14:29:46.757 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_92
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_CA
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-07-02 14:29:52.992
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH) in Python
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-07-02 14:29:53.003
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH)/bin in Python
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-07-02 14:29:56.503
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/sdks_gecko_sdk_suite_v2.5_.studio_demos.xml for key com.silabs.sdk.stack.super:2.5.3./demosFile/0
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-07-02 14:29:56.519
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/slThread_docContent.xml for key com.silabs.sdk.stack.super:2.5.3..com.silabs.sdk.stack.thread:2.9.3.0/docsFile/-1
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-02 14:30:01.599
+!MESSAGE Unknown board 'BRD4165B' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-02 14:30:01.599
+!MESSAGE Unknown board 'BRD4171A' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-02 14:30:01.755
+!MESSAGE Unknown architecture(s) [efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+gcc] in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-02 14:30:01.771
+!MESSAGE Unknown board 'BRD4165A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-02 14:30:01.771
+!MESSAGE Unknown board 'BRD4165B' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-02 14:30:01.787
+!MESSAGE Unknown board 'BRD4171A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-02 14:30:01.787
+!MESSAGE Unknown board 'BRD4176A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-02 14:30:01.802
+!MESSAGE Unknown architecture(s) [EFR32BG13P632F512IM48, EFR32FG13P231F512IM48, EFR32MG13P732F512IM48, EFR32MG13P733F512IM48, EFR32MG13P832F512GM48, EFR32MG13P832F512IM48, EFR32MG13P932F512GM48, EFR32MG13P932F512IM48, EFR32FG14V132F256GM32, EFR32FG14V132F256GM48, EFR32BG21B010F1024IM32, EFR32BG21B010F512IM32, EFR32BG21B010F768IM32, EFR32BG21B020F1024IM32, EFR32BG21B020F512IM32, EFR32BG21B020F768IM32, EFR32MG21B010F1024IM32, EFR32MG21B010F512IM32, EFR32MG21B010F768IM32, EFR32MG21B020F1024IM32, EFR32MG21B020F512IM32, EFR32MG21B020F768IM32, RM21Z000F1024IM32] in framework flex
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-07-02 14:30:07.852
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-02 14:30:08.602
+!MESSAGE Invalid discovery key: null
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-07-02 14:30:18.256
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 1 0 2020-07-02 14:30:18.848
+!MESSAGE Launching SiAgent (Silicon Labs TCF Agent)
+
+!ENTRY org.eclipse.cdt.debug.edc 4 0 2020-07-02 14:30:25.696
+!MESSAGE Unknown context [rc.root.000440131964] is reported in suspended event. Make sure TCF agent has reported contextAdded event first.
+
+!ENTRY org.eclipse.cdt.dsf.ui 2 0 2020-07-02 14:30:27.523
+!MESSAGE Unable to locate file: C:\Users\colto\SimplicityStudio\v4_workspace\soc-empty_3\hardware\kit\common\drivers\pg_retargetswo.c
+!SESSION 2020-07-06 10:21:24.747 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_92
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_CA
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-07-06 10:21:37.804
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH) in Python
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-07-06 10:21:37.804
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH)/bin in Python
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-07-06 10:21:44.939
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/sdks_gecko_sdk_suite_v2.5_.studio_demos.xml for key com.silabs.sdk.stack.super:2.5.3./demosFile/0
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-07-06 10:21:44.939
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/slThread_docContent.xml for key com.silabs.sdk.stack.super:2.5.3..com.silabs.sdk.stack.thread:2.9.3.0/docsFile/-1
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-06 10:21:58.320
+!MESSAGE Unknown board 'BRD4165B' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-06 10:21:58.320
+!MESSAGE Unknown board 'BRD4171A' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-06 10:21:58.429
+!MESSAGE Unknown architecture(s) [efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+gcc] in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-06 10:21:58.445
+!MESSAGE Unknown board 'BRD4165A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-06 10:21:58.461
+!MESSAGE Unknown board 'BRD4165B' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-06 10:21:58.461
+!MESSAGE Unknown board 'BRD4171A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-06 10:21:58.461
+!MESSAGE Unknown board 'BRD4176A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-06 10:21:58.476
+!MESSAGE Unknown architecture(s) [EFR32BG13P632F512IM48, EFR32FG13P231F512IM48, EFR32MG13P732F512IM48, EFR32MG13P733F512IM48, EFR32MG13P832F512GM48, EFR32MG13P832F512IM48, EFR32MG13P932F512GM48, EFR32MG13P932F512IM48, EFR32FG14V132F256GM32, EFR32FG14V132F256GM48, EFR32BG21B010F1024IM32, EFR32BG21B010F512IM32, EFR32BG21B010F768IM32, EFR32BG21B020F1024IM32, EFR32BG21B020F512IM32, EFR32BG21B020F768IM32, EFR32MG21B010F1024IM32, EFR32MG21B010F512IM32, EFR32MG21B010F768IM32, EFR32MG21B020F1024IM32, EFR32MG21B020F512IM32, EFR32MG21B020F768IM32, RM21Z000F1024IM32] in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-06 10:22:04.027
+!MESSAGE Invalid discovery key: null
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-07-06 10:22:06.678
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-07-06 10:22:16.294
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 1 0 2020-07-06 13:06:47.938
+!MESSAGE Launching SiAgent (Silicon Labs TCF Agent)
+
+!ENTRY org.eclipse.cdt.debug.edc 4 0 2020-07-06 13:06:56.987
+!MESSAGE Unknown context [rc.root.000440131964] is reported in suspended event. Make sure TCF agent has reported contextAdded event first.
+
+!ENTRY org.eclipse.cdt.dsf.ui 2 0 2020-07-06 13:06:58.946
+!MESSAGE Unable to locate file: C:\Users\colto\SimplicityStudio\v4_workspace\soc-empty_3\hardware\kit\common\drivers\pg_retargetswo.c
+
+!ENTRY org.eclipse.tcf 4 0 2020-07-06 21:08:16.055
+!MESSAGE Cannot close channel streams
+!STACK 0
+java.net.SocketException: Socket closed
+	at java.net.SocketOutputStream.socketWrite(SocketOutputStream.java:116)
+	at java.net.SocketOutputStream.write(SocketOutputStream.java:153)
+	at java.io.BufferedOutputStream.flushBuffer(BufferedOutputStream.java:82)
+	at java.io.BufferedOutputStream.flush(BufferedOutputStream.java:140)
+	at java.io.FilterOutputStream.close(FilterOutputStream.java:158)
+	at org.eclipse.tcf.core.ChannelTCP.stop(ChannelTCP.java:200)
+	at org.eclipse.tcf.core.AbstractChannel$8.run(AbstractChannel.java:716)
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 4 0 2020-07-06 21:08:16.220
+!MESSAGE Lost connection to agent
+!STACK 0
+java.net.SocketException: Connection reset
+	at java.net.SocketInputStream.read(SocketInputStream.java:209)
+	at java.net.SocketInputStream.read(SocketInputStream.java:141)
+	at java.io.BufferedInputStream.read1(BufferedInputStream.java:284)
+	at java.io.BufferedInputStream.read(BufferedInputStream.java:345)
+	at java.io.FilterInputStream.read(FilterInputStream.java:107)
+	at org.eclipse.tcf.core.ChannelTCP.get(ChannelTCP.java:162)
+	at org.eclipse.tcf.core.StreamChannel.read(StreamChannel.java:84)
+	at org.eclipse.tcf.core.AbstractChannel$1.run(AbstractChannel.java:254)
+
+!ENTRY org.eclipse.cdt.debug.edc 4 0 2020-07-06 21:08:16.323
+!MESSAGE Lost connection to debugger agent "Silicon Labs TCF Agent". It's usually because the agent died abnormally.
+
+The debug session "Silicon Labs ARM MCU: BGM113A256V2" will be terminated.
+!STACK 0
+java.net.SocketException: Connection reset
+	at java.net.SocketInputStream.read(SocketInputStream.java:209)
+	at java.net.SocketInputStream.read(SocketInputStream.java:141)
+	at java.io.BufferedInputStream.read1(BufferedInputStream.java:284)
+	at java.io.BufferedInputStream.read(BufferedInputStream.java:345)
+	at java.io.FilterInputStream.read(FilterInputStream.java:107)
+	at org.eclipse.tcf.core.ChannelTCP.get(ChannelTCP.java:162)
+	at org.eclipse.tcf.core.StreamChannel.read(StreamChannel.java:84)
+	at org.eclipse.tcf.core.AbstractChannel$1.run(AbstractChannel.java:254)
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.core 4 0 2020-07-06 21:08:24.952
+!MESSAGE TCF task failed
+!STACK 0
+java.lang.Exception: java.lang.Error: Channel is closed
+	at org.eclipse.tcf.core.Command.<init>(Command.java:83)
+	at com.silabs.ss.framework.debugger.internal.api.tcf.services.DebugAdapterProxy$2.<init>(DebugAdapterProxy.java:52)
+	at com.silabs.ss.framework.debugger.internal.api.tcf.services.DebugAdapterProxy.disconnect(DebugAdapterProxy.java:52)
+	at com.silabs.ss.framework.debugger.api.tcf.services.TCFTaskFactory$2.run(TCFTaskFactory.java:78)
+	at org.eclipse.tcf.util.TCFTask$1.run(TCFTask.java:55)
+	at org.eclipse.tcf.EventQueue.run(EventQueue.java:95)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.lang.Error: Channel is closed
+	at org.eclipse.tcf.core.AbstractChannel.sendCommand(AbstractChannel.java:875)
+	at org.eclipse.tcf.core.Command.<init>(Command.java:79)
+	... 6 more
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2020-07-07 10:44:51.641
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitorWithProgress@56aef6e9): Status ERROR: com.silabs.ss.platform.device.core code=0 Device is locked null' resulted in an error.
+!SUBENTRY 1 com.silabs.ss.platform.device.core 4 0 2020-07-07 10:44:51.641
+!MESSAGE Device is locked
+
+!ENTRY com.silabs.ss.platform.device.core 4 0 2020-07-07 10:44:51.731
+!MESSAGE Device is locked
+!SESSION 2020-07-27 13:21:27.942 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_92
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_CA
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-07-27 13:21:43.782
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH) in Python
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-07-27 13:21:43.798
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH)/bin in Python
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-07-27 13:21:52.952
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/sdks_gecko_sdk_suite_v2.5_.studio_demos.xml for key com.silabs.sdk.stack.super:2.5.3./demosFile/0
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-07-27 13:21:52.967
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/slThread_docContent.xml for key com.silabs.sdk.stack.super:2.5.3..com.silabs.sdk.stack.thread:2.9.3.0/docsFile/-1
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:22:08.790
+!MESSAGE Unknown board 'BRD4165B' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:22:08.806
+!MESSAGE Unknown board 'BRD4171A' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:22:08.931
+!MESSAGE Unknown architecture(s) [efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+gcc] in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:22:08.962
+!MESSAGE Unknown board 'BRD4165A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:22:08.962
+!MESSAGE Unknown board 'BRD4165B' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:22:08.962
+!MESSAGE Unknown board 'BRD4171A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:22:08.978
+!MESSAGE Unknown board 'BRD4176A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:22:08.978
+!MESSAGE Unknown architecture(s) [EFR32BG13P632F512IM48, EFR32FG13P231F512IM48, EFR32MG13P732F512IM48, EFR32MG13P733F512IM48, EFR32MG13P832F512GM48, EFR32MG13P832F512IM48, EFR32MG13P932F512GM48, EFR32MG13P932F512IM48, EFR32FG14V132F256GM32, EFR32FG14V132F256GM48, EFR32BG21B010F1024IM32, EFR32BG21B010F512IM32, EFR32BG21B010F768IM32, EFR32BG21B020F1024IM32, EFR32BG21B020F512IM32, EFR32BG21B020F768IM32, EFR32MG21B010F1024IM32, EFR32MG21B010F512IM32, EFR32MG21B010F768IM32, EFR32MG21B020F1024IM32, EFR32MG21B020F512IM32, EFR32MG21B020F768IM32, RM21Z000F1024IM32] in framework flex
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-07-27 13:22:15.313
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-07-27 13:22:27.158
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:23:22.366
+!MESSAGE Invalid discovery key: null
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:23:26.684
+!MESSAGE Unknown board 'BRD4165B' in framework btmesh
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:23:26.684
+!MESSAGE Unknown board 'BRD4171A' in framework btmesh
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:23:26.715
+!MESSAGE Unknown architecture(s) [efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+gcc] in framework btmesh
+
+!ENTRY com.silabs.ss.platform.rcp.core 4 0 2020-07-27 13:23:27.371
+!MESSAGE Demo information file is empty at C:\SiliconLabs\SimplicityStudio\v4\configuration\org.eclipse.osgi\553\0\.cp\demos\demos.xml
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:23:29.891
+!MESSAGE Unknown architecture(s) [efr32mg13p832f512im48+brd4165b+gcc, efr32mg13p832f512im48+brd4165b+iar] in sample app NCP - Mesh Empty Target
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:23:29.985
+!MESSAGE Unknown architecture(s) [efr32mg13p832f512im48+brd4165b+gcc, efr32mg13p832f512im48+brd4165b+iar] in sample app NCP - Secure NCP Mesh Empty Target
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:23:30.063
+!MESSAGE Unknown architecture(s) [efr32mg13p832f512im48+brd4165b+gcc, efr32mg13p832f512im48+brd4165b+iar] in sample app SOC - BT Mesh Light
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:23:30.110
+!MESSAGE Unknown architecture(s) [efr32mg13p832f512im48+brd4165b+gcc, efr32mg13p832f512im48+brd4165b+iar] in sample app SOC - BT Mesh Switch
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:23:30.469
+!MESSAGE Unknown architecture(s) [efm32~series[1]~family[G]] in sample app Internal Storage Bootloader (single image on 1MB device)
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:23:30.610
+!MESSAGE Unknown architecture(s) [efm32~series[1]~family[G]] in sample app Internal Storage Bootloader (single image with LZMA compression, 1MB flash)
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:23:30.797
+!MESSAGE Unknown architecture(s) [efr32mg13p832f512im48+brd4165b+gcc, efr32mg13p832f512im48+brd4165b+iar, rm21z000f1024im32+brd4171a+gcc, rm21z000f1024im32+brd4171a+iar] in sample app NCP target - Empty
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:23:30.938
+!MESSAGE Unknown architecture(s) [efr32mg13p832f512im48+brd4165b+gcc, efr32mg13p832f512im48+brd4165b+iar] in sample app NCP - Host
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:23:30.985
+!MESSAGE Unknown architecture(s) [efr32mg13p832f512im48+brd4165b+iar, rm21z000f1024im32+brd4171a+iar] in sample app NCP target - Switched Multiprotocol Trust Center
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:23:31.001
+!MESSAGE Unknown architecture(s) [efr32mg13p832f512im48+brd4165b+gcc, efr32mg13p832f512im48+brd4165b+iar] in sample app SOC - DTM
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:23:31.126
+!MESSAGE Unknown architecture(s) [efr32mg13p832f512im48+brd4165b+gcc, efr32mg13p832f512im48+brd4165b+iar, rm21z000f1024im32+brd4171a+gcc, rm21z000f1024im32+brd4171a+iar] in sample app SOC - Empty - RAIL - DMP
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:23:31.219
+!MESSAGE Unknown architecture(s) [efr32mg13p832f512im48+brd4165b+gcc, efr32mg13p832f512im48+brd4165b+iar] in sample app SOC - Light - RAIL - DMP
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:23:31.266
+!MESSAGE Unknown architecture(s) [efr32mg13p832f512im48+brd4165b+gcc, efr32mg13p832f512im48+brd4165b+iar] in sample app SOC - Range Test - RAIL - DMP
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:23:31.360
+!MESSAGE Unknown architecture(s) [rm21z000f1024im32+brd4171a+gcc, rm21z000f1024im32+brd4171a+iar] in sample app SOC - Range Test - RAIL - DMP - BLE and IEEE802.15.4
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:23:31.376
+!MESSAGE Unknown architecture(s) [efr32mg13p832f512im48+brd4165b+gcc, efr32mg13p832f512im48+brd4165b+iar, rm21z000f1024im32+brd4171a+gcc, rm21z000f1024im32+brd4171a+iar] in sample app SOC - Smart Phone App
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:23:31.501
+!MESSAGE Unknown architecture(s) [efr32mg13p832f512im48+brd4165b+gcc, efr32mg13p832f512im48+brd4165b+iar, rm21z000f1024im32+brd4171a+gcc, rm21z000f1024im32+brd4171a+iar] in sample app SOC - Thermometer
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:23:31.563
+!MESSAGE Unknown architecture(s) [efr32mg13p832f512im48+brd4165b+gcc, efr32mg13p832f512im48+brd4165b+iar, rm21z000f1024im32+brd4171a+gcc, rm21z000f1024im32+brd4171a+iar] in sample app SOC - Thermometer - Client
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:23:31.626
+!MESSAGE Unknown architecture(s) [efr32mg13p832f512im48+brd4165b+gcc, efr32mg13p832f512im48+brd4165b+iar, rm21z000f1024im32+brd4171a+gcc, rm21z000f1024im32+brd4171a+iar] in sample app SOC - Thermometer - RTOS
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:23:31.987
+!MESSAGE Unknown architecture(s) [efm32~series[1]~family[G]] in sample app Internal Storage Bootloader (single image on 1MB device)
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:23:32.018
+!MESSAGE Unknown architecture(s) [efm32~series[1]~family[G]] in sample app Internal Storage Bootloader (single image with LZMA compression, 1MB flash)
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:23:32.258
+!MESSAGE Unknown architecture(s) [BRD4165B] in sample app RAIL: Range Test
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 1 0 2020-07-27 13:26:53.414
+!MESSAGE Launching SiAgent (Silicon Labs TCF Agent)
+
+!ENTRY org.eclipse.tcf 4 0 2020-07-27 13:27:02.167
+!MESSAGE Cannot close channel streams
+!STACK 0
+java.net.SocketException: Socket closed
+	at java.net.SocketOutputStream.socketWrite(SocketOutputStream.java:116)
+	at java.net.SocketOutputStream.write(SocketOutputStream.java:153)
+	at java.io.BufferedOutputStream.flushBuffer(BufferedOutputStream.java:82)
+	at java.io.BufferedOutputStream.flush(BufferedOutputStream.java:140)
+	at java.io.FilterOutputStream.close(FilterOutputStream.java:158)
+	at org.eclipse.tcf.core.ChannelTCP.stop(ChannelTCP.java:200)
+	at org.eclipse.tcf.core.AbstractChannel$8.run(AbstractChannel.java:716)
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2020-07-27 13:27:02.196
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitorWithProgress@16b904af): Status ERROR: com.silabs.ss.framework.debugger.tcf.agent code=0 Failed to connect to device java.io.IOException: Command [C 0 DebugAdapter connect {"baudRate":875000,"exceptionsToCatch":0,"Seri...] aborted' resulted in an error.
+!SUBENTRY 1 com.silabs.ss.framework.debugger.tcf.agent 4 0 2020-07-27 13:27:02.196
+!MESSAGE Failed to connect to device
+!STACK 0
+java.io.IOException: Command [C 0 DebugAdapter connect {"baudRate":875000,"exceptionsToCatch":0,"Seri...] aborted
+	at org.eclipse.tcf.core.AbstractChannel$9.run(AbstractChannel.java:753)
+	at org.eclipse.tcf.EventQueue.run(EventQueue.java:95)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.net.SocketException: Connection reset
+	at java.net.SocketInputStream.read(SocketInputStream.java:209)
+	at java.net.SocketInputStream.read(SocketInputStream.java:141)
+	at java.io.BufferedInputStream.read1(BufferedInputStream.java:284)
+	at java.io.BufferedInputStream.read(BufferedInputStream.java:345)
+	at java.io.FilterInputStream.read(FilterInputStream.java:107)
+	at org.eclipse.tcf.core.ChannelTCP.get(ChannelTCP.java:162)
+	at org.eclipse.tcf.core.StreamChannel.read(StreamChannel.java:84)
+	at org.eclipse.tcf.core.AbstractChannel$1.run(AbstractChannel.java:254)
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 4 0 2020-07-27 13:27:02.222
+!MESSAGE Lost connection to agent
+!STACK 0
+java.net.SocketException: Connection reset
+	at java.net.SocketInputStream.read(SocketInputStream.java:209)
+	at java.net.SocketInputStream.read(SocketInputStream.java:141)
+	at java.io.BufferedInputStream.read1(BufferedInputStream.java:284)
+	at java.io.BufferedInputStream.read(BufferedInputStream.java:345)
+	at java.io.FilterInputStream.read(FilterInputStream.java:107)
+	at org.eclipse.tcf.core.ChannelTCP.get(ChannelTCP.java:162)
+	at org.eclipse.tcf.core.StreamChannel.read(StreamChannel.java:84)
+	at org.eclipse.tcf.core.AbstractChannel$1.run(AbstractChannel.java:254)
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 4 0 2020-07-27 13:27:02.293
+!MESSAGE Failed to connect to device
+!STACK 0
+java.io.IOException: Command [C 0 DebugAdapter connect {"baudRate":875000,"exceptionsToCatch":0,"Seri...] aborted
+	at org.eclipse.tcf.core.AbstractChannel$9.run(AbstractChannel.java:753)
+	at org.eclipse.tcf.EventQueue.run(EventQueue.java:95)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.net.SocketException: Connection reset
+	at java.net.SocketInputStream.read(SocketInputStream.java:209)
+	at java.net.SocketInputStream.read(SocketInputStream.java:141)
+	at java.io.BufferedInputStream.read1(BufferedInputStream.java:284)
+	at java.io.BufferedInputStream.read(BufferedInputStream.java:345)
+	at java.io.FilterInputStream.read(FilterInputStream.java:107)
+	at org.eclipse.tcf.core.ChannelTCP.get(ChannelTCP.java:162)
+	at org.eclipse.tcf.core.StreamChannel.read(StreamChannel.java:84)
+	at org.eclipse.tcf.core.AbstractChannel$1.run(AbstractChannel.java:254)
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:27:06.691
+!MESSAGE Invalid discovery key: null
+!SESSION 2020-07-27 13:27:15.323 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_92
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_CA
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-07-27 13:27:22.741
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH) in Python
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-07-27 13:27:22.756
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH)/bin in Python
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-07-27 13:27:26.158
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/sdks_gecko_sdk_suite_v2.5_.studio_demos.xml for key com.silabs.sdk.stack.super:2.5.3./demosFile/0
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-07-27 13:27:26.167
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/slThread_docContent.xml for key com.silabs.sdk.stack.super:2.5.3..com.silabs.sdk.stack.thread:2.9.3.0/docsFile/-1
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:27:31.700
+!MESSAGE Unknown board 'BRD4165B' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:27:31.716
+!MESSAGE Unknown board 'BRD4171A' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:27:31.857
+!MESSAGE Unknown architecture(s) [efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+gcc] in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:27:31.872
+!MESSAGE Unknown board 'BRD4165A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:27:31.872
+!MESSAGE Unknown board 'BRD4165B' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:27:31.888
+!MESSAGE Unknown board 'BRD4171A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:27:31.888
+!MESSAGE Unknown board 'BRD4176A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:27:31.904
+!MESSAGE Unknown architecture(s) [EFR32BG13P632F512IM48, EFR32FG13P231F512IM48, EFR32MG13P732F512IM48, EFR32MG13P733F512IM48, EFR32MG13P832F512GM48, EFR32MG13P832F512IM48, EFR32MG13P932F512GM48, EFR32MG13P932F512IM48, EFR32FG14V132F256GM32, EFR32FG14V132F256GM48, EFR32BG21B010F1024IM32, EFR32BG21B010F512IM32, EFR32BG21B010F768IM32, EFR32BG21B020F1024IM32, EFR32BG21B020F512IM32, EFR32BG21B020F768IM32, EFR32MG21B010F1024IM32, EFR32MG21B010F512IM32, EFR32MG21B010F768IM32, EFR32MG21B020F1024IM32, EFR32MG21B020F512IM32, EFR32MG21B020F768IM32, RM21Z000F1024IM32] in framework flex
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-07-27 13:27:37.967
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-27 13:27:40.869
+!MESSAGE Invalid discovery key: null
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-07-27 13:27:48.268
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 1 0 2020-07-27 13:27:56.989
+!MESSAGE Launching SiAgent (Silicon Labs TCF Agent)
+
+!ENTRY org.eclipse.cdt.debug.edc 4 0 2020-07-27 13:28:02.368
+!MESSAGE Unknown context [rc.root.000440131964] is reported in suspended event. Make sure TCF agent has reported contextAdded event first.
+
+!ENTRY org.eclipse.cdt.dsf.ui 2 0 2020-07-27 13:28:04.692
+!MESSAGE Unable to locate file: C:\Users\colto\SimplicityStudio\v4_workspace\soc-empty_3\hardware\kit\common\drivers\pg_retargetswo.c
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.core 4 0 2020-07-27 13:30:06.887
+!MESSAGE TCF task failed
+!STACK 0
+java.io.IOException: Command [C 1123 DebugAdapter disconnect "root.000440131964"] aborted
+	at org.eclipse.tcf.core.AbstractChannel$9.run(AbstractChannel.java:753)
+	at org.eclipse.tcf.EventQueue.run(EventQueue.java:95)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.net.SocketException: Connection reset
+	at java.net.SocketInputStream.read(SocketInputStream.java:209)
+	at java.net.SocketInputStream.read(SocketInputStream.java:141)
+	at java.io.BufferedInputStream.read1(BufferedInputStream.java:284)
+	at java.io.BufferedInputStream.read(BufferedInputStream.java:345)
+	at java.io.FilterInputStream.read(FilterInputStream.java:107)
+	at org.eclipse.tcf.core.ChannelTCP.get(ChannelTCP.java:162)
+	at org.eclipse.tcf.core.StreamChannel.read(StreamChannel.java:84)
+	at org.eclipse.tcf.core.AbstractChannel$1.run(AbstractChannel.java:254)
+
+!ENTRY org.eclipse.tcf 4 0 2020-07-27 13:30:06.902
+!MESSAGE Cannot close channel streams
+!STACK 0
+java.net.SocketException: Socket closed
+	at java.net.SocketOutputStream.socketWrite(SocketOutputStream.java:116)
+	at java.net.SocketOutputStream.write(SocketOutputStream.java:153)
+	at java.io.BufferedOutputStream.flushBuffer(BufferedOutputStream.java:82)
+	at java.io.BufferedOutputStream.flush(BufferedOutputStream.java:140)
+	at java.io.FilterOutputStream.close(FilterOutputStream.java:158)
+	at org.eclipse.tcf.core.ChannelTCP.stop(ChannelTCP.java:200)
+	at org.eclipse.tcf.core.AbstractChannel$8.run(AbstractChannel.java:716)
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 4 0 2020-07-27 13:30:06.902
+!MESSAGE Lost connection to agent
+!STACK 0
+java.net.SocketException: Connection reset
+	at java.net.SocketInputStream.read(SocketInputStream.java:209)
+	at java.net.SocketInputStream.read(SocketInputStream.java:141)
+	at java.io.BufferedInputStream.read1(BufferedInputStream.java:284)
+	at java.io.BufferedInputStream.read(BufferedInputStream.java:345)
+	at java.io.FilterInputStream.read(FilterInputStream.java:107)
+	at org.eclipse.tcf.core.ChannelTCP.get(ChannelTCP.java:162)
+	at org.eclipse.tcf.core.StreamChannel.read(StreamChannel.java:84)
+	at org.eclipse.tcf.core.AbstractChannel$1.run(AbstractChannel.java:254)
+
+!ENTRY org.eclipse.cdt.dsf 4 -1 2020-07-27 13:30:06.934
+!MESSAGE Invocation exception when calling a service event handler method
+!STACK 0
+java.lang.reflect.InvocationTargetException
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.eclipse.cdt.dsf.service.DsfSession.doDispatchEvent(DsfSession.java:531)
+	at org.eclipse.cdt.dsf.service.DsfSession.access$2(DsfSession.java:475)
+	at org.eclipse.cdt.dsf.service.DsfSession$3.run(DsfSession.java:398)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.util.concurrent.RejectedExecutionException: Display org.eclipse.swt.widgets.Display@5600a5da is disposed
+	at org.eclipse.cdt.dsf.ui.concurrent.SimpleDisplayExecutor.execute(SimpleDisplayExecutor.java:85)
+	at org.eclipse.cdt.dsf.ui.viewmodel.AbstractVMAdapter.handleEvent(AbstractVMAdapter.java:260)
+	at org.eclipse.cdt.dsf.ui.viewmodel.datamodel.AbstractDMVMAdapter.eventDispatched(AbstractDMVMAdapter.java:103)
+	... 14 more
+Caused by: org.eclipse.swt.SWTException: Device is disposed
+	at org.eclipse.swt.SWT.error(SWT.java:4491)
+	at org.eclipse.swt.SWT.error(SWT.java:4406)
+	at org.eclipse.swt.SWT.error(SWT.java:4377)
+	at org.eclipse.swt.widgets.Display.error(Display.java:1258)
+	at org.eclipse.swt.widgets.Display.asyncExec(Display.java:709)
+	at org.eclipse.cdt.dsf.ui.concurrent.SimpleDisplayExecutor.execute(SimpleDisplayExecutor.java:77)
+	... 16 more
+Root exception:
+java.util.concurrent.RejectedExecutionException: Display org.eclipse.swt.widgets.Display@5600a5da is disposed
+	at org.eclipse.cdt.dsf.ui.concurrent.SimpleDisplayExecutor.execute(SimpleDisplayExecutor.java:85)
+	at org.eclipse.cdt.dsf.ui.viewmodel.AbstractVMAdapter.handleEvent(AbstractVMAdapter.java:260)
+	at org.eclipse.cdt.dsf.ui.viewmodel.datamodel.AbstractDMVMAdapter.eventDispatched(AbstractDMVMAdapter.java:103)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.eclipse.cdt.dsf.service.DsfSession.doDispatchEvent(DsfSession.java:531)
+	at org.eclipse.cdt.dsf.service.DsfSession.access$2(DsfSession.java:475)
+	at org.eclipse.cdt.dsf.service.DsfSession$3.run(DsfSession.java:398)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: org.eclipse.swt.SWTException: Device is disposed
+	at org.eclipse.swt.SWT.error(SWT.java:4491)
+	at org.eclipse.swt.SWT.error(SWT.java:4406)
+	at org.eclipse.swt.SWT.error(SWT.java:4377)
+	at org.eclipse.swt.widgets.Display.error(Display.java:1258)
+	at org.eclipse.swt.widgets.Display.asyncExec(Display.java:709)
+	at org.eclipse.cdt.dsf.ui.concurrent.SimpleDisplayExecutor.execute(SimpleDisplayExecutor.java:77)
+	... 16 more
+
+!ENTRY org.eclipse.cdt.dsf 4 -1 2020-07-27 13:30:06.965
+!MESSAGE Invocation exception when calling a service event handler method
+!STACK 0
+java.lang.reflect.InvocationTargetException
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.eclipse.cdt.dsf.service.DsfSession.doDispatchEvent(DsfSession.java:531)
+	at org.eclipse.cdt.dsf.service.DsfSession.access$2(DsfSession.java:475)
+	at org.eclipse.cdt.dsf.service.DsfSession$3.run(DsfSession.java:398)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.lang.NullPointerException
+	at org.eclipse.cdt.dsf.debug.model.DsfLaunch.fireTerminate(DsfLaunch.java:49)
+	at com.silabs.ss.framework.debugger.api.core.SLSLaunch.fireTerminate(SLSLaunch.java:48)
+	at org.eclipse.cdt.debug.edc.launch.EDCLaunch.eventDispatched(EDCLaunch.java:330)
+	... 14 more
+Root exception:
+java.lang.NullPointerException
+	at org.eclipse.cdt.dsf.debug.model.DsfLaunch.fireTerminate(DsfLaunch.java:49)
+	at com.silabs.ss.framework.debugger.api.core.SLSLaunch.fireTerminate(SLSLaunch.java:48)
+	at org.eclipse.cdt.debug.edc.launch.EDCLaunch.eventDispatched(EDCLaunch.java:330)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.eclipse.cdt.dsf.service.DsfSession.doDispatchEvent(DsfSession.java:531)
+	at org.eclipse.cdt.dsf.service.DsfSession.access$2(DsfSession.java:475)
+	at org.eclipse.cdt.dsf.service.DsfSession$3.run(DsfSession.java:398)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+
+!ENTRY org.eclipse.cdt.dsf 4 -1 2020-07-27 13:30:06.980
+!MESSAGE Invocation exception when calling a service event handler method
+!STACK 0
+java.lang.reflect.InvocationTargetException
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.eclipse.cdt.dsf.service.DsfSession.doDispatchEvent(DsfSession.java:531)
+	at org.eclipse.cdt.dsf.service.DsfSession.access$2(DsfSession.java:475)
+	at org.eclipse.cdt.dsf.service.DsfSession$3.run(DsfSession.java:398)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.lang.NullPointerException
+	at org.eclipse.cdt.dsf.debug.model.DsfLaunch.fireTerminate(DsfLaunch.java:49)
+	at com.silabs.ss.framework.debugger.api.core.SLSLaunch.fireTerminate(SLSLaunch.java:48)
+	at org.eclipse.cdt.debug.edc.launch.EDCLaunch.eventDispatched(EDCLaunch.java:330)
+	... 14 more
+Root exception:
+java.lang.NullPointerException
+	at org.eclipse.cdt.dsf.debug.model.DsfLaunch.fireTerminate(DsfLaunch.java:49)
+	at com.silabs.ss.framework.debugger.api.core.SLSLaunch.fireTerminate(SLSLaunch.java:48)
+	at org.eclipse.cdt.debug.edc.launch.EDCLaunch.eventDispatched(EDCLaunch.java:330)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.eclipse.cdt.dsf.service.DsfSession.doDispatchEvent(DsfSession.java:531)
+	at org.eclipse.cdt.dsf.service.DsfSession.access$2(DsfSession.java:475)
+	at org.eclipse.cdt.dsf.service.DsfSession$3.run(DsfSession.java:398)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+
+!ENTRY org.eclipse.cdt.dsf 4 -1 2020-07-27 13:30:07.012
+!MESSAGE Invocation exception when calling a service event handler method
+!STACK 0
+java.lang.reflect.InvocationTargetException
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.eclipse.cdt.dsf.service.DsfSession.doDispatchEvent(DsfSession.java:531)
+	at org.eclipse.cdt.dsf.service.DsfSession.access$2(DsfSession.java:475)
+	at org.eclipse.cdt.dsf.service.DsfSession$3.run(DsfSession.java:398)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.lang.NullPointerException
+	at org.eclipse.cdt.dsf.debug.model.DsfLaunch.fireTerminate(DsfLaunch.java:49)
+	at com.silabs.ss.framework.debugger.api.core.SLSLaunch.fireTerminate(SLSLaunch.java:48)
+	at org.eclipse.cdt.debug.edc.launch.EDCLaunch.eventDispatched(EDCLaunch.java:330)
+	... 14 more
+Root exception:
+java.lang.NullPointerException
+	at org.eclipse.cdt.dsf.debug.model.DsfLaunch.fireTerminate(DsfLaunch.java:49)
+	at com.silabs.ss.framework.debugger.api.core.SLSLaunch.fireTerminate(SLSLaunch.java:48)
+	at org.eclipse.cdt.debug.edc.launch.EDCLaunch.eventDispatched(EDCLaunch.java:330)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.eclipse.cdt.dsf.service.DsfSession.doDispatchEvent(DsfSession.java:531)
+	at org.eclipse.cdt.dsf.service.DsfSession.access$2(DsfSession.java:475)
+	at org.eclipse.cdt.dsf.service.DsfSession$3.run(DsfSession.java:398)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+!SESSION 2020-07-28 09:46:57.502 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_92
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_CA
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-07-28 09:47:18.744
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH) in Python
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-07-28 09:47:18.760
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH)/bin in Python
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-07-28 09:47:27.538
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/sdks_gecko_sdk_suite_v2.5_.studio_demos.xml for key com.silabs.sdk.stack.super:2.5.3./demosFile/0
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-07-28 09:47:27.538
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/slThread_docContent.xml for key com.silabs.sdk.stack.super:2.5.3..com.silabs.sdk.stack.thread:2.9.3.0/docsFile/-1
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-28 09:47:41.722
+!MESSAGE Unknown board 'BRD4165B' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-28 09:47:41.722
+!MESSAGE Unknown board 'BRD4171A' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-28 09:47:41.847
+!MESSAGE Unknown architecture(s) [efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+gcc] in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-28 09:47:41.862
+!MESSAGE Unknown board 'BRD4165A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-28 09:47:41.878
+!MESSAGE Unknown board 'BRD4165B' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-28 09:47:41.878
+!MESSAGE Unknown board 'BRD4171A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-28 09:47:41.878
+!MESSAGE Unknown board 'BRD4176A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-28 09:47:41.894
+!MESSAGE Unknown architecture(s) [EFR32BG13P632F512IM48, EFR32FG13P231F512IM48, EFR32MG13P732F512IM48, EFR32MG13P733F512IM48, EFR32MG13P832F512GM48, EFR32MG13P832F512IM48, EFR32MG13P932F512GM48, EFR32MG13P932F512IM48, EFR32FG14V132F256GM32, EFR32FG14V132F256GM48, EFR32BG21B010F1024IM32, EFR32BG21B010F512IM32, EFR32BG21B010F768IM32, EFR32BG21B020F1024IM32, EFR32BG21B020F512IM32, EFR32BG21B020F768IM32, EFR32MG21B010F1024IM32, EFR32MG21B010F512IM32, EFR32MG21B010F768IM32, EFR32MG21B020F1024IM32, EFR32MG21B020F512IM32, EFR32MG21B020F768IM32, RM21Z000F1024IM32] in framework flex
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-07-28 09:47:52.009
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-07-28 09:48:03.254
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-28 09:50:29.906
+!MESSAGE Invalid discovery key: null
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 1 0 2020-07-28 09:51:19.185
+!MESSAGE Launching SiAgent (Silicon Labs TCF Agent)
+
+!ENTRY org.eclipse.cdt.debug.edc 4 0 2020-07-28 09:51:24.160
+!MESSAGE Unknown context [rc.root.000440131964] is reported in suspended event. Make sure TCF agent has reported contextAdded event first.
+
+!ENTRY org.eclipse.cdt.dsf.ui 2 0 2020-07-28 09:51:26.227
+!MESSAGE Unable to locate file: C:\Users\colto\SimplicityStudio\v4_workspace\soc-empty_3\hardware\kit\common\drivers\pg_retargetswo.c
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-28 10:21:31.789
+!MESSAGE Invalid discovery key: null
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 4 0 2020-07-28 10:21:32.510
+!MESSAGE Lost connection to agent
+!STACK 0
+java.net.SocketException: Connection reset
+	at java.net.SocketInputStream.read(SocketInputStream.java:209)
+	at java.net.SocketInputStream.read(SocketInputStream.java:141)
+	at java.io.BufferedInputStream.read1(BufferedInputStream.java:284)
+	at java.io.BufferedInputStream.read(BufferedInputStream.java:345)
+	at java.io.FilterInputStream.read(FilterInputStream.java:107)
+	at org.eclipse.tcf.core.ChannelTCP.get(ChannelTCP.java:162)
+	at org.eclipse.tcf.core.StreamChannel.read(StreamChannel.java:84)
+	at org.eclipse.tcf.core.AbstractChannel$1.run(AbstractChannel.java:254)
+
+!ENTRY org.eclipse.tcf 4 0 2020-07-28 10:21:32.520
+!MESSAGE Cannot close channel streams
+!STACK 0
+java.net.SocketException: Socket closed
+	at java.net.SocketOutputStream.socketWrite(SocketOutputStream.java:116)
+	at java.net.SocketOutputStream.write(SocketOutputStream.java:153)
+	at java.io.BufferedOutputStream.flushBuffer(BufferedOutputStream.java:82)
+	at java.io.BufferedOutputStream.flush(BufferedOutputStream.java:140)
+	at java.io.FilterOutputStream.close(FilterOutputStream.java:158)
+	at org.eclipse.tcf.core.ChannelTCP.stop(ChannelTCP.java:200)
+	at org.eclipse.tcf.core.AbstractChannel$8.run(AbstractChannel.java:716)
+
+!ENTRY org.eclipse.cdt.debug.edc 4 0 2020-07-28 10:21:32.534
+!MESSAGE Lost connection to debugger agent "Silicon Labs TCF Agent". It's usually because the agent died abnormally.
+
+The debug session "Silicon Labs ARM MCU: BGM113A256V2" will be terminated.
+!STACK 0
+java.net.SocketException: Connection reset
+	at java.net.SocketInputStream.read(SocketInputStream.java:209)
+	at java.net.SocketInputStream.read(SocketInputStream.java:141)
+	at java.io.BufferedInputStream.read1(BufferedInputStream.java:284)
+	at java.io.BufferedInputStream.read(BufferedInputStream.java:345)
+	at java.io.FilterInputStream.read(FilterInputStream.java:107)
+	at org.eclipse.tcf.core.ChannelTCP.get(ChannelTCP.java:162)
+	at org.eclipse.tcf.core.StreamChannel.read(StreamChannel.java:84)
+	at org.eclipse.tcf.core.AbstractChannel$1.run(AbstractChannel.java:254)
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.core 4 0 2020-07-28 10:22:33.715
+!MESSAGE TCF task failed
+!STACK 0
+java.lang.Exception: java.lang.Error: Channel is closed
+	at org.eclipse.tcf.core.Command.<init>(Command.java:83)
+	at com.silabs.ss.framework.debugger.internal.api.tcf.services.DebugAdapterProxy$2.<init>(DebugAdapterProxy.java:52)
+	at com.silabs.ss.framework.debugger.internal.api.tcf.services.DebugAdapterProxy.disconnect(DebugAdapterProxy.java:52)
+	at com.silabs.ss.framework.debugger.api.tcf.services.TCFTaskFactory$2.run(TCFTaskFactory.java:78)
+	at org.eclipse.tcf.util.TCFTask$1.run(TCFTask.java:55)
+	at org.eclipse.tcf.EventQueue.run(EventQueue.java:95)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.lang.Error: Channel is closed
+	at org.eclipse.tcf.core.AbstractChannel.sendCommand(AbstractChannel.java:875)
+	at org.eclipse.tcf.core.Command.<init>(Command.java:79)
+	... 6 more
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-07-28 11:23:02.051
+!MESSAGE Invalid discovery key: null
+!SESSION 2020-08-03 18:36:24.182 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_92
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_CA
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-08-03 18:36:39.498
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH) in Python
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-08-03 18:36:39.514
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH)/bin in Python
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-03 18:36:51.702
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/sdks_gecko_sdk_suite_v2.5_.studio_demos.xml for key com.silabs.sdk.stack.super:2.5.3./demosFile/0
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-03 18:36:51.718
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/slThread_docContent.xml for key com.silabs.sdk.stack.super:2.5.3..com.silabs.sdk.stack.thread:2.9.3.0/docsFile/-1
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 18:36:57.582
+!MESSAGE Unknown board 'BRD4165B' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 18:36:57.582
+!MESSAGE Unknown board 'BRD4171A' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 18:36:57.692
+!MESSAGE Unknown architecture(s) [efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+gcc] in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 18:36:57.707
+!MESSAGE Unknown board 'BRD4165A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 18:36:57.707
+!MESSAGE Unknown board 'BRD4165B' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 18:36:57.723
+!MESSAGE Unknown board 'BRD4171A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 18:36:57.723
+!MESSAGE Unknown board 'BRD4176A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 18:36:57.723
+!MESSAGE Unknown architecture(s) [EFR32BG13P632F512IM48, EFR32FG13P231F512IM48, EFR32MG13P732F512IM48, EFR32MG13P733F512IM48, EFR32MG13P832F512GM48, EFR32MG13P832F512IM48, EFR32MG13P932F512GM48, EFR32MG13P932F512IM48, EFR32FG14V132F256GM32, EFR32FG14V132F256GM48, EFR32BG21B010F1024IM32, EFR32BG21B010F512IM32, EFR32BG21B010F768IM32, EFR32BG21B020F1024IM32, EFR32BG21B020F512IM32, EFR32BG21B020F768IM32, EFR32MG21B010F1024IM32, EFR32MG21B010F512IM32, EFR32MG21B010F768IM32, EFR32MG21B020F1024IM32, EFR32MG21B020F512IM32, EFR32MG21B020F768IM32, RM21Z000F1024IM32] in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 18:37:02.676
+!MESSAGE Invalid discovery key: null
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-03 18:37:04.307
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-03 18:37:37.009
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 1 0 2020-08-03 18:41:23.394
+!MESSAGE Launching SiAgent (Silicon Labs TCF Agent)
+
+!ENTRY org.eclipse.cdt.debug.edc 4 0 2020-08-03 18:41:27.750
+!MESSAGE Unknown context [rc.root.000440131964] is reported in suspended event. Make sure TCF agent has reported contextAdded event first.
+
+!ENTRY org.eclipse.cdt.dsf.ui 2 0 2020-08-03 18:41:29.944
+!MESSAGE Unable to locate file: C:\Users\colto\SimplicityStudio\v4_workspace\soc-empty_3\hardware\kit\common\drivers\pg_retargetswo.c
+!SESSION 2020-08-03 18:45:42.849 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_92
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_CA
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-08-03 18:45:54.399
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH) in Python
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-08-03 18:45:54.414
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH)/bin in Python
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-03 18:45:59.616
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/sdks_gecko_sdk_suite_v2.5_.studio_demos.xml for key com.silabs.sdk.stack.super:2.5.3./demosFile/0
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-03 18:45:59.616
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/slThread_docContent.xml for key com.silabs.sdk.stack.super:2.5.3..com.silabs.sdk.stack.thread:2.9.3.0/docsFile/-1
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 18:46:11.988
+!MESSAGE Unknown board 'BRD4165B' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 18:46:12.004
+!MESSAGE Unknown board 'BRD4171A' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 18:46:12.175
+!MESSAGE Unknown architecture(s) [efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+gcc] in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 18:46:12.191
+!MESSAGE Unknown board 'BRD4165A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 18:46:12.191
+!MESSAGE Unknown board 'BRD4165B' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 18:46:12.191
+!MESSAGE Unknown board 'BRD4171A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 18:46:12.207
+!MESSAGE Unknown board 'BRD4176A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 18:46:12.207
+!MESSAGE Unknown architecture(s) [EFR32BG13P632F512IM48, EFR32FG13P231F512IM48, EFR32MG13P732F512IM48, EFR32MG13P733F512IM48, EFR32MG13P832F512GM48, EFR32MG13P832F512IM48, EFR32MG13P932F512GM48, EFR32MG13P932F512IM48, EFR32FG14V132F256GM32, EFR32FG14V132F256GM48, EFR32BG21B010F1024IM32, EFR32BG21B010F512IM32, EFR32BG21B010F768IM32, EFR32BG21B020F1024IM32, EFR32BG21B020F512IM32, EFR32BG21B020F768IM32, EFR32MG21B010F1024IM32, EFR32MG21B010F512IM32, EFR32MG21B010F768IM32, EFR32MG21B020F1024IM32, EFR32MG21B020F512IM32, EFR32MG21B020F768IM32, RM21Z000F1024IM32] in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 18:46:18.511
+!MESSAGE Invalid discovery key: null
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-03 18:46:21.094
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-03 18:46:34.373
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 1 0 2020-08-03 18:46:36.791
+!MESSAGE Launching SiAgent (Silicon Labs TCF Agent)
+
+!ENTRY org.eclipse.cdt.debug.edc 4 0 2020-08-03 18:46:48.120
+!MESSAGE Unknown context [rc.root.000440131964] is reported in suspended event. Make sure TCF agent has reported contextAdded event first.
+
+!ENTRY org.eclipse.cdt.dsf.ui 2 0 2020-08-03 18:46:50.214
+!MESSAGE Unable to locate file: C:\Users\colto\SimplicityStudio\v4_workspace\soc-empty_3\hardware\kit\common\drivers\pg_retargetswo.c
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 1 0 2020-08-03 18:55:15.503
+!MESSAGE Launching SiAgent (Silicon Labs TCF Agent)
+
+!ENTRY org.eclipse.cdt.debug.edc 4 0 2020-08-03 18:55:21.836
+!MESSAGE Unknown context [rc.root.000440131964] is reported in suspended event. Make sure TCF agent has reported contextAdded event first.
+!SESSION 2020-08-03 19:00:59.618 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_92
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_CA
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-08-03 19:01:08.179
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH) in Python
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-08-03 19:01:08.195
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH)/bin in Python
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-03 19:01:12.606
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/sdks_gecko_sdk_suite_v2.5_.studio_demos.xml for key com.silabs.sdk.stack.super:2.5.3./demosFile/0
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-03 19:01:12.622
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/slThread_docContent.xml for key com.silabs.sdk.stack.super:2.5.3..com.silabs.sdk.stack.thread:2.9.3.0/docsFile/-1
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 19:01:18.576
+!MESSAGE Unknown board 'BRD4165B' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 19:01:18.592
+!MESSAGE Unknown board 'BRD4171A' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 19:01:18.764
+!MESSAGE Unknown architecture(s) [efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+gcc] in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 19:01:18.780
+!MESSAGE Unknown board 'BRD4165A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 19:01:18.780
+!MESSAGE Unknown board 'BRD4165B' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 19:01:18.795
+!MESSAGE Unknown board 'BRD4171A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 19:01:18.811
+!MESSAGE Unknown board 'BRD4176A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 19:01:18.827
+!MESSAGE Unknown architecture(s) [EFR32BG13P632F512IM48, EFR32FG13P231F512IM48, EFR32MG13P732F512IM48, EFR32MG13P733F512IM48, EFR32MG13P832F512GM48, EFR32MG13P832F512IM48, EFR32MG13P932F512GM48, EFR32MG13P932F512IM48, EFR32FG14V132F256GM32, EFR32FG14V132F256GM48, EFR32BG21B010F1024IM32, EFR32BG21B010F512IM32, EFR32BG21B010F768IM32, EFR32BG21B020F1024IM32, EFR32BG21B020F512IM32, EFR32BG21B020F768IM32, EFR32MG21B010F1024IM32, EFR32MG21B010F512IM32, EFR32MG21B010F768IM32, EFR32MG21B020F1024IM32, EFR32MG21B020F512IM32, EFR32MG21B020F768IM32, RM21Z000F1024IM32] in framework flex
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-03 19:01:25.088
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 19:01:27.502
+!MESSAGE Invalid discovery key: null
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 1 0 2020-08-03 19:01:43.470
+!MESSAGE Launching SiAgent (Silicon Labs TCF Agent)
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-03 19:01:50.503
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY org.eclipse.cdt.debug.edc 4 0 2020-08-03 19:01:50.576
+!MESSAGE Unknown context [rc.root.000440131964] is reported in suspended event. Make sure TCF agent has reported contextAdded event first.
+
+!ENTRY org.eclipse.cdt.dsf.ui 2 0 2020-08-03 19:01:52.897
+!MESSAGE Unable to locate file: C:\Users\colto\SimplicityStudio\v4_workspace\soc-empty_3\hardware\kit\common\drivers\pg_retargetswo.c
+!SESSION 2020-08-03 19:11:41.033 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_92
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_CA
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-08-03 19:11:47.337
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH) in Python
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-08-03 19:11:47.352
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH)/bin in Python
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-03 19:11:50.306
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/sdks_gecko_sdk_suite_v2.5_.studio_demos.xml for key com.silabs.sdk.stack.super:2.5.3./demosFile/0
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-03 19:11:50.321
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/slThread_docContent.xml for key com.silabs.sdk.stack.super:2.5.3..com.silabs.sdk.stack.thread:2.9.3.0/docsFile/-1
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 19:11:56.629
+!MESSAGE Unknown board 'BRD4165B' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 19:11:56.629
+!MESSAGE Unknown board 'BRD4171A' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 19:11:56.864
+!MESSAGE Unknown architecture(s) [efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+gcc] in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 19:11:56.879
+!MESSAGE Unknown board 'BRD4165A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 19:11:56.895
+!MESSAGE Unknown board 'BRD4165B' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 19:11:56.910
+!MESSAGE Unknown board 'BRD4171A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 19:11:56.910
+!MESSAGE Unknown board 'BRD4176A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 19:11:56.926
+!MESSAGE Unknown architecture(s) [EFR32BG13P632F512IM48, EFR32FG13P231F512IM48, EFR32MG13P732F512IM48, EFR32MG13P733F512IM48, EFR32MG13P832F512GM48, EFR32MG13P832F512IM48, EFR32MG13P932F512GM48, EFR32MG13P932F512IM48, EFR32FG14V132F256GM32, EFR32FG14V132F256GM48, EFR32BG21B010F1024IM32, EFR32BG21B010F512IM32, EFR32BG21B010F768IM32, EFR32BG21B020F1024IM32, EFR32BG21B020F512IM32, EFR32BG21B020F768IM32, EFR32MG21B010F1024IM32, EFR32MG21B010F512IM32, EFR32MG21B010F768IM32, EFR32MG21B020F1024IM32, EFR32MG21B020F512IM32, EFR32MG21B020F768IM32, RM21Z000F1024IM32] in framework flex
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-03 19:12:02.411
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 19:12:03.207
+!MESSAGE Invalid discovery key: null
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 1 0 2020-08-03 19:12:23.494
+!MESSAGE Launching SiAgent (Silicon Labs TCF Agent)
+
+!ENTRY org.eclipse.cdt.debug.edc 4 0 2020-08-03 19:12:28.110
+!MESSAGE Unknown context [rc.root.000440131964] is reported in suspended event. Make sure TCF agent has reported contextAdded event first.
+
+!ENTRY org.eclipse.cdt.dsf.ui 2 0 2020-08-03 19:12:30.071
+!MESSAGE Unable to locate file: C:\Users\colto\SimplicityStudio\v4_workspace\soc-empty_3\hardware\kit\common\drivers\pg_retargetswo.c
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-03 19:12:36.142
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+!SESSION 2020-08-03 19:16:13.595 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_92
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_CA
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-08-03 19:16:19.721
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH) in Python
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-08-03 19:16:19.736
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH)/bin in Python
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-03 19:16:22.738
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/sdks_gecko_sdk_suite_v2.5_.studio_demos.xml for key com.silabs.sdk.stack.super:2.5.3./demosFile/0
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-03 19:16:22.754
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/slThread_docContent.xml for key com.silabs.sdk.stack.super:2.5.3..com.silabs.sdk.stack.thread:2.9.3.0/docsFile/-1
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 19:16:27.550
+!MESSAGE Unknown board 'BRD4165B' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 19:16:27.550
+!MESSAGE Unknown board 'BRD4171A' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 19:16:27.644
+!MESSAGE Unknown architecture(s) [efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+gcc] in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 19:16:27.660
+!MESSAGE Unknown board 'BRD4165A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 19:16:27.660
+!MESSAGE Unknown board 'BRD4165B' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 19:16:27.660
+!MESSAGE Unknown board 'BRD4171A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 19:16:27.675
+!MESSAGE Unknown board 'BRD4176A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 19:16:27.691
+!MESSAGE Unknown architecture(s) [EFR32BG13P632F512IM48, EFR32FG13P231F512IM48, EFR32MG13P732F512IM48, EFR32MG13P733F512IM48, EFR32MG13P832F512GM48, EFR32MG13P832F512IM48, EFR32MG13P932F512GM48, EFR32MG13P932F512IM48, EFR32FG14V132F256GM32, EFR32FG14V132F256GM48, EFR32BG21B010F1024IM32, EFR32BG21B010F512IM32, EFR32BG21B010F768IM32, EFR32BG21B020F1024IM32, EFR32BG21B020F512IM32, EFR32BG21B020F768IM32, EFR32MG21B010F1024IM32, EFR32MG21B010F512IM32, EFR32MG21B010F768IM32, EFR32MG21B020F1024IM32, EFR32MG21B020F512IM32, EFR32MG21B020F768IM32, RM21Z000F1024IM32] in framework flex
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-03 19:16:32.301
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-03 19:16:32.770
+!MESSAGE Invalid discovery key: null
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-03 19:17:02.189
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 1 0 2020-08-03 19:17:53.866
+!MESSAGE Launching SiAgent (Silicon Labs TCF Agent)
+
+!ENTRY org.eclipse.cdt.debug.edc 4 0 2020-08-03 19:18:00.920
+!MESSAGE Unknown context [rc.root.000440131964] is reported in suspended event. Make sure TCF agent has reported contextAdded event first.
+
+!ENTRY org.eclipse.cdt.dsf.ui 2 0 2020-08-03 19:18:02.588
+!MESSAGE Unable to locate file: C:\Users\colto\SimplicityStudio\v4_workspace\soc-empty_3\hardware\kit\common\drivers\pg_retargetswo.c
+!SESSION 2020-08-04 11:33:51.256 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_92
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_CA
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-08-04 11:34:04.114
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH) in Python
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-08-04 11:34:04.127
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH)/bin in Python
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-04 11:34:16.602
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/sdks_gecko_sdk_suite_v2.5_.studio_demos.xml for key com.silabs.sdk.stack.super:2.5.3./demosFile/0
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-04 11:34:16.614
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/slThread_docContent.xml for key com.silabs.sdk.stack.super:2.5.3..com.silabs.sdk.stack.thread:2.9.3.0/docsFile/-1
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 11:34:23.159
+!MESSAGE Unknown board 'BRD4165B' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 11:34:23.164
+!MESSAGE Unknown board 'BRD4171A' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 11:34:23.296
+!MESSAGE Unknown architecture(s) [efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+gcc] in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 11:34:23.314
+!MESSAGE Unknown board 'BRD4165A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 11:34:23.321
+!MESSAGE Unknown board 'BRD4165B' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 11:34:23.327
+!MESSAGE Unknown board 'BRD4171A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 11:34:23.332
+!MESSAGE Unknown board 'BRD4176A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 11:34:23.341
+!MESSAGE Unknown architecture(s) [EFR32BG13P632F512IM48, EFR32FG13P231F512IM48, EFR32MG13P732F512IM48, EFR32MG13P733F512IM48, EFR32MG13P832F512GM48, EFR32MG13P832F512IM48, EFR32MG13P932F512GM48, EFR32MG13P932F512IM48, EFR32FG14V132F256GM32, EFR32FG14V132F256GM48, EFR32BG21B010F1024IM32, EFR32BG21B010F512IM32, EFR32BG21B010F768IM32, EFR32BG21B020F1024IM32, EFR32BG21B020F512IM32, EFR32BG21B020F768IM32, EFR32MG21B010F1024IM32, EFR32MG21B010F512IM32, EFR32MG21B010F768IM32, EFR32MG21B020F1024IM32, EFR32MG21B020F512IM32, EFR32MG21B020F768IM32, RM21Z000F1024IM32] in framework flex
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-04 11:34:29.253
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-04 11:34:39.258
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+!SESSION 2020-08-04 12:38:47.116 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_92
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_CA
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -data C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-08-04 12:38:54.469
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH) in Python
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-08-04 12:38:54.485
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH)/bin in Python
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-04 12:38:58.243
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/sdks_gecko_sdk_suite_v2.5_.studio_demos.xml for key com.silabs.sdk.stack.super:2.5.3./demosFile/0
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-04 12:38:58.258
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/slThread_docContent.xml for key com.silabs.sdk.stack.super:2.5.3..com.silabs.sdk.stack.thread:2.9.3.0/docsFile/-1
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 12:39:03.516
+!MESSAGE Unknown board 'BRD4165B' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 12:39:03.516
+!MESSAGE Unknown board 'BRD4171A' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 12:39:03.688
+!MESSAGE Unknown architecture(s) [efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+gcc] in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 12:39:03.688
+!MESSAGE Unknown board 'BRD4165A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 12:39:03.704
+!MESSAGE Unknown board 'BRD4165B' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 12:39:03.704
+!MESSAGE Unknown board 'BRD4171A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 12:39:03.704
+!MESSAGE Unknown board 'BRD4176A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 12:39:03.720
+!MESSAGE Unknown architecture(s) [EFR32BG13P632F512IM48, EFR32FG13P231F512IM48, EFR32MG13P732F512IM48, EFR32MG13P733F512IM48, EFR32MG13P832F512GM48, EFR32MG13P832F512IM48, EFR32MG13P932F512GM48, EFR32MG13P932F512IM48, EFR32FG14V132F256GM32, EFR32FG14V132F256GM48, EFR32BG21B010F1024IM32, EFR32BG21B010F512IM32, EFR32BG21B010F768IM32, EFR32BG21B020F1024IM32, EFR32BG21B020F512IM32, EFR32BG21B020F768IM32, EFR32MG21B010F1024IM32, EFR32MG21B010F512IM32, EFR32MG21B010F768IM32, EFR32MG21B020F1024IM32, EFR32MG21B020F512IM32, EFR32MG21B020F768IM32, RM21Z000F1024IM32] in framework flex
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-04 12:39:08.367
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 12:39:09.483
+!MESSAGE Invalid discovery key: null
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-04 12:39:20.697
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 1 0 2020-08-04 12:48:01.941
+!MESSAGE Launching SiAgent (Silicon Labs TCF Agent)
+
+!ENTRY org.eclipse.cdt.debug.edc 4 0 2020-08-04 12:48:07.984
+!MESSAGE Unknown context [rc.root.000440131964] is reported in suspended event. Make sure TCF agent has reported contextAdded event first.
+
+!ENTRY org.eclipse.cdt.dsf.ui 2 0 2020-08-04 12:48:10.300
+!MESSAGE Unable to locate file: C:\Users\colto\SimplicityStudio\v4_workspace\soc-empty_3\hardware\kit\common\drivers\pg_retargetswo.c
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 1 0 2020-08-04 12:48:37.797
+!MESSAGE Launching SiAgent (Silicon Labs TCF Agent)
+
+!ENTRY org.eclipse.cdt.debug.edc 4 0 2020-08-04 12:48:42.050
+!MESSAGE Unknown context [rc.root.000440131964] is reported in suspended event. Make sure TCF agent has reported contextAdded event first.
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 1 0 2020-08-04 12:49:19.363
+!MESSAGE Launching SiAgent (Silicon Labs TCF Agent)
+
+!ENTRY org.eclipse.cdt.debug.edc 4 0 2020-08-04 12:49:23.383
+!MESSAGE Unknown context [rc.root.000440131964] is reported in suspended event. Make sure TCF agent has reported contextAdded event first.
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 12:58:08.704
+!MESSAGE Invalid discovery key: null
+!SESSION 2020-08-04 14:16:41.925 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_92
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_CA
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.core.resources 2 10035 2020-08-04 14:16:45.455
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-08-04 14:16:56.880
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH) in Python
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-08-04 14:16:56.880
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH)/bin in Python
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-04 14:17:05.136
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/sdks_gecko_sdk_suite_v2.5_.studio_demos.xml for key com.silabs.sdk.stack.super:2.5.3./demosFile/0
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-04 14:17:05.152
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/slThread_docContent.xml for key com.silabs.sdk.stack.super:2.5.3..com.silabs.sdk.stack.thread:2.9.3.0/docsFile/-1
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 14:17:20.253
+!MESSAGE Unknown board 'BRD4165B' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 14:17:20.253
+!MESSAGE Unknown board 'BRD4171A' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 14:17:20.424
+!MESSAGE Unknown architecture(s) [efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+gcc] in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 14:17:20.440
+!MESSAGE Unknown board 'BRD4165A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 14:17:20.455
+!MESSAGE Unknown board 'BRD4165B' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 14:17:20.455
+!MESSAGE Unknown board 'BRD4171A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 14:17:20.455
+!MESSAGE Unknown board 'BRD4176A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 14:17:20.471
+!MESSAGE Unknown architecture(s) [EFR32BG13P632F512IM48, EFR32FG13P231F512IM48, EFR32MG13P732F512IM48, EFR32MG13P733F512IM48, EFR32MG13P832F512GM48, EFR32MG13P832F512IM48, EFR32MG13P932F512GM48, EFR32MG13P932F512IM48, EFR32FG14V132F256GM32, EFR32FG14V132F256GM48, EFR32BG21B010F1024IM32, EFR32BG21B010F512IM32, EFR32BG21B010F768IM32, EFR32BG21B020F1024IM32, EFR32BG21B020F512IM32, EFR32BG21B020F768IM32, EFR32MG21B010F1024IM32, EFR32MG21B010F512IM32, EFR32MG21B010F768IM32, EFR32MG21B020F1024IM32, EFR32MG21B020F512IM32, EFR32MG21B020F768IM32, RM21Z000F1024IM32] in framework flex
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-04 14:17:26.260
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-04 14:17:42.011
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+!SESSION 2020-08-04 14:22:17.391 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_92
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_CA
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -data C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-08-04 14:22:25.086
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH) in Python
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2020-08-04 14:22:25.086
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH)/bin in Python
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-04 14:22:28.537
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/sdks_gecko_sdk_suite_v2.5_.studio_demos.xml for key com.silabs.sdk.stack.super:2.5.3./demosFile/0
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-04 14:22:28.554
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/slThread_docContent.xml for key com.silabs.sdk.stack.super:2.5.3..com.silabs.sdk.stack.thread:2.9.3.0/docsFile/-1
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 14:22:33.552
+!MESSAGE Unknown board 'BRD4165B' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 14:22:33.568
+!MESSAGE Unknown board 'BRD4171A' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 14:22:33.756
+!MESSAGE Unknown architecture(s) [efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+gcc] in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 14:22:33.756
+!MESSAGE Unknown board 'BRD4165A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 14:22:33.771
+!MESSAGE Unknown board 'BRD4165B' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 14:22:33.771
+!MESSAGE Unknown board 'BRD4171A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 14:22:33.771
+!MESSAGE Unknown board 'BRD4176A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 14:22:33.787
+!MESSAGE Unknown architecture(s) [EFR32BG13P632F512IM48, EFR32FG13P231F512IM48, EFR32MG13P732F512IM48, EFR32MG13P733F512IM48, EFR32MG13P832F512GM48, EFR32MG13P832F512IM48, EFR32MG13P932F512GM48, EFR32MG13P932F512IM48, EFR32FG14V132F256GM32, EFR32FG14V132F256GM48, EFR32BG21B010F1024IM32, EFR32BG21B010F512IM32, EFR32BG21B010F768IM32, EFR32BG21B020F1024IM32, EFR32BG21B020F512IM32, EFR32BG21B020F768IM32, EFR32MG21B010F1024IM32, EFR32MG21B010F512IM32, EFR32MG21B010F768IM32, EFR32MG21B020F1024IM32, EFR32MG21B020F512IM32, EFR32MG21B020F768IM32, RM21Z000F1024IM32] in framework flex
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-04 14:22:38.669
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-04 14:22:49.817
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-04 14:37:39.951
+!MESSAGE Invalid discovery key: null
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 1 0 2020-08-04 14:37:55.999
+!MESSAGE Launching SiAgent (Silicon Labs TCF Agent)
+
+!ENTRY org.eclipse.cdt.debug.edc 4 0 2020-08-04 14:38:03.585
+!MESSAGE Unknown context [rc.root.000440131964] is reported in suspended event. Make sure TCF agent has reported contextAdded event first.
+
+!ENTRY org.eclipse.cdt.dsf.ui 2 0 2020-08-04 14:38:05.856
+!MESSAGE Unable to locate file: C:\Users\colto\SimplicityStudio\v4_workspace\soc-empty_3\hardware\kit\common\drivers\pg_retargetswo.c
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 1 0 2020-08-04 14:42:32.738
+!MESSAGE Launching SiAgent (Silicon Labs TCF Agent)
+
+!ENTRY org.eclipse.cdt.debug.edc 4 0 2020-08-04 14:42:39.239
+!MESSAGE Unknown context [rc.root.000440131964] is reported in suspended event. Make sure TCF agent has reported contextAdded event first.
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 1 0 2020-08-04 14:48:40.597
+!MESSAGE Launching SiAgent (Silicon Labs TCF Agent)
+
+!ENTRY org.eclipse.cdt.debug.edc 4 0 2020-08-04 14:48:46.375
+!MESSAGE Unknown context [rc.root.000440131964] is reported in suspended event. Make sure TCF agent has reported contextAdded event first.
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 1 0 2020-08-04 14:50:27.845
+!MESSAGE Launching SiAgent (Silicon Labs TCF Agent)
+
+!ENTRY org.eclipse.cdt.debug.edc 4 0 2020-08-04 14:50:30.749
+!MESSAGE Unknown context [rc.root.000440131964] is reported in suspended event. Make sure TCF agent has reported contextAdded event first.
