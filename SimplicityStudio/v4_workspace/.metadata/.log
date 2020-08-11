@@ -606,3 +606,9 @@ Command-line arguments:  -os win32 -ws win32 -arch x86_64
 
 !ENTRY org.eclipse.cdt.dsf.ui 2 0 2020-08-11 11:20:38.806
 !MESSAGE Unable to locate file: C:\Users\colto\SimplicityStudio\v4_workspace\soc-empty_3\hardware\kit\common\drivers\pg_retargetswo.c
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 1 0 2020-08-11 14:45:08.743
+!MESSAGE Launching SiAgent (Silicon Labs TCF Agent)
+
+!ENTRY org.eclipse.cdt.debug.edc 4 0 2020-08-11 14:45:13.973
+!MESSAGE Unknown context [rc.root.000440131964] is reported in suspended event. Make sure TCF agent has reported contextAdded event first.
