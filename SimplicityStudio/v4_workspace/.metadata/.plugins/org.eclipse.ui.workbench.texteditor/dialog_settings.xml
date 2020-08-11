@@ -2,12 +2,13 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="adcNegSelVSS" key="selection"/>
+		<item value="dischargeCapacitor" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="dischargeCapacitor"/>
 			<item value="adcNegSelVSS"/>
 			<item value="int_diff_voltage_reset"/>
 			<item value="IDAC_INIT_DEFAULT"/>
@@ -15,7 +16,6 @@
 			<item value="DAC"/>
 			<item value="IDAC"/>
 			<item value="idac"/>
-			<item value="adcRefVDD"/>
 		</list>
 		<list key="replacehistory">
 		</list>
