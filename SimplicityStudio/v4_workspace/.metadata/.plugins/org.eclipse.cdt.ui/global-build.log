@@ -1,4 +1,4 @@
-14:48:18 **** Incremental Build of configuration GNU ARM v7.2.1 - Default for project CPSIncDeviceApplication ****
+11:29:14 **** Incremental Build of configuration GNU ARM v7.2.1 - Default for project CPSIncDeviceApplication ****
 make -j4 all 
 Building file: ../app.c
 Invoking: GNU ARM C Compiler
@@ -17,134 +17,134 @@ In file included from ../app.c:35:0:
 ../app.c:72:3: note: in expansion of macro 'flushSWO'
    flushSWO();
    ^~~~~~~~
-../app.c:197:16: warning: implicit declaration of function 'readStripDetectVoltage' [-Wimplicit-function-declaration]
+../app.c:188:16: warning: implicit declaration of function 'readStripDetectVoltage' [-Wimplicit-function-declaration]
                 readStripDetectVoltage();
                 ^~~~~~~~~~~~~~~~~~~~~~
-../app.c:198:16: warning: implicit declaration of function 'updateStripDetectVoltage' [-Wimplicit-function-declaration]
+../app.c:189:16: warning: implicit declaration of function 'updateStripDetectVoltage' [-Wimplicit-function-declaration]
                 updateStripDetectVoltage();
                 ^~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:199:16: warning: implicit declaration of function 'notifyStripDetectVoltage' [-Wimplicit-function-declaration]
+../app.c:190:16: warning: implicit declaration of function 'notifyStripDetectVoltage' [-Wimplicit-function-declaration]
                 notifyStripDetectVoltage();
                 ^~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:201:16: warning: implicit declaration of function 'readTemperatureSensorDataPrintToConsole' [-Wimplicit-function-declaration]
+../app.c:192:16: warning: implicit declaration of function 'readTemperatureSensorDataPrintToConsole' [-Wimplicit-function-declaration]
                 readTemperatureSensorDataPrintToConsole();
                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:202:16: warning: implicit declaration of function 'readBatteryDataPrintToConsole' [-Wimplicit-function-declaration]
+../app.c:193:16: warning: implicit declaration of function 'readBatteryDataPrintToConsole' [-Wimplicit-function-declaration]
                 readBatteryDataPrintToConsole();
                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:205:17: warning: implicit declaration of function 'readIntegratedVoltage' [-Wimplicit-function-declaration]
+../app.c:196:17: warning: implicit declaration of function 'readIntegratedVoltage' [-Wimplicit-function-declaration]
                  readIntegratedVoltage();
                  ^~~~~~~~~~~~~~~~~~~~~
-../app.c:206:17: warning: implicit declaration of function 'updateIntegratedVoltage' [-Wimplicit-function-declaration]
+../app.c:197:17: warning: implicit declaration of function 'updateIntegratedVoltage' [-Wimplicit-function-declaration]
                  updateIntegratedVoltage();
                  ^~~~~~~~~~~~~~~~~~~~~~~
-../app.c:207:17: warning: implicit declaration of function 'notifyIntegratedVoltage' [-Wimplicit-function-declaration]
+../app.c:198:17: warning: implicit declaration of function 'notifyIntegratedVoltage' [-Wimplicit-function-declaration]
                  notifyIntegratedVoltage();
                  ^~~~~~~~~~~~~~~~~~~~~~~
-../app.c:209:17: warning: implicit declaration of function 'readDifferentialVoltage'; did you mean 'ADC_ScanDifferentialInputAdd'? [-Wimplicit-function-declaration]
+../app.c:200:17: warning: implicit declaration of function 'readDifferentialVoltage'; did you mean 'ADC_ScanDifferentialInputAdd'? [-Wimplicit-function-declaration]
                  readDifferentialVoltage();
                  ^~~~~~~~~~~~~~~~~~~~~~~
                  ADC_ScanDifferentialInputAdd
-../app.c:210:17: warning: implicit declaration of function 'updateDifferentialVoltage' [-Wimplicit-function-declaration]
+../app.c:201:17: warning: implicit declaration of function 'updateDifferentialVoltage' [-Wimplicit-function-declaration]
                  updateDifferentialVoltage();
                  ^~~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:211:17: warning: implicit declaration of function 'notifyDifferentialVoltage' [-Wimplicit-function-declaration]
+../app.c:202:17: warning: implicit declaration of function 'notifyDifferentialVoltage' [-Wimplicit-function-declaration]
                  notifyDifferentialVoltage();
                  ^~~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:224:16: warning: implicit declaration of function 'switchMotorState' [-Wimplicit-function-declaration]
+../app.c:215:16: warning: implicit declaration of function 'switchMotorState' [-Wimplicit-function-declaration]
                 switchMotorState();
                 ^~~~~~~~~~~~~~~~
-../app.c:245:9: warning: implicit declaration of function 'dischargeCapacitor' [-Wimplicit-function-declaration]
-         dischargeCapacitor();
-         ^~~~~~~~~~~~~~~~~~
+../app.c:224:18: warning: implicit declaration of function 'dischargeCapacitor' [-Wimplicit-function-declaration]
+                  dischargeCapacitor();
+                  ^~~~~~~~~~~~~~~~~~
 ../app.c: At top level:
-../app.c:300:6: warning: conflicting types for 'readBatteryDataPrintToConsole'
+../app.c:294:6: warning: conflicting types for 'readBatteryDataPrintToConsole'
  void readBatteryDataPrintToConsole(){
       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:202:16: note: previous implicit declaration of 'readBatteryDataPrintToConsole' was here
+../app.c:193:16: note: previous implicit declaration of 'readBatteryDataPrintToConsole' was here
                 readBatteryDataPrintToConsole();
                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:305:6: warning: conflicting types for 'readTemperatureSensorDataPrintToConsole'
+../app.c:299:6: warning: conflicting types for 'readTemperatureSensorDataPrintToConsole'
  void readTemperatureSensorDataPrintToConsole(){
       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:201:16: note: previous implicit declaration of 'readTemperatureSensorDataPrintToConsole' was here
+../app.c:192:16: note: previous implicit declaration of 'readTemperatureSensorDataPrintToConsole' was here
                 readTemperatureSensorDataPrintToConsole();
                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:318:6: warning: conflicting types for 'switchMotorState'
+../app.c:312:6: warning: conflicting types for 'switchMotorState'
  void switchMotorState(){
       ^~~~~~~~~~~~~~~~
-../app.c:224:16: note: previous implicit declaration of 'switchMotorState' was here
+../app.c:215:16: note: previous implicit declaration of 'switchMotorState' was here
                 switchMotorState();
                 ^~~~~~~~~~~~~~~~
-../app.c:338:6: warning: conflicting types for 'readStripDetectVoltage'
+../app.c:332:6: warning: conflicting types for 'readStripDetectVoltage'
  void readStripDetectVoltage(){ //needs function prototype
       ^~~~~~~~~~~~~~~~~~~~~~
-../app.c:197:16: note: previous implicit declaration of 'readStripDetectVoltage' was here
+../app.c:188:16: note: previous implicit declaration of 'readStripDetectVoltage' was here
                 readStripDetectVoltage();
                 ^~~~~~~~~~~~~~~~~~~~~~
-../app.c:353:6: warning: conflicting types for 'updateStripDetectVoltage'
+../app.c:347:6: warning: conflicting types for 'updateStripDetectVoltage'
  void updateStripDetectVoltage(){ //needs function prototype
       ^~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:198:16: note: previous implicit declaration of 'updateStripDetectVoltage' was here
+../app.c:189:16: note: previous implicit declaration of 'updateStripDetectVoltage' was here
                 updateStripDetectVoltage();
                 ^~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:359:6: warning: conflicting types for 'notifyStripDetectVoltage'
+../app.c:353:6: warning: conflicting types for 'notifyStripDetectVoltage'
  void notifyStripDetectVoltage(){ //needs function prototype
       ^~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:199:16: note: previous implicit declaration of 'notifyStripDetectVoltage' was here
+../app.c:190:16: note: previous implicit declaration of 'notifyStripDetectVoltage' was here
                 notifyStripDetectVoltage();
                 ^~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:363:6: warning: conflicting types for 'readDifferentialVoltage'
+../app.c:357:6: warning: conflicting types for 'readDifferentialVoltage'
  void readDifferentialVoltage(){ //needs function prototype
       ^~~~~~~~~~~~~~~~~~~~~~~
-../app.c:209:17: note: previous implicit declaration of 'readDifferentialVoltage' was here
+../app.c:200:17: note: previous implicit declaration of 'readDifferentialVoltage' was here
                  readDifferentialVoltage();
                  ^~~~~~~~~~~~~~~~~~~~~~~
-../app.c:379:6: warning: conflicting types for 'updateDifferentialVoltage'
+../app.c:373:6: warning: conflicting types for 'updateDifferentialVoltage'
  void updateDifferentialVoltage(){ //needs function prototype
       ^~~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:210:17: note: previous implicit declaration of 'updateDifferentialVoltage' was here
+../app.c:201:17: note: previous implicit declaration of 'updateDifferentialVoltage' was here
                  updateDifferentialVoltage();
                  ^~~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:385:6: warning: conflicting types for 'notifyDifferentialVoltage'
+../app.c:379:6: warning: conflicting types for 'notifyDifferentialVoltage'
  void notifyDifferentialVoltage(){ //needs function prototype
       ^~~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:211:17: note: previous implicit declaration of 'notifyDifferentialVoltage' was here
+../app.c:202:17: note: previous implicit declaration of 'notifyDifferentialVoltage' was here
                  notifyDifferentialVoltage();
                  ^~~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:389:6: warning: conflicting types for 'readIntegratedVoltage'
+../app.c:383:6: warning: conflicting types for 'readIntegratedVoltage'
  void readIntegratedVoltage(){ //need function prototype
       ^~~~~~~~~~~~~~~~~~~~~
-../app.c:205:17: note: previous implicit declaration of 'readIntegratedVoltage' was here
+../app.c:196:17: note: previous implicit declaration of 'readIntegratedVoltage' was here
                  readIntegratedVoltage();
                  ^~~~~~~~~~~~~~~~~~~~~
 In file included from ../app.c:35:0:
 ../app.c: In function 'readIntegratedVoltage':
-../app.c:401:11: warning: format '%d' expects argument of type 'int', but argument 2 has type 'long unsigned int' [-Wformat=]
+../app.c:395:11: warning: format '%d' expects argument of type 'int', but argument 2 has type 'long unsigned int' [-Wformat=]
   printSWO("ADC INT = %d\n", ((adcData * 3300) / 4096));
            ^                 ~~~~~~~~~~~~~~~~~~~~~~~~~
 ../app.h:35:30: note: in definition of macro 'printSWO'
  #define printSWO(...) printf(__VA_ARGS__)
                               ^~~~~~~~~~~
 ../app.c: At top level:
-../app.c:407:6: warning: conflicting types for 'updateIntegratedVoltage'
+../app.c:401:6: warning: conflicting types for 'updateIntegratedVoltage'
  void updateIntegratedVoltage(){ //needs function prototype
       ^~~~~~~~~~~~~~~~~~~~~~~
-../app.c:206:17: note: previous implicit declaration of 'updateIntegratedVoltage' was here
+../app.c:197:17: note: previous implicit declaration of 'updateIntegratedVoltage' was here
                  updateIntegratedVoltage();
                  ^~~~~~~~~~~~~~~~~~~~~~~
-../app.c:413:6: warning: conflicting types for 'notifyIntegratedVoltage'
+../app.c:407:6: warning: conflicting types for 'notifyIntegratedVoltage'
  void notifyIntegratedVoltage(){ //needs function prototype
       ^~~~~~~~~~~~~~~~~~~~~~~
-../app.c:207:17: note: previous implicit declaration of 'notifyIntegratedVoltage' was here
+../app.c:198:17: note: previous implicit declaration of 'notifyIntegratedVoltage' was here
                  notifyIntegratedVoltage();
                  ^~~~~~~~~~~~~~~~~~~~~~~
-../app.c:417:6: warning: conflicting types for 'dischargeCapacitor'
+../app.c:411:6: warning: conflicting types for 'dischargeCapacitor'
  void dischargeCapacitor(){ //needs function prototype
       ^~~~~~~~~~~~~~~~~~
-../app.c:245:9: note: previous implicit declaration of 'dischargeCapacitor' was here
-         dischargeCapacitor();
-         ^~~~~~~~~~~~~~~~~~
+../app.c:224:18: note: previous implicit declaration of 'dischargeCapacitor' was here
+                  dischargeCapacitor();
+                  ^~~~~~~~~~~~~~~~~~
 Finished building: ../app.c
  
 Building target: CPSIncDeviceApplication.axf
@@ -177,19 +177,19 @@ section                         size        addr
 .nvm_dummy                      4096      187640
 .ARM.attributes                   46           0
 .comment                         126           0
-.debug_info                   144400           0
-.debug_abbrev                  15358           0
-.debug_loc                     67908           0
+.debug_info                   144425           0
+.debug_abbrev                  15382           0
+.debug_loc                     67933           0
 .debug_aranges                  2200           0
-.debug_ranges                  10720           0
-.debug_line                    32171           0
+.debug_ranges                  10744           0
+.debug_line                    32176           0
 .debug_str                     64104           0
 .debug_frame                    8244           0
-Total                         538737
+Total                         538840
 
 
  
-14:48:36 **** Incremental Build of configuration GNU ARM v7.2.1 - Default for project CPSIncDeviceApplication ****
+11:33:51 **** Incremental Build of configuration GNU ARM v7.2.1 - Default for project CPSIncDeviceApplication ****
 make -j4 all 
 Building file: ../app.c
 Invoking: GNU ARM C Compiler
@@ -208,134 +208,134 @@ In file included from ../app.c:35:0:
 ../app.c:72:3: note: in expansion of macro 'flushSWO'
    flushSWO();
    ^~~~~~~~
-../app.c:197:16: warning: implicit declaration of function 'readStripDetectVoltage' [-Wimplicit-function-declaration]
+../app.c:188:16: warning: implicit declaration of function 'readStripDetectVoltage' [-Wimplicit-function-declaration]
                 readStripDetectVoltage();
                 ^~~~~~~~~~~~~~~~~~~~~~
-../app.c:198:16: warning: implicit declaration of function 'updateStripDetectVoltage' [-Wimplicit-function-declaration]
+../app.c:189:16: warning: implicit declaration of function 'updateStripDetectVoltage' [-Wimplicit-function-declaration]
                 updateStripDetectVoltage();
                 ^~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:199:16: warning: implicit declaration of function 'notifyStripDetectVoltage' [-Wimplicit-function-declaration]
+../app.c:190:16: warning: implicit declaration of function 'notifyStripDetectVoltage' [-Wimplicit-function-declaration]
                 notifyStripDetectVoltage();
                 ^~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:201:16: warning: implicit declaration of function 'readTemperatureSensorDataPrintToConsole' [-Wimplicit-function-declaration]
+../app.c:192:16: warning: implicit declaration of function 'readTemperatureSensorDataPrintToConsole' [-Wimplicit-function-declaration]
                 readTemperatureSensorDataPrintToConsole();
                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:202:16: warning: implicit declaration of function 'readBatteryDataPrintToConsole' [-Wimplicit-function-declaration]
+../app.c:193:16: warning: implicit declaration of function 'readBatteryDataPrintToConsole' [-Wimplicit-function-declaration]
                 readBatteryDataPrintToConsole();
                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:205:17: warning: implicit declaration of function 'readIntegratedVoltage' [-Wimplicit-function-declaration]
+../app.c:196:17: warning: implicit declaration of function 'readIntegratedVoltage' [-Wimplicit-function-declaration]
                  readIntegratedVoltage();
                  ^~~~~~~~~~~~~~~~~~~~~
-../app.c:206:17: warning: implicit declaration of function 'updateIntegratedVoltage' [-Wimplicit-function-declaration]
+../app.c:197:17: warning: implicit declaration of function 'updateIntegratedVoltage' [-Wimplicit-function-declaration]
                  updateIntegratedVoltage();
                  ^~~~~~~~~~~~~~~~~~~~~~~
-../app.c:207:17: warning: implicit declaration of function 'notifyIntegratedVoltage' [-Wimplicit-function-declaration]
+../app.c:198:17: warning: implicit declaration of function 'notifyIntegratedVoltage' [-Wimplicit-function-declaration]
                  notifyIntegratedVoltage();
                  ^~~~~~~~~~~~~~~~~~~~~~~
-../app.c:209:17: warning: implicit declaration of function 'readDifferentialVoltage'; did you mean 'ADC_ScanDifferentialInputAdd'? [-Wimplicit-function-declaration]
+../app.c:200:17: warning: implicit declaration of function 'readDifferentialVoltage'; did you mean 'ADC_ScanDifferentialInputAdd'? [-Wimplicit-function-declaration]
                  readDifferentialVoltage();
                  ^~~~~~~~~~~~~~~~~~~~~~~
                  ADC_ScanDifferentialInputAdd
-../app.c:210:17: warning: implicit declaration of function 'updateDifferentialVoltage' [-Wimplicit-function-declaration]
+../app.c:201:17: warning: implicit declaration of function 'updateDifferentialVoltage' [-Wimplicit-function-declaration]
                  updateDifferentialVoltage();
                  ^~~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:211:17: warning: implicit declaration of function 'notifyDifferentialVoltage' [-Wimplicit-function-declaration]
+../app.c:202:17: warning: implicit declaration of function 'notifyDifferentialVoltage' [-Wimplicit-function-declaration]
                  notifyDifferentialVoltage();
                  ^~~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:224:16: warning: implicit declaration of function 'switchMotorState' [-Wimplicit-function-declaration]
+../app.c:215:16: warning: implicit declaration of function 'switchMotorState' [-Wimplicit-function-declaration]
                 switchMotorState();
                 ^~~~~~~~~~~~~~~~
-../app.c:245:9: warning: implicit declaration of function 'dischargeCapacitor' [-Wimplicit-function-declaration]
-         dischargeCapacitor();
-         ^~~~~~~~~~~~~~~~~~
+../app.c:224:14: warning: implicit declaration of function 'dischargeCapacitor' [-Wimplicit-function-declaration]
+              dischargeCapacitor();
+              ^~~~~~~~~~~~~~~~~~
 ../app.c: At top level:
-../app.c:300:6: warning: conflicting types for 'readBatteryDataPrintToConsole'
+../app.c:294:6: warning: conflicting types for 'readBatteryDataPrintToConsole'
  void readBatteryDataPrintToConsole(){
       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:202:16: note: previous implicit declaration of 'readBatteryDataPrintToConsole' was here
+../app.c:193:16: note: previous implicit declaration of 'readBatteryDataPrintToConsole' was here
                 readBatteryDataPrintToConsole();
                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:305:6: warning: conflicting types for 'readTemperatureSensorDataPrintToConsole'
+../app.c:299:6: warning: conflicting types for 'readTemperatureSensorDataPrintToConsole'
  void readTemperatureSensorDataPrintToConsole(){
       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:201:16: note: previous implicit declaration of 'readTemperatureSensorDataPrintToConsole' was here
+../app.c:192:16: note: previous implicit declaration of 'readTemperatureSensorDataPrintToConsole' was here
                 readTemperatureSensorDataPrintToConsole();
                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:318:6: warning: conflicting types for 'switchMotorState'
+../app.c:312:6: warning: conflicting types for 'switchMotorState'
  void switchMotorState(){
       ^~~~~~~~~~~~~~~~
-../app.c:224:16: note: previous implicit declaration of 'switchMotorState' was here
+../app.c:215:16: note: previous implicit declaration of 'switchMotorState' was here
                 switchMotorState();
                 ^~~~~~~~~~~~~~~~
-../app.c:338:6: warning: conflicting types for 'readStripDetectVoltage'
+../app.c:332:6: warning: conflicting types for 'readStripDetectVoltage'
  void readStripDetectVoltage(){ //needs function prototype
       ^~~~~~~~~~~~~~~~~~~~~~
-../app.c:197:16: note: previous implicit declaration of 'readStripDetectVoltage' was here
+../app.c:188:16: note: previous implicit declaration of 'readStripDetectVoltage' was here
                 readStripDetectVoltage();
                 ^~~~~~~~~~~~~~~~~~~~~~
-../app.c:353:6: warning: conflicting types for 'updateStripDetectVoltage'
+../app.c:347:6: warning: conflicting types for 'updateStripDetectVoltage'
  void updateStripDetectVoltage(){ //needs function prototype
       ^~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:198:16: note: previous implicit declaration of 'updateStripDetectVoltage' was here
+../app.c:189:16: note: previous implicit declaration of 'updateStripDetectVoltage' was here
                 updateStripDetectVoltage();
                 ^~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:359:6: warning: conflicting types for 'notifyStripDetectVoltage'
+../app.c:353:6: warning: conflicting types for 'notifyStripDetectVoltage'
  void notifyStripDetectVoltage(){ //needs function prototype
       ^~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:199:16: note: previous implicit declaration of 'notifyStripDetectVoltage' was here
+../app.c:190:16: note: previous implicit declaration of 'notifyStripDetectVoltage' was here
                 notifyStripDetectVoltage();
                 ^~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:363:6: warning: conflicting types for 'readDifferentialVoltage'
+../app.c:357:6: warning: conflicting types for 'readDifferentialVoltage'
  void readDifferentialVoltage(){ //needs function prototype
       ^~~~~~~~~~~~~~~~~~~~~~~
-../app.c:209:17: note: previous implicit declaration of 'readDifferentialVoltage' was here
+../app.c:200:17: note: previous implicit declaration of 'readDifferentialVoltage' was here
                  readDifferentialVoltage();
                  ^~~~~~~~~~~~~~~~~~~~~~~
-../app.c:379:6: warning: conflicting types for 'updateDifferentialVoltage'
+../app.c:373:6: warning: conflicting types for 'updateDifferentialVoltage'
  void updateDifferentialVoltage(){ //needs function prototype
       ^~~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:210:17: note: previous implicit declaration of 'updateDifferentialVoltage' was here
+../app.c:201:17: note: previous implicit declaration of 'updateDifferentialVoltage' was here
                  updateDifferentialVoltage();
                  ^~~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:385:6: warning: conflicting types for 'notifyDifferentialVoltage'
+../app.c:379:6: warning: conflicting types for 'notifyDifferentialVoltage'
  void notifyDifferentialVoltage(){ //needs function prototype
       ^~~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:211:17: note: previous implicit declaration of 'notifyDifferentialVoltage' was here
+../app.c:202:17: note: previous implicit declaration of 'notifyDifferentialVoltage' was here
                  notifyDifferentialVoltage();
                  ^~~~~~~~~~~~~~~~~~~~~~~~~
-../app.c:389:6: warning: conflicting types for 'readIntegratedVoltage'
+../app.c:383:6: warning: conflicting types for 'readIntegratedVoltage'
  void readIntegratedVoltage(){ //need function prototype
       ^~~~~~~~~~~~~~~~~~~~~
-../app.c:205:17: note: previous implicit declaration of 'readIntegratedVoltage' was here
+../app.c:196:17: note: previous implicit declaration of 'readIntegratedVoltage' was here
                  readIntegratedVoltage();
                  ^~~~~~~~~~~~~~~~~~~~~
 In file included from ../app.c:35:0:
 ../app.c: In function 'readIntegratedVoltage':
-../app.c:401:11: warning: format '%d' expects argument of type 'int', but argument 2 has type 'long unsigned int' [-Wformat=]
+../app.c:395:11: warning: format '%d' expects argument of type 'int', but argument 2 has type 'long unsigned int' [-Wformat=]
   printSWO("ADC INT = %d\n", ((adcData * 3300) / 4096));
            ^                 ~~~~~~~~~~~~~~~~~~~~~~~~~
 ../app.h:35:30: note: in definition of macro 'printSWO'
  #define printSWO(...) printf(__VA_ARGS__)
                               ^~~~~~~~~~~
 ../app.c: At top level:
-../app.c:407:6: warning: conflicting types for 'updateIntegratedVoltage'
+../app.c:401:6: warning: conflicting types for 'updateIntegratedVoltage'
  void updateIntegratedVoltage(){ //needs function prototype
       ^~~~~~~~~~~~~~~~~~~~~~~
-../app.c:206:17: note: previous implicit declaration of 'updateIntegratedVoltage' was here
+../app.c:197:17: note: previous implicit declaration of 'updateIntegratedVoltage' was here
                  updateIntegratedVoltage();
                  ^~~~~~~~~~~~~~~~~~~~~~~
-../app.c:413:6: warning: conflicting types for 'notifyIntegratedVoltage'
+../app.c:407:6: warning: conflicting types for 'notifyIntegratedVoltage'
  void notifyIntegratedVoltage(){ //needs function prototype
       ^~~~~~~~~~~~~~~~~~~~~~~
-../app.c:207:17: note: previous implicit declaration of 'notifyIntegratedVoltage' was here
+../app.c:198:17: note: previous implicit declaration of 'notifyIntegratedVoltage' was here
                  notifyIntegratedVoltage();
                  ^~~~~~~~~~~~~~~~~~~~~~~
-../app.c:417:6: warning: conflicting types for 'dischargeCapacitor'
+../app.c:411:6: warning: conflicting types for 'dischargeCapacitor'
  void dischargeCapacitor(){ //needs function prototype
       ^~~~~~~~~~~~~~~~~~
-../app.c:245:9: note: previous implicit declaration of 'dischargeCapacitor' was here
-         dischargeCapacitor();
-         ^~~~~~~~~~~~~~~~~~
+../app.c:224:14: note: previous implicit declaration of 'dischargeCapacitor' was here
+              dischargeCapacitor();
+              ^~~~~~~~~~~~~~~~~~
 Finished building: ../app.c
  
 Building target: CPSIncDeviceApplication.axf
@@ -359,27 +359,600 @@ section                         size        addr
 .text_bootloader                   0           0
 .text_apploader                38848       16384
 .text_signature                   64       55232
-.text_application             132272       55296
-.text_application_ARM.exidx        8      187568
+.text_application             132336       55296
+.text_application_ARM.exidx        8      187632
 .stack_dummy                    2048   536870912
 .text_application_data          1104   536872960
 .bss                           11628   536874240
 .heap                           3328   536885872
-.nvm_dummy                      4096      187576
+.nvm_dummy                      4096      187640
 .ARM.attributes                   46           0
 .comment                         126           0
-.debug_info                   144314           0
-.debug_abbrev                  15358           0
-.debug_loc                     67827           0
+.debug_info                   144425           0
+.debug_abbrev                  15382           0
+.debug_loc                     67933           0
 .debug_aranges                  2200           0
-.debug_ranges                  10688           0
-.debug_line                    32155           0
+.debug_ranges                  10744           0
+.debug_line                    32176           0
 .debug_str                     64104           0
 .debug_frame                    8244           0
-Total                         538458
+Total                         538840
 
 
  
-14:50:25 **** Incremental Build of configuration GNU ARM v7.2.1 - Default for project CPSIncDeviceApplication ****
+11:38:07 **** Incremental Build of configuration GNU ARM v7.2.1 - Default for project CPSIncDeviceApplication ****
+make -j4 all 
+Building file: ../app.c
+Invoking: GNU ARM C Compiler
+arm-none-eabi-gcc -g -gdwarf-2 -mcpu=cortex-m4 -mthumb -std=c99 '-D__HEAP_SIZE=0xD00' '-D__STACK_SIZE=0x800' '-DHAL_CONFIG=1' '-D__StackLimit=0x20000000' '-DEFR32BG1B232F256GM48=1' -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\Device\SiliconLabs\EFR32BG1B\Include" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\CMSIS\Include" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\emlib\inc" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\hardware\kit\common\bsp" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\radio\rail_lib\common" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\protocol\bluetooth\ble_stack\inc\common" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\hardware\kit\common\drivers" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\radio\rail_lib\protocol\ble" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\emlib\src" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\hardware\kit\common\halconfig" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\halconfig\inc\hal-config" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\app\bluetooth\common\util" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\emdrv\tempdrv\inc" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\protocol\bluetooth\ble_stack\inc\soc" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\emdrv\uartdrv\inc" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\Device\SiliconLabs\EFR32BG1B\Source" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\radio\rail_lib\protocol\ieee802154" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\radio\rail_lib\chip\efr32\efr32xg1x" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\emdrv\common\inc" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\emdrv\sleep\src" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\emdrv\sleep\inc" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\emdrv\gpiointerrupt\inc" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\bootloader\api" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\emdrv\tempdrv\src" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\Device\SiliconLabs\EFR32BG1B\Source\GCC" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\bootloader" -O2 -Wall -c -fmessage-length=0 -ffunction-sections -fdata-sections -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -MMD -MP -MF"app.d" -MT"app.o" -o "app.o" "../app.c"
+In file included from C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication/hal-config.h:22:0,
+                 from C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\protocol\bluetooth\ble_stack\inc\soc/native_gecko.h:25,
+                 from ../app.c:28:
+C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication/hal-config-board.h:59:2: warning: #warning "Following pin mappings need to be set for your custom board when using printf..>" [-Wcpp]
+ #warning "Following pin mappings need to be set for your custom board when using printf..>"
+  ^~~~~~~
+In file included from ../app.c:35:0:
+../app.c: In function 'appMain':
+../app.h:36:20: warning: implicit declaration of function 'swoFlush'; did you mean 'fflush'? [-Wimplicit-function-declaration]
+ #define flushSWO() swoFlush()
+                    ^
+../app.c:72:3: note: in expansion of macro 'flushSWO'
+   flushSWO();
+   ^~~~~~~~
+../app.c:188:16: warning: implicit declaration of function 'readStripDetectVoltage' [-Wimplicit-function-declaration]
+                readStripDetectVoltage();
+                ^~~~~~~~~~~~~~~~~~~~~~
+../app.c:189:16: warning: implicit declaration of function 'updateStripDetectVoltage' [-Wimplicit-function-declaration]
+                updateStripDetectVoltage();
+                ^~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:190:16: warning: implicit declaration of function 'notifyStripDetectVoltage' [-Wimplicit-function-declaration]
+                notifyStripDetectVoltage();
+                ^~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:192:16: warning: implicit declaration of function 'readTemperatureSensorDataPrintToConsole' [-Wimplicit-function-declaration]
+                readTemperatureSensorDataPrintToConsole();
+                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:193:16: warning: implicit declaration of function 'readBatteryDataPrintToConsole' [-Wimplicit-function-declaration]
+                readBatteryDataPrintToConsole();
+                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:196:17: warning: implicit declaration of function 'readIntegratedVoltage' [-Wimplicit-function-declaration]
+                 readIntegratedVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~
+../app.c:197:17: warning: implicit declaration of function 'updateIntegratedVoltage' [-Wimplicit-function-declaration]
+                 updateIntegratedVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~
+../app.c:198:17: warning: implicit declaration of function 'notifyIntegratedVoltage' [-Wimplicit-function-declaration]
+                 notifyIntegratedVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~
+../app.c:200:17: warning: implicit declaration of function 'readDifferentialVoltage'; did you mean 'ADC_ScanDifferentialInputAdd'? [-Wimplicit-function-declaration]
+                 readDifferentialVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~
+                 ADC_ScanDifferentialInputAdd
+../app.c:201:17: warning: implicit declaration of function 'updateDifferentialVoltage' [-Wimplicit-function-declaration]
+                 updateDifferentialVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:202:17: warning: implicit declaration of function 'notifyDifferentialVoltage' [-Wimplicit-function-declaration]
+                 notifyDifferentialVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:215:16: warning: implicit declaration of function 'switchMotorState' [-Wimplicit-function-declaration]
+                switchMotorState();
+                ^~~~~~~~~~~~~~~~
+../app.c:224:14: warning: implicit declaration of function 'dischargeCapacitor' [-Wimplicit-function-declaration]
+              dischargeCapacitor();
+              ^~~~~~~~~~~~~~~~~~
+../app.c: At top level:
+../app.c:294:6: warning: conflicting types for 'readBatteryDataPrintToConsole'
+ void readBatteryDataPrintToConsole(){
+      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:193:16: note: previous implicit declaration of 'readBatteryDataPrintToConsole' was here
+                readBatteryDataPrintToConsole();
+                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:299:6: warning: conflicting types for 'readTemperatureSensorDataPrintToConsole'
+ void readTemperatureSensorDataPrintToConsole(){
+      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:192:16: note: previous implicit declaration of 'readTemperatureSensorDataPrintToConsole' was here
+                readTemperatureSensorDataPrintToConsole();
+                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:312:6: warning: conflicting types for 'switchMotorState'
+ void switchMotorState(){
+      ^~~~~~~~~~~~~~~~
+../app.c:215:16: note: previous implicit declaration of 'switchMotorState' was here
+                switchMotorState();
+                ^~~~~~~~~~~~~~~~
+../app.c:332:6: warning: conflicting types for 'readStripDetectVoltage'
+ void readStripDetectVoltage(){ //needs function prototype
+      ^~~~~~~~~~~~~~~~~~~~~~
+../app.c:188:16: note: previous implicit declaration of 'readStripDetectVoltage' was here
+                readStripDetectVoltage();
+                ^~~~~~~~~~~~~~~~~~~~~~
+../app.c:347:6: warning: conflicting types for 'updateStripDetectVoltage'
+ void updateStripDetectVoltage(){ //needs function prototype
+      ^~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:189:16: note: previous implicit declaration of 'updateStripDetectVoltage' was here
+                updateStripDetectVoltage();
+                ^~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:353:6: warning: conflicting types for 'notifyStripDetectVoltage'
+ void notifyStripDetectVoltage(){ //needs function prototype
+      ^~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:190:16: note: previous implicit declaration of 'notifyStripDetectVoltage' was here
+                notifyStripDetectVoltage();
+                ^~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:357:6: warning: conflicting types for 'readDifferentialVoltage'
+ void readDifferentialVoltage(){ //needs function prototype
+      ^~~~~~~~~~~~~~~~~~~~~~~
+../app.c:200:17: note: previous implicit declaration of 'readDifferentialVoltage' was here
+                 readDifferentialVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~
+../app.c:373:6: warning: conflicting types for 'updateDifferentialVoltage'
+ void updateDifferentialVoltage(){ //needs function prototype
+      ^~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:201:17: note: previous implicit declaration of 'updateDifferentialVoltage' was here
+                 updateDifferentialVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:379:6: warning: conflicting types for 'notifyDifferentialVoltage'
+ void notifyDifferentialVoltage(){ //needs function prototype
+      ^~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:202:17: note: previous implicit declaration of 'notifyDifferentialVoltage' was here
+                 notifyDifferentialVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:383:6: warning: conflicting types for 'readIntegratedVoltage'
+ void readIntegratedVoltage(){ //need function prototype
+      ^~~~~~~~~~~~~~~~~~~~~
+../app.c:196:17: note: previous implicit declaration of 'readIntegratedVoltage' was here
+                 readIntegratedVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~
+In file included from ../app.c:35:0:
+../app.c: In function 'readIntegratedVoltage':
+../app.c:395:11: warning: format '%d' expects argument of type 'int', but argument 2 has type 'long unsigned int' [-Wformat=]
+  printSWO("ADC INT = %d\n", ((adcData * 3300) / 4096));
+           ^                 ~~~~~~~~~~~~~~~~~~~~~~~~~
+../app.h:35:30: note: in definition of macro 'printSWO'
+ #define printSWO(...) printf(__VA_ARGS__)
+                              ^~~~~~~~~~~
+../app.c: At top level:
+../app.c:401:6: warning: conflicting types for 'updateIntegratedVoltage'
+ void updateIntegratedVoltage(){ //needs function prototype
+      ^~~~~~~~~~~~~~~~~~~~~~~
+../app.c:197:17: note: previous implicit declaration of 'updateIntegratedVoltage' was here
+                 updateIntegratedVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~
+../app.c:407:6: warning: conflicting types for 'notifyIntegratedVoltage'
+ void notifyIntegratedVoltage(){ //needs function prototype
+      ^~~~~~~~~~~~~~~~~~~~~~~
+../app.c:198:17: note: previous implicit declaration of 'notifyIntegratedVoltage' was here
+                 notifyIntegratedVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~
+../app.c:411:6: warning: conflicting types for 'dischargeCapacitor'
+ void dischargeCapacitor(){ //needs function prototype
+      ^~~~~~~~~~~~~~~~~~
+../app.c:224:14: note: previous implicit declaration of 'dischargeCapacitor' was here
+              dischargeCapacitor();
+              ^~~~~~~~~~~~~~~~~~
+Finished building: ../app.c
+ 
+Building target: CPSIncDeviceApplication.axf
+Invoking: GNU ARM C Linker
+arm-none-eabi-gcc -g -gdwarf-2 -mcpu=cortex-m4 -mthumb -T "C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\efr32bg1b232f256gm48.ld" -Xlinker --gc-sections -Xlinker -Map="CPSIncDeviceApplication.map" -mfpu=fpv4-sp-d16 -mfloat-abi=softfp --specs=nano.specs -o CPSIncDeviceApplication.axf -Wl,--start-group "./app/bluetooth/common/util/infrastructure.o" "./app.o" "./application_properties.o" "./gatt_db.o" "./init_app.o" "./init_board_efr32xg1.o" "./init_mcu_efr32xg1.o" "./main.o" "./hardware/kit/common/bsp/bsp_stk.o" "./hardware/kit/common/drivers/pg_retargetswo.o" "./hardware/kit/common/drivers/retargetio.o" "./platform/Device/SiliconLabs/EFR32BG1B/Source/GCC/startup_efr32bg1b.o" "./platform/Device/SiliconLabs/EFR32BG1B/Source/system_efr32bg1b.o" "./platform/emdrv/sleep/src/sleep.o" "./platform/emdrv/tempdrv/src/tempdrv.o" "./platform/emlib/src/em_adc.o" "./platform/emlib/src/em_assert.o" "./platform/emlib/src/em_burtc.o" "./platform/emlib/src/em_cmu.o" "./platform/emlib/src/em_core.o" "./platform/emlib/src/em_cryotimer.o" "./platform/emlib/src/em_crypto.o" "./platform/emlib/src/em_dbg.o" "./platform/emlib/src/em_emu.o" "./platform/emlib/src/em_gpio.o" "./platform/emlib/src/em_i2c.o" "./platform/emlib/src/em_idac.o" "./platform/emlib/src/em_msc.o" "./platform/emlib/src/em_rmu.o" "./platform/emlib/src/em_rtcc.o" "./platform/emlib/src/em_se.o" "./platform/emlib/src/em_system.o" "./platform/emlib/src/em_timer.o" "./platform/emlib/src/em_usart.o" "C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\protocol\bluetooth\lib\EFR32BG1B\GCC\binapploader.o" "C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\protocol\bluetooth\lib\EFR32BG1B\GCC\libmbedtls.a" "C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\protocol\bluetooth\lib\EFR32BG1B\GCC\libpsstore.a" "C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\protocol\bluetooth\lib\EFR32BG1B\GCC\libbluetooth.a" "C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\radio\rail_lib\autogen\librail_release\librail_efr32xg1_gcc_release.a" -lm -Wl,--end-group -Wl,--start-group -lgcc -lc -lnosys -Wl,--end-group
+Finished building target: CPSIncDeviceApplication.axf
+ 
+Building hex file: CPSIncDeviceApplication.hex
+arm-none-eabi-objcopy -O ihex "CPSIncDeviceApplication.axf" "CPSIncDeviceApplication.hex"
+ 
+Building bin file: CPSIncDeviceApplication.bin
+arm-none-eabi-objcopy -O binary "CPSIncDeviceApplication.axf" "CPSIncDeviceApplication.bin"
+ 
+Building s37 file: CPSIncDeviceApplication.s37
+arm-none-eabi-objcopy -O srec "CPSIncDeviceApplication.axf" "CPSIncDeviceApplication.s37"
+ 
+Running size tool
+arm-none-eabi-size "CPSIncDeviceApplication.axf" -A
+CPSIncDeviceApplication.axf  :
+section                         size        addr
+.text_bootloader                   0           0
+.text_apploader                38848       16384
+.text_signature                   64       55232
+.text_application             132396       55296
+.text_application_ARM.exidx        8      187692
+.stack_dummy                    2048   536870912
+.text_application_data          1104   536872960
+.bss                           11628   536874240
+.heap                           3328   536885872
+.nvm_dummy                      4096      187700
+.ARM.attributes                   46           0
+.comment                         126           0
+.debug_info                   144448           0
+.debug_abbrev                  15382           0
+.debug_loc                     67933           0
+.debug_aranges                  2200           0
+.debug_ranges                  10736           0
+.debug_line                    32187           0
+.debug_str                     64104           0
+.debug_frame                    8252           0
+Total                         538934
+
+
+ 
+11:39:39 **** Incremental Build of configuration GNU ARM v7.2.1 - Default for project CPSIncDeviceApplication ****
+make -j4 all 
+Building file: ../app.c
+Invoking: GNU ARM C Compiler
+arm-none-eabi-gcc -g -gdwarf-2 -mcpu=cortex-m4 -mthumb -std=c99 '-D__HEAP_SIZE=0xD00' '-D__STACK_SIZE=0x800' '-DHAL_CONFIG=1' '-D__StackLimit=0x20000000' '-DEFR32BG1B232F256GM48=1' -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\Device\SiliconLabs\EFR32BG1B\Include" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\CMSIS\Include" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\emlib\inc" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\hardware\kit\common\bsp" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\radio\rail_lib\common" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\protocol\bluetooth\ble_stack\inc\common" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\hardware\kit\common\drivers" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\radio\rail_lib\protocol\ble" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\emlib\src" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\hardware\kit\common\halconfig" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\halconfig\inc\hal-config" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\app\bluetooth\common\util" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\emdrv\tempdrv\inc" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\protocol\bluetooth\ble_stack\inc\soc" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\emdrv\uartdrv\inc" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\Device\SiliconLabs\EFR32BG1B\Source" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\radio\rail_lib\protocol\ieee802154" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\radio\rail_lib\chip\efr32\efr32xg1x" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\emdrv\common\inc" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\emdrv\sleep\src" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\emdrv\sleep\inc" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\emdrv\gpiointerrupt\inc" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\bootloader\api" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\emdrv\tempdrv\src" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\Device\SiliconLabs\EFR32BG1B\Source\GCC" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\bootloader" -O2 -Wall -c -fmessage-length=0 -ffunction-sections -fdata-sections -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -MMD -MP -MF"app.d" -MT"app.o" -o "app.o" "../app.c"
+In file included from C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication/hal-config.h:22:0,
+                 from C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\protocol\bluetooth\ble_stack\inc\soc/native_gecko.h:25,
+                 from ../app.c:28:
+C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication/hal-config-board.h:59:2: warning: #warning "Following pin mappings need to be set for your custom board when using printf..>" [-Wcpp]
+ #warning "Following pin mappings need to be set for your custom board when using printf..>"
+  ^~~~~~~
+In file included from ../app.c:35:0:
+../app.c: In function 'appMain':
+../app.h:36:20: warning: implicit declaration of function 'swoFlush'; did you mean 'fflush'? [-Wimplicit-function-declaration]
+ #define flushSWO() swoFlush()
+                    ^
+../app.c:72:3: note: in expansion of macro 'flushSWO'
+   flushSWO();
+   ^~~~~~~~
+../app.c:188:16: warning: implicit declaration of function 'readStripDetectVoltage' [-Wimplicit-function-declaration]
+                readStripDetectVoltage();
+                ^~~~~~~~~~~~~~~~~~~~~~
+../app.c:189:16: warning: implicit declaration of function 'updateStripDetectVoltage' [-Wimplicit-function-declaration]
+                updateStripDetectVoltage();
+                ^~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:190:16: warning: implicit declaration of function 'notifyStripDetectVoltage' [-Wimplicit-function-declaration]
+                notifyStripDetectVoltage();
+                ^~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:192:16: warning: implicit declaration of function 'readTemperatureSensorDataPrintToConsole' [-Wimplicit-function-declaration]
+                readTemperatureSensorDataPrintToConsole();
+                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:193:16: warning: implicit declaration of function 'readBatteryDataPrintToConsole' [-Wimplicit-function-declaration]
+                readBatteryDataPrintToConsole();
+                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:196:17: warning: implicit declaration of function 'readIntegratedVoltage' [-Wimplicit-function-declaration]
+                 readIntegratedVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~
+../app.c:197:17: warning: implicit declaration of function 'updateIntegratedVoltage' [-Wimplicit-function-declaration]
+                 updateIntegratedVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~
+../app.c:198:17: warning: implicit declaration of function 'notifyIntegratedVoltage' [-Wimplicit-function-declaration]
+                 notifyIntegratedVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~
+../app.c:200:17: warning: implicit declaration of function 'readDifferentialVoltage'; did you mean 'ADC_ScanDifferentialInputAdd'? [-Wimplicit-function-declaration]
+                 readDifferentialVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~
+                 ADC_ScanDifferentialInputAdd
+../app.c:201:17: warning: implicit declaration of function 'updateDifferentialVoltage' [-Wimplicit-function-declaration]
+                 updateDifferentialVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:202:17: warning: implicit declaration of function 'notifyDifferentialVoltage' [-Wimplicit-function-declaration]
+                 notifyDifferentialVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:215:16: warning: implicit declaration of function 'switchMotorState' [-Wimplicit-function-declaration]
+                switchMotorState();
+                ^~~~~~~~~~~~~~~~
+../app.c:224:14: warning: implicit declaration of function 'dischargeCapacitor' [-Wimplicit-function-declaration]
+              dischargeCapacitor();
+              ^~~~~~~~~~~~~~~~~~
+../app.c: At top level:
+../app.c:294:6: warning: conflicting types for 'readBatteryDataPrintToConsole'
+ void readBatteryDataPrintToConsole(){
+      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:193:16: note: previous implicit declaration of 'readBatteryDataPrintToConsole' was here
+                readBatteryDataPrintToConsole();
+                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:299:6: warning: conflicting types for 'readTemperatureSensorDataPrintToConsole'
+ void readTemperatureSensorDataPrintToConsole(){
+      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:192:16: note: previous implicit declaration of 'readTemperatureSensorDataPrintToConsole' was here
+                readTemperatureSensorDataPrintToConsole();
+                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:312:6: warning: conflicting types for 'switchMotorState'
+ void switchMotorState(){
+      ^~~~~~~~~~~~~~~~
+../app.c:215:16: note: previous implicit declaration of 'switchMotorState' was here
+                switchMotorState();
+                ^~~~~~~~~~~~~~~~
+../app.c:332:6: warning: conflicting types for 'readStripDetectVoltage'
+ void readStripDetectVoltage(){ //needs function prototype
+      ^~~~~~~~~~~~~~~~~~~~~~
+../app.c:188:16: note: previous implicit declaration of 'readStripDetectVoltage' was here
+                readStripDetectVoltage();
+                ^~~~~~~~~~~~~~~~~~~~~~
+../app.c:347:6: warning: conflicting types for 'updateStripDetectVoltage'
+ void updateStripDetectVoltage(){ //needs function prototype
+      ^~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:189:16: note: previous implicit declaration of 'updateStripDetectVoltage' was here
+                updateStripDetectVoltage();
+                ^~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:353:6: warning: conflicting types for 'notifyStripDetectVoltage'
+ void notifyStripDetectVoltage(){ //needs function prototype
+      ^~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:190:16: note: previous implicit declaration of 'notifyStripDetectVoltage' was here
+                notifyStripDetectVoltage();
+                ^~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:357:6: warning: conflicting types for 'readDifferentialVoltage'
+ void readDifferentialVoltage(){ //needs function prototype
+      ^~~~~~~~~~~~~~~~~~~~~~~
+../app.c:200:17: note: previous implicit declaration of 'readDifferentialVoltage' was here
+                 readDifferentialVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~
+../app.c:373:6: warning: conflicting types for 'updateDifferentialVoltage'
+ void updateDifferentialVoltage(){ //needs function prototype
+      ^~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:201:17: note: previous implicit declaration of 'updateDifferentialVoltage' was here
+                 updateDifferentialVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:379:6: warning: conflicting types for 'notifyDifferentialVoltage'
+ void notifyDifferentialVoltage(){ //needs function prototype
+      ^~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:202:17: note: previous implicit declaration of 'notifyDifferentialVoltage' was here
+                 notifyDifferentialVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:383:6: warning: conflicting types for 'readIntegratedVoltage'
+ void readIntegratedVoltage(){ //need function prototype
+      ^~~~~~~~~~~~~~~~~~~~~
+../app.c:196:17: note: previous implicit declaration of 'readIntegratedVoltage' was here
+                 readIntegratedVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~
+In file included from ../app.c:35:0:
+../app.c: In function 'readIntegratedVoltage':
+../app.c:395:11: warning: format '%d' expects argument of type 'int', but argument 2 has type 'long unsigned int' [-Wformat=]
+  printSWO("ADC INT = %d\n", ((adcData * 3300) / 4096));
+           ^                 ~~~~~~~~~~~~~~~~~~~~~~~~~
+../app.h:35:30: note: in definition of macro 'printSWO'
+ #define printSWO(...) printf(__VA_ARGS__)
+                              ^~~~~~~~~~~
+../app.c: At top level:
+../app.c:401:6: warning: conflicting types for 'updateIntegratedVoltage'
+ void updateIntegratedVoltage(){ //needs function prototype
+      ^~~~~~~~~~~~~~~~~~~~~~~
+../app.c:197:17: note: previous implicit declaration of 'updateIntegratedVoltage' was here
+                 updateIntegratedVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~
+../app.c:407:6: warning: conflicting types for 'notifyIntegratedVoltage'
+ void notifyIntegratedVoltage(){ //needs function prototype
+      ^~~~~~~~~~~~~~~~~~~~~~~
+../app.c:198:17: note: previous implicit declaration of 'notifyIntegratedVoltage' was here
+                 notifyIntegratedVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~
+../app.c:411:6: warning: conflicting types for 'dischargeCapacitor'
+ void dischargeCapacitor(){ //needs function prototype
+      ^~~~~~~~~~~~~~~~~~
+../app.c:224:14: note: previous implicit declaration of 'dischargeCapacitor' was here
+              dischargeCapacitor();
+              ^~~~~~~~~~~~~~~~~~
+Finished building: ../app.c
+ 
+Building target: CPSIncDeviceApplication.axf
+Invoking: GNU ARM C Linker
+arm-none-eabi-gcc -g -gdwarf-2 -mcpu=cortex-m4 -mthumb -T "C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\efr32bg1b232f256gm48.ld" -Xlinker --gc-sections -Xlinker -Map="CPSIncDeviceApplication.map" -mfpu=fpv4-sp-d16 -mfloat-abi=softfp --specs=nano.specs -o CPSIncDeviceApplication.axf -Wl,--start-group "./app/bluetooth/common/util/infrastructure.o" "./app.o" "./application_properties.o" "./gatt_db.o" "./init_app.o" "./init_board_efr32xg1.o" "./init_mcu_efr32xg1.o" "./main.o" "./hardware/kit/common/bsp/bsp_stk.o" "./hardware/kit/common/drivers/pg_retargetswo.o" "./hardware/kit/common/drivers/retargetio.o" "./platform/Device/SiliconLabs/EFR32BG1B/Source/GCC/startup_efr32bg1b.o" "./platform/Device/SiliconLabs/EFR32BG1B/Source/system_efr32bg1b.o" "./platform/emdrv/sleep/src/sleep.o" "./platform/emdrv/tempdrv/src/tempdrv.o" "./platform/emlib/src/em_adc.o" "./platform/emlib/src/em_assert.o" "./platform/emlib/src/em_burtc.o" "./platform/emlib/src/em_cmu.o" "./platform/emlib/src/em_core.o" "./platform/emlib/src/em_cryotimer.o" "./platform/emlib/src/em_crypto.o" "./platform/emlib/src/em_dbg.o" "./platform/emlib/src/em_emu.o" "./platform/emlib/src/em_gpio.o" "./platform/emlib/src/em_i2c.o" "./platform/emlib/src/em_idac.o" "./platform/emlib/src/em_msc.o" "./platform/emlib/src/em_rmu.o" "./platform/emlib/src/em_rtcc.o" "./platform/emlib/src/em_se.o" "./platform/emlib/src/em_system.o" "./platform/emlib/src/em_timer.o" "./platform/emlib/src/em_usart.o" "C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\protocol\bluetooth\lib\EFR32BG1B\GCC\binapploader.o" "C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\protocol\bluetooth\lib\EFR32BG1B\GCC\libmbedtls.a" "C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\protocol\bluetooth\lib\EFR32BG1B\GCC\libpsstore.a" "C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\protocol\bluetooth\lib\EFR32BG1B\GCC\libbluetooth.a" "C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\radio\rail_lib\autogen\librail_release\librail_efr32xg1_gcc_release.a" -lm -Wl,--end-group -Wl,--start-group -lgcc -lc -lnosys -Wl,--end-group
+Finished building target: CPSIncDeviceApplication.axf
+ 
+Building hex file: CPSIncDeviceApplication.hex
+arm-none-eabi-objcopy -O ihex "CPSIncDeviceApplication.axf" "CPSIncDeviceApplication.hex"
+ 
+Building bin file: CPSIncDeviceApplication.bin
+arm-none-eabi-objcopy -O binary "CPSIncDeviceApplication.axf" "CPSIncDeviceApplication.bin"
+ 
+Building s37 file: CPSIncDeviceApplication.s37
+arm-none-eabi-objcopy -O srec "CPSIncDeviceApplication.axf" "CPSIncDeviceApplication.s37"
+ 
+Running size tool
+arm-none-eabi-size "CPSIncDeviceApplication.axf" -A
+CPSIncDeviceApplication.axf  :
+section                         size        addr
+.text_bootloader                   0           0
+.text_apploader                38848       16384
+.text_signature                   64       55232
+.text_application             132400       55296
+.text_application_ARM.exidx        8      187696
+.stack_dummy                    2048   536870912
+.text_application_data          1104   536872960
+.bss                           11628   536874240
+.heap                           3328   536885872
+.nvm_dummy                      4096      187704
+.ARM.attributes                   46           0
+.comment                         126           0
+.debug_info                   144448           0
+.debug_abbrev                  15382           0
+.debug_loc                     67933           0
+.debug_aranges                  2200           0
+.debug_ranges                  10736           0
+.debug_line                    32187           0
+.debug_str                     64104           0
+.debug_frame                    8252           0
+Total                         538938
+
+
+ 
+11:41:37 **** Incremental Build of configuration GNU ARM v7.2.1 - Default for project CPSIncDeviceApplication ****
 make -j4 all 
 make: Nothing to be done for `all'.
+11:43:35 **** Incremental Build of configuration GNU ARM v7.2.1 - Default for project CPSIncDeviceApplication ****
+make -j4 all 
+Building file: ../app.c
+Invoking: GNU ARM C Compiler
+arm-none-eabi-gcc -g -gdwarf-2 -mcpu=cortex-m4 -mthumb -std=c99 '-D__HEAP_SIZE=0xD00' '-D__STACK_SIZE=0x800' '-DHAL_CONFIG=1' '-D__StackLimit=0x20000000' '-DEFR32BG1B232F256GM48=1' -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\Device\SiliconLabs\EFR32BG1B\Include" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\CMSIS\Include" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\emlib\inc" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\hardware\kit\common\bsp" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\radio\rail_lib\common" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\protocol\bluetooth\ble_stack\inc\common" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\hardware\kit\common\drivers" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\radio\rail_lib\protocol\ble" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\emlib\src" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\hardware\kit\common\halconfig" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\halconfig\inc\hal-config" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\app\bluetooth\common\util" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\emdrv\tempdrv\inc" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\protocol\bluetooth\ble_stack\inc\soc" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\emdrv\uartdrv\inc" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\Device\SiliconLabs\EFR32BG1B\Source" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\radio\rail_lib\protocol\ieee802154" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\radio\rail_lib\chip\efr32\efr32xg1x" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\emdrv\common\inc" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\emdrv\sleep\src" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\emdrv\sleep\inc" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\emdrv\gpiointerrupt\inc" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\bootloader\api" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\emdrv\tempdrv\src" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\Device\SiliconLabs\EFR32BG1B\Source\GCC" -I"C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\bootloader" -O2 -Wall -c -fmessage-length=0 -ffunction-sections -fdata-sections -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -MMD -MP -MF"app.d" -MT"app.o" -o "app.o" "../app.c"
+In file included from C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication/hal-config.h:22:0,
+                 from C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\protocol\bluetooth\ble_stack\inc\soc/native_gecko.h:25,
+                 from ../app.c:28:
+C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication/hal-config-board.h:59:2: warning: #warning "Following pin mappings need to be set for your custom board when using printf..>" [-Wcpp]
+ #warning "Following pin mappings need to be set for your custom board when using printf..>"
+  ^~~~~~~
+In file included from ../app.c:35:0:
+../app.c: In function 'appMain':
+../app.h:36:20: warning: implicit declaration of function 'swoFlush'; did you mean 'fflush'? [-Wimplicit-function-declaration]
+ #define flushSWO() swoFlush()
+                    ^
+../app.c:72:3: note: in expansion of macro 'flushSWO'
+   flushSWO();
+   ^~~~~~~~
+../app.c:125:3: warning: implicit declaration of function 'dischargeCapacitor' [-Wimplicit-function-declaration]
+   dischargeCapacitor();
+   ^~~~~~~~~~~~~~~~~~
+../app.c:188:16: warning: implicit declaration of function 'readStripDetectVoltage' [-Wimplicit-function-declaration]
+                readStripDetectVoltage();
+                ^~~~~~~~~~~~~~~~~~~~~~
+../app.c:189:16: warning: implicit declaration of function 'updateStripDetectVoltage' [-Wimplicit-function-declaration]
+                updateStripDetectVoltage();
+                ^~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:190:16: warning: implicit declaration of function 'notifyStripDetectVoltage' [-Wimplicit-function-declaration]
+                notifyStripDetectVoltage();
+                ^~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:192:16: warning: implicit declaration of function 'readTemperatureSensorDataPrintToConsole' [-Wimplicit-function-declaration]
+                readTemperatureSensorDataPrintToConsole();
+                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:193:16: warning: implicit declaration of function 'readBatteryDataPrintToConsole' [-Wimplicit-function-declaration]
+                readBatteryDataPrintToConsole();
+                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:196:17: warning: implicit declaration of function 'readIntegratedVoltage' [-Wimplicit-function-declaration]
+                 readIntegratedVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~
+../app.c:197:17: warning: implicit declaration of function 'updateIntegratedVoltage' [-Wimplicit-function-declaration]
+                 updateIntegratedVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~
+../app.c:198:17: warning: implicit declaration of function 'notifyIntegratedVoltage' [-Wimplicit-function-declaration]
+                 notifyIntegratedVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~
+../app.c:200:17: warning: implicit declaration of function 'readDifferentialVoltage'; did you mean 'ADC_ScanDifferentialInputAdd'? [-Wimplicit-function-declaration]
+                 readDifferentialVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~
+                 ADC_ScanDifferentialInputAdd
+../app.c:201:17: warning: implicit declaration of function 'updateDifferentialVoltage' [-Wimplicit-function-declaration]
+                 updateDifferentialVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:202:17: warning: implicit declaration of function 'notifyDifferentialVoltage' [-Wimplicit-function-declaration]
+                 notifyDifferentialVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:215:16: warning: implicit declaration of function 'switchMotorState' [-Wimplicit-function-declaration]
+                switchMotorState();
+                ^~~~~~~~~~~~~~~~
+../app.c: At top level:
+../app.c:294:6: warning: conflicting types for 'readBatteryDataPrintToConsole'
+ void readBatteryDataPrintToConsole(){
+      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:193:16: note: previous implicit declaration of 'readBatteryDataPrintToConsole' was here
+                readBatteryDataPrintToConsole();
+                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:299:6: warning: conflicting types for 'readTemperatureSensorDataPrintToConsole'
+ void readTemperatureSensorDataPrintToConsole(){
+      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:192:16: note: previous implicit declaration of 'readTemperatureSensorDataPrintToConsole' was here
+                readTemperatureSensorDataPrintToConsole();
+                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:312:6: warning: conflicting types for 'switchMotorState'
+ void switchMotorState(){
+      ^~~~~~~~~~~~~~~~
+../app.c:215:16: note: previous implicit declaration of 'switchMotorState' was here
+                switchMotorState();
+                ^~~~~~~~~~~~~~~~
+../app.c:332:6: warning: conflicting types for 'readStripDetectVoltage'
+ void readStripDetectVoltage(){ //needs function prototype
+      ^~~~~~~~~~~~~~~~~~~~~~
+../app.c:188:16: note: previous implicit declaration of 'readStripDetectVoltage' was here
+                readStripDetectVoltage();
+                ^~~~~~~~~~~~~~~~~~~~~~
+../app.c:347:6: warning: conflicting types for 'updateStripDetectVoltage'
+ void updateStripDetectVoltage(){ //needs function prototype
+      ^~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:189:16: note: previous implicit declaration of 'updateStripDetectVoltage' was here
+                updateStripDetectVoltage();
+                ^~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:353:6: warning: conflicting types for 'notifyStripDetectVoltage'
+ void notifyStripDetectVoltage(){ //needs function prototype
+      ^~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:190:16: note: previous implicit declaration of 'notifyStripDetectVoltage' was here
+                notifyStripDetectVoltage();
+                ^~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:357:6: warning: conflicting types for 'readDifferentialVoltage'
+ void readDifferentialVoltage(){ //needs function prototype
+      ^~~~~~~~~~~~~~~~~~~~~~~
+../app.c:200:17: note: previous implicit declaration of 'readDifferentialVoltage' was here
+                 readDifferentialVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~
+../app.c:373:6: warning: conflicting types for 'updateDifferentialVoltage'
+ void updateDifferentialVoltage(){ //needs function prototype
+      ^~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:201:17: note: previous implicit declaration of 'updateDifferentialVoltage' was here
+                 updateDifferentialVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:379:6: warning: conflicting types for 'notifyDifferentialVoltage'
+ void notifyDifferentialVoltage(){ //needs function prototype
+      ^~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:202:17: note: previous implicit declaration of 'notifyDifferentialVoltage' was here
+                 notifyDifferentialVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~~~
+../app.c:383:6: warning: conflicting types for 'readIntegratedVoltage'
+ void readIntegratedVoltage(){ //need function prototype
+      ^~~~~~~~~~~~~~~~~~~~~
+../app.c:196:17: note: previous implicit declaration of 'readIntegratedVoltage' was here
+                 readIntegratedVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~
+In file included from ../app.c:35:0:
+../app.c: In function 'readIntegratedVoltage':
+../app.c:395:11: warning: format '%d' expects argument of type 'int', but argument 2 has type 'long unsigned int' [-Wformat=]
+  printSWO("ADC INT = %d\n", ((adcData * 3300) / 4096));
+           ^                 ~~~~~~~~~~~~~~~~~~~~~~~~~
+../app.h:35:30: note: in definition of macro 'printSWO'
+ #define printSWO(...) printf(__VA_ARGS__)
+                              ^~~~~~~~~~~
+../app.c: At top level:
+../app.c:401:6: warning: conflicting types for 'updateIntegratedVoltage'
+ void updateIntegratedVoltage(){ //needs function prototype
+      ^~~~~~~~~~~~~~~~~~~~~~~
+../app.c:197:17: note: previous implicit declaration of 'updateIntegratedVoltage' was here
+                 updateIntegratedVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~
+../app.c:407:6: warning: conflicting types for 'notifyIntegratedVoltage'
+ void notifyIntegratedVoltage(){ //needs function prototype
+      ^~~~~~~~~~~~~~~~~~~~~~~
+../app.c:198:17: note: previous implicit declaration of 'notifyIntegratedVoltage' was here
+                 notifyIntegratedVoltage();
+                 ^~~~~~~~~~~~~~~~~~~~~~~
+../app.c:411:6: warning: conflicting types for 'dischargeCapacitor'
+ void dischargeCapacitor(){ //needs function prototype
+      ^~~~~~~~~~~~~~~~~~
+../app.c:125:3: note: previous implicit declaration of 'dischargeCapacitor' was here
+   dischargeCapacitor();
+   ^~~~~~~~~~~~~~~~~~
+Finished building: ../app.c
+ 
+Building target: CPSIncDeviceApplication.axf
+Invoking: GNU ARM C Linker
+arm-none-eabi-gcc -g -gdwarf-2 -mcpu=cortex-m4 -mthumb -T "C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\efr32bg1b232f256gm48.ld" -Xlinker --gc-sections -Xlinker -Map="CPSIncDeviceApplication.map" -mfpu=fpv4-sp-d16 -mfloat-abi=softfp --specs=nano.specs -o CPSIncDeviceApplication.axf -Wl,--start-group "./app/bluetooth/common/util/infrastructure.o" "./app.o" "./application_properties.o" "./gatt_db.o" "./init_app.o" "./init_board_efr32xg1.o" "./init_mcu_efr32xg1.o" "./main.o" "./hardware/kit/common/bsp/bsp_stk.o" "./hardware/kit/common/drivers/pg_retargetswo.o" "./hardware/kit/common/drivers/retargetio.o" "./platform/Device/SiliconLabs/EFR32BG1B/Source/GCC/startup_efr32bg1b.o" "./platform/Device/SiliconLabs/EFR32BG1B/Source/system_efr32bg1b.o" "./platform/emdrv/sleep/src/sleep.o" "./platform/emdrv/tempdrv/src/tempdrv.o" "./platform/emlib/src/em_adc.o" "./platform/emlib/src/em_assert.o" "./platform/emlib/src/em_burtc.o" "./platform/emlib/src/em_cmu.o" "./platform/emlib/src/em_core.o" "./platform/emlib/src/em_cryotimer.o" "./platform/emlib/src/em_crypto.o" "./platform/emlib/src/em_dbg.o" "./platform/emlib/src/em_emu.o" "./platform/emlib/src/em_gpio.o" "./platform/emlib/src/em_i2c.o" "./platform/emlib/src/em_idac.o" "./platform/emlib/src/em_msc.o" "./platform/emlib/src/em_rmu.o" "./platform/emlib/src/em_rtcc.o" "./platform/emlib/src/em_se.o" "./platform/emlib/src/em_system.o" "./platform/emlib/src/em_timer.o" "./platform/emlib/src/em_usart.o" "C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\protocol\bluetooth\lib\EFR32BG1B\GCC\binapploader.o" "C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\protocol\bluetooth\lib\EFR32BG1B\GCC\libmbedtls.a" "C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\protocol\bluetooth\lib\EFR32BG1B\GCC\libpsstore.a" "C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\protocol\bluetooth\lib\EFR32BG1B\GCC\libbluetooth.a" "C:\Users\colto\Documents\Programming_Repositories\CPSInc\SimplicityStudio\v4_workspace\CPSIncDeviceApplication\platform\radio\rail_lib\autogen\librail_release\librail_efr32xg1_gcc_release.a" -lm -Wl,--end-group -Wl,--start-group -lgcc -lc -lnosys -Wl,--end-group
+Finished building target: CPSIncDeviceApplication.axf
+ 
+Building hex file: CPSIncDeviceApplication.hex
+arm-none-eabi-objcopy -O ihex "CPSIncDeviceApplication.axf" "CPSIncDeviceApplication.hex"
+ 
+Building bin file: CPSIncDeviceApplication.bin
+arm-none-eabi-objcopy -O binary "CPSIncDeviceApplication.axf" "CPSIncDeviceApplication.bin"
+ 
+Building s37 file: CPSIncDeviceApplication.s37
+arm-none-eabi-objcopy -O srec "CPSIncDeviceApplication.axf" "CPSIncDeviceApplication.s37"
+ 
+Running size tool
+arm-none-eabi-size "CPSIncDeviceApplication.axf" -A
+CPSIncDeviceApplication.axf  :
+section                         size        addr
+.text_bootloader                   0           0
+.text_apploader                38848       16384
+.text_signature                   64       55232
+.text_application             132400       55296
+.text_application_ARM.exidx        8      187696
+.stack_dummy                    2048   536870912
+.text_application_data          1104   536872960
+.bss                           11628   536874240
+.heap                           3328   536885872
+.nvm_dummy                      4096      187704
+.ARM.attributes                   46           0
+.comment                         126           0
+.debug_info                   144434           0
+.debug_abbrev                  15358           0
+.debug_loc                     67933           0
+.debug_aranges                  2200           0
+.debug_ranges                  10712           0
+.debug_line                    32190           0
+.debug_str                     64104           0
+.debug_frame                    8252           0
+Total                         538879
+
+
+ 

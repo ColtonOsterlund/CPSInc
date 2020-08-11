@@ -119,19 +119,10 @@ void appMain(gecko_configuration_t *pconfig)
           												//Will also notify phone user if the value changes after the strip has
           												//been detected indicating that the strip has been removed.
   	  	  	  	  	  	  	  	  	  	  	  	  	  	  //Also prints integrated voltage and differential voltage to SWO Console for testing purposes
+  gecko_cmd_hardware_set_soft_timer(983100, 5, 0); //discharges the capacitor every 30 seconds
 
 
-
-  //IMPORTANT FOR TESTING WITHOUT USING THE APP: You can run one test at a time per debug session. After a test is ran, the capacitor needs to discharge on the device.
-  //Usually the discharging of the capacitor is handled by the app, but since you are running tests without connecting to the app,
-  //you need to manually discharge the capacitor after every test.
-  //STEPS TO DO THIS:
-  // 1) Run a debug session normally and perform test, reading out the integrated voltage values from the SWO Debug prints
-  // 2) When you finish reading the integrated voltage prints and you deem the test has been running long enough for sufficient data - stop the debug session, comment out the "testRunning = 1;" line above and uncomment the "dischargeCapacitor();" line below
-  // 3) Run a new debug session, you do not need to run it for very long but at least make sure that it reached the point in the code where the "dischargeCapacitor()" line was called and give it sufficient time to complete the timer interrupt request inside this function (1s prior to function being called)
-  // 4) Close that debug session, uncomment the "testRunning = 1;" line above and comment out the "dischargeCapacitor();" line below and re-run a new debug session to start a new test
-
-  //dischargeCapacitor()
+  dischargeCapacitor();
 
 
   while (1) {
@@ -228,6 +219,9 @@ void appMain(gecko_configuration_t *pconfig)
     	      	  }
     	      	  else if(evt->data.handle == 4){ //timer for reading battery data
     	      		  readBatteryDataPrintToConsole();
+    	      	  }
+    	      	else if(evt->data.handle == 5){ //timer for discharging capacitor
+    	      		dischargeCapacitor();
     	      	  }
 
     	break;
@@ -422,6 +416,8 @@ void dischargeCapacitor(){ //needs function prototype
 	//printSWO("\n\n%d\n\n", GPIO_PinOutGet(gpioPortD, 13));
 
 	//IDAC_OutEnable(IDAC0, false); //enable IDAC output
+
+	printSWO("\n\n\n\n\nDISCHARGING CAPACITOR - RESETTING TEST\n\n\n\n\n");
 
 	gecko_cmd_hardware_set_soft_timer(65536, 1, 1); //sets a 2 second timer. SWITCH pin stays LOW for 2 second to ensure
 													//it is fully discharging the capacitor
