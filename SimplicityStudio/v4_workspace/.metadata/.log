@@ -600,3 +600,9 @@ Command-line arguments:  -os win32 -ws win32 -arch x86_64
 
 !ENTRY com.silabs.ss.platform.rcp.core 2 0 2020-08-11 11:19:27.973
 !MESSAGE Invalid discovery key: null
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 1 0 2020-08-11 11:20:31.056
+!MESSAGE Launching SiAgent (Silicon Labs TCF Agent)
+
+!ENTRY org.eclipse.cdt.dsf.ui 2 0 2020-08-11 11:20:38.806
+!MESSAGE Unable to locate file: C:\Users\colto\SimplicityStudio\v4_workspace\soc-empty_3\hardware\kit\common\drivers\pg_retargetswo.c
