@@ -948,7 +948,7 @@ public class SingleStripTestViewController: UIViewController{
             }
             
             let currentTime = DispatchTime.now()
-            let testDuration = 30 //run for 8 seconds for app, 30 seconds for testing
+            let testDuration = 8 //run for 8 seconds for app, 30 seconds for testing
             
             //MARK: Normal Test
             finalValueTestQueue.asyncAfter(deadline: currentTime + .seconds(testDuration * 1/4)){
