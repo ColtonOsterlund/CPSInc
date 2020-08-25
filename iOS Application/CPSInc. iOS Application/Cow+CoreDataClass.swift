@@ -2,12 +2,10 @@
 //  Cow+CoreDataClass.swift
 //  CPSInc. iOS Application
 //
-//  Created by Colton on 2019-08-16.
-//  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
+//  Created by Colton on 2020-07-14.
+//  Copyright © 2020 Creative Protein Solutions Inc. All rights reserved.
 //
 //
-
-//CLASS FOR COW OBJECT
 
 import Foundation
 import CoreData

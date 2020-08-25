@@ -1,8 +1,9 @@
-FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/Alamofire" "${PODS_CONFIGURATION_BUILD_DIR}/Charts" "${PODS_CONFIGURATION_BUILD_DIR}/RNCryptor" "${PODS_CONFIGURATION_BUILD_DIR}/SwiftKeychainWrapper" "${PODS_CONFIGURATION_BUILD_DIR}/SwiftyDropbox"
+FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/Alamofire" "${PODS_CONFIGURATION_BUILD_DIR}/Charts" "${PODS_CONFIGURATION_BUILD_DIR}/Mobile-Buy-SDK" "${PODS_CONFIGURATION_BUILD_DIR}/RNCryptor" "${PODS_CONFIGURATION_BUILD_DIR}/SwiftKeychainWrapper" "${PODS_CONFIGURATION_BUILD_DIR}/SwiftyDropbox"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/Frameworks' '@loader_path/Frameworks'
-OTHER_CFLAGS = $(inherited) -iquote "${PODS_CONFIGURATION_BUILD_DIR}/Alamofire/Alamofire.framework/Headers" -iquote "${PODS_CONFIGURATION_BUILD_DIR}/Charts/Charts.framework/Headers" -iquote "${PODS_CONFIGURATION_BUILD_DIR}/RNCryptor/RNCryptor.framework/Headers" -iquote "${PODS_CONFIGURATION_BUILD_DIR}/SwiftKeychainWrapper/SwiftKeychainWrapper.framework/Headers" -iquote "${PODS_CONFIGURATION_BUILD_DIR}/SwiftyDropbox/SwiftyDropbox.framework/Headers"
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/Alamofire/Alamofire.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/Charts/Charts.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/Mobile-Buy-SDK/MobileBuySDK.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/RNCryptor/RNCryptor.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/SwiftKeychainWrapper/SwiftKeychainWrapper.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/SwiftyDropbox/SwiftyDropbox.framework/Headers"
+OTHER_LDFLAGS = $(inherited) -framework "Alamofire" -framework "Charts" -framework "Foundation" -framework "MobileBuySDK" -framework "RNCryptor" -framework "SwiftKeychainWrapper" -framework "SwiftyDropbox" -framework "SystemConfiguration" -framework "UIKit" -framework "WebKit"
 PODS_BUILD_DIR = ${BUILD_DIR}
 PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
 PODS_PODFILE_DIR_PATH = ${SRCROOT}/.
 PODS_ROOT = ${SRCROOT}/Pods
+USE_RECURSIVE_SCRIPT_INPUTS_IN_SCRIPT_PHASES = YES

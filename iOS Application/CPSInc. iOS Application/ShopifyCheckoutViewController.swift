@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Buy
+import MobileBuySDK
 import SwiftKeychainWrapper
 import SafariServices
 
@@ -155,7 +155,7 @@ class ShopifyCheckoutViewController: UIViewController, UITableViewDelegate, UITa
         }
         
         let task = self.client.queryGraphWith(query){ result, error in
-            guard error == nil else {
+            if(error != nil){
                 DispatchQueue.main.async{
                     self.showToast(controller: self, message: "A request error occured while checking out", seconds: 1)
                     print(error)
@@ -203,7 +203,7 @@ class ShopifyCheckoutViewController: UIViewController, UITableViewDelegate, UITa
             }
                         
             let innerTask = self.client.mutateGraphWith(mutation){ result, error in
-                guard error == nil else {
+                if(error != nil){
                     DispatchQueue.main.async{
                         self.showToast(controller: self, message: "A request error occured while checking out", seconds: 1)
                         print(error)
@@ -211,7 +211,7 @@ class ShopifyCheckoutViewController: UIViewController, UITableViewDelegate, UITa
                     return
                 }
 
-                guard let checkoutUserError = result?.checkoutCreate?.checkoutUserErrors else {
+                if(result?.checkoutCreate?.checkoutUserErrors.isEmpty == false){
                     DispatchQueue.main.async{
                         self.showToast(controller: self, message: "A user error occured while checking out", seconds: 1)
                     }
@@ -264,14 +264,14 @@ class ShopifyCheckoutViewController: UIViewController, UITableViewDelegate, UITa
                         
                         print(response)
                         
-                        guard error == nil else {
+                        if(error != nil){
                             DispatchQueue.main.async{
                                 self.showToast(controller: self, message: "A request error occured while checking out", seconds: 1)
                             }
                             return
                         }
 
-                        guard let checkoutUserError = response?.checkoutShippingLineUpdate?.checkoutUserErrors else {
+                        if(response?.checkoutShippingLineUpdate?.checkoutUserErrors.isEmpty == false){
                             DispatchQueue.main.async{
                                 self.showToast(controller: self, message: "A user error occured while checking out", seconds: 1)
                             }
@@ -314,7 +314,43 @@ class ShopifyCheckoutViewController: UIViewController, UITableViewDelegate, UITa
     
     
     @objc private func removeFromCartBtnPressed(){
-        
+        let alert = UIAlertController(title: "Quantity", message: "Enter amount to be removed: ", preferredStyle: .alert)
+               alert.addTextField { (textField) in
+                   textField.placeholder = "Quantity"
+                   textField.keyboardType = .numberPad
+               }
+
+               alert.addAction(UIAlertAction(title: "Submit", style: .default, handler: { [weak alert] (_) in
+                   guard let textField = alert?.textFields?[0], let userText = textField.text else { return }
+                   
+                   let quantity = Int(userText)
+                   if(quantity == nil){
+                       self.showToast(controller: self, message: "Not a valid number", seconds: 1)
+                   }
+                   else if(quantity == 0){
+                       return
+                   }
+                   else{
+                       
+                    let oldAmount = self.itemAmountsInCart[self.selectedIndex!]
+                    let newAmount = oldAmount - quantity!
+                    
+                    if(newAmount <= 0){
+                        self.itemNamesInCart.remove(at: self.selectedIndex!)
+                        self.itemIDsInCart.remove(at: self.selectedIndex!)
+                        self.itemAmountsInCart.remove(at: self.selectedIndex!)
+                    }
+                    else{
+                        self.itemAmountsInCart[self.selectedIndex!] = newAmount
+                    }
+                    
+                    self.tableView.reloadData()
+
+                   }
+               }))
+               alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+
+               self.present(alert, animated: true, completion: nil)
     }
     
     

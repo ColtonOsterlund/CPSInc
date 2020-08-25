@@ -15,9 +15,10 @@ import CoreData
 public class TestLogbookViewController: UITableViewController, WCSessionDelegate, UITextFieldDelegate{
     
     private var selectedCow: Cow? = nil
+    private var timeFrame: Date? = nil
     private var testList = [Test]()
     
-    private var cowLogbook: CowLogbookViewController? = nil
+    public var cowLogbook: CowLogbookViewController? = nil
     private var testInfoView: TestInfoViewController? = nil
     private var appDelegate: AppDelegate? = nil
     private var testChartView: TestChartViewController? = nil
@@ -60,17 +61,35 @@ public class TestLogbookViewController: UITableViewController, WCSessionDelegate
     
     
     private func fetchSavedData(){
-        let fetchRequest: NSFetchRequest<Test> = Test.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "cow == %@", self.selectedCow!) //list the tests from the selected cow
-        
-        do{
-            let savedTestArray = try appDelegate?.persistentContainer.viewContext.fetch(fetchRequest)
-            self.testList = savedTestArray!
-        } catch{
-            print("Error during fetch request")
+        if(timeFrame == nil){ //SELECT ALL TESTS
+            let fetchRequest: NSFetchRequest<Test> = Test.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "cow == %@", self.selectedCow!)
+            
+            do{
+                let savedTestArray = try appDelegate?.persistentContainer.viewContext.fetch(fetchRequest)
+                self.testList = savedTestArray!
+            } catch{
+                print("Error during fetch request")
+            }
+            
+            tableView.reloadData()
         }
-        
-        tableView.reloadData()
+        else{ //SELECT TESTS AFTER A SPECIFIC DATE
+            let fetchRequest: NSFetchRequest<Test> = Test.fetchRequest()
+            let predicateCow = NSPredicate(format: "cow == %@", self.selectedCow!)
+            let predicateTimeFrame = NSPredicate(format: "date >= %@", timeFrame! as NSDate)
+            let fetchPredicate = NSCompoundPredicate(type: .and, subpredicates: [predicateTimeFrame, predicateCow])
+            fetchRequest.predicate = fetchPredicate
+            
+            do{
+                let savedTestArray = try appDelegate?.persistentContainer.viewContext.fetch(fetchRequest)
+                self.testList = savedTestArray!
+            } catch{
+                print("Error during fetch request")
+            }
+            
+            tableView.reloadData()
+        }
     }
     
     
@@ -376,15 +395,13 @@ public class TestLogbookViewController: UITableViewController, WCSessionDelegate
     
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "testTableViewCell", for: indexPath)
-        //        let peripheral = peripheralDevices[indexPath.row]
-        //        cell.textLabel?.text = peripheral.name
         
         let dateformatter = DateFormatter()
         dateformatter.dateStyle = DateFormatter.Style.short
         dateformatter.timeStyle = DateFormatter.Style.short
         
         
-        cell.textLabel?.text = dateformatter.string(from: testList[indexPath.row].date! as Date) + " | " + testList[indexPath.row].dataType!
+        cell.textLabel?.text = dateformatter.string(from: testList[indexPath.row].date! as Date)
         
         
         return cell
@@ -445,5 +462,8 @@ public class TestLogbookViewController: UITableViewController, WCSessionDelegate
         return testList
     }
     
+    public func setTimeFrame(date: Date?){
+        self.timeFrame = date
+    }
     
 }

@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "LightweightObservable",
+        "repositoryURL": "https://github.com/fxm90/LightweightObservable",
+        "state": {
+          "branch": null,
+          "revision": "6cb2ae97f7783116a64110c8f678b31249944519",
+          "version": "2.1.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

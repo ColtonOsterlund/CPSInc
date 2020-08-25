@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0930"
+   LastUpgradeVersion = "1100"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A20EF90EA7586E6A9091B6FD7672E3F0"
+               BlueprintIdentifier = "F4749DB413407F53557CEA11AE6CC716"
                BuildableName = "Pods_CPSInc__iOS_Application.framework"
                BlueprintName = "Pods-CPSInc. iOS Application"
                ReferencedContainer = "container:Pods.xcodeproj">

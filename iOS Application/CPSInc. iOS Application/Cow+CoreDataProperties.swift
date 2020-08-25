@@ -2,12 +2,10 @@
 //  Cow+CoreDataProperties.swift
 //  CPSInc. iOS Application
 //
-//  Created by Colton on 2019-08-16.
-//  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
+//  Created by Colton on 2020-07-14.
+//  Copyright © 2020 Creative Protein Solutions Inc. All rights reserved.
 //
 //
-
-//CLASS FOR COW OBJECT
 
 import Foundation
 import CoreData
@@ -19,16 +17,16 @@ extension Cow {
         return NSFetchRequest<Cow>(entityName: "Cow")
     }
 
+    @NSManaged public var dailyMilkAverage: String?
     @NSManaged public var daysInMilk: String?
     @NSManaged public var dryOffDay: String?
+    @NSManaged public var farmBreedingIndex: String?
     @NSManaged public var id: String?
     @NSManaged public var mastitisHistory: String?
     @NSManaged public var methodOfDryOff: String?
+    @NSManaged public var numberTimesBred: String?
     @NSManaged public var parity: String?
     @NSManaged public var reproductionStatus: String?
-    @NSManaged public var dailyMilkAverage: String?
-    @NSManaged public var numberTimesBred: String?
-    @NSManaged public var farmBreedingIndex: String?
     @NSManaged public var herd: Herd?
     @NSManaged public var testData: NSSet?
 

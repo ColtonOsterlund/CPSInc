@@ -2,12 +2,10 @@
 //  Test+CoreDataClass.swift
 //  CPSInc. iOS Application
 //
-//  Created by Colton on 2019-07-17.
-//  Copyright © 2019 Creative Protein Solutions Inc. All rights reserved.
+//  Created by Colton on 2020-07-21.
+//  Copyright © 2020 Creative Protein Solutions Inc. All rights reserved.
 //
 //
-
-//CLASS FOR TEST OBJECT 
 
 import Foundation
 import CoreData

@@ -21,7 +21,7 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
     private var filteredHerds = [Herd]()
     
     //ViewControllers
-    private var menuView: MenuViewController? = nil
+    public var menuView: MenuViewController? = nil
     private var cowLogbook: CowLogbookViewController? = nil
     private var herdInfoView: HerdInfoViewController? = nil
     private var appDelegate: AppDelegate? = nil
@@ -29,6 +29,7 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
     
     //UISearchControllers
     let searchController = UISearchController(searchResultsController: nil)
+    
     
     //WCSession
     private var wcSession: WCSession? = nil
@@ -102,6 +103,7 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
         definesPresentationContext = true
     }
     
+    
     @objc private func addBtnPressed(){
         navigationController?.pushViewController(addHerdView!, animated: true)
         
@@ -152,15 +154,20 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
         
         
         let listFiles = dropboxClient!.files.listFolder(path: "/CSV Uploads")
-        let importAlert = UIAlertController(title: "Import", message: "Add Files to /App/Creative Protein Solutions Inc./CSV Uploads in Dropbox to Import (only .csv files will appear)", preferredStyle: .actionSheet)
+        let importAlert = UIAlertController(title: "Import", message: "Add Files to /App/Creative Protein Solutions Inc./CSV Uploads in Dropbox to Import (only .csv files entered into this directory will appear here)", preferredStyle: .actionSheet)
         
         importAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         listFiles.response{ responseList, error in
         
+            if(responseList != nil){
+                
+            var existsCSV = false
+                
             for entry in responseList!.entries{
                 print(entry)
                 if(String(entry.name.suffix(4)).lowercased() == ".csv"){ //check that it is a .csv file
+                    existsCSV = true
                     importAlert.addAction(UIAlertAction(title: entry.name, style: .default, handler: { action in
                         //download and parse file here
                         
@@ -189,8 +196,8 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
                        
                         
                         
-                        
                     }))
+                }
                 }
             }
             
@@ -231,11 +238,15 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
             //iterate through csvRowArray creating a new cow for each row
             for row in csvRowArray{
                 //separate row into cow attribute array
-                let cowAttributeArray = row.components(separatedBy: ",")
+                var cowAttributeArray = row.components(separatedBy: CharacterSet(charactersIn: ",\n\r"))
                 
                 
+                print(cowAttributeArray[0])
                 
-             
+                cowAttributeArray = cowAttributeArray.filter{$0 != ""}
+                
+                
+                if(cowAttributeArray.isEmpty == false){
                 DispatchQueue.main.sync {
                     print("-" + cowAttributeArray[0] + "-")
                 }
@@ -254,13 +265,17 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
                         case "ID":
                             print("id: " + attribute)
                             cow!.id = attribute
+                            
                         case "DIM":
                             print("dim: " + attribute)
                             cow!.daysInMilk = attribute
+                            
                             cow!.dryOffDay = String(305 - Int(attribute)!)
+                            
                         case "MAVG":
                             print("mavg: " + attribute)
                             cow!.dailyMilkAverage = attribute
+                            
 //                        case "dry off day":
 //                            cow!.dryOffDay = attribute
 //                        case "mastitis history":
@@ -272,15 +287,19 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
                         case "LACT":
                             print("lact: " + attribute)
                             cow!.parity = attribute
+                            
                         case "RPRO":
                             print("rpro: " + attribute)
                             cow!.reproductionStatus = attribute
+                            
                         case "TBRD":
                             print("tbrd: " + attribute)
                             cow!.numberTimesBred = attribute
+                            
                         case "MFI":
                             print("mfi: " + attribute)
                             cow!.farmBreedingIndex = attribute
+                          
                         default:
                             //print("default case")
                             break
@@ -288,9 +307,12 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
                 }
                 
                 
-                cow!.mastitisHistory = ""
-                cow!.methodOfDryOff = ""
+                    cow!.mastitisHistory = ""
+                    cow!.methodOfDryOff = ""
+
                 cow!.herd = importedHerd
+                    
+                }
                 
 //                if(bytes >= 8000){ //find actual number that this would be beneficial - SAVES STACK MEMORY
 //                    self.appDelegate?.saveContext() //saves cow to disk memory

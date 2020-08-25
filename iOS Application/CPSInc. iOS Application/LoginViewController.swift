@@ -11,7 +11,7 @@
 import UIKit
 import SwiftKeychainWrapper
 import WatchConnectivity
-import Buy
+import MobileBuySDK
 
 
 public class LoginViewController: UIViewController, UITextFieldDelegate, WCSessionDelegate {
@@ -280,6 +280,8 @@ public class LoginViewController: UIViewController, UITextFieldDelegate, WCSessi
                         let jwtSavedSuccessfully = KeychainWrapper.standard.set(jwtToken!, forKey: "JWT-Auth-Token") //jwt gets saved to keychain upon login
                         
                         let userIDSavedSuccessfully = KeychainWrapper.standard.set(userID!, forKey: "User-ID-Token") //user id gets saved to keychain upon login
+                        
+                        print("LOGGED IN USER ID: " + userID!)
                         
                         if(jwtSavedSuccessfully && userIDSavedSuccessfully){
                             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)){ //go after 1 second from now you that you know the toast is complete

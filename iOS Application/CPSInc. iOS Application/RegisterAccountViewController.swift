@@ -10,7 +10,8 @@
 
 import UIKit
 import SwiftKeychainWrapper
-import Buy
+import MobileBuySDK
+import PhoneNumberKit
 
 
 class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
@@ -30,15 +31,15 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
     let firstNameTextField = UITextField()
     let lastNameTextField = UITextField()
     let emailTextField = UITextField()
-    let phoneCountryCodeTextField = UITextField()
-    let phoneAreaCodeTextField = UITextField()
-    let phoneFirstThreeDigitTextField = UITextField()
-    let phoneLastFourDigitTextField = UITextField()
-    let phonePlusLabel = UILabel()
-    let phoneDashOneLabel = UILabel()
-    let phoneDashTwoLabel = UILabel()
-    let phoneDashThreeLabel = UILabel()
-    let phoneLabel = UILabel()
+//    let phoneCountryCodeTextField = UITextField()
+//    let phoneAreaCodeTextField = UITextField()
+//    let phoneFirstThreeDigitTextField = UITextField()
+//    let phoneLastFourDigitTextField = UITextField()
+//    let phonePlusLabel = UILabel()
+//    let phoneDashOneLabel = UILabel()
+//    let phoneDashTwoLabel = UILabel()
+//    let phoneDashThreeLabel = UILabel()
+//    let phoneLabel = UILabel()
     
     let address1TextField = UITextField()
     let address2TextField = UITextField()
@@ -46,6 +47,9 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
     let countryTextField = UITextField()
     let provinceTextField = UITextField()
     let zipCodeTextField = UITextField()
+    let phoneTextField = UITextField() //this using an "AsYouTypeFormatter"
+    
+    private var currentPhoneNumberText: String = ""
     
     let usernameTextField = UITextField()
     let passwordTextField = UITextField()
@@ -59,6 +63,8 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
     
     //Buy SDK client
     let client = Graph.Client(shopDomain: "creative-protein-solutions.myshopify.com", apiKey: "28893d9e78d310dde27dde211fa414d7")
+    
+    let phoneNumberKit = PhoneNumberKit()
     
     
     // This allows you to initialise your custom UIViewController without a nib or bundle.
@@ -96,7 +102,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
 //        view.addSubview(logoImage)
         
         scrollView.backgroundColor = .init(red: 0, green: 0.637, blue: 0.999, alpha: 1)
-        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 1.4)
+        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 1.7)
         scrollView.frame = view.bounds
         view.addSubview(scrollView)
         
@@ -111,6 +117,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
         firstNameTextField.borderStyle = .roundedRect
         firstNameTextField.tag = 0
         firstNameTextField.delegate = self
+        firstNameTextField.becomeFirstResponder()
         contentView.addSubview(firstNameTextField)
         
         lastNameTextField.backgroundColor = .white
@@ -132,75 +139,86 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
         emailTextField.delegate = self
         contentView.addSubview(emailTextField)
         
-        phonePlusLabel.text = "+"
-        phonePlusLabel.textColor = .black
-        phonePlusLabel.textAlignment = .center
-        phonePlusLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
-        contentView.addSubview(phonePlusLabel)
+//        phonePlusLabel.text = "+"
+//        phonePlusLabel.textColor = .black
+//        phonePlusLabel.textAlignment = .center
+//        phonePlusLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
+//        contentView.addSubview(phonePlusLabel)
+//
+//        phoneLabel.text = "Phone:"
+//        phoneLabel.textColor = .gray
+//        phoneLabel.textAlignment = .center
+//        //phoneLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
+//        contentView.addSubview(phoneLabel)
+//
+//        phoneDashOneLabel.text = "-"
+//        phoneDashOneLabel.textColor = .black
+//        phoneDashOneLabel.textAlignment = .center
+//        phoneDashOneLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
+//        contentView.addSubview(phoneDashOneLabel)
+//
+//        phoneDashTwoLabel.text = "-"
+//        phoneDashTwoLabel.textColor = .black
+//        phoneDashTwoLabel.textAlignment = .center
+//        phoneDashTwoLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
+//        contentView.addSubview(phoneDashTwoLabel)
+//
+//        phoneDashThreeLabel.text = "-"
+//        phoneDashThreeLabel.textColor = .black
+//        phoneDashThreeLabel.textAlignment = .center
+//        phoneDashThreeLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
+//        contentView.addSubview(phoneDashThreeLabel)
         
-        phoneLabel.text = "Phone:"
-        phoneLabel.textColor = .gray
-        phoneLabel.textAlignment = .center
-        //phoneLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
-        contentView.addSubview(phoneLabel)
+//        phoneLastFourDigitTextField.backgroundColor = .white
+//        phoneLastFourDigitTextField.textColor = .black
+//        phoneLastFourDigitTextField.placeholder = "Phone Number"
+//        phoneLastFourDigitTextField.keyboardType = .numberPad
+//        phoneLastFourDigitTextField.autocapitalizationType = .none
+//        phoneLastFourDigitTextField.borderStyle = .roundedRect
+//        phoneLastFourDigitTextField.tag = 6
+//        phoneLastFourDigitTextField.delegate = self
+//        contentView.addSubview(phoneLastFourDigitTextField)
         
-        phoneDashOneLabel.text = "-"
-        phoneDashOneLabel.textColor = .black
-        phoneDashOneLabel.textAlignment = .center
-        phoneDashOneLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
-        contentView.addSubview(phoneDashOneLabel)
+        phoneTextField.backgroundColor = .white
+        phoneTextField.textColor = .black
+        phoneTextField.placeholder = "Phone Number"
+        phoneTextField.keyboardType = .numberPad
+        phoneTextField.autocapitalizationType = .none
+        phoneTextField.borderStyle = .roundedRect
+        phoneTextField.tag = 6
+        phoneTextField.delegate = self
+        phoneTextField.addTarget(self, action: #selector(editPhoneTextFieldRealTime), for: .editingChanged)
+        contentView.addSubview(phoneTextField)
         
-        phoneDashTwoLabel.text = "-"
-        phoneDashTwoLabel.textColor = .black
-        phoneDashTwoLabel.textAlignment = .center
-        phoneDashTwoLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
-        contentView.addSubview(phoneDashTwoLabel)
-        
-        phoneDashThreeLabel.text = "-"
-        phoneDashThreeLabel.textColor = .black
-        phoneDashThreeLabel.textAlignment = .center
-        phoneDashThreeLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
-        contentView.addSubview(phoneDashThreeLabel)
-        
-        phoneCountryCodeTextField.backgroundColor = .white
-        phoneCountryCodeTextField.textColor = .black
-        phoneCountryCodeTextField.placeholder = "x"
-        phoneCountryCodeTextField.keyboardType = .numberPad
-        phoneCountryCodeTextField.autocapitalizationType = .none
-        phoneCountryCodeTextField.borderStyle = .roundedRect
-        phoneCountryCodeTextField.tag = 6
-        phoneCountryCodeTextField.delegate = self
-        contentView.addSubview(phoneCountryCodeTextField)
-        
-        phoneAreaCodeTextField.backgroundColor = .white
-        phoneAreaCodeTextField.textColor = .black
-        phoneAreaCodeTextField.placeholder = "xxx"
-        phoneAreaCodeTextField.keyboardType = .numberPad
-        phoneAreaCodeTextField.autocapitalizationType = .none
-        phoneAreaCodeTextField.borderStyle = .roundedRect
-        phoneAreaCodeTextField.tag = 13
-        phoneAreaCodeTextField.delegate = self
-        contentView.addSubview(phoneAreaCodeTextField)
-        
-        phoneFirstThreeDigitTextField.backgroundColor = .white
-        phoneFirstThreeDigitTextField.textColor = .black
-        phoneFirstThreeDigitTextField.placeholder = "xxx"
-        phoneFirstThreeDigitTextField.keyboardType = .numberPad
-        phoneFirstThreeDigitTextField.autocapitalizationType = .none
-        phoneFirstThreeDigitTextField.borderStyle = .roundedRect
-        phoneFirstThreeDigitTextField.tag = 14
-        phoneFirstThreeDigitTextField.delegate = self
-        contentView.addSubview(phoneFirstThreeDigitTextField)
-        
-        phoneLastFourDigitTextField.backgroundColor = .white
-        phoneLastFourDigitTextField.textColor = .black
-        phoneLastFourDigitTextField.placeholder = "xxxx"
-        phoneLastFourDigitTextField.keyboardType = .numberPad
-        phoneLastFourDigitTextField.autocapitalizationType = .none
-        phoneLastFourDigitTextField.borderStyle = .roundedRect
-        phoneLastFourDigitTextField.tag = 15
-        phoneLastFourDigitTextField.delegate = self
-        contentView.addSubview(phoneLastFourDigitTextField)
+//        phoneAreaCodeTextField.backgroundColor = .white
+//        phoneAreaCodeTextField.textColor = .black
+//        phoneAreaCodeTextField.placeholder = "xxx"
+//        phoneAreaCodeTextField.keyboardType = .numberPad
+//        phoneAreaCodeTextField.autocapitalizationType = .none
+//        phoneAreaCodeTextField.borderStyle = .roundedRect
+//        phoneAreaCodeTextField.tag = 13
+//        phoneAreaCodeTextField.delegate = self
+//        contentView.addSubview(phoneAreaCodeTextField)
+//
+//        phoneFirstThreeDigitTextField.backgroundColor = .white
+//        phoneFirstThreeDigitTextField.textColor = .black
+//        phoneFirstThreeDigitTextField.placeholder = "xxx"
+//        phoneFirstThreeDigitTextField.keyboardType = .numberPad
+//        phoneFirstThreeDigitTextField.autocapitalizationType = .none
+//        phoneFirstThreeDigitTextField.borderStyle = .roundedRect
+//        phoneFirstThreeDigitTextField.tag = 14
+//        phoneFirstThreeDigitTextField.delegate = self
+//        contentView.addSubview(phoneFirstThreeDigitTextField)
+//
+//        phoneLastFourDigitTextField.backgroundColor = .white
+//        phoneLastFourDigitTextField.textColor = .black
+//        phoneLastFourDigitTextField.placeholder = "xxxx"
+//        phoneLastFourDigitTextField.keyboardType = .numberPad
+//        phoneLastFourDigitTextField.autocapitalizationType = .none
+//        phoneLastFourDigitTextField.borderStyle = .roundedRect
+//        phoneLastFourDigitTextField.tag = 15
+//        phoneLastFourDigitTextField.delegate = self
+//        contentView.addSubview(phoneLastFourDigitTextField)
         
         address1TextField.backgroundColor = .white
         address1TextField.textColor = .black
@@ -326,63 +344,69 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
         emailTextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
         emailTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         
-        phoneLabel.translatesAutoresizingMaskIntoConstraints = false
-        phoneLabel.leftAnchor.constraint(equalTo: emailTextField.leftAnchor).isActive = true
-        phoneLabel.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
-        phoneLabel.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.15)).isActive = true
-        phoneLabel.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+//        phoneLabel.translatesAutoresizingMaskIntoConstraints = false
+//        phoneLabel.leftAnchor.constraint(equalTo: emailTextField.leftAnchor).isActive = true
+//        phoneLabel.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
+//        phoneLabel.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.15)).isActive = true
+//        phoneLabel.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+//
+//        phonePlusLabel.translatesAutoresizingMaskIntoConstraints = false
+//        phonePlusLabel.leftAnchor.constraint(equalTo: phoneLabel.rightAnchor, constant: (UIScreen.main.bounds.width * 0.01)).isActive = true
+//        phonePlusLabel.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
+//        phonePlusLabel.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.03)).isActive = true
+//        phonePlusLabel.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+//
+//        phoneCountryCodeTextField.translatesAutoresizingMaskIntoConstraints = false
+//        phoneCountryCodeTextField.leftAnchor.constraint(equalTo: phonePlusLabel.rightAnchor, constant: (UIScreen.main.bounds.width * 0.01)).isActive = true
+//        phoneCountryCodeTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
+//        phoneCountryCodeTextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.075)).isActive = true
+//        phoneCountryCodeTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+//
+//        phoneDashOneLabel.translatesAutoresizingMaskIntoConstraints = false
+//        phoneDashOneLabel.leftAnchor.constraint(equalTo: phoneCountryCodeTextField.rightAnchor).isActive = true
+//        phoneDashOneLabel.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
+//        phoneDashOneLabel.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.025)).isActive = true
+//        phoneDashOneLabel.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+//
+//        phoneAreaCodeTextField.translatesAutoresizingMaskIntoConstraints = false
+//        phoneAreaCodeTextField.leftAnchor.constraint(equalTo: phoneDashOneLabel.rightAnchor).isActive = true
+//        phoneAreaCodeTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
+//        phoneAreaCodeTextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.14)).isActive = true
+//        phoneAreaCodeTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+//
+//        phoneDashTwoLabel.translatesAutoresizingMaskIntoConstraints = false
+//        phoneDashTwoLabel.leftAnchor.constraint(equalTo: phoneAreaCodeTextField.rightAnchor).isActive = true
+//        phoneDashTwoLabel.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
+//        phoneDashTwoLabel.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.025)).isActive = true
+//        phoneDashTwoLabel.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+//
+//        phoneFirstThreeDigitTextField.translatesAutoresizingMaskIntoConstraints = false
+//        phoneFirstThreeDigitTextField.leftAnchor.constraint(equalTo: phoneDashTwoLabel.rightAnchor).isActive = true
+//        phoneFirstThreeDigitTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
+//        phoneFirstThreeDigitTextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.14)).isActive = true
+//        phoneFirstThreeDigitTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+//
+//        phoneDashThreeLabel.translatesAutoresizingMaskIntoConstraints = false
+//        phoneDashThreeLabel.leftAnchor.constraint(equalTo: phoneFirstThreeDigitTextField.rightAnchor).isActive = true
+//        phoneDashThreeLabel.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
+//        phoneDashThreeLabel.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.025)).isActive = true
+//        phoneDashThreeLabel.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+//
+//        phoneLastFourDigitTextField.translatesAutoresizingMaskIntoConstraints = false
+//        phoneLastFourDigitTextField.leftAnchor.constraint(equalTo: phoneDashThreeLabel.rightAnchor).isActive = true
+//        phoneLastFourDigitTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
+//        phoneLastFourDigitTextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.17)).isActive = true
+//        phoneLastFourDigitTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         
-        phonePlusLabel.translatesAutoresizingMaskIntoConstraints = false
-        phonePlusLabel.leftAnchor.constraint(equalTo: phoneLabel.rightAnchor, constant: (UIScreen.main.bounds.width * 0.01)).isActive = true
-        phonePlusLabel.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
-        phonePlusLabel.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.03)).isActive = true
-        phonePlusLabel.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        
-        phoneCountryCodeTextField.translatesAutoresizingMaskIntoConstraints = false
-        phoneCountryCodeTextField.leftAnchor.constraint(equalTo: phonePlusLabel.rightAnchor, constant: (UIScreen.main.bounds.width * 0.01)).isActive = true
-        phoneCountryCodeTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
-        phoneCountryCodeTextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.075)).isActive = true
-        phoneCountryCodeTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        
-        phoneDashOneLabel.translatesAutoresizingMaskIntoConstraints = false
-        phoneDashOneLabel.leftAnchor.constraint(equalTo: phoneCountryCodeTextField.rightAnchor).isActive = true
-        phoneDashOneLabel.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
-        phoneDashOneLabel.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.025)).isActive = true
-        phoneDashOneLabel.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        
-        phoneAreaCodeTextField.translatesAutoresizingMaskIntoConstraints = false
-        phoneAreaCodeTextField.leftAnchor.constraint(equalTo: phoneDashOneLabel.rightAnchor).isActive = true
-        phoneAreaCodeTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
-        phoneAreaCodeTextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.14)).isActive = true
-        phoneAreaCodeTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        
-        phoneDashTwoLabel.translatesAutoresizingMaskIntoConstraints = false
-        phoneDashTwoLabel.leftAnchor.constraint(equalTo: phoneAreaCodeTextField.rightAnchor).isActive = true
-        phoneDashTwoLabel.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
-        phoneDashTwoLabel.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.025)).isActive = true
-        phoneDashTwoLabel.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        
-        phoneFirstThreeDigitTextField.translatesAutoresizingMaskIntoConstraints = false
-        phoneFirstThreeDigitTextField.leftAnchor.constraint(equalTo: phoneDashTwoLabel.rightAnchor).isActive = true
-        phoneFirstThreeDigitTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
-        phoneFirstThreeDigitTextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.14)).isActive = true
-        phoneFirstThreeDigitTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        
-        phoneDashThreeLabel.translatesAutoresizingMaskIntoConstraints = false
-        phoneDashThreeLabel.leftAnchor.constraint(equalTo: phoneFirstThreeDigitTextField.rightAnchor).isActive = true
-        phoneDashThreeLabel.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
-        phoneDashThreeLabel.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.025)).isActive = true
-        phoneDashThreeLabel.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        
-        phoneLastFourDigitTextField.translatesAutoresizingMaskIntoConstraints = false
-        phoneLastFourDigitTextField.leftAnchor.constraint(equalTo: phoneDashThreeLabel.rightAnchor).isActive = true
-        phoneLastFourDigitTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
-        phoneLastFourDigitTextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.17)).isActive = true
-        phoneLastFourDigitTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        phoneTextField.translatesAutoresizingMaskIntoConstraints = false
+        phoneTextField.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        phoneTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
+        phoneTextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
+        phoneTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         
         usernameTextField.translatesAutoresizingMaskIntoConstraints = false
         usernameTextField.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        usernameTextField.topAnchor.constraint(equalTo: phoneCountryCodeTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
+        usernameTextField.topAnchor.constraint(equalTo: phoneTextField.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.04)).isActive = true
         usernameTextField.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
         usernameTextField.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         
@@ -456,10 +480,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
         firstNameTextField.text = ""
         lastNameTextField.text = ""
         emailTextField.text = ""
-        phoneCountryCodeTextField.text = ""
-        phoneAreaCodeTextField.text = ""
-        phoneFirstThreeDigitTextField.text = ""
-        phoneLastFourDigitTextField.text = ""
+        phoneTextField.text = ""
         usernameTextField.text = ""
         passwordTextField.text = ""
         passwordCompareTextField.text = ""
@@ -490,6 +511,31 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
             self.scanningIndicator.startAnimating()
         }
         
+//        do{
+//            //TODO parse number string
+//            var numberString = phoneTextField.text!
+//
+//            numberString = numberString.replacingOccurrences(of: "(", with: "", options: NSString.CompareOptions.literal, range: nil)
+//            numberString = numberString.replacingOccurrences(of: ")", with: "", options: NSString.CompareOptions.literal, range: nil)
+//            numberString = numberString.replacingOccurrences(of: "-", with: "", options: NSString.CompareOptions.literal, range: nil)
+//            numberString = numberString.replacingOccurrences(of: " ", with: "", options: NSString.CompareOptions.literal, range: nil)
+//
+//            let validatedPhoneNumber = try phoneNumberKit.parse(numberString)
+//        }catch {
+//
+//            print(error)
+//
+//            DispatchQueue.main.async {
+//                self.scanningIndicator.stopAnimating()
+//            }
+//
+//            self.showToast(controller: self, message: "Must Enter a Valid Phone Number", seconds: 1)
+//
+//            phoneTextField.text = ""
+//
+//            return
+//        }
+        
         
         //client side checks
         if(firstNameTextField.text == "" || lastNameTextField.text == "" || emailTextField.text == "" || usernameTextField.text == "" || passwordTextField.text == "" || passwordCompareTextField.text == "" || address1TextField.text == "" || cityTextField.text == "" || countryTextField.text == "" || provinceTextField.text == "" ||
@@ -519,6 +565,14 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
         
         
         
+        var numberString = phoneTextField.text!
+        //parse phone string
+        numberString = numberString.replacingOccurrences(of: "(", with: "", options: NSString.CompareOptions.literal, range: nil)
+        numberString = numberString.replacingOccurrences(of: ")", with: "", options: NSString.CompareOptions.literal, range: nil)
+        numberString = numberString.replacingOccurrences(of: "-", with: "", options: NSString.CompareOptions.literal, range: nil)
+        numberString = numberString.replacingOccurrences(of: " ", with: "", options: NSString.CompareOptions.literal, range: nil)
+        
+        
         
         let jsonRegisterObject: [String: Any] = [
             "username": usernameTextField.text!,
@@ -526,7 +580,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
             "password": passwordTextField.text!,
             "firstName": firstNameTextField.text!,
             "lastName": lastNameTextField.text!,
-            "phone": "+" + phoneCountryCodeTextField.text! + phoneAreaCodeTextField.text! + phoneFirstThreeDigitTextField.text! + phoneLastFourDigitTextField.text!,
+            "phone": numberString,
             "address1": address1TextField.text!,
             "address2": address2TextField.text!,
             "city": cityTextField.text!,
@@ -566,7 +620,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
             else{
                 DispatchQueue.main.async {
                     self.scanningIndicator.stopAnimating()
-                    self.showToast(controller: self, message: String(decoding: data!, as: UTF8.self), seconds: 1)
+                    //self.showToast(controller: self, message: String(decoding: data!, as: UTF8.self), seconds: 1)
                 }
                 
                 
@@ -583,10 +637,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                         self.emailTextField.text = ""
                         self.firstNameTextField.text = ""
                         self.lastNameTextField.text = ""
-                        self.phoneCountryCodeTextField.text = ""
-                        self.phoneAreaCodeTextField.text = ""
-                        self.phoneFirstThreeDigitTextField.text = ""
-                        self.phoneLastFourDigitTextField.text = ""
+                        self.phoneTextField.text = ""
                         self.usernameTextField.text = ""
                         self.passwordTextField.text = ""
                         self.passwordCompareTextField.text = ""
@@ -624,7 +675,12 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                         password = self.passwordTextField.text
                         firstName = self.firstNameTextField.text
                         lastName = self.lastNameTextField.text
-                        phone = "+" + self.phoneCountryCodeTextField.text! + self.phoneAreaCodeTextField.text! + self.phoneFirstThreeDigitTextField.text! + self.phoneLastFourDigitTextField.text!
+                        phone = self.phoneTextField.text!
+                        //parse phone string
+                        phone = phone!.replacingOccurrences(of: "(", with: "", options: NSString.CompareOptions.literal, range: nil)
+                        phone = phone!.replacingOccurrences(of: ")", with: "", options: NSString.CompareOptions.literal, range: nil)
+                        phone = phone!.replacingOccurrences(of: "-", with: "", options: NSString.CompareOptions.literal, range: nil)
+                        phone = phone!.replacingOccurrences(of: " ", with: "", options: NSString.CompareOptions.literal, range: nil)
                         address1 = self.address1TextField.text
                         address2 = self.address2TextField.text
                         city = self.cityTextField.text
@@ -666,7 +722,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
 
                         print(result)
 
-                        guard error == nil else{
+                        if(error != nil){
                             //handle request errors
                             print("A request error occured creating Shopify customer account")
                             print(error!)
@@ -675,10 +731,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                                                    self.emailTextField.text = ""
                                                    self.firstNameTextField.text = ""
                                                    self.lastNameTextField.text = ""
-                                                   self.phoneCountryCodeTextField.text = ""
-                                                   self.phoneAreaCodeTextField.text = ""
-                                                   self.phoneFirstThreeDigitTextField.text = ""
-                                                   self.phoneLastFourDigitTextField.text = ""
+                                                   self.phoneTextField.text = ""
                                                    self.usernameTextField.text = ""
                                                    self.passwordTextField.text = ""
                                                    self.passwordCompareTextField.text = ""
@@ -689,26 +742,60 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                                                    self.provinceTextField.text = ""
                                                    self.zipCodeTextField.text = ""
                                                    
-                                                   self.showToast(controller: self, message: "An error happened, please retry", seconds: 1)
+                                self.showToast(controller: self, message: "An error happened, please retry", seconds: 1)
                                                }
+                            
+                            
+                            var userDeleteRequest = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/user/delete")!)
+                            userDeleteRequest.httpMethod = "POST"
+                            userDeleteRequest.httpBody = registerJSONData
+                            userDeleteRequest.setValue("application/json", forHTTPHeaderField: "Content-type")
+                            userDeleteRequest.setValue(userID!, forHTTPHeaderField: "user-id")
+                            
+                            let userDeleteTask = URLSession.shared.dataTask(with: userDeleteRequest) { data, response, error in
+                                if(error != nil){
+                                    DispatchQueue.main.async {
+                                        self.scanningIndicator.stopAnimating()
+                                        self.showToast(controller: self, message: "Error: " + (error as! String), seconds: 1)
+                                        return
+                                    }
+                                    print("Error occured during /user/delete RESTAPI request")
+                                }
+                                else{
+                                    print("Response:")
+                                    print(response!)
+                                    print("Data:")
+                                    print(String(decoding: data!, as: UTF8.self))
+                                    
+                                    
+                                    if(String(decoding: data!, as: UTF8.self) != "Success"){
+                                         print("error occured deleting user")
+                                                           
+                                        return
+                                    }
+                                    else{
+                                        print("Succesfully deleted customer from CPS account")
+                                    }
+                                }
+                            }
+                            userDeleteTask.resume()
+                            
+                            
                             
                             return
                         }
                         
-                        guard let userError = result?.customerCreate?.customerUserErrors else{
+                        if(result?.customerCreate?.customerUserErrors.isEmpty == false){
                             //handle user errors
                             print("A user error occured creating Shopify customer account")
-                            print(result?.customerCreate?.userErrors.first?.message)
+                            print(result?.customerCreate?.customerUserErrors.first?.message)
                             
                             
                             DispatchQueue.main.async {
                                                    self.emailTextField.text = ""
                                                    self.firstNameTextField.text = ""
                                                    self.lastNameTextField.text = ""
-                                                   self.phoneCountryCodeTextField.text = ""
-                                                   self.phoneAreaCodeTextField.text = ""
-                                                   self.phoneFirstThreeDigitTextField.text = ""
-                                                   self.phoneLastFourDigitTextField.text = ""
+                                                   self.phoneTextField.text = ""
                                                    self.usernameTextField.text = ""
                                                    self.passwordTextField.text = ""
                                                    self.passwordCompareTextField.text = ""
@@ -719,8 +806,42 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                                                    self.provinceTextField.text = ""
                                                    self.zipCodeTextField.text = ""
                                                    
-                                                   self.showToast(controller: self, message: "An error happened, please retry", seconds: 1)
+                                self.showToast(controller: self, message: (result?.customerCreate?.customerUserErrors.first!.message)!, seconds: 1)
                                                }
+                            
+                            var userDeleteRequest = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/user/delete")!)
+                            userDeleteRequest.httpMethod = "POST"
+                            userDeleteRequest.httpBody = registerJSONData
+                            userDeleteRequest.setValue("application/json", forHTTPHeaderField: "Content-type")
+                            userDeleteRequest.setValue(userID!, forHTTPHeaderField: "user-id")
+                            
+                            let userDeleteTask = URLSession.shared.dataTask(with: userDeleteRequest) { data, response, error in
+                                if(error != nil){
+                                    DispatchQueue.main.async {
+                                        self.scanningIndicator.stopAnimating()
+                                        self.showToast(controller: self, message: "Error: " + (error as! String), seconds: 1)
+                                        return
+                                    }
+                                    print("Error occured during /user/delete RESTAPI request")
+                                }
+                                else{
+                                    print("Response:")
+                                    print(response!)
+                                    print("Data:")
+                                    print(String(decoding: data!, as: UTF8.self))
+                                    
+                                    
+                                    if(String(decoding: data!, as: UTF8.self) != "Success"){
+                                         print("error occured deleting user")
+                                                           
+                                        return
+                                    }
+                                    else{
+                                        print("Succesfully deleted customer from CPS account")
+                                    }
+                                }
+                            }
+                            userDeleteTask.resume()
                             
                             return
                         }
@@ -749,7 +870,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                             
                             print(result)
                             
-                                guard error == nil else{
+                                if(error != nil){
                                     //handle request errors
                                     print("A request error occured creating Shopify customer account")
                                     print(error!)
@@ -758,10 +879,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                                                            self.emailTextField.text = ""
                                                            self.firstNameTextField.text = ""
                                                            self.lastNameTextField.text = ""
-                                                           self.phoneCountryCodeTextField.text = ""
-                                                           self.phoneAreaCodeTextField.text = ""
-                                                           self.phoneFirstThreeDigitTextField.text = ""
-                                                           self.phoneLastFourDigitTextField.text = ""
+                                                           self.phoneTextField.text = ""
                                                            self.usernameTextField.text = ""
                                                            self.passwordTextField.text = ""
                                                            self.passwordCompareTextField.text = ""
@@ -775,10 +893,11 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                                                            self.showToast(controller: self, message: "An error happened, please retry", seconds: 1)
                                                        }
                                     
+                                    
                                     return
                                 }
                                                
-                                guard let userError = result?.customerAccessTokenCreate?.customerUserErrors else{
+                            if(result?.customerAccessTokenCreate?.customerUserErrors.isEmpty == false){
                                     //handle user errors
                                     print("A user error occured creating Shopify customer account")
                                     
@@ -786,10 +905,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                                                            self.emailTextField.text = ""
                                                            self.firstNameTextField.text = ""
                                                            self.lastNameTextField.text = ""
-                                                           self.phoneCountryCodeTextField.text = ""
-                                                           self.phoneAreaCodeTextField.text = ""
-                                                           self.phoneFirstThreeDigitTextField.text = ""
-                                                           self.phoneLastFourDigitTextField.text = ""
+                                                           self.phoneTextField.text = ""
                                                            self.usernameTextField.text = ""
                                                            self.passwordTextField.text = ""
                                                            self.passwordCompareTextField.text = ""
@@ -835,7 +951,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                             }
                             
                             let addressTask = self.client.mutateGraphWith(addressMutation) { result, error in
-                                guard error == nil else{
+                                if(error != nil){
                                     //handle request errors
                                     print("A request error occured creating Shopify customer account")
                                     print(error!)
@@ -844,10 +960,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                                                            self.emailTextField.text = ""
                                                            self.firstNameTextField.text = ""
                                                            self.lastNameTextField.text = ""
-                                                           self.phoneCountryCodeTextField.text = ""
-                                                           self.phoneAreaCodeTextField.text = ""
-                                                           self.phoneFirstThreeDigitTextField.text = ""
-                                                           self.phoneLastFourDigitTextField.text = ""
+                                                           self.phoneTextField.text = ""
                                                            self.usernameTextField.text = ""
                                                            self.passwordTextField.text = ""
                                                            self.passwordCompareTextField.text = ""
@@ -864,7 +977,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                                     return
                                 }
                                            
-                                guard let userError = result?.customerAddressCreate?.customerUserErrors else{
+                                if(result?.customerAddressCreate?.customerUserErrors.isEmpty == false){
                                     //handle user errors
                                     print("A user error occured creating Shopify customer account")
                                     
@@ -872,10 +985,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                                                            self.emailTextField.text = ""
                                                            self.firstNameTextField.text = ""
                                                            self.lastNameTextField.text = ""
-                                                           self.phoneCountryCodeTextField.text = ""
-                                                           self.phoneAreaCodeTextField.text = ""
-                                                           self.phoneFirstThreeDigitTextField.text = ""
-                                                           self.phoneLastFourDigitTextField.text = ""
+                                                           self.phoneTextField.text = ""
                                                            self.usernameTextField.text = ""
                                                            self.passwordTextField.text = ""
                                                            self.passwordCompareTextField.text = ""
@@ -934,6 +1044,71 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
             alert.dismiss(animated: true)
         }
     }
+    
+    
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if(textField.tag == 6 && textField.text == ""){ //if its the phone number text field and its empty add the country code to it
+            let countryCode = NSLocale.current.regionCode
+            phoneTextField.text = "+" + self.getCountryPhonceCode(countryCode!)
+        }
+    }
+
+    
+    @objc private func editPhoneTextFieldRealTime(){
+        
+        if(phoneTextField.text!.count > currentPhoneNumberText.count){ //checks that things are not being deleted
+            if(phoneTextField.text!.count == (self.getCountryPhonceCode(NSLocale.current.regionCode!).count + 4)){
+                let strOriginal = phoneTextField.text
+                var strNew = strOriginal
+                strNew?.insert(contentsOf: " (", at: (strOriginal?.index(strOriginal!.startIndex, offsetBy: self.getCountryPhonceCode(NSLocale.current.regionCode!).count + 1))!)
+                let strMid = strNew
+                strNew?.insert(contentsOf: ") ", at: (strMid?.index(strMid!.startIndex, offsetBy: self.getCountryPhonceCode(NSLocale.current.regionCode!).count + 6))!)
+                phoneTextField.text = strNew
+            }
+
+            else if(phoneTextField.text!.count == (self.getCountryPhonceCode(NSLocale.current.regionCode!).count + 11)){
+                let strOriginal = phoneTextField.text
+                var strNew = strOriginal
+                strNew?.insert(contentsOf: "-", at: (strOriginal?.index(strOriginal!.startIndex, offsetBy: self.getCountryPhonceCode(NSLocale.current.regionCode!).count + 11))!)
+                phoneTextField.text = strNew
+            }
+        }
+        else{ //if stuff is being deleted
+            if(phoneTextField.text!.count == (self.getCountryPhonceCode(NSLocale.current.regionCode!).count + 12)){
+                let strOriginal = phoneTextField.text
+                var strNew = strOriginal
+                strNew?.remove(at: (strOriginal?.index(strOriginal!.startIndex, offsetBy: self.getCountryPhonceCode(NSLocale.current.regionCode!).count + 11))!)
+                phoneTextField.text = strNew
+            }
+            
+            else if(phoneTextField.text!.count == (self.getCountryPhonceCode(NSLocale.current.regionCode!).count + 8)){
+                let strOriginal = phoneTextField.text
+                var strNew = strOriginal
+                strNew?.remove(at: (strOriginal?.index(strOriginal!.startIndex, offsetBy: self.getCountryPhonceCode(NSLocale.current.regionCode!).count + 7))!)
+                
+                let strMid = strNew
+                strNew?.remove(at: (strMid?.index(strMid!.startIndex, offsetBy: self.getCountryPhonceCode(NSLocale.current.regionCode!).count + 6))!)
+                
+                phoneTextField.text = strNew
+            }
+
+            else if(phoneTextField.text!.count == (self.getCountryPhonceCode(NSLocale.current.regionCode!).count + 3)){
+                let strOriginal = phoneTextField.text
+                var strNew = strOriginal
+                strNew?.remove(at: (strOriginal?.index(strOriginal!.startIndex, offsetBy: self.getCountryPhonceCode(NSLocale.current.regionCode!).count + 2))!)
+                
+                let strMid = strNew
+                strNew?.remove(at: (strMid?.index(strMid!.startIndex, offsetBy: self.getCountryPhonceCode(NSLocale.current.regionCode!).count + 1))!)
+                
+                phoneTextField.text = strNew
+            }
+            
+        }
+        
+        
+        self.currentPhoneNumberText = phoneTextField.text!
+    }
 
     
     
@@ -966,7 +1141,8 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
             lastNameTextField.endEditing(true)
         }
         else if(textField.tag == 6){
-            phoneCountryCodeTextField.endEditing(true)
+            phoneTextField.endEditing(true)
+          
         }
         else if(textField.tag == 7){
             address1TextField.endEditing(true)
@@ -986,16 +1162,272 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
         else if(textField.tag == 12){
             zipCodeTextField.endEditing(true)
         }
-        else if(textField.tag == 13){
-            phoneAreaCodeTextField.endEditing(true)
-        }
-        else if(textField.tag == 14){
-            phoneFirstThreeDigitTextField.endEditing(true)
-        }
-        else if(textField.tag == 15){
-            phoneLastFourDigitTextField.endEditing(true)
-        }
+//        else if(textField.tag == 13){
+//            phoneAreaCodeTextField.endEditing(true)
+//        }
+//        else if(textField.tag == 14){
+//            phoneFirstThreeDigitTextField.endEditing(true)
+//        }
+//        else if(textField.tag == 15){
+//            phoneLastFourDigitTextField.endEditing(true)
+//        }
         return true
     }
     
+    
+    
+    
+    func getCountryPhonceCode (_ country : String) -> String
+    {
+        var countryDictionary  = ["AF":"93",
+                                  "AL":"355",
+                                  "DZ":"213",
+                                  "AS":"1",
+                                  "AD":"376",
+                                  "AO":"244",
+                                  "AI":"1",
+                                  "AG":"1",
+                                  "AR":"54",
+                                  "AM":"374",
+                                  "AW":"297",
+                                  "AU":"61",
+                                  "AT":"43",
+                                  "AZ":"994",
+                                  "BS":"1",
+                                  "BH":"973",
+                                  "BD":"880",
+                                  "BB":"1",
+                                  "BY":"375",
+                                  "BE":"32",
+                                  "BZ":"501",
+                                  "BJ":"229",
+                                  "BM":"1",
+                                  "BT":"975",
+                                  "BA":"387",
+                                  "BW":"267",
+                                  "BR":"55",
+                                  "IO":"246",
+                                  "BG":"359",
+                                  "BF":"226",
+                                  "BI":"257",
+                                  "KH":"855",
+                                  "CM":"237",
+                                  "CA":"1",
+                                  "CV":"238",
+                                  "KY":"345",
+                                  "CF":"236",
+                                  "TD":"235",
+                                  "CL":"56",
+                                  "CN":"86",
+                                  "CX":"61",
+                                  "CO":"57",
+                                  "KM":"269",
+                                  "CG":"242",
+                                  "CK":"682",
+                                  "CR":"506",
+                                  "HR":"385",
+                                  "CU":"53",
+                                  "CY":"537",
+                                  "CZ":"420",
+                                  "DK":"45",
+                                  "DJ":"253",
+                                  "DM":"1",
+                                  "DO":"1",
+                                  "EC":"593",
+                                  "EG":"20",
+                                  "SV":"503",
+                                  "GQ":"240",
+                                  "ER":"291",
+                                  "EE":"372",
+                                  "ET":"251",
+                                  "FO":"298",
+                                  "FJ":"679",
+                                  "FI":"358",
+                                  "FR":"33",
+                                  "GF":"594",
+                                  "PF":"689",
+                                  "GA":"241",
+                                  "GM":"220",
+                                  "GE":"995",
+                                  "DE":"49",
+                                  "GH":"233",
+                                  "GI":"350",
+                                  "GR":"30",
+                                  "GL":"299",
+                                  "GD":"1",
+                                  "GP":"590",
+                                  "GU":"1",
+                                  "GT":"502",
+                                  "GN":"224",
+                                  "GW":"245",
+                                  "GY":"595",
+                                  "HT":"509",
+                                  "HN":"504",
+                                  "HU":"36",
+                                  "IS":"354",
+                                  "IN":"91",
+                                  "ID":"62",
+                                  "IQ":"964",
+                                  "IE":"353",
+                                  "IL":"972",
+                                  "IT":"39",
+                                  "JM":"1",
+                                  "JP":"81",
+                                  "JO":"962",
+                                  "KZ":"77",
+                                  "KE":"254",
+                                  "KI":"686",
+                                  "KW":"965",
+                                  "KG":"996",
+                                  "LV":"371",
+                                  "LB":"961",
+                                  "LS":"266",
+                                  "LR":"231",
+                                  "LI":"423",
+                                  "LT":"370",
+                                  "LU":"352",
+                                  "MG":"261",
+                                  "MW":"265",
+                                  "MY":"60",
+                                  "MV":"960",
+                                  "ML":"223",
+                                  "MT":"356",
+                                  "MH":"692",
+                                  "MQ":"596",
+                                  "MR":"222",
+                                  "MU":"230",
+                                  "YT":"262",
+                                  "MX":"52",
+                                  "MC":"377",
+                                  "MN":"976",
+                                  "ME":"382",
+                                  "MS":"1",
+                                  "MA":"212",
+                                  "MM":"95",
+                                  "NA":"264",
+                                  "NR":"674",
+                                  "NP":"977",
+                                  "NL":"31",
+                                  "AN":"599",
+                                  "NC":"687",
+                                  "NZ":"64",
+                                  "NI":"505",
+                                  "NE":"227",
+                                  "NG":"234",
+                                  "NU":"683",
+                                  "NF":"672",
+                                  "MP":"1",
+                                  "NO":"47",
+                                  "OM":"968",
+                                  "PK":"92",
+                                  "PW":"680",
+                                  "PA":"507",
+                                  "PG":"675",
+                                  "PY":"595",
+                                  "PE":"51",
+                                  "PH":"63",
+                                  "PL":"48",
+                                  "PT":"351",
+                                  "PR":"1",
+                                  "QA":"974",
+                                  "RO":"40",
+                                  "RW":"250",
+                                  "WS":"685",
+                                  "SM":"378",
+                                  "SA":"966",
+                                  "SN":"221",
+                                  "RS":"381",
+                                  "SC":"248",
+                                  "SL":"232",
+                                  "SG":"65",
+                                  "SK":"421",
+                                  "SI":"386",
+                                  "SB":"677",
+                                  "ZA":"27",
+                                  "GS":"500",
+                                  "ES":"34",
+                                  "LK":"94",
+                                  "SD":"249",
+                                  "SR":"597",
+                                  "SZ":"268",
+                                  "SE":"46",
+                                  "CH":"41",
+                                  "TJ":"992",
+                                  "TH":"66",
+                                  "TG":"228",
+                                  "TK":"690",
+                                  "TO":"676",
+                                  "TT":"1",
+                                  "TN":"216",
+                                  "TR":"90",
+                                  "TM":"993",
+                                  "TC":"1",
+                                  "TV":"688",
+                                  "UG":"256",
+                                  "UA":"380",
+                                  "AE":"971",
+                                  "GB":"44",
+                                  "US":"1",
+                                  "UY":"598",
+                                  "UZ":"998",
+                                  "VU":"678",
+                                  "WF":"681",
+                                  "YE":"967",
+                                  "ZM":"260",
+                                  "ZW":"263",
+                                  "BO":"591",
+                                  "BN":"673",
+                                  "CC":"61",
+                                  "CD":"243",
+                                  "CI":"225",
+                                  "FK":"500",
+                                  "GG":"44",
+                                  "VA":"379",
+                                  "HK":"852",
+                                  "IR":"98",
+                                  "IM":"44",
+                                  "JE":"44",
+                                  "KP":"850",
+                                  "KR":"82",
+                                  "LA":"856",
+                                  "LY":"218",
+                                  "MO":"853",
+                                  "MK":"389",
+                                  "FM":"691",
+                                  "MD":"373",
+                                  "MZ":"258",
+                                  "PS":"970",
+                                  "PN":"872",
+                                  "RE":"262",
+                                  "RU":"7",
+                                  "BL":"590",
+                                  "SH":"290",
+                                  "KN":"1",
+                                  "LC":"1",
+                                  "MF":"590",
+                                  "PM":"508",
+                                  "VC":"1",
+                                  "ST":"239",
+                                  "SO":"252",
+                                  "SJ":"47",
+                                  "SY":"963",
+                                  "TW":"886",
+                                  "TZ":"255",
+                                  "TL":"670",
+                                  "VE":"58",
+                                  "VN":"84",
+                                  "VG":"284",
+                                  "VI":"340"]
+        if let countryCode = countryDictionary[country] {
+            return countryCode
+        }
+        return ""
+    }
+    
+    
+    
+    
 }
+
+
+

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Buy
+import MobileBuySDK
 
 
 class ShopifyStorePagesViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {

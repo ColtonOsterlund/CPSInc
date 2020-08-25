@@ -13,7 +13,7 @@ import CoreBluetooth
 import WatchConnectivity
 import SwiftKeychainWrapper
 import CoreGraphics
-import Buy
+import MobileBuySDK
 
 public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCSessionDelegate{
     
@@ -23,15 +23,16 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     
     //Views
     private var connectView: ConnectViewController? = nil
-    private var testView: TestViewController? = nil
-    private var settingsView: SettingsViewController? = nil
+    private var testView: /*OriginalTestViewController?*/ SingleStripTestViewController? = nil
+    private var settingsView: SettingsViewControllerV2? = nil
     private var logbookView: HerdLogbookViewController? = nil
     private var instructionsView: InstructionPageViewController? = nil
     private var loginView: LoginViewController? = nil
     private var accountView: AccountPageViewController? = nil
     private var appDelegate: AppDelegate? = nil
-    private var testPageController: TestPageViewController? = nil
+    private var testPageController: /*OriginalTestPageViewController?*/ SingleStripTestPageViewController? = nil
     private var shopView: ShopifyStorePagesViewController? = nil
+    private var recommendationView: RecommendationPageViewController? = nil
     
     //UIButtons
     //private let findDeviceBtn = UIButton()
@@ -40,6 +41,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     private let logbookBtn = UIButton()
     private let accountBtn = UIButton()
     private let shopBtn = UIButton()
+    private let recommendationBtn = UIButton()
     
     //UIBarButtons
     private var instructionBtn = UIBarButtonItem()
@@ -54,6 +56,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     private let shopBtnImage = UIImage(named: "shoppingCart")
     private let greenCircleImage = UIImage(named: "green_circle")
     private let redCircleImage = UIImage(named: "red_circle")
+    private let recommendationBtnImage = UIImage(named: "recommendationLOGO")
     
     //UIImageViews
     private let greenCircleView = UIImageView()
@@ -67,6 +70,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     private let logoLabel = UILabel()
     private let accountLabel = UILabel()
     private let shopLabel = UILabel()
+    private let recommendationLabel = UILabel()
     
     //UIActivityIndicatorView
     private let scanningIndicator = UIActivityIndicatorView()
@@ -100,16 +104,17 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         
         //think these have to be here because it said the property initialization (global vars) are initialized before this init() function so self is not ready yet at that point
         connectView = ConnectViewController(menuView: self, appDelegate: appDelegate)
-        testPageController = TestPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+        testPageController = /*OriginalTestPageViewController*/SingleStripTestPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         testPageController?.setAppDelegate(appDelegate: appDelegate)
-        testView = TestViewController(menuView: self, appDelegate: appDelegate, testPageController: testPageController)
-        settingsView = SettingsViewController(menuView: self, appDelegate: appDelegate)
+        testView = /*OriginalTestViewController(menuView: self, appDelegate: appDelegate, testPageController: testPageController)*/SingleStripTestViewController(appDelegate: appDelegate, menuView: self, testPageController: testPageController)
+        settingsView = SettingsViewControllerV2(menuView: self, appDelegate: appDelegate)
         logbookView = HerdLogbookViewController(menuView: self, appDelegate: appDelegate)
         shopView = ShopifyStorePagesViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         shopView!.setMenuView(menuView: self)
         instructionsView = InstructionPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         accountView = AccountPageViewController(appDelegate: appDelegate, menuView: self)
         loginView = LoginViewController(appDelegate: appDelegate, accountView: accountView, menuView: self, storeView: shopView)
+        recommendationView = RecommendationPageViewController(appDelegate: appDelegate, menuView: self)
         self.appDelegate = appDelegate
         testPageController?.addPage(pageToAdd: testView)
     }
@@ -135,7 +140,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         //if WCSession is supported by the device set up wcSession - when both sessions are open, they can communicate, when only one session is open - it may still send updates and transfer files, but those transferes happen opportunistically in the background (open the session on the phone side when the phone app is initially started)
         if(wcSession != nil){
             connectView!.setWCSession(session: self.wcSession!)
-            testView!.setWCSession(session: self.wcSession!)
+            //testView!.setWCSession(session: self.wcSession!)
             settingsView!.setWCSession(session: self.wcSession!)
             logbookView!.setWCSession(session: self.wcSession!)
         }
@@ -259,6 +264,14 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         shopLabel.textColor = .black
         shopLabel.textAlignment = .center
         contentView.addSubview(shopLabel)
+        
+        recommendationBtn.setBackgroundImage(recommendationBtnImage, for: .normal)
+        contentView.addSubview(recommendationBtn)
+        
+        recommendationLabel.text = "Tx Recommendations"
+        recommendationLabel.textColor = .black
+        recommendationLabel.textAlignment = .center
+        contentView.addSubview(recommendationLabel)
         
         
         // Set the 'click here' substring to be the link
@@ -385,6 +398,15 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         shopLabel.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25)).isActive = true
         shopLabel.topAnchor.constraint(equalTo: shopBtn.bottomAnchor, constant: 10).isActive = true
         
+        recommendationBtn.translatesAutoresizingMaskIntoConstraints = false
+        recommendationBtn.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: (UIScreen.main.bounds.width * 0.25) ).isActive = true
+        recommendationBtn.topAnchor.constraint(equalTo: accountLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.15)).isActive = true
+        recommendationBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.3)).isActive = true
+        recommendationBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.15)).isActive = true
+        
+        recommendationLabel.translatesAutoresizingMaskIntoConstraints = false
+        recommendationLabel.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: (UIScreen.main.bounds.width * 0.25)).isActive = true
+        recommendationLabel.topAnchor.constraint(equalTo: recommendationBtn.bottomAnchor, constant: 10).isActive = true
         
         logoLabel.translatesAutoresizingMaskIntoConstraints = false
         logoLabel.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor).isActive = true
@@ -427,6 +449,26 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         logbookBtn.addTarget(self, action: #selector(logbookBtnPressed), for: .touchUpInside)
         accountBtn.addTarget(self, action: #selector(accountBtnPressed), for: .touchUpInside)
         shopBtn.addTarget(self, action: #selector(shopBtnPressed), for: .touchUpInside)
+        recommendationBtn.addTarget(self, action: #selector(recommendationBtnPressed), for: .touchUpInside)
+    }
+    
+    
+    @objc private func recommendationBtnPressed(){
+        
+        recommendationBtn.transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
+        
+        UIView.animate(withDuration: 0.5,
+                        delay: 0,
+                        usingSpringWithDamping: CGFloat(0.70),
+                        initialSpringVelocity: CGFloat(5.0),
+                        options: UIView.AnimationOptions.allowUserInteraction,
+                        animations: {
+                        self.recommendationBtn.transform = CGAffineTransform.identity
+        },
+                        completion: { Void in()  }
+        )
+        
+        navigationController?.pushViewController(recommendationView!, animated: true) //pushes connectView onto the navigationController stack
     }
     
     @objc private func findDeviceBtnPressed(){ //see if you can put this in a seperate class like a listener class
@@ -611,7 +653,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         //testView.settingsView = self.settingsView
         if(wcSession != nil){
             wcSession!.delegate = testView
-            testView?.setWCSession(session: wcSession)
+            //testView?.setWCSession(session: wcSession)
         }
         
     }
@@ -822,7 +864,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     }
     
     //GETTERS/SETTERS
-    public func getTestPageView() -> TestPageViewController{
+    public func getTestPageView() -> /*OriginalTestPageViewController*/SingleStripTestPageViewController{
         return testPageController!
     }
     
@@ -830,7 +872,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         return connectView!
     }
     
-    public func getSettingsView() -> SettingsViewController{
+    public func getSettingsView() -> SettingsViewControllerV2{
         return settingsView!
     }
     

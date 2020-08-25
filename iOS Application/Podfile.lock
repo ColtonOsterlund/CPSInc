@@ -3,6 +3,7 @@ PODS:
   - Charts (3.3.0):
     - Charts/Core (= 3.3.0)
   - Charts/Core (3.3.0)
+  - Mobile-Buy-SDK (4.0.0)
   - RNCryptor (5.1.0)
   - SwiftKeychainWrapper (3.4.0)
   - SwiftyDropbox (5.1.0):
@@ -10,25 +11,29 @@ PODS:
 
 DEPENDENCIES:
   - Charts
+  - Mobile-Buy-SDK
   - RNCryptor (~> 5.0)
   - SwiftKeychainWrapper
   - SwiftyDropbox
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - Alamofire
     - Charts
     - RNCryptor
     - SwiftKeychainWrapper
     - SwiftyDropbox
+  trunk:
+    - Mobile-Buy-SDK
 
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
   Charts: e0dd4cd8f257bccf98407b58183ddca8e8d5b578
+  Mobile-Buy-SDK: 29ffa94db6fb888d5acb07e65d93cb640aaa6c3b
   RNCryptor: a369134686cd2ad391323cc856b62e591193ba79
   SwiftKeychainWrapper: 6fc49fbf7d4a6b0772917acb0e53a1639f6078d6
   SwiftyDropbox: 7ca4961e0340c62c8d6d1ece91d67badfe4c0380
 
-PODFILE CHECKSUM: 6e3551df8b46f9b804e11afbaa037a054c3af286
+PODFILE CHECKSUM: ec64f7c04c256677dd02a4e1e9c35f703c231571
 
-COCOAPODS: 1.5.2
+COCOAPODS: 1.9.3

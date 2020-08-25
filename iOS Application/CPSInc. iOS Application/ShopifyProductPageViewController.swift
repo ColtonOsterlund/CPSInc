@@ -6,7 +6,7 @@
 //  Copyright © 2020 Creative Protein Solutions Inc. All rights reserved.
 //
 import UIKit
-import Buy
+import MobileBuySDK
 
 
 class ShopifyProductPageViewController: UIViewController {
