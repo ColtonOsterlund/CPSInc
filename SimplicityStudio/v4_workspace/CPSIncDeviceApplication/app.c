@@ -38,18 +38,11 @@
 static void bootMessage(struct gecko_msg_system_boot_evt_t *bootevt); //can probably take this out
 
 
-//function definitions
-void readTemperatureSensorDataPrintToConsole();
-void switchMotorState();
-
-
-
 /* Flag for indicating DFU Reset must be performed */
 static uint8_t boot_to_dfu = 0; //device firmware upgrade
 
 //ADC global vars
 uint32_t adcData;
-uint16 temperatureData;
 uint16 stripDetectVoltage;
 int16 differentialVoltage;
 int16 integratedVoltage;
@@ -58,7 +51,6 @@ ADC_InitSingle_TypeDef initSingle = ADC_INITSINGLE_DEFAULT;
 
 //global flag to indicate whether or not peripheral device has requested to run a test
 uint8 testFlag;
-int currentMotorState = 0;
 
 //global var used as flag to indicate test is running
 int testRunning = 0;
@@ -74,10 +66,9 @@ void appMain(gecko_configuration_t *pconfig)
 
   initSWOPrinting(); /* Initialize debug prints VIA PRINTF() FUNCTION. Note: debug prints are off by default. See DEBUG_LEVEL in app.h */
   	  	  	  	  	  //needs a \n character to print, must have something to do with when/how its flushing
-  //printf("DEBUG PRINT TEST\n");
-
-  printSWO("PRINT TEST\r\n");
-  //flushSWO();
+//  printf("DEBUG PRINT TEST\n");
+  printSWO("PRINT TEST");
+  flushSWO();
 
   //USE printSWO() and swoFlush() FOR DEBUG PRINTING TO THE SWO CONSOLE***
 
@@ -110,12 +101,6 @@ void appMain(gecko_configuration_t *pconfig)
 
   /* Initialize stack */
   gecko_init(pconfig); //initializes bluetooth stack I believe? - look up where this function is implemented
-
-
-
-  gecko_cmd_hardware_set_soft_timer(983040, 2, 0); //fires every 30s - switches motor control
-  gecko_cmd_hardware_set_soft_timer(32768, 3, 0); //fires every 1s - reads temp data and prints to SWO console
-
 
   while (1) {
     /* Event pointer for handling events */
@@ -160,7 +145,6 @@ void appMain(gecko_configuration_t *pconfig)
 
         printSWO("connection opened\r\n");
 
-
         //second argument is the timer handle to be returned upon termination of the timer, third argument is the mode: 0 - repeating, 1 - runs once
         gecko_cmd_hardware_set_soft_timer(6554, 0, 0); //sets a soft timer that fires every second. The strip detect
         												//will be updated upon each firing of the timer, and it will
@@ -201,12 +185,6 @@ void appMain(gecko_configuration_t *pconfig)
     		  //IDAC_OutEnable(IDAC0, true); //disable IDAC output
 
     	  }
-    	  else if(evt->data.handle == 2){ //timer for motor control
-    		  switchMotorState();
-    	  }
-//    	  else if(evt->data.handle == 3){ //timer for reading temp control
-//    		  readTemperatureSensorDataPrintToConsole();
-//    	  }
 
     	break;
 
@@ -273,47 +251,6 @@ void appMain(gecko_configuration_t *pconfig)
     }
   }
 }
-
-
-
-
-
-
-
-void readTemperatureSensorDataPrintToConsole(){
-	initSingle.posSel = adcPosSelAPORT3XCH8; //this is the PA0 pin that the Temperature Sensor is connected to - see ADC Reference Manual and the BGM113 Data Sheet
-	initSingle.negSel = adcNegSelVSS;
-
-	ADC_InitSingle(ADC0, &initSingle); //initializing adc single sample mode
-	ADC_Start(ADC0, adcStartSingle); //starting adc single sample
-	while((ADC_IntGet(ADC0) & ADC_IF_SINGLE) != ADC_IF_SINGLE); //unsure of this looping condition - look into this - something to do with ADC interrupts
-	adcData = ADC_DataSingleGet(ADC0); //get the value of the single sample from the adc
-	temperatureData = (uint16)(adcData * 3700 / 4096); //convert the value from the single sample from the adc into a readable temperature(adc signal goes from 0 - 4096, our voltage goes from 0-3700mV)
-	printSWO("temperature: %d °C\r\n", temperatureData); //print the temperature to the SWO console
-
-}
-//
-void switchMotorState(){
-
-	GPIO_PinOutToggle(gpioPortD, 15); //this should toggle the pin LOW to HIGH
-
-//	printSWO("Switching motor state\r\n");
-//	printSWO("Switching motor state\r\n");
-//
-//	if(currentMotorState == 0){
-//	  GPIO_PinOutSet(gpioPortD, 15); //set motor switch pin to high
-//	  currentMotorState = 1;
-//	}
-//	else if(currentMotorState == 1){
-//	  GPIO_PinOutClear(gpioPortD, 15); //reset motor switch pin to low
-//	  currentMotorState = 0;
-//	}
-}
-
-
-
-
-
 
 void readStripDetectVoltage(){ //needs function prototype
 	//pin PA1 (the strip detect) was set in the ADC to be the positive input for Single Channel Mode, the channel for the negative input is VSS
@@ -425,4 +362,3 @@ static void bootMessage(struct gecko_msg_system_boot_evt_t *bootevt) //probably 
   printSWO("%2.2x\r\n", local_addr.addr[0]);
 #endif
 }
-
