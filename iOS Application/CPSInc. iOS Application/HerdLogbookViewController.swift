@@ -20,6 +20,8 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
     private var herdList = [Herd]()
     private var filteredHerds = [Herd]()
     
+    private var selectingFromList: Bool = false
+    
     //ViewControllers
     public var menuView: MenuViewController? = nil
     private var cowLogbook: CowLogbookViewController? = nil
@@ -427,6 +429,8 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
             herdToUse = herdList[indexPath.row]
         }
         
+        if(selectingFromList == false){
+        
         let selectedRowAlert = UIAlertController(title: tableView.cellForRow(at: indexPath)?.textLabel?.text, message: "Please Select One of the Following", preferredStyle: .actionSheet) //actionSheet shows on the bottom of the screen while alert comes up in the middle
         
         selectedRowAlert.addAction(UIAlertAction(title: "Herd Info", style: .default, handler: { action in
@@ -434,7 +438,6 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
             self.navigationController?.pushViewController(self.herdInfoView!, animated: true)
         }))
         selectedRowAlert.addAction(UIAlertAction(title: "Cow Listing", style: .default, handler: { action in
-
                 self.cowLogbook!.setSelectedHerd(herd: herdToUse)
                 self.navigationController?.pushViewController(self.cowLogbook!, animated: true)
             
@@ -493,6 +496,13 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
         
         
         self.present(selectedRowAlert, animated: true)
+            
+        }
+        else{
+            self.cowLogbook!.setSelectedHerd(herd: herdToUse)
+            self.cowLogbook!.setSelectingCowFromList(select: true)
+            self.navigationController?.pushViewController(self.cowLogbook!, animated: true)
+        }
         
     }
     
@@ -556,4 +566,9 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
     public func getCowLogbookView() -> CowLogbookViewController{
         return cowLogbook!
     }
+    
+    public func setSelectingHerdFromList(select: Bool){
+        self.selectingFromList = select
+    }
+    
 }

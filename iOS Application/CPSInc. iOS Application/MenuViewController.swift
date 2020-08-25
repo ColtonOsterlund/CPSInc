@@ -700,7 +700,6 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         },
                        completion: { Void in()  }
         )
-        
         navigationController?.pushViewController(logbookView!, animated: true)
         if(wcSession != nil){
             wcSession!.delegate = logbookView

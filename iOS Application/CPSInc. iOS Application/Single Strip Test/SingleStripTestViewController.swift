@@ -27,6 +27,8 @@ public class SingleStripTestViewController: UIViewController{
     var followUpTestArray: [Test] = []
     var cancelTestFlag: Bool = false
     var units: String? = nil
+    var selectingHerdCowFromList: Bool = false
+    var savableTest: Bool = true
     
     let group = DispatchGroup()
     
@@ -47,6 +49,7 @@ public class SingleStripTestViewController: UIViewController{
     private var severeHypocalcemiaRecommendationBtn = UIButton()
     private var subClinicalHypocalcemiaRecommendationBtn = UIButton()
     private var normalCalcemiaRecommendationBtn = UIButton()
+    private var retestBtn = UIButton()
     
     //labels
     private var connectedDeviceLabel = UILabel()
@@ -102,6 +105,17 @@ public class SingleStripTestViewController: UIViewController{
         setupButtonListeners()
     }
     
+    public override func viewDidAppear(_ animated: Bool) {
+        if(selectingHerdCowFromList){
+            if(herdToSave == nil || cowToSave == nil){
+                self.showToast(controller: self, message: "Did Not Select Either a Herd, a Cow or Both", seconds: 1)
+            }
+            else{
+                self.setSignsOfMilkFever()
+            }
+        }
+    }
+    
     
     private func setupLayoutComponents(){
         
@@ -132,6 +146,16 @@ public class SingleStripTestViewController: UIViewController{
         view.addSubview(discardTestBtn)
         discardTestBtn.isHidden = true
         discardTestBtn.isEnabled = false
+        
+        //retestBtn
+        retestBtn.backgroundColor = .blue
+        retestBtn.setTitle("Re-test", for: .normal)
+        retestBtn.setTitleColor(.white, for: .normal)
+        retestBtn.layer.borderWidth = 2
+        retestBtn.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor
+        view.addSubview(retestBtn)
+        retestBtn.isHidden = true
+        retestBtn.isEnabled = false
         
         //cancelTestBtn
         cancelTestBtn.backgroundColor = .blue
@@ -302,6 +326,11 @@ public class SingleStripTestViewController: UIViewController{
         cancelTestBtn.topAnchor.constraint(equalTo: saveTestBtn.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         cancelTestBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
         
+        retestBtn.translatesAutoresizingMaskIntoConstraints = false
+        retestBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        retestBtn.topAnchor.constraint(equalTo: saveTestBtn.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        retestBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
+        
         waitingLabel.translatesAutoresizingMaskIntoConstraints = false
         waitingLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         waitingLabel.topAnchor.constraint(equalTo: cancelTestBtn.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
@@ -382,6 +411,7 @@ public class SingleStripTestViewController: UIViewController{
         subClinicalHypocalcemiaRecommendationBtn.addTarget(self, action: #selector(subClinicalHypocalcemiaRecommendationBtnListener), for: .touchUpInside)
         normalCalcemiaRecommendationBtn.addTarget(self, action: #selector(normalCalcemiaRecommendationBtnListener), for: .touchUpInside)
         recommendationBtn.addTarget(self, action: #selector(recommendationBtnListener), for: .touchUpInside)
+        retestBtn.addTarget(self, action: #selector(retestBtnListener), for: .touchUpInside)
         
         if #available(iOS 12.0, *) { //all of these steps have to be done together within this code block for scope reasons - this is why its done here
             let addToSiriBtn = INUIAddVoiceShortcutButton(style: .blackOutline)
@@ -392,6 +422,31 @@ public class SingleStripTestViewController: UIViewController{
             addToSiriBtn.addTarget(self, action: #selector(addToSiriBtnPressed), for: .touchUpInside)
         } else {
             // Fallback on earlier versions
+        }
+    }
+    
+    @objc private func retestBtnListener(){
+        
+        if(savableTest){
+            let alert = UIAlertController(title: "Save Previous Test", message: "Would you like to save or discard the previous test?", preferredStyle: .alert)
+
+            alert.addAction(UIAlertAction(title: "Save", style: .default, handler: {action in
+                self.saveTestBtnListener()
+                self.runTest()
+                return
+            }))
+            alert.addAction(UIAlertAction(title: "Discard", style: .default, handler: { action in
+                self.discardTestBtnListener()
+                self.runTest()
+                return
+            }))
+
+            self.present(alert, animated: true)
+        }
+        else{
+            self.discardTestBtnListener()
+            self.runTest()
+            return
         }
     }
     
@@ -642,6 +697,9 @@ public class SingleStripTestViewController: UIViewController{
         discardTestBtn.isEnabled = false
         discardTestBtn.isHidden = true
         
+        self.retestBtn.isEnabled = false
+        self.retestBtn.isHidden = true
+        
         //cancelTestBtn
         cancelTestBtn.isEnabled = false
         cancelTestBtn.isHidden = true
@@ -741,122 +799,18 @@ public class SingleStripTestViewController: UIViewController{
             return
         }
         
-        let alert = UIAlertController(title: "Choose Herd/Cow", message: "Would you like to enter the Herd/Cow ID manually or select from a list?", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Choose Herd/Cow", message: "Would you like to choose a Herd/Cow to save to or run a blank test?", preferredStyle: .alert)
         
-        alert.addAction(UIAlertAction(title: "Manually", style: .default, handler: { action in
-            
-            //create herd id alert
-            let herdIDTextAlert = UIAlertController(title: "Herd ID", message: "Enter Herd ID", preferredStyle: .alert)
-            
-            //add text field to herd id alert
-            herdIDTextAlert.addTextField{ (textField) in
-                textField.keyboardType = .numberPad
-                textField.text = ""
-            }
-            
-            //add cancel action to herd id alert
-            herdIDTextAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
-                return
-            }))
-            
-            //add ok action to herd id alert
-            var herdID: String? = nil
-            herdIDTextAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak herdIDTextAlert] (_) in
-                herdID = herdIDTextAlert?.textFields![0].text
-                
-                var match: Int = 0
-                for herd in (self.menuView?.getHerdLogbookView().getHerdList())!{
-                    if(herdID == herd.id){
-                        self.menuView?.getHerdLogbookView().getCowLogbookView().setSelectedHerd(herd: herd) //set selected herd to have access to the correct cow list - DONT NEED TO SET HERD TO SAVE, YOU ONLY ENTER THE HERD SO THAT YOU CAN GET THE RIGHT COW. THIS CAN BE OVERWRITTEN DOESNT MATTER
-                        match = 1
-                        
-                        self.herdToSave = herd
-                        
-                    }
-                }
-                
-                if(match == 0){ //check if no match was made
-                    let errorAlert = UIAlertController(title: "Herd ID", message: "Herd Does Not Exist With That ID", preferredStyle: .alert)
-                    errorAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
-                        return
-                    }))
-                    self.present(errorAlert, animated: true)
-                }
-                else{
-                    
-                    //create herd id alert
-                    let cowIDTextAlert = UIAlertController(title: "Cow ID", message: "Enter Cow ID", preferredStyle: .alert)
-                    
-                    //add text field to herd id alert
-                    cowIDTextAlert.addTextField{ (textField) in
-                        textField.keyboardType = .numberPad
-                        textField.text = ""
-                    }
-                    
-                    //add cancel action to herd id alert
-                    cowIDTextAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
-                        return
-                    }))
-                    
-                    //add ok action to herd id alert
-                    var cowID: String? = nil
-                    cowIDTextAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak cowIDTextAlert] (_) in
-                        cowID = cowIDTextAlert?.textFields![0].text
-                        
-                        
-                        
-                        let fetchRequest: NSFetchRequest<Cow> = Cow.fetchRequest()
-                        fetchRequest.predicate = NSPredicate(format: "herd == %@", self.herdToSave!)
-
-                        var savedCowArray: [Cow]? = nil
-                        
-                        do{
-                            savedCowArray = try self.appDelegate?.persistentContainer.viewContext.fetch(fetchRequest)
-                        } catch{
-                            print("Error during fetch request")
-                        }
-                        
-                        
-                        var match: Int = 0
-                        
-                        if(savedCowArray != nil){
-                            for cow in savedCowArray!{
-                                if(cowID == cow.id){
-                                    //self.menuView?.getHerdLogbookView().getCowLogbookView().getTestLogbookView().setSelectedCow(cow: cow)
-                                    self.cowToSave = cow
-                                    match = 1
-                                    
-                                }
-                            }
-                        }
-                        
-                        if(match == 0){
-                            let errorAlert = UIAlertController(title: "Cow ID", message: "Cow Does Not Exist With That ID", preferredStyle: .alert)
-                            errorAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
-                                return
-                            }))
-                            self.present(errorAlert, animated: true)
-                        }
-                        else{
-                            self.setSignsOfMilkFever()
-                            return
-                        }
-                        
-                    }))
-                    
-                    //present herdIDTextAlert
-                    self.present(cowIDTextAlert, animated: true)
-                    
-                }
-            }))
-            
-            //present herdIDTextAlert
-            self.present(herdIDTextAlert, animated: true)
-            
+        alert.addAction(UIAlertAction(title: "Blank Test", style: .default, handler: { action in
+            self.savableTest = false
+            self.runTest()
         }))
         
-        alert.addAction(UIAlertAction(title: "From List", style: .default, handler: { action in
-            self.showToast(controller: self, message: "Feature not yet supported in this version", seconds: 1)
+        alert.addAction(UIAlertAction(title: "Choose Herd/Cow", style: .default, handler: { action in
+            self.savableTest = true
+            self.selectingHerdCowFromList = true
+            self.menuView?.getHerdLogbookView().setSelectingHerdFromList(select: true)
+            self.navigationController?.pushViewController((self.menuView?.getHerdLogbookView())! , animated: true)
             return
         }))
         
@@ -916,13 +870,14 @@ public class SingleStripTestViewController: UIViewController{
             
             
             //wait until value is not nil
+            
             while(true){ //this shouldn't pause the UI since its on a background thread
                 if(self.testPageController!.getIntegratedVoltageValue() != nil){
                     break
                 }
             }
-            
-            
+
+
             //wait until value reaches a threshold of 250mV
             while(true){ //this shouldn't pause the UI since its on a background thread
                 //print(self.testPageController!.getIntegratedVoltageValue())
@@ -1044,9 +999,11 @@ public class SingleStripTestViewController: UIViewController{
                     }
                     self.testProgressIndicator.isHidden = false
                     
+                    if(self.savableTest){
                     self.recommendationBtn.setTitle("Recent Results for Cow: " + (self.cowToSave?.id)!, for: .normal)
                     self.recommendationBtn.isEnabled = true
                     self.recommendationBtn.isHidden = false
+                    }
                     
                 }
                 
@@ -1101,12 +1058,23 @@ public class SingleStripTestViewController: UIViewController{
                     self.testResultProgressBar.isHidden = false
                     //self.testResultProgressBar.setProgress(Float(finalResult! / Float(15.0)), animated: true)
                     
-                    self.saveTestBtn.isEnabled = true
-                    self.saveTestBtn.isHidden = false
+                    if(self.savableTest){
+                        self.saveTestBtn.isEnabled = true
+                        self.saveTestBtn.isHidden = false
+                        
+                        self.retestBtn.setTitle("Re-test Cow", for: .normal)
+                    }
+                    else{
+                        self.retestBtn.setTitle("Re-test Blank Test", for: .normal)
+                    }
+                    
+                    self.retestBtn.isEnabled = true
+                    self.retestBtn.isHidden = false
                     
                     self.discardTestBtn.isEnabled = true
                     self.discardTestBtn.isHidden = false
 
+                    if(self.savableTest){
                     self.zoneSpecificRecommendationLabel.isHidden = false
                     
                     self.severeHypocalcemiaRecommendationBtn.isHidden = false
@@ -1117,10 +1085,13 @@ public class SingleStripTestViewController: UIViewController{
 
                     self.normalCalcemiaRecommendationBtn.isHidden = false
                     self.normalCalcemiaRecommendationBtn.isEnabled = true
+                    }
                     
                 }
                 
+                if(self.savableTest){
                 self.computeRecommendations()
+                }
                 
             }
             
@@ -1223,6 +1194,15 @@ public class SingleStripTestViewController: UIViewController{
         else{
          self.connectedDeviceLabel.text = "Connected Device: " + periphDevice!.name!
         }
+    }
+    
+    
+    public func setHerd(herd: Herd?){
+        herdToSave = herd
+    }
+    
+    public func setCow(cow: Cow?){
+        cowToSave = cow
     }
     
     

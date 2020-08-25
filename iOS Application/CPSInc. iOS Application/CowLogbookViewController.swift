@@ -19,6 +19,8 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate,
     private var cowList = [Cow]()
     private var filteredCows = [Cow]()
     
+    private var selectingFromList: Bool = false
+    
     public var herdLogbook: HerdLogbookViewController? = nil
     private var testLogbook: TestLogbookViewController? = nil
     private var cowInfoView: CowInfoViewController? = nil
@@ -574,6 +576,8 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate,
             cowToUse = cowList[indexPath.row]
         }
         
+        if(selectingFromList == false){
+        
         let selectedRowAlert = UIAlertController(title: tableView.cellForRow(at: indexPath)?.textLabel?.text, message: "Please Select One of the Following", preferredStyle: .actionSheet) //actionSheet shows on the bottom of the screen while alert comes up in the middle
         
         selectedRowAlert.addAction(UIAlertAction(title: "Cow Info", style: .default, handler: { action in
@@ -623,6 +627,14 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate,
         
         
         self.present(selectedRowAlert, animated: true)
+        }
+        else{
+            self.herdLogbook?.menuView?.getTestPageView().getTestPages()[0].setHerd(herd: selectedHerd)
+            self.herdLogbook?.menuView?.getTestPageView().getTestPages()[0].setCow(cow: cowToUse)
+            //pop back 2 view controllers to runTestViewController
+            let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController]
+            self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: true)
+        }
     }
     
     
@@ -729,6 +741,10 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate,
 
         controller.dismiss(animated: true)
 
+    }
+    
+    public func setSelectingCowFromList(select: Bool){
+        self.selectingFromList = select
     }
     
 }
