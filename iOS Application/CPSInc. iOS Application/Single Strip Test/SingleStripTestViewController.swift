@@ -106,9 +106,13 @@ public class SingleStripTestViewController: UIViewController{
     }
     
     public override func viewDidAppear(_ animated: Bool) {
+        
+        print("VIEW DID APPEAR")
+        
         if(selectingHerdCowFromList){
             if(herdToSave == nil || cowToSave == nil){
-                self.showToast(controller: self, message: "Did Not Select Either a Herd, a Cow or Both", seconds: 1)
+                self.showToast(controller: self, message: "Did Not Select Either a Herd, a Cow or Both", seconds: 2)
+                return
             }
             else{
                 self.setSignsOfMilkFever()
@@ -426,6 +430,25 @@ public class SingleStripTestViewController: UIViewController{
     }
     
     @objc private func retestBtnListener(){
+        
+        
+        //check that it is connected to device
+        if(testPageController!.getPeripheralDevice() == nil){
+            showToast(controller: self, message: "No device connected", seconds: 1)
+            return
+        }
+        else if(testPageController!.getStripDetectVoltageValue() == nil){ //set proper value for testing, for now this works
+            //this is set to 750 since one of the devices only has a strip detect voltage of 1/2 VDD, the other has a strip detect voltage of VDD. 75O gives a lot of room for any noise at the bottom end and also is low enough to detect when a strip is inserted (essentially 1/4 VDD)
+            showToast(controller: self, message: "Securing Connection to Device, Please Retry", seconds: 1)
+            return
+        }
+        //check that both strips are entered into the device
+        else if(testPageController!.getStripDetectVoltageValue()! <= 750){ //set proper value for testing, for now this works
+            //this is set to 750 since one of the devices only has a strip detect voltage of 1/2 VDD, the other has a strip detect voltage of VDD. 75O gives a lot of room for any noise at the bottom end and also is low enough to detect when a strip is inserted (essentially 1/4 VDD)
+            showToast(controller: self, message: "Strips not detected", seconds: 1)
+            return
+        }
+        
         
         if(savableTest){
             let alert = UIAlertController(title: "Save Previous Test", message: "Would you like to save or discard the previous test?", preferredStyle: .alert)
@@ -776,28 +799,32 @@ public class SingleStripTestViewController: UIViewController{
     
     
     public func setCowHerd(){
-        let herdFetchRequest: NSFetchRequest<Herd> = Herd.fetchRequest()
-        var savedHerdArray: [Herd]? = nil
-        do{
-            savedHerdArray = try appDelegate?.persistentContainer.viewContext.fetch(herdFetchRequest)
-                
-        } catch{
-            print("Error during fetch request")
-        }
-               
-        let cowFetchRequest: NSFetchRequest<Cow> = Cow.fetchRequest()
-        var savedCowArray: [Cow]? = nil
-        do{
-            savedCowArray = try appDelegate?.persistentContainer.viewContext.fetch(cowFetchRequest)
-                   
-        } catch{
-            print("Error during fetch request")
-        }
         
-        if(savedHerdArray!.isEmpty){
-            self.showToast(controller: self, message: "There are currently no herds in the logbook", seconds: 2)
-            return
-        }
+        self.herdToSave = nil
+        self.cowToSave = nil
+        
+//        let herdFetchRequest: NSFetchRequest<Herd> = Herd.fetchRequest()
+//        var savedHerdArray: [Herd]? = nil
+//        do{
+//            savedHerdArray = try appDelegate?.persistentContainer.viewContext.fetch(herdFetchRequest)
+//
+//        } catch{
+//            print("Error during fetch request")
+//        }
+//
+//        let cowFetchRequest: NSFetchRequest<Cow> = Cow.fetchRequest()
+//        var savedCowArray: [Cow]? = nil
+//        do{
+//            savedCowArray = try appDelegate?.persistentContainer.viewContext.fetch(cowFetchRequest)
+//
+//        } catch{
+//            print("Error during fetch request")
+//        }
+//
+//        if(savedHerdArray!.isEmpty){
+//            self.showToast(controller: self, message: "There are currently no herds in the logbook", seconds: 2)
+//            return
+//        }
         
         let alert = UIAlertController(title: "Choose Herd/Cow", message: "Would you like to choose a Herd/Cow to save to or run a blank test?", preferredStyle: .alert)
         
@@ -848,9 +875,6 @@ public class SingleStripTestViewController: UIViewController{
         
             let startTestData = Data(hexString: startTestString)
             let stopTestData = Data(hexString: stopTestString)
-        
-            self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
-            self.testPageController!.getPeripheralDevice()?.writeValue(startTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
             
             DispatchQueue.main.sync {
                 self.waitingLabel.isHidden = false
@@ -858,6 +882,12 @@ public class SingleStripTestViewController: UIViewController{
                 self.showToast(controller: self, message: "Fill Strip With Sample", seconds: 2)
                 
             }
+        
+            self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
+            
+            sleep(1) //kind of a buggy fix - this is to ensure the capacitor discharges 
+            
+            self.testPageController!.getPeripheralDevice()?.writeValue(startTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
             
             
             //MARK: TESTING PURPOSES
@@ -903,7 +933,7 @@ public class SingleStripTestViewController: UIViewController{
             }
             
             let currentTime = DispatchTime.now()
-            let testDuration = 8 //run for 8 seconds for app, 30 seconds for testing
+            let testDuration = 30 //run for 8 seconds for app, 30 seconds for testing
             
             //MARK: Normal Test
             finalValueTestQueue.asyncAfter(deadline: currentTime + .seconds(testDuration * 1/4)){
