@@ -14,8 +14,9 @@ import UserNotifications
 import CoreData
 import IntentsUI
 import GradientProgressBar
+import MessageUI
 
-public class SingleStripTestViewController: UIViewController{
+public class SingleStripTestViewController: UIViewController, MFMailComposeViewControllerDelegate{
     
     //global vars
     var testDate: Date? = nil
@@ -29,6 +30,8 @@ public class SingleStripTestViewController: UIViewController{
     var units: String? = nil
     var selectingHerdCowFromList: Bool = false
     var savableTest: Bool = true
+    
+    var url: URL? = nil
     
     let group = DispatchGroup()
     
@@ -785,6 +788,9 @@ public class SingleStripTestViewController: UIViewController{
         
         self.cancelTestFlag = true
         
+        self.herdToSave = nil
+        self.cowToSave = nil
+        
         DispatchQueue.main.async {
             self.waitingLabel.isHidden = true
         }
@@ -848,6 +854,9 @@ public class SingleStripTestViewController: UIViewController{
     
     
     private func runTest(){
+        
+        self.selectingHerdCowFromList = false
+        
         startTestBtn.isEnabled = false
         startTestBtn.isHidden = true
         
@@ -885,18 +894,31 @@ public class SingleStripTestViewController: UIViewController{
         
             self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
             
-            sleep(1) //kind of a buggy fix - this is to ensure the capacitor discharges 
-            
             self.testPageController!.getPeripheralDevice()?.writeValue(startTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
             
+            sleep(1) //kind of a buggy fix - this is to ensure the capacitor discharges
             
-            //MARK: TESTING PURPOSES
+            var testDuration = 8 //default test duration = 8s
             
-            
-            DispatchQueue.main.sync{ //reads new voltage value from the device - this is for testing purposes (printing the voltage values to the debug panel)
-                self.testTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.readNewVoltage), userInfo: nil, repeats: true)
+            if(self.menuView?.getSettingsView().getTestingModeDefault() == true){
+                testDuration = 30 //testing test duration = 30s
+                
+                //Write Herd report text file
+                self.url = self.getDocumentsDirectory().appendingPathComponent("TestReport.txt")
+                    
+                //write test report header
+                do {
+                    try String("Test Report\n").write(to: self.url!, atomically: true, encoding: .utf8)
+                    self.appendStringToFile(url: self.url!, string: ("--------------------------------------\n\n"))
+                } catch {
+                    print(error.localizedDescription)
+                }
+                
             }
             
+            DispatchQueue.main.sync {
+                self.testTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.readNewVoltage), userInfo: nil, repeats: true)
+            }
             
             
             //wait until value is not nil
@@ -933,7 +955,6 @@ public class SingleStripTestViewController: UIViewController{
             }
             
             let currentTime = DispatchTime.now()
-            let testDuration = 30 //run for 8 seconds for app, 30 seconds for testing
             
             //MARK: Normal Test
             finalValueTestQueue.asyncAfter(deadline: currentTime + .seconds(testDuration * 1/4)){
@@ -986,7 +1007,6 @@ public class SingleStripTestViewController: UIViewController{
                 }
                     
                 
-                //MARK: Testing Purposes
                 self.testTimer.invalidate()
                 
                 //MARK: Normal Testing Procedure
@@ -1123,6 +1143,54 @@ public class SingleStripTestViewController: UIViewController{
                 self.computeRecommendations()
                 }
                 
+                if(self.menuView?.getSettingsView().getTestingModeDefault() == true){
+                    //SEND EMAIL WITH TESTING STUFF
+                    
+                    DispatchQueue.main.async{
+                        let emailAlert = UIAlertController(title: "Testing Voltage Results", message: "Would you like to email yourself the test voltages?", preferredStyle: .alert)
+
+                                           emailAlert.addAction(UIAlertAction(title: "No", style: .default, handler: { action in
+                                               return
+                                           }))
+                                           
+                                           emailAlert.addAction(UIAlertAction(title: "Yes", style: .cancel, handler: { action in
+                                               if( MFMailComposeViewController.canSendMail() ) {
+                                                       let mailComposer = MFMailComposeViewController()
+                                                       mailComposer.mailComposeDelegate = self
+
+                                                       //Set the subject and message of the email
+                                                   mailComposer.setSubject("Test Report | " + self.testDateLabel.text!)
+                                                       mailComposer.setMessageBody("", isHTML: false)
+
+                        
+                                                       let fileURL = self.getDocumentsDirectory().appendingPathComponent("TestReport.txt")
+                                                                       
+                                                                       
+                                                       do {
+                                                       let attachmentData = try Data(contentsOf: fileURL)
+                                                           mailComposer.addAttachmentData(attachmentData, mimeType: "text/txt", fileName: "TestReport")
+                                                           mailComposer.mailComposeDelegate = self
+                                                           self.present(mailComposer, animated: true
+                                                               , completion: nil)
+                                                       } catch let error {
+                                                           print("We have encountered error \(error.localizedDescription)")
+                                                       }
+                                                                           
+                                                       self.present(mailComposer, animated: true, completion: nil)
+                                                   }
+                                                   else{
+                                                       self.showToast(controller: self, message: "Cannot send email - Please make sure you have an email account set up on your device", seconds: 2)
+                                                   }
+                                           }))
+
+                                           self.present(emailAlert, animated: true)
+                    }
+                    
+                    
+                    
+                    
+                }
+                
             }
             
         }
@@ -1247,10 +1315,63 @@ public class SingleStripTestViewController: UIViewController{
         
         if(intVoltageValue == nil){
             print("nil")
+            if(menuView?.getSettingsView().getTestingModeDefault() == true){
+                self.appendStringToFile(url: url!, string: ("nil" + "\n"))
+            }
         }
         else{
             print(intVoltageValue!)
+            if(menuView?.getSettingsView().getTestingModeDefault() == true){
+                self.appendStringToFile(url: url!, string: (String(intVoltageValue!) + "\n"))
+            }
         }
+    }
+    
+    
+    func getDocumentsDirectory() -> URL {
+        // find all possible documents directories for this user
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+
+        // just send back the first one, which ought to be the only one
+        return paths[0]
+    }
+    
+    func appendStringToFile(url: URL, string: String){
+        do {
+            let fileHandle = try FileHandle(forWritingTo: url)
+                fileHandle.seekToEndOfFile()
+                fileHandle.write(string.data(using: .utf8)!)
+                fileHandle.closeFile()
+        } catch {
+            print("Error writing to file \(error)")
+        }
+    }
+    
+    public func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        switch result {
+        case .cancelled:
+            print("User cancelled")
+            break
+
+        case .saved:
+            print("Mail is saved by user")
+            break
+
+        case .sent:
+            print("Mail is sent successfully")
+            self.showToast(controller: self, message: "Mail is sent successfully", seconds: 2)
+            break
+
+        case .failed:
+            print("Sending mail is failed")
+            self.showToast(controller: self, message: "Sending mail is failed", seconds: 2)
+            break
+        default:
+            break
+        }
+
+        controller.dismiss(animated: true)
+
     }
     
     

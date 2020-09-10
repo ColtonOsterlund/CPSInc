@@ -648,7 +648,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                         self.provinceTextField.text = ""
                         self.zipCodeTextField.text = ""
                         
-                        self.showToast(controller: self, message: "An error happened, please retry", seconds: 1)
+                        self.showToast(controller: self, message: "An error happened: " + String(decoding: data!, as: UTF8.self) + ", please retry", seconds: 2)
                     }
                     return
                 }
@@ -742,7 +742,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                                                    self.provinceTextField.text = ""
                                                    self.zipCodeTextField.text = ""
                                                    
-                                self.showToast(controller: self, message: "An error happened, please retry", seconds: 1)
+                                self.showToast(controller: self, message: "An error happened, please retry", seconds: 2)
                                                }
                             
                             
@@ -756,7 +756,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                                 if(error != nil){
                                     DispatchQueue.main.async {
                                         self.scanningIndicator.stopAnimating()
-                                        self.showToast(controller: self, message: "Error: " + (error as! String), seconds: 1)
+                                        self.showToast(controller: self, message: "Error: " + (error as! String), seconds: 2)
                                         return
                                     }
                                     print("Error occured during /user/delete RESTAPI request")
@@ -806,7 +806,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                                                    self.provinceTextField.text = ""
                                                    self.zipCodeTextField.text = ""
                                                    
-                                self.showToast(controller: self, message: (result?.customerCreate?.customerUserErrors.first!.message)!, seconds: 1)
+                                self.showToast(controller: self, message: (result?.customerCreate?.customerUserErrors.first!.message)!, seconds: 2)
                                                }
                             
                             var userDeleteRequest = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/user/delete")!)
@@ -819,7 +819,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                                 if(error != nil){
                                     DispatchQueue.main.async {
                                         self.scanningIndicator.stopAnimating()
-                                        self.showToast(controller: self, message: "Error: " + (error as! String), seconds: 1)
+                                        self.showToast(controller: self, message: "Error: " + (error as! String), seconds: 2)
                                         return
                                     }
                                     print("Error occured during /user/delete RESTAPI request")
@@ -890,7 +890,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                                                            self.provinceTextField.text = ""
                                                            self.zipCodeTextField.text = ""
                                                            
-                                                           self.showToast(controller: self, message: "An error happened, please retry", seconds: 1)
+                                        self.showToast(controller: self, message: error!.localizedDescription, seconds: 2)
                                                        }
                                     
                                     
@@ -916,7 +916,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                                                            self.provinceTextField.text = ""
                                                            self.zipCodeTextField.text = ""
                                                            
-                                                           self.showToast(controller: self, message: "An error happened, please retry", seconds: 1)
+                                                           self.showToast(controller: self, message: "An error happened, please retry", seconds: 2)
                                                        }
                                     
                                     return
@@ -971,7 +971,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                                                            self.provinceTextField.text = ""
                                                            self.zipCodeTextField.text = ""
                                                            
-                                                           self.showToast(controller: self, message: "An error happened, please retry", seconds: 1)
+                                                           self.showToast(controller: self, message: "An error happened, please retry", seconds: 2)
                                                        }
                                     
                                     return
@@ -996,7 +996,7 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                                                            self.provinceTextField.text = ""
                                                            self.zipCodeTextField.text = ""
                                                            
-                                                           self.showToast(controller: self, message: "An error happened, please retry", seconds: 1)
+                                                           self.showToast(controller: self, message: "An error happened, please retry", seconds: 2)
                                                        }
                                     
                                     return

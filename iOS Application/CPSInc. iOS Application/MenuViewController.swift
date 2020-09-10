@@ -290,7 +290,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         contentView.addSubview(hyperlinkTextView)
         
         
-        instructionBtn = UIBarButtonItem.init(title: "Instructions", style: .done, target: self, action: #selector(instructionsBtnPressed))
+        instructionBtn = UIBarButtonItem.init(title: "Software Manual", style: .done, target: self, action: #selector(instructionsBtnPressed))
         findDeviceBtn = UIBarButtonItem.init(title: "Find a Device", style: .done, target: self, action: #selector(findDeviceBtnPressed))
         
         navigationItem.rightBarButtonItems = [instructionBtn]
@@ -796,7 +796,9 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     
     
     @objc private func instructionsBtnPressed(){
-        navigationController?.pushViewController(instructionsView!, animated: true)
+       //navigationController?.pushViewController(instructionsView!, animated: true)
+        UIApplication.shared.open(URL(string: "https://creativeproteinsolutions.com/instructions-app-%26-device")!, options: [:], completionHandler: nil)
+        
     }
     
     private func showToast(controller: UIViewController, message: String, seconds: Double){

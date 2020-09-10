@@ -28,6 +28,7 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
     private let unitsLabel = UILabel()
     private let mgDlLabel = UILabel()
     private let mMLabel = UILabel()
+    private let testingModeLabel = UILabel()
     
     //PickerView
     //private let finalContinuousPicker = UIPickerView()
@@ -37,6 +38,7 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
     //UISwitch
     private let manualCalibrationSwitch = UISwitch()
     private let unitsSwitch = UISwitch()
+    private let testingModeSwitch = UISwitch()
     
     //User Defaults
     private let defaults = UserDefaults.standard
@@ -108,6 +110,9 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
         //defaults.register(defaults: ["testTypeTextViewDefault": "Immunoglobulins"])
         defaults.register(defaults: ["manualCalibrationDefault": false])
         defaults.register(defaults: ["unitsDefault": false])
+        defaults.register(defaults: ["testingModeDefault": false])
+        defaults.register(defaults: ["mValDefault": 0])
+        defaults.register(defaults: ["bValDefault": 0])
     }
 
     // This is also necessary when extending the superclass.
@@ -177,6 +182,14 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
         mMLabel.font = UIFont.boldSystemFont(ofSize: 25.0)
         mMLabel.textAlignment = .center
         view.addSubview(mMLabel)
+        
+        let underlinedTestingLabel: NSMutableAttributedString = NSMutableAttributedString(string: "Testing Mode:")
+        underlinedTestingLabel.addAttribute(NSAttributedString.Key.underlineStyle, value: 1, range: NSMakeRange(0, underlinedTestingLabel.length))
+        testingModeLabel.attributedText = underlinedTestingLabel
+        testingModeLabel.textColor = .black
+        testingModeLabel.font = UIFont.boldSystemFont(ofSize: 25.0)
+        testingModeLabel.textAlignment = .center
+        view.addSubview(testingModeLabel)
         
 //        finalContinuousPicker.tag = 0
 //        finalContinuousPicker.backgroundColor = .gray
@@ -271,6 +284,10 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
         unitsSwitch.addTarget(self, action: #selector(unitsSwitchStateChanged), for: .valueChanged)
         view.addSubview(unitsSwitch)
         
+        testingModeSwitch.setOn(defaults.bool(forKey: "testingModeDefault"), animated: true)
+        testingModeSwitch.addTarget(self, action: #selector(testingModeSwitchStateChanged), for: .valueChanged)
+        view.addSubview(testingModeSwitch)
+        
         mManualCalibrationTextView.placeholder = "Enter Slope Value (m)"
         mManualCalibrationTextView.tag = 0
         mManualCalibrationTextView.backgroundColor = .white
@@ -285,6 +302,7 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
         bManualCalibrationTextView.keyboardType = .default
         view.addSubview(bManualCalibrationTextView)
         
+        
         if(defaults.bool(forKey: "manualCalibrationDefault") == true){
             mManualCalibrationTextView.isHidden = false
             bManualCalibrationTextView.isHidden = false
@@ -293,6 +311,7 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
             mManualCalibrationTextView.isHidden = true
             bManualCalibrationTextView.isHidden = true
         }
+        
         
 //        if(defaults.integer(forKey: "testTypeDefault") == 0){ //immunoglobulins
 //            changeToImmunoglobulin()
@@ -413,6 +432,27 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
         bManualCalibrationTextView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.1)).isActive = true
         bManualCalibrationTextView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
        
+        
+        
+        testingModeLabel.translatesAutoresizingMaskIntoConstraints = false
+        if(defaults.bool(forKey: "manualCalibrationDefault") == true){
+            testingModeLabel.topAnchor.constraint(equalTo: self.bManualCalibrationTextView.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        }
+        else{
+            testingModeLabel.topAnchor.constraint(equalTo: self.manualCalibrationLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        }
+        testingModeLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.07)).isActive = true
+
+
+
+        testingModeSwitch.translatesAutoresizingMaskIntoConstraints = false
+        if(defaults.bool(forKey: "manualCalibrationDefault") == true){
+            testingModeSwitch.topAnchor.constraint(equalTo: self.bManualCalibrationTextView.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        }
+        else{
+            testingModeSwitch.topAnchor.constraint(equalTo: self.manualCalibrationLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        }
+        testingModeSwitch.leftAnchor.constraint(equalTo: self.testingModeLabel.rightAnchor, constant: (UIScreen.main.bounds.width * 0.07)).isActive = true
 
         
     }
@@ -551,6 +591,20 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
         }
         else{
             defaults.set(false, forKey: "unitsDefault")
+        }
+    }
+    
+    
+    
+    @objc private func testingModeSwitchStateChanged(){
+        
+        print("testing mode switch changed")
+        
+        if(testingModeSwitch.isOn){
+            defaults.set(true, forKey: "testingModeDefault")
+        }
+        else{
+            defaults.set(false, forKey: "testingModeDefault")
         }
     }
     
@@ -1024,6 +1078,10 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
         else{
             return Float(bManualCalibrationTextView.text!)!
         }
+    }
+    
+    public func getTestingModeDefault() -> Bool{
+        return defaults.bool(forKey: "testingModeDefault")
     }
     
     
