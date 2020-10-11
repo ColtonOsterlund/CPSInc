@@ -634,19 +634,19 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                 
                 if(userID == nil){ //something happened - username/email already taken or not verified- let user know and return
                     DispatchQueue.main.async {
-                        self.emailTextField.text = ""
-                        self.firstNameTextField.text = ""
-                        self.lastNameTextField.text = ""
-                        self.phoneTextField.text = ""
-                        self.usernameTextField.text = ""
-                        self.passwordTextField.text = ""
-                        self.passwordCompareTextField.text = ""
-                        self.address1TextField.text = ""
-                        self.address2TextField.text = ""
-                        self.cityTextField.text = ""
-                        self.countryTextField.text = ""
-                        self.provinceTextField.text = ""
-                        self.zipCodeTextField.text = ""
+//                        self.emailTextField.text = ""
+//                        self.firstNameTextField.text = ""
+//                        self.lastNameTextField.text = ""
+//                        self.phoneTextField.text = ""
+//                        self.usernameTextField.text = ""
+//                        self.passwordTextField.text = ""
+//                        self.passwordCompareTextField.text = ""
+//                        self.address1TextField.text = ""
+//                        self.address2TextField.text = ""
+//                        self.cityTextField.text = ""
+//                        self.countryTextField.text = ""
+//                        self.provinceTextField.text = ""
+//                        self.zipCodeTextField.text = ""
                         
                         self.showToast(controller: self, message: "An error happened: " + String(decoding: data!, as: UTF8.self) + ", please retry", seconds: 2)
                     }
@@ -728,19 +728,19 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                             print(error!)
                             
                             DispatchQueue.main.async {
-                                                   self.emailTextField.text = ""
-                                                   self.firstNameTextField.text = ""
-                                                   self.lastNameTextField.text = ""
-                                                   self.phoneTextField.text = ""
-                                                   self.usernameTextField.text = ""
-                                                   self.passwordTextField.text = ""
-                                                   self.passwordCompareTextField.text = ""
-                                                   self.address1TextField.text = ""
-                                                   self.address2TextField.text = ""
-                                                   self.cityTextField.text = ""
-                                                   self.countryTextField.text = ""
-                                                   self.provinceTextField.text = ""
-                                                   self.zipCodeTextField.text = ""
+//                                                   self.emailTextField.text = ""
+//                                                   self.firstNameTextField.text = ""
+//                                                   self.lastNameTextField.text = ""
+//                                                   self.phoneTextField.text = ""
+//                                                   self.usernameTextField.text = ""
+//                                                   self.passwordTextField.text = ""
+//                                                   self.passwordCompareTextField.text = ""
+//                                                   self.address1TextField.text = ""
+//                                                   self.address2TextField.text = ""
+//                                                   self.cityTextField.text = ""
+//                                                   self.countryTextField.text = ""
+//                                                   self.provinceTextField.text = ""
+//                                                   self.zipCodeTextField.text = ""
                                                    
                                 self.showToast(controller: self, message: "An error happened, please retry", seconds: 2)
                                                }
@@ -792,19 +792,19 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                             
                             
                             DispatchQueue.main.async {
-                                                   self.emailTextField.text = ""
-                                                   self.firstNameTextField.text = ""
-                                                   self.lastNameTextField.text = ""
-                                                   self.phoneTextField.text = ""
-                                                   self.usernameTextField.text = ""
-                                                   self.passwordTextField.text = ""
-                                                   self.passwordCompareTextField.text = ""
-                                                   self.address1TextField.text = ""
-                                                   self.address2TextField.text = ""
-                                                   self.cityTextField.text = ""
-                                                   self.countryTextField.text = ""
-                                                   self.provinceTextField.text = ""
-                                                   self.zipCodeTextField.text = ""
+//                                                   self.emailTextField.text = ""
+//                                                   self.firstNameTextField.text = ""
+//                                                   self.lastNameTextField.text = ""
+//                                                   self.phoneTextField.text = ""
+//                                                   self.usernameTextField.text = ""
+//                                                   self.passwordTextField.text = ""
+//                                                   self.passwordCompareTextField.text = ""
+//                                                   self.address1TextField.text = ""
+//                                                   self.address2TextField.text = ""
+//                                                   self.cityTextField.text = ""
+//                                                   self.countryTextField.text = ""
+//                                                   self.provinceTextField.text = ""
+//                                                   self.zipCodeTextField.text = ""
                                                    
                                 self.showToast(controller: self, message: (result?.customerCreate?.customerUserErrors.first!.message)!, seconds: 2)
                                                }
@@ -876,19 +876,19 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                                     print(error!)
                                     
                                     DispatchQueue.main.async {
-                                                           self.emailTextField.text = ""
-                                                           self.firstNameTextField.text = ""
-                                                           self.lastNameTextField.text = ""
-                                                           self.phoneTextField.text = ""
-                                                           self.usernameTextField.text = ""
-                                                           self.passwordTextField.text = ""
-                                                           self.passwordCompareTextField.text = ""
-                                                           self.address1TextField.text = ""
-                                                           self.address2TextField.text = ""
-                                                           self.cityTextField.text = ""
-                                                           self.countryTextField.text = ""
-                                                           self.provinceTextField.text = ""
-                                                           self.zipCodeTextField.text = ""
+//                                                           self.emailTextField.text = ""
+//                                                           self.firstNameTextField.text = ""
+//                                                           self.lastNameTextField.text = ""
+//                                                           self.phoneTextField.text = ""
+//                                                           self.usernameTextField.text = ""
+//                                                           self.passwordTextField.text = ""
+//                                                           self.passwordCompareTextField.text = ""
+//                                                           self.address1TextField.text = ""
+//                                                           self.address2TextField.text = ""
+//                                                           self.cityTextField.text = ""
+//                                                           self.countryTextField.text = ""
+//                                                           self.provinceTextField.text = ""
+//                                                           self.zipCodeTextField.text = ""
                                                            
                                         self.showToast(controller: self, message: error!.localizedDescription, seconds: 2)
                                                        }
@@ -902,19 +902,19 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                                     print("A user error occured creating Shopify customer account")
                                     
                                     DispatchQueue.main.async {
-                                                           self.emailTextField.text = ""
-                                                           self.firstNameTextField.text = ""
-                                                           self.lastNameTextField.text = ""
-                                                           self.phoneTextField.text = ""
-                                                           self.usernameTextField.text = ""
-                                                           self.passwordTextField.text = ""
-                                                           self.passwordCompareTextField.text = ""
-                                                           self.address1TextField.text = ""
-                                                           self.address2TextField.text = ""
-                                                           self.cityTextField.text = ""
-                                                           self.countryTextField.text = ""
-                                                           self.provinceTextField.text = ""
-                                                           self.zipCodeTextField.text = ""
+//                                                           self.emailTextField.text = ""
+//                                                           self.firstNameTextField.text = ""
+//                                                           self.lastNameTextField.text = ""
+//                                                           self.phoneTextField.text = ""
+//                                                           self.usernameTextField.text = ""
+//                                                           self.passwordTextField.text = ""
+//                                                           self.passwordCompareTextField.text = ""
+//                                                           self.address1TextField.text = ""
+//                                                           self.address2TextField.text = ""
+//                                                           self.cityTextField.text = ""
+//                                                           self.countryTextField.text = ""
+//                                                           self.provinceTextField.text = ""
+//                                                           self.zipCodeTextField.text = ""
                                                            
                                                            self.showToast(controller: self, message: "An error happened, please retry", seconds: 2)
                                                        }
@@ -957,19 +957,19 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                                     print(error!)
                                     
                                     DispatchQueue.main.async {
-                                                           self.emailTextField.text = ""
-                                                           self.firstNameTextField.text = ""
-                                                           self.lastNameTextField.text = ""
-                                                           self.phoneTextField.text = ""
-                                                           self.usernameTextField.text = ""
-                                                           self.passwordTextField.text = ""
-                                                           self.passwordCompareTextField.text = ""
-                                                           self.address1TextField.text = ""
-                                                           self.address2TextField.text = ""
-                                                           self.cityTextField.text = ""
-                                                           self.countryTextField.text = ""
-                                                           self.provinceTextField.text = ""
-                                                           self.zipCodeTextField.text = ""
+//                                                           self.emailTextField.text = ""
+//                                                           self.firstNameTextField.text = ""
+//                                                           self.lastNameTextField.text = ""
+//                                                           self.phoneTextField.text = ""
+//                                                           self.usernameTextField.text = ""
+//                                                           self.passwordTextField.text = ""
+//                                                           self.passwordCompareTextField.text = ""
+//                                                           self.address1TextField.text = ""
+//                                                           self.address2TextField.text = ""
+//                                                           self.cityTextField.text = ""
+//                                                           self.countryTextField.text = ""
+//                                                           self.provinceTextField.text = ""
+//                                                           self.zipCodeTextField.text = ""
                                                            
                                                            self.showToast(controller: self, message: "An error happened, please retry", seconds: 2)
                                                        }
@@ -982,19 +982,19 @@ class RegisterAccountViewController: UIViewController, UITextFieldDelegate{
                                     print("A user error occured creating Shopify customer account")
                                     
                                     DispatchQueue.main.async {
-                                                           self.emailTextField.text = ""
-                                                           self.firstNameTextField.text = ""
-                                                           self.lastNameTextField.text = ""
-                                                           self.phoneTextField.text = ""
-                                                           self.usernameTextField.text = ""
-                                                           self.passwordTextField.text = ""
-                                                           self.passwordCompareTextField.text = ""
-                                                           self.address1TextField.text = ""
-                                                           self.address2TextField.text = ""
-                                                           self.cityTextField.text = ""
-                                                           self.countryTextField.text = ""
-                                                           self.provinceTextField.text = ""
-                                                           self.zipCodeTextField.text = ""
+//                                                           self.emailTextField.text = ""
+//                                                           self.firstNameTextField.text = ""
+//                                                           self.lastNameTextField.text = ""
+//                                                           self.phoneTextField.text = ""
+//                                                           self.usernameTextField.text = ""
+//                                                           self.passwordTextField.text = ""
+//                                                           self.passwordCompareTextField.text = ""
+//                                                           self.address1TextField.text = ""
+//                                                           self.address2TextField.text = ""
+//                                                           self.cityTextField.text = ""
+//                                                           self.countryTextField.text = ""
+//                                                           self.provinceTextField.text = ""
+//                                                           self.zipCodeTextField.text = ""
                                                            
                                                            self.showToast(controller: self, message: "An error happened, please retry", seconds: 2)
                                                        }

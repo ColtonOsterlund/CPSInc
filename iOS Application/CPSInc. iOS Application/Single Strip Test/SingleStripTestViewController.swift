@@ -921,6 +921,8 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             }
             
             
+            
+            
             //wait until value is not nil
             
             while(true){ //this shouldn't pause the UI since its on a background thread
