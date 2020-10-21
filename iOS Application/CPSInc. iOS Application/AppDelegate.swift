@@ -18,7 +18,6 @@ import UserNotifications
 public class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     public var window: UIWindow?
-    private var wcSession: WCSession? = nil
     private var firstView: MenuViewController? = nil
     private var loginView: LoginViewController? = nil
     private var navigationController: UINavigationController? = nil
@@ -50,14 +49,6 @@ public class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotification
             }
         }
         
-        //setup WatchConnectivity session - do it here so that it is setup before the application is displayed
-        if (WCSession.isSupported()) {
-            wcSession = WCSession.default
-            wcSession!.delegate = firstView
-            wcSession!.activate()
-            firstView!.setWCSession(session: wcSession)
-            //print("wcSession has been activated on mobile - MenuViewController")
-        }
         
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = navigationController

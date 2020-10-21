@@ -896,7 +896,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             
             self.testPageController!.getPeripheralDevice()?.writeValue(startTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
             
-            sleep(1) //kind of a buggy fix - this is to ensure the capacitor discharges
+            //sleep(1) //kind of a buggy fix - this is to ensure the capacitor discharges
             
             var testDuration = 8 //default test duration = 8s
             
