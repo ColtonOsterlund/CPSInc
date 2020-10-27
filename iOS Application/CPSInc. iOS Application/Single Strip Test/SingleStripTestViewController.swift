@@ -935,7 +935,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             //wait until value reaches a threshold of 250mV
             while(true){ //this shouldn't pause the UI since its on a background thread
                 //print(self.testPageController!.getIntegratedVoltageValue())
-                if(self.testPageController!.getIntegratedVoltageValue()! >= 150 && self.testPageController!.getIntegratedVoltageValue()! <= 200){
+                if(self.testPageController!.getIntegratedVoltageValue()! >= 150 /*&& self.testPageController!.getIntegratedVoltageValue()! <= 200*/){
                     break
                 }
                 else if(self.cancelTestFlag){
