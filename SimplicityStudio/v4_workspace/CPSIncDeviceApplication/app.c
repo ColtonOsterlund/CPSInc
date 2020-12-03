@@ -43,6 +43,8 @@ static uint8_t boot_to_dfu = 0; //device firmware upgrade
 
 //ADC global vars
 uint32_t adcData;
+uint16 batteryVoltage;
+uint16 temperatureSensorVoltage;
 uint16 stripDetectVoltage;
 int16 differentialVoltage;
 int16 integratedVoltage;
@@ -75,7 +77,7 @@ void appMain(gecko_configuration_t *pconfig)
 
 //initial setup for ADC
   initSingle.acqTime = adcAcqTime16; //changed from 16
-  initSingle.reference = adcRefVDD; //uses the power suply voltage as the reference voltage
+  // initSingle.reference = adcRefVDD; //uses the power suply voltage as the reference voltage
   //CMU_ClockEnable(cmuClock_ADC0, true); //this is performed in init_board initBoard function because it results in a compilarion error here
   	  	  	  	  	  	  	  	  	  	  //not sure why it results in a compilation error here - look into this
   	  	  	  	  	  	  	  	  	  	  //hopefully putting it in init_board still works
@@ -166,6 +168,14 @@ void appMain(gecko_configuration_t *pconfig)
     		  updateStripDetectVoltage();
     		  notifyStripDetectVoltage();
 
+    		  readTemperatureSensorVoltage();
+    		  updateTemperatureSensorVoltage();
+			  notifyTemperatureSensorVoltage();
+
+			  readBatteryVoltage();
+			  updateBatteryVoltage();
+			  notifyBatteryVoltage();
+
     		  if(testRunning == 1){
     			  readIntegratedVoltage();
     			  updateIntegratedVoltage();
@@ -252,11 +262,58 @@ void appMain(gecko_configuration_t *pconfig)
   }
 }
 
+void readBatteryVoltage() {
+    initSingle.reference = adcRef5VDIFF;
+    initSingle.posSel = adcPosSelAPORT1YCH11;  // this is the PC11 pin that the battery is connected to - see ADC Reference Manual and the BGM113 Data Sheet
+    initSingle.negSel = adcNegSelVSS;
+
+    ADC_InitSingle(ADC0, &initSingle);  // initializing adc single sample mode
+    ADC_Start(ADC0, adcStartSingle);    // starting adc single sample
+    while ((ADC_IntGet(ADC0) & ADC_IF_SINGLE) != ADC_IF_SINGLE);  // unsure of this looping condition - look into this - something to do with ADC interrupts
+    adcData = ADC_DataSingleGet(ADC0);  // get the value of the single sample from the adc
+    batteryVoltage = (uint16)(adcData * 5000 / 4096);  // convert the value from the single sample from the adc into a readable temperature(adc signal goes from 0 - 4096, our voltage goes from 0-5000mV)
+    printSWO("battery voltage: %d mV\r\n", batteryVoltage);  // print the temperature to the SWO console
+}
+
+void updateBatteryVoltage(){ //needs function prototype
+	//writing voltage from Strip Detect pin into gatt db
+	batteryVoltage = ((batteryVoltage & 0x00FF) << 8) | ((batteryVoltage & 0xFF00) >> 8); //convert batteryVoltage to hex
+	gecko_cmd_gatt_server_write_attribute_value(gattdb_b_voltage, 0, 2, (const uint8*)&batteryVoltage); //write batteryVoltage to the gatt db
+}
+
+void notifyBatteryVoltage(){ //needs function prototype
+	 gecko_cmd_gatt_server_send_characteristic_notification(0xff, gattdb_b_voltage, 2, (const uint8*)&batteryVoltage);
+}
+
+void readTemperatureSensorVoltage() {
+    initSingle.posSel = adcPosSelAPORT4YCH8;  // this is the PA0 pin that the Temperature Sensor is connected to - see ADC Reference Manual and the BGM113 Data Sheet
+    initSingle.negSel = adcNegSelVSS;
+    initSingle.reference = adcRefVDD;
+
+    ADC_InitSingle(ADC0, &initSingle);  // initializing adc single sample mode
+    ADC_Start(ADC0, adcStartSingle);    // starting adc single sample
+    while ((ADC_IntGet(ADC0) & ADC_IF_SINGLE) != ADC_IF_SINGLE);  // unsure of this looping condition - look into this - something to do with ADC interrupts
+    adcData = ADC_DataSingleGet(ADC0);  // get the value of the single sample from the adc
+    temperatureSensorVoltage = (uint16)(adcData * 3300 / 4096);  // convert the value from the single sample from the adc into a readable temperature(adc signal goes from 0 - 4096, our voltage goes from 0-3700mV)
+    printSWO("temperature sensor voltage: %d mV\r\n", temperatureSensorVoltage);  // print the temperature to the SWO console
+}
+
+void updateTemperatureSensorVoltage(){ //needs function prototype
+	//writing voltage from Strip Detect pin into gatt db
+	temperatureSensorVoltage = ((temperatureSensorVoltage & 0x00FF) << 8) | ((temperatureSensorVoltage & 0xFF00) >> 8); //convert temperatureSensorVoltage to hex
+	gecko_cmd_gatt_server_write_attribute_value(gattdb_temp_voltage, 0, 2, (const uint8*)&temperatureSensorVoltage); //write temperatureSensorVoltage to the gatt db
+}
+
+void notifyTemperatureSensorVoltage(){ //needs function prototype
+	 gecko_cmd_gatt_server_send_characteristic_notification(0xff, gattdb_temp_voltage, 2, (const uint8*)&temperatureSensorVoltage);
+}
+
 void readStripDetectVoltage(){ //needs function prototype
 	//pin PA1 (the strip detect) was set in the ADC to be the positive input for Single Channel Mode, the channel for the negative input is VSS
 	//to allow for single-ended conversion - check that this is working correctly/this is the proper way to do it
 	initSingle.posSel = adcPosSelAPORT4XCH9; //this is the PA1 pin that the Strip Detect is connected to - see ADC Reference Manual and BGM113 Data Sheet
 	initSingle.negSel = adcNegSelVSS;
+	initSingle.reference = adcRefVDD;
 
 	//reading voltage from Strip Detect Pin
 	ADC_InitSingle(ADC0, &initSingle); //initializing adc single sample mode
@@ -280,6 +337,7 @@ void notifyStripDetectVoltage(){ //needs function prototype
 void readDifferentialVoltage(){ //needs function prototype
 	initSingle.posSel = adcPosSelAPORT3XCH28; //PB12
 	initSingle.negSel = adcNegSelVSS;
+	initSingle.reference = adcRefVDD;
 
 	//reading voltage from Differential Voltage Pin
 	ADC_InitSingle(ADC0, &initSingle); //initializing adc single sample mode
@@ -307,6 +365,7 @@ void readIntegratedVoltage(){ //need function prototype
 	//INTEGRATED VOLTAGE
 	initSingle.posSel = adcPosSelAPORT4XCH29; //PB13
 	initSingle.negSel = adcNegSelVSS;
+	initSingle.reference = adcRefVDD;
 
 	//reading voltage from Integrated Voltage Pin
 	ADC_InitSingle(ADC0, &initSingle); //initializing adc single sample mode
