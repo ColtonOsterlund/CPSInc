@@ -1,9 +1,9 @@
 #ISD afv6
-# Simplicity Studio version: 5.6.0.201904261019-1467
+# Simplicity Studio version: 5.18.5.202006060116-38
 
 # Application configuration
 stackId: com.silabs.sdk.stack.super
-stackRoot: C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v2.5
+stackRoot: C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v2.7
 appId: ble
 frameworkRoot: app\bluetooth\appbuilder\fwk
 architecture: efr32~family[B]~series[1]~device_configuration[1]~performance[B]~radio[232]~flash[256K]~temp[G]~package[M]~pins[48]~!module+none+gcc
@@ -21,7 +21,6 @@ hiddenLayoutElements: plugins,callbacks,other,radio
 appPlugin: mpsi=false
 appPlugin: mpsi-ipc=false
 appPlugin: mpsi-storage=false
-appPlugin: mpsi_ble_transport_server=false
 appPlugin: psstore=false
 appPlugin: slot-manager=false
 appPlugin: stack_bridge=false
@@ -72,6 +71,16 @@ appPlugin: stack_bridge=false
   </service>
   <service advertise="true" name="Voltages" requirement="mandatory" sourceId="custom.type" type="primary" uuid="fe283188-48df-4a0c-8a52-8f05aec9e4c1">
     <informativeText>Custom service</informativeText>
+    <characteristic id="temp_voltage" name="Temperature_Voltage" sourceId="custom.type" uuid="df95868b-f92e-4768-913c-8926f20300ca">
+      <informativeText>Custom characteristic</informativeText>
+      <value length="2" type="hex" variable_length="false">0x00</value>
+      <properties notify="true" notify_requirement="optional" read="true" read_requirement="optional"/>
+    </characteristic>
+    <characteristic id="b_voltage" name="Battery_Voltage" sourceId="custom.type" uuid="de036c5b-4ef3-41eb-bfd2-dd20e07405b0">
+      <informativeText>Custom characteristic</informativeText>
+      <value length="2" type="hex" variable_length="false">0x00</value>
+      <properties notify="true" notify_requirement="optional" read="true" read_requirement="optional"/>
+    </characteristic>
     <characteristic id="sd_voltage" name="Strip_Detect_Voltage" sourceId="custom.type" uuid="646b19c6-f66d-4cc2-b2fe-8efdc1e2cc1f">
       <informativeText>Custom characteristic</informativeText>
       <value length="2" type="hex" variable_length="false">0x00</value>
