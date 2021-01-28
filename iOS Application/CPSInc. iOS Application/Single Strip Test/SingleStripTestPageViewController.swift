@@ -16,6 +16,8 @@ public class SingleStripTestPageViewController: UIPageViewController, UIPageView
     private var stripDetectVoltageValue: Int? = nil
     private var integratedVoltageValue: Int? = nil
     private var differentialVoltageValue: Int? = nil
+    private var batteryVoltageValue: Int? = nil
+    private var temperatureVoltageValue: Int? = nil
     
     
     
@@ -224,6 +226,20 @@ public class SingleStripTestPageViewController: UIPageViewController, UIPageView
                     print("found device id charac")
                 }
                 
+                if (characteristic.uuid.uuidString == "DF95868B-F92E-4768-913C-8926F20300CA") { //capacitorDischargeCharacteristic
+                    //we'll save the reference, we need it to write data
+                    peripheral.readValue(for: characteristic)
+                    peripheral.setNotifyValue(true, for: characteristic)
+                    print("found temp charac")
+                }
+                
+                if (characteristic.uuid.uuidString == "DE036C5B-4EF3-41EB-BFD2-DD20E07405B0") { //capacitorDischargeCharacteristic
+                    //we'll save the reference, we need it to write data
+                    peripheral.readValue(for: characteristic)
+                    peripheral.setNotifyValue(true, for: characteristic)
+                    print("found batt charac")
+                }
+                
             }
             
         }
@@ -250,6 +266,22 @@ public class SingleStripTestPageViewController: UIPageViewController, UIPageView
             if(characteristic.value != nil) {
                 let stringValue = characteristic.value!.hexEncodedString()
                 differentialVoltageValue = Int(exactly: Int(stringValue, radix: 16)!)
+                //print("differential vol = " + differentialVoltageValue!)
+            }
+        }
+        else if(characteristic.uuid.uuidString == "DF95868B-F92E-4768-913C-8926F20300CA"){ //temperature voltage
+            if(characteristic.value != nil) {
+                print("notified")
+                let stringValue = characteristic.value!.hexEncodedString()
+                temperatureVoltageValue = Int(exactly: Int(stringValue, radix: 16)!)
+                //print("differential vol = " + differentialVoltageValue!)
+            }
+        }
+        else if(characteristic.uuid.uuidString == "DE036C5B-4EF3-41EB-BFD2-DD20E07405B0"){ //battery voltage
+            if(characteristic.value != nil) {
+                print("notified")
+                let stringValue = characteristic.value!.hexEncodedString()
+                batteryVoltageValue = Int(exactly: Int(stringValue, radix: 16)!)
                 //print("differential vol = " + differentialVoltageValue!)
             }
         }
@@ -326,6 +358,27 @@ public class SingleStripTestPageViewController: UIPageViewController, UIPageView
     
     public func getDifferentialVoltageValue() -> Int?{
         return differentialVoltageValue
+    }
+    
+    public func getTemperatureVoltageValue() -> Int?{
+        
+        if(temperatureVoltageValue == nil){
+            return 0
+        }
+        else{
+            return temperatureVoltageValue
+        }
+        
+    }
+    
+    public func getBatteryVoltageValue() -> Int?{
+        
+        if(batteryVoltageValue == nil){
+            return 0
+        }
+        else{
+            return batteryVoltageValue
+        }
     }
     
     public func setStripDetectVoltageValue(value: Int?){

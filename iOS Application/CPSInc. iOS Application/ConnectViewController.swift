@@ -63,7 +63,7 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
         
         //start scanning for known bluetooth peripherals here - this will happen when app opens and this page is created
         //create background thread that searches and connects if found
-        self.scanForKnownDevices()
+        //self.scanForKnownDevices()
         
     }
 
@@ -84,7 +84,7 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
     override public func viewDidDisappear(_ animated: Bool) {
         if(menuView?.getTestPageView().getPeripheralDevice() == nil){ //only rescan if not connected when leaving
             searchForKnowBluetoothDevicesFlag = true //when view dissapears, it starts auto searching again
-            scanForKnownDevices()
+            //scanForKnownDevices()
         }
     }
     
@@ -396,22 +396,22 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
         
         }
         
-        if(searchForKnowBluetoothDevicesFlag){
-            
-            let bluetoothPeripheralModelNumberWhitelist:[Any] = self.defaults.array(forKey: "BluetoothPeripheralWhitelist")!
-
-            //check that value isn't already in the whitelist
-            for value in bluetoothPeripheralModelNumberWhitelist{
-                if(peripheral.identifier.uuidString == value as! String){ //device ID matches that stored in the whitelist
-                    //connect to this device
-                    //self.peripheralDevice = peripheral //you need to keep a reference to the peripheral object to satisfy the API
-                    //it is keeping a reference in the tableView now
-                    self.centralManager?.connect(peripheral, options: nil) //centralManager will connect to device
-                    searchForKnowBluetoothDevicesFlag = false
-                }
-            }
-            
-        }
+//        if(searchForKnowBluetoothDevicesFlag){
+//
+//            let bluetoothPeripheralModelNumberWhitelist:[Any] = self.defaults.array(forKey: "BluetoothPeripheralWhitelist")!
+//
+//            //check that value isn't already in the whitelist
+//            for value in bluetoothPeripheralModelNumberWhitelist{
+//                if(peripheral.identifier.uuidString == value as! String){ //device ID matches that stored in the whitelist
+//                    //connect to this device
+//                    //self.peripheralDevice = peripheral //you need to keep a reference to the peripheral object to satisfy the API
+//                    //it is keeping a reference in the tableView now
+//                    self.centralManager?.connect(peripheral, options: nil) //centralManager will connect to device
+//                    searchForKnowBluetoothDevicesFlag = false
+//                }
+//            }
+//
+//        }
         
     }
     
@@ -524,7 +524,7 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
             
             if(!self.isBeingPresented){ //if disconnected but still on screen dont search
                 self.searchForKnowBluetoothDevicesFlag = true
-                self.scanForKnownDevices()
+                //self.scanForKnownDevices()
             }
         }
         
@@ -546,7 +546,7 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
             }
             
             self.searchForKnowBluetoothDevicesFlag = true
-            self.scanForKnownDevices()
+            //self.scanForKnownDevices()
         }
     }
     
@@ -708,29 +708,29 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
         
     }
     
-    public func setSearchForKnownBluetoothDevicesFlag(flag: Bool){ //if this flag is set to 1: search for bluetooth devices. If set to 0: do not search for bluetooth devices
-        self.searchForKnowBluetoothDevicesFlag = flag
-        if(flag){
-            self.scanForKnownDevices()
-        }
-    }
+//    public func setSearchForKnownBluetoothDevicesFlag(flag: Bool){ //if this flag is set to 1: search for bluetooth devices. If set to 0: do not search for bluetooth devices
+//        self.searchForKnowBluetoothDevicesFlag = flag
+//        if(flag){
+//            self.scanForKnownDevices()
+//        }
+//    }
     
-    public func scanForKnownDevices(){
-        
-        let dispatchQueue = DispatchQueue(label: "BluetoothScanKnownDevicesBackgroundThread", qos: .background)
-        dispatchQueue.async{
-            
-            while(self.searchForKnowBluetoothDevicesFlag){
-                //scan for bluetooth devices
-                if(self.centralManager?.state == .poweredOn){
-                    self.centralManager?.scanForPeripherals(withServices: [CBUUID(string: self.voltageServiceCBUUID)]) //change to CBUUID for our custom GATT Service
-                }
-                
-            }
-            
-        }
-    }
-    
+//    public func scanForKnownDevices(){
+//
+//        let dispatchQueue = DispatchQueue(label: "BluetoothScanKnownDevicesBackgroundThread", qos: .background)
+//        dispatchQueue.async{
+//
+//            while(self.searchForKnowBluetoothDevicesFlag){
+//                //scan for bluetooth devices
+//                if(self.centralManager?.state == .poweredOn){
+//                    self.centralManager?.scanForPeripherals(withServices: [CBUUID(string: self.voltageServiceCBUUID)]) //change to CBUUID for our custom GATT Service
+//                }
+//
+//            }
+//
+//        }
+//    }
+//
     
     
     

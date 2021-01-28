@@ -31,11 +31,18 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
     var selectingHerdCowFromList: Bool = false
     var savableTest: Bool = true
     
+    var battLevel: Double = 0
+    var tempLevel: Double = 0
+    
+    var tempVoltageLabelKeepHidden = false
+    var batteryVoltageLabelKeepHidden = false
+    
     var url: URL? = nil
     
     let group = DispatchGroup()
     
     var testTimer = Timer()
+    var tempBatTimer = Timer()
     
     //views
     private var appDelegate: AppDelegate? = nil
@@ -56,6 +63,8 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
     
     //labels
     private var connectedDeviceLabel = UILabel()
+    private var tempVoltageLabel = UILabel()
+    private var batteryVoltageLabel = UILabel()
     private var testResultLabel = UILabel()
     private var testDateLabel = UILabel()
     private var zoneSpecificRecommendationLabel = UILabel()
@@ -121,6 +130,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                 self.setSignsOfMilkFever()
             }
         }
+        
     }
     
     
@@ -188,14 +198,35 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         //connectedDeviceLabel
         if(self.testPageController!.getPeripheralDevice() == nil){
             connectedDeviceLabel.text = "Connected Device: None"
+            if(self.testPageController?.getTemperatureVoltageValue() != nil){
+                self.tempVoltageLabel.isHidden = false
+                self.tempVoltageLabel.text = "Temperature Voltage: " + String((self.testPageController?.getTemperatureVoltageValue())!)
+            }
+            if(self.testPageController?.getBatteryVoltageValue() != nil){
+                self.batteryVoltageLabel.isHidden = false
+                self.batteryVoltageLabel.text = "Battery Voltage: " + String((self.testPageController?.getBatteryVoltageValue())!)
+            }
         }
         else{
             connectedDeviceLabel.text = "Connected to: " + (self.testPageController!.getPeripheralDevice()?.name)!
+            self.tempVoltageLabel.isHidden = true
+            self.batteryVoltageLabel.isHidden = true
         }
         connectedDeviceLabel.textColor = .black //will be set based on test results
         connectedDeviceLabel.font = testResultLabel.font.withSize(20) //adjust font size
         connectedDeviceLabel.textAlignment = .center
         view.addSubview(connectedDeviceLabel)
+        
+        tempVoltageLabel.textColor = .black //will be set based on test results
+        tempVoltageLabel.font = testResultLabel.font.withSize(20) //adjust font size
+        tempVoltageLabel.textAlignment = .center
+        view.addSubview(tempVoltageLabel)
+        
+        batteryVoltageLabel.textColor = .black //will be set based on test results
+        batteryVoltageLabel.font = testResultLabel.font.withSize(20) //adjust font size
+        batteryVoltageLabel.textAlignment = .center
+        view.addSubview(batteryVoltageLabel)
+        
         
         //testResultLabel
         testResultLabel.text = "" //will be filled out with the test result
@@ -305,6 +336,15 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         connectedDeviceLabel.translatesAutoresizingMaskIntoConstraints = false
         connectedDeviceLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
         connectedDeviceLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: (UIScreen.main.bounds.height * 0.01)).isActive = true
+        
+        tempVoltageLabel.translatesAutoresizingMaskIntoConstraints = false
+        tempVoltageLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        tempVoltageLabel.topAnchor.constraint(equalTo: connectedDeviceLabel.topAnchor, constant: (UIScreen.main.bounds.height * 0.1)).isActive = true
+        
+        batteryVoltageLabel.translatesAutoresizingMaskIntoConstraints = false
+        batteryVoltageLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        batteryVoltageLabel.topAnchor.constraint(equalTo: tempVoltageLabel.topAnchor, constant: (UIScreen.main.bounds.height * 0.1)).isActive = true
+        
         
         //testResultLabel
         testResultLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -433,8 +473,6 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
     }
     
     @objc private func retestBtnListener(){
-        
-        
         //check that it is connected to device
         if(testPageController!.getPeripheralDevice() == nil){
             showToast(controller: self, message: "No device connected", seconds: 1)
@@ -715,6 +753,10 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         startTestBtn.isEnabled = true
         startTestBtn.isHidden = false
         
+        
+        self.tempVoltageLabelKeepHidden = false
+        self.batteryVoltageLabelKeepHidden = false
+        
         //saveTestBtn
         saveTestBtn.isEnabled = false
         saveTestBtn.isHidden = true
@@ -801,6 +843,8 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
         
         self.testTimer.invalidate()
+        
+        discardTestBtnListener()
     }
     
     
@@ -857,6 +901,9 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         
         self.selectingHerdCowFromList = false
         
+        self.tempVoltageLabel.isHidden = false
+        self.batteryVoltageLabel.isHidden = false
+        
         startTestBtn.isEnabled = false
         startTestBtn.isHidden = true
         
@@ -886,7 +933,9 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             let stopTestData = Data(hexString: stopTestString)
             
             DispatchQueue.main.sync {
+                self.waitingLabel.text = "Waiting for device temperature to reach 27°C..."
                 self.waitingLabel.isHidden = false
+                //self.waitingLabel.text = "Line 888"
                 
                 self.showToast(controller: self, message: "Fill Strip With Sample", seconds: 2)
                 
@@ -895,6 +944,30 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
             
             self.testPageController!.getPeripheralDevice()?.writeValue(startTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
+            
+            
+            
+            
+            //want it to wait here until temperature reaches 27C
+            while(self.tempLevel < 27){
+                //wait here - see if this makes app unresponsive or if we are on a background thread
+            }
+            
+            
+            
+            DispatchQueue.main.sync {
+                self.waitingLabel.text = "Waiting for strip to be filled..."
+                //self.waitingLabel.text = "Line 888"
+                
+                self.showToast(controller: self, message: "Fill Strip With Sample", seconds: 2)
+                
+            }
+            
+            
+            
+//            DispatchQueue.main.async{
+//                self.waitingLabel.text = "Line 900"
+//            }
             
             //sleep(1) //kind of a buggy fix - this is to ensure the capacitor discharges
             
@@ -910,32 +983,56 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                 do {
                     try String("Test Report\n").write(to: self.url!, atomically: true, encoding: .utf8)
                     self.appendStringToFile(url: self.url!, string: ("--------------------------------------\n\n"))
+                    self.appendStringToFile(url: self.url!, string: ("Device Battery Voltage: " + String(self.battLevel) + "\n"))
+                    self.appendStringToFile(url: self.url!, string: ("Device Temperature: " + String(self.tempLevel) + "\n\n"))
+                    self.appendStringToFile(url: self.url!, string: ("--------------------------------------\n\n"))
                 } catch {
                     print(error.localizedDescription)
                 }
                 
             }
             
+//            DispatchQueue.main.async{
+//                self.waitingLabel.text = "Line 924"
+//            }
+            
             DispatchQueue.main.sync {
                 self.testTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.readNewVoltage), userInfo: nil, repeats: true)
             }
             
             
+            DispatchQueue.main.async{
+                self.waitingLabel.text = "Line 933"
+            }
+            
             
             
             //wait until value is not nil
+            var index = 0
             
             while(true){ //this shouldn't pause the UI since its on a background thread
                 if(self.testPageController!.getIntegratedVoltageValue() != nil){
                     break
                 }
+                DispatchQueue.main.async{
+                    self.waitingLabel.text = String(index)
+                }
+                index += 1
             }
 
-
+            //var index = 0;
+            
+            DispatchQueue.main.async{
+                self.waitingLabel.text = "Line 947"
+                self.waitingLabel.text = "Waiting for strips to fill"
+            }
+            
+            
+            
             //wait until value reaches a threshold of 250mV
-            while(true){ //this shouldn't pause the UI since its on a background thread
+            while(true){ //this shouldn't pause the UI since its on a background thread                
                 //print(self.testPageController!.getIntegratedVoltageValue())
-                if(self.testPageController!.getIntegratedVoltageValue()! >= 150 /*&& self.testPageController!.getIntegratedVoltageValue()! <= 200*/){
+                if(self.testPageController!.getIntegratedVoltageValue()! >= 150 && self.testPageController!.getIntegratedVoltageValue()! <= 200){
                     break
                 }
                 else if(self.cancelTestFlag){
@@ -944,10 +1041,20 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                     }
                     return
                 }
+//                if(index % 1000 == 0){
+//                    self.cancelTestBtn.isHidden = !(self.cancelTestBtn.isHidden)
+//                }
+//                index += 1;
+            }
+            
+            DispatchQueue.main.async{
+                self.waitingLabel.text = "Line 971"
             }
             
             DispatchQueue.main.async {
                 self.waitingLabel.isHidden = true
+                self.tempVoltageLabel.isHidden = true
+                self.batteryVoltageLabel.isHidden = true
                 
                 self.testProgressView.isHidden = false
                 self.testProgressView.setProgress(0, animated: true)
@@ -1107,6 +1214,9 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                     self.testResultLabel.text = String(format: "%.2f", finalResult!) + self.units!
                     self.testResultLabel.isHidden = false
                     
+                    self.tempVoltageLabelKeepHidden = true
+                    self.batteryVoltageLabelKeepHidden = true
+                    
                     self.testResultProgressBar.isHidden = false
                     //self.testResultProgressBar.setProgress(Float(finalResult! / Float(15.0)), animated: true)
                     
@@ -1156,35 +1266,55 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                                            }))
                                            
                                            emailAlert.addAction(UIAlertAction(title: "Yes", style: .cancel, handler: { action in
-                                               if( MFMailComposeViewController.canSendMail() ) {
-                                                       let mailComposer = MFMailComposeViewController()
-                                                       mailComposer.mailComposeDelegate = self
+                                            
+                                            
+                                            
+                                            //1. Create the alert controller.
+                                            let sampleIDAlert = UIAlertController(title: "Sample ID", message: "Please enter the ID of the sample used for the test", preferredStyle: .alert)
 
-                                                       //Set the subject and message of the email
-                                                   mailComposer.setSubject("Test Report | " + self.testDateLabel.text!)
-                                                       mailComposer.setMessageBody("", isHTML: false)
+                                            //2. Add the text field. You can configure it however you need.
+                                            sampleIDAlert.addTextField { (textField) in
+                                                textField.placeholder = "Sample ID"
+                                            }
 
-                        
-                                                       let fileURL = self.getDocumentsDirectory().appendingPathComponent("TestReport.txt")
-                                                                       
-                                                                       
-                                                       do {
-                                                       let attachmentData = try Data(contentsOf: fileURL)
-                                                           mailComposer.addAttachmentData(attachmentData, mimeType: "text/txt", fileName: "TestReport")
-                                                           mailComposer.mailComposeDelegate = self
-                                                           self.present(mailComposer, animated: true
-                                                               , completion: nil)
-                                                       } catch let error {
-                                                           print("We have encountered error \(error.localizedDescription)")
-                                                       }
-                                                                           
-                                                       self.present(mailComposer, animated: true, completion: nil)
-                                                   }
-                                                   else{
-                                                       self.showToast(controller: self, message: "Cannot send email - Please make sure you have an email account set up on your device", seconds: 2)
-                                                   }
-                                           }))
+                                            // 3. Grab the value from the text field, and print it when the user clicks OK.
+                                            sampleIDAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak sampleIDAlert] (_) in
+                                                let sampleID = sampleIDAlert?.textFields![0].text // Force unwrapping because we know it exists.
+                                                
+                                                
+                                                if( MFMailComposeViewController.canSendMail() ) {
+                                                        let mailComposer = MFMailComposeViewController()
+                                                        mailComposer.mailComposeDelegate = self
 
+                                                        //Set the subject and message of the email
+                                                    mailComposer.setSubject("Test Report | Sample ID: " + sampleID! + " | " + self.testDateLabel.text!)
+                                                        mailComposer.setMessageBody("", isHTML: false)
+
+                         
+                                                        let fileURL = self.getDocumentsDirectory().appendingPathComponent("TestReport.txt")
+                                                                        
+                                                                        
+                                                        do {
+                                                        let attachmentData = try Data(contentsOf: fileURL)
+                                                            mailComposer.addAttachmentData(attachmentData, mimeType: "text/txt", fileName: "TestReport")
+                                                            mailComposer.mailComposeDelegate = self
+                                                            self.present(mailComposer, animated: true
+                                                                , completion: nil)
+                                                        } catch let error {
+                                                            print("We have encountered error \(error.localizedDescription)")
+                                                        }
+                                                                            
+                                                        self.present(mailComposer, animated: true, completion: nil)
+                                                    }
+                                                    else{
+                                                        self.showToast(controller: self, message: "Cannot send email - Please make sure you have an email account set up on your device", seconds: 2)
+                                                    }
+                                            }))
+                                            // 4. Present the alert.
+                                            self.present(sampleIDAlert, animated: true, completion: nil)
+
+                                                
+                                            }))
                                            self.present(emailAlert, animated: true)
                     }
                     
@@ -1290,9 +1420,13 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
     public func setPeripheralDevice(periphDevice: CBPeripheral?){
         if(periphDevice == nil){
             self.connectedDeviceLabel.text = "Connected Device: None"
+            batteryVoltageLabel.isHidden = true
+            tempVoltageLabel.isHidden = true
+            self.tempBatTimer.invalidate()
         }
         else{
-         self.connectedDeviceLabel.text = "Connected Device: " + periphDevice!.name!
+            self.connectedDeviceLabel.text = "Connected Device: " + periphDevice!.name!
+            self.tempBatTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.readNewTempBatVoltages), userInfo: nil, repeats: true)
         }
     }
     
@@ -1325,6 +1459,73 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             print(intVoltageValue!)
             if(menuView?.getSettingsView().getTestingModeDefault() == true){
                 self.appendStringToFile(url: url!, string: (String(intVoltageValue!) + "\n"))
+            }
+        }
+    }
+    
+    
+    @objc private func readNewTempBatVoltages(){
+        
+        
+        var tempVoltageValue: Int? = nil
+        //DispatchQueue.main.sync {
+        tempVoltageValue = self.testPageController!.getTemperatureVoltageValue()
+        
+        print(tempVoltageValue)
+        
+        
+        //}
+        
+        if(tempVoltageValue == nil){
+            DispatchQueue.main.async{
+                self.tempVoltageLabel.isHidden = true
+            }
+        }
+        else{
+            
+            var temp = (-21.11 * log(((3.3 * (40000/(Double(tempVoltageValue!)/1000))) - 40000))) + 219.56
+            
+            self.tempLevel = Double(round(100 * temp)/100)
+            
+            DispatchQueue.main.async{
+                if(self.tempVoltageLabelKeepHidden){
+                    self.tempVoltageLabel.isHidden = true
+                }
+                else{
+                    self.tempVoltageLabel.text = "Device Temp: " + String(self.tempLevel) + " C"
+                    self.tempVoltageLabel.isHidden = false
+                }
+            }
+        }
+        
+        var battVoltageValue: Int? = nil
+        //DispatchQueue.main.sync {
+            battVoltageValue = self.testPageController!.getBatteryVoltageValue()
+        
+        print(battVoltageValue)
+        //}
+        
+        if(battVoltageValue == nil){
+            DispatchQueue.main.async{
+                self.batteryVoltageLabel.isHidden = true
+            }
+        }
+        else{
+            
+            var bat = Double(battVoltageValue!)// * 2.3 //this is a patch
+            
+            self.battLevel = Double(round(100 * bat)/100)
+            
+            DispatchQueue.main.async{
+                
+                if(self.batteryVoltageLabelKeepHidden){
+                    self.batteryVoltageLabel.isHidden = true
+                }
+                else{
+                    self.batteryVoltageLabel.text = "Device Batt: " + String(self.battLevel) + " mV"
+                    self.batteryVoltageLabel.isHidden = false
+                }
+                
             }
         }
     }
@@ -1445,4 +1646,5 @@ extension SingleStripTestViewController: INUIAddVoiceShortcutViewControllerDeleg
     func editVoiceShortcutViewControllerDidCancel(_ controller: INUIEditVoiceShortcutViewController) {
         controller.dismiss(animated: true, completion: nil)
     }
+    
 }
