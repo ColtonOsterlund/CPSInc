@@ -202,16 +202,18 @@ void appMain(gecko_configuration_t *pconfig)
       case gecko_evt_gatt_server_attribute_value_id: //this will be triggered when Test Flag characteristic is changed by the central device
 
     	  testFlag = (uint8)*(evt->data.evt_gatt_server_attribute_value.value.data); //the characteristic is named poorly,
-    	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	 //it is not actually discharging the capacitor,
-    	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	 //it is starting the test - capacitor gets
+    	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	 //it is not actually discharging the capacitor
+    	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  //it is starting the test - capacitor gets
     	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	 //discharged automatically
 
     	  if(testFlag == 0){
     		  testRunning = 0;
+    		  stopHeatingPad();
     		  dischargeCapacitor();
     	  }
     	  else if(testFlag == 1){
     		  testRunning = 1;
+    		  startHeatingPad();
     	  }
 
     	break;
@@ -403,6 +405,17 @@ void dischargeCapacitor(){ //needs function prototype
 													//it is fully discharging the capacitor
 
 }
+
+
+void startHeatingPad(){
+	GPIO_PinOutSet(gpioPortD, 15); //set Heating Pad pin to HIGH
+}
+
+
+void stopHeatingPad(){
+	GPIO_PinOutClear(gpioPortD, 15); //set Heating Pad pin to LOW
+}
+
 
 /* Print stack version and local Bluetooth address as boot message */
 static void bootMessage(struct gecko_msg_system_boot_evt_t *bootevt) //probably not necessary
