@@ -882,3 +882,223 @@ Command-line arguments:  -os win32 -ws win32 -arch x86_64
 
 !ENTRY com.silabs.ss.platform.content.core 4 0 2020-08-16 09:41:13.632
 !MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+!SESSION 2021-01-28 18:27:25.210 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_92
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_CA
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -data C:\Users\codytucker\Desktop\CPSInc\SimplicityStudio\v4_workspace
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2021-01-28 18:28:07.825
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH) in Python
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2021-01-28 18:28:07.891
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH)/bin in Python
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2021-01-28 18:28:46.196
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/sdks_gecko_sdk_suite_v2.5_.studio_demos.xml for key com.silabs.sdk.stack.super:2.5.3./demosFile/0
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2021-01-28 18:28:46.236
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/slThread_docContent.xml for key com.silabs.sdk.stack.super:2.5.3..com.silabs.sdk.stack.thread:2.9.3.0/docsFile/-1
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2021-01-28 18:29:12.670
+!MESSAGE Invalid discovery key: null
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2021-01-28 18:29:14.997
+!MESSAGE Unknown board 'BRD4165B' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2021-01-28 18:29:15.099
+!MESSAGE Unknown board 'BRD4171A' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2021-01-28 18:29:15.189
+!MESSAGE Unknown board 'BRD4183B' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2021-01-28 18:29:15.208
+!MESSAGE Unknown board 'BRD4310A' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2021-01-28 18:29:15.223
+!MESSAGE Unknown board 'BRD4311A' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2021-01-28 18:29:15.816
+!MESSAGE Unknown architecture(s) [efr32~family[b]~series[2]~device_configuration[2]~performance[c]~radio[224]~flash[512k]~temp[i]~package[m]~pins[40]~module[bgm220pc22hna]+iar, efr32~family[b]~series[2]~device_configuration[2]~performance[c]~radio[224]~flash[512k]~temp[i]~package[m]~pins[40]~module[bgm220pc22hna]+gcc, efr32~family[b]~series[2]~device_configuration[2]~performance[c]~radio[222]~flash[352k]~temp[g]~package[m]~pins[40]~module[bgm220pc22wga]+iar, efr32~family[b]~series[2]~device_configuration[2]~performance[c]~radio[222]~flash[352k]~temp[g]~package[m]~pins[40]~module[bgm220pc22wga]+gcc, efr32~family[b]~series[2]~device_configuration[2]~performance[c]~radio[112]~flash[352k]~temp[g]~package[m]~pins[40]~module[bgm220sc12wga]+iar, efr32~family[b]~series[2]~device_configuration[2]~performance[c]~radio[112]~flash[352k]~temp[g]~package[m]~pins[40]~module[bgm220sc12wga]+gcc, efr32~family[b]~series[2]~device_configuration[2]~performance[c]~radio[224]~flash[512k]~temp[i]~package[m]~pins[40]~module[bgm220sc22hna]+iar, efr32~family[b]~series[2]~device_configuration[2]~performance[c]~radio[224]~flash[512k]~temp[i]~package[m]~pins[40]~module[bgm220sc22hna]+gcc, efr32~family[b]~series[2]~device_configuration[2]~performance[c]~radio[222]~flash[352k]~temp[g]~package[m]~pins[40]~module[bgm220sc22wga]+iar, efr32~family[b]~series[2]~device_configuration[2]~performance[c]~radio[222]~flash[352k]~temp[g]~package[m]~pins[40]~module[bgm220sc22wga]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+gcc] in framework ble
+
+!ENTRY org.eclipse.equinox.ds 2 0 2021-01-28 18:29:22.608
+!MESSAGE Getting a lock required more than 10000 ms. There might be a synchronization problem in this callstack or just the build/dispose process of some components took too long! 
+!STACK 0
+java.lang.Exception: Debug stacktrace
+	at org.eclipse.equinox.internal.ds.InstanceProcess.getLock(InstanceProcess.java:120)
+	at org.eclipse.equinox.internal.ds.InstanceProcess.buildComponent(InstanceProcess.java:560)
+	at org.eclipse.equinox.internal.ds.ServiceReg.getService(ServiceReg.java:53)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse$1.run(ServiceFactoryUse.java:212)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse.factoryGetService(ServiceFactoryUse.java:210)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse.getService(ServiceFactoryUse.java:111)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceConsumer$2.getService(ServiceConsumer.java:45)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistrationImpl.getService(ServiceRegistrationImpl.java:496)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistry.getService(ServiceRegistry.java:461)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.getService(BundleContextImpl.java:619)
+	at org.eclipse.equinox.internal.p2.core.ProvisioningAgent.addingService(ProvisioningAgent.java:159)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:941)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:1)
+	at org.osgi.util.tracker.AbstractTracked.trackAdding(AbstractTracked.java:256)
+	at org.osgi.util.tracker.AbstractTracked.trackInitial(AbstractTracked.java:183)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:318)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:261)
+	at org.eclipse.equinox.internal.p2.core.ProvisioningAgent.getService(ProvisioningAgent.java:66)
+	at org.eclipse.equinox.internal.p2.engine.ProfileRegistryComponent.createService(ProfileRegistryComponent.java:27)
+	at org.eclipse.equinox.internal.p2.core.ProvisioningAgent.getService(ProvisioningAgent.java:72)
+	at com.silabs.ss.platform.internal.api.installer.core.InstallerUtils.getEffectiveProfile(InstallerUtils.java:419)
+	at com.silabs.ss.platform.internal.api.installer.ui.manager.StudioLicenseManager.getStudioLicenseManager(StudioLicenseManager.java:41)
+	at com.silabs.ss.platform.internal.api.installer.ui.CheckLicenses.checkLicenses(CheckLicenses.java:28)
+	at com.silabs.ss.platform.internal.product.AppStartupCompleteEventHandler$1.run(AppStartupCompleteEventHandler.java:129)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+
+!ENTRY org.eclipse.equinox.ds 2 0 2021-01-28 18:29:35.765
+!MESSAGE Getting a lock required more than 10000 ms. There might be a synchronization problem in this callstack or just the build/dispose process of some components took too long! 
+!STACK 0
+java.lang.Exception: Debug stacktrace
+	at org.eclipse.equinox.internal.ds.InstanceProcess.getLock(InstanceProcess.java:120)
+	at org.eclipse.equinox.internal.ds.InstanceProcess.buildComponent(InstanceProcess.java:560)
+	at org.eclipse.equinox.internal.ds.ServiceReg.getService(ServiceReg.java:53)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse$1.run(ServiceFactoryUse.java:212)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse.factoryGetService(ServiceFactoryUse.java:210)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse.getService(ServiceFactoryUse.java:111)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceConsumer$2.getService(ServiceConsumer.java:45)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistrationImpl.getService(ServiceRegistrationImpl.java:496)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistry.getService(ServiceRegistry.java:461)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.getService(BundleContextImpl.java:619)
+	at org.eclipse.equinox.internal.p2.core.ProvisioningAgent.addingService(ProvisioningAgent.java:159)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:941)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:1)
+	at org.osgi.util.tracker.AbstractTracked.trackAdding(AbstractTracked.java:256)
+	at org.osgi.util.tracker.AbstractTracked.trackInitial(AbstractTracked.java:183)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:318)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:261)
+	at org.eclipse.equinox.internal.p2.core.ProvisioningAgent.getService(ProvisioningAgent.java:66)
+	at org.eclipse.equinox.internal.p2.ui.sdk.scheduler.AutomaticUpdateScheduler.<init>(AutomaticUpdateScheduler.java:76)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at java.lang.Class.newInstance(Class.java:442)
+	at org.eclipse.core.internal.registry.osgi.RegistryStrategyOSGI.createExecutableExtension(RegistryStrategyOSGI.java:184)
+	at org.eclipse.core.internal.registry.ExtensionRegistry.createExecutableExtension(ExtensionRegistry.java:905)
+	at org.eclipse.core.internal.registry.ConfigurationElement.createExecutableExtension(ConfigurationElement.java:243)
+	at org.eclipse.core.internal.registry.ConfigurationElementHandle.createExecutableExtension(ConfigurationElementHandle.java:55)
+	at org.eclipse.ui.internal.WorkbenchPlugin$1.run(WorkbenchPlugin.java:293)
+	at org.eclipse.swt.custom.BusyIndicator.showWhile(BusyIndicator.java:52)
+	at org.eclipse.ui.internal.WorkbenchPlugin.createExtension(WorkbenchPlugin.java:288)
+	at org.eclipse.ui.internal.EarlyStartupRunnable.getExecutableExtension(EarlyStartupRunnable.java:120)
+	at org.eclipse.ui.internal.EarlyStartupRunnable.run(EarlyStartupRunnable.java:68)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.ui.internal.Workbench$56.run(Workbench.java:2812)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2021-01-28 18:29:36.307
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2021-01-28 18:29:39.746
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2021-01-28 18:30:18.562
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY org.eclipse.cdt.core 1 0 2021-01-28 18:30:26.808
+!MESSAGE Indexed 'CPSIncDeviceApplication' (34 sources, 188 headers) in 49.6 sec: 16,920 declarations; 40,053 references; 5 unresolved inclusions; 91 syntax errors; 105 unresolved names (0.18%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2021-01-28 18:30:38.133
+!MESSAGE Indexed 'CPSIncDeviceBootloader' (0 sources, 66 headers) in 6.64 sec: 1,859 declarations; 4,519 references; 0 unresolved inclusions; 0 syntax errors; 0 unresolved names (0%)
+
+!ENTRY com.silabs.ss.support.mcu.part.core 1 0 2021-01-28 18:36:59.138
+!MESSAGE MCUUtils#setTargetInterface()::tif => swd
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 1 0 2021-01-28 18:37:00.718
+!MESSAGE Launching SiAgent (Silicon Labs TCF Agent)
+
+!ENTRY org.eclipse.cdt.debug.edc 4 0 2021-01-28 18:37:08.224
+!MESSAGE Unknown context [rc.root.000440173780] is reported in suspended event. Make sure TCF agent has reported contextAdded event first.
+
+!ENTRY com.silabs.ss.support.mcu.part.core 1 0 2021-01-28 18:40:19.827
+!MESSAGE MCUUtils#setTargetInterface()::tif => swd
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 1 0 2021-01-28 18:40:21.366
+!MESSAGE Launching SiAgent (Silicon Labs TCF Agent)
+
+!ENTRY org.eclipse.cdt.debug.edc 4 0 2021-01-28 18:40:29.977
+!MESSAGE Unknown context [rc.root.000440173780] is reported in suspended event. Make sure TCF agent has reported contextAdded event first.
+
+!ENTRY com.silabs.ss.support.mcu.part.core 1 0 2021-01-28 18:42:29.702
+!MESSAGE MCUUtils#setTargetInterface()::tif => swd
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 1 0 2021-01-28 18:42:29.756
+!MESSAGE Launching SiAgent (Silicon Labs TCF Agent)
+
+!ENTRY org.eclipse.cdt.debug.edc 4 0 2021-01-28 18:42:36.491
+!MESSAGE Unknown context [rc.root.000440173780] is reported in suspended event. Make sure TCF agent has reported contextAdded event first.
+
+!ENTRY com.silabs.ss.support.mcu.part.core 1 0 2021-01-28 18:46:51.694
+!MESSAGE MCUUtils#setTargetInterface()::tif => swd
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 1 0 2021-01-28 18:46:51.732
+!MESSAGE Launching SiAgent (Silicon Labs TCF Agent)
+
+!ENTRY org.eclipse.cdt.debug.edc 4 0 2021-01-28 18:46:59.338
+!MESSAGE Unknown context [rc.root.000440173780] is reported in suspended event. Make sure TCF agent has reported contextAdded event first.
+!SESSION 2021-01-28 18:47:56.852 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_92
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_CA
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2021-01-28 18:48:32.514
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH) in Python
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2021-01-28 18:48:32.622
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH)/bin in Python
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2021-01-28 18:48:49.032
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/sdks_gecko_sdk_suite_v2.5_.studio_demos.xml for key com.silabs.sdk.stack.super:2.5.3./demosFile/0
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2021-01-28 18:48:49.287
+!MESSAGE No match for asset asset://aem/documents/referenced/studio/slThread_docContent.xml for key com.silabs.sdk.stack.super:2.5.3..com.silabs.sdk.stack.thread:2.9.3.0/docsFile/-1
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2021-01-28 18:49:16.700
+!MESSAGE Invalid discovery key: null
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2021-01-28 18:49:17.127
+!MESSAGE Unknown board 'BRD4165B' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2021-01-28 18:49:17.601
+!MESSAGE Unknown board 'BRD4171A' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2021-01-28 18:49:17.905
+!MESSAGE Unknown board 'BRD4183B' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2021-01-28 18:49:18.237
+!MESSAGE Unknown board 'BRD4310A' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2021-01-28 18:49:18.388
+!MESSAGE Unknown board 'BRD4311A' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2021-01-28 18:49:19.866
+!MESSAGE Unknown architecture(s) [efr32~family[b]~series[2]~device_configuration[2]~performance[c]~radio[224]~flash[512k]~temp[i]~package[m]~pins[40]~module[bgm220pc22hna]+iar, efr32~family[b]~series[2]~device_configuration[2]~performance[c]~radio[224]~flash[512k]~temp[i]~package[m]~pins[40]~module[bgm220pc22hna]+gcc, efr32~family[b]~series[2]~device_configuration[2]~performance[c]~radio[222]~flash[352k]~temp[g]~package[m]~pins[40]~module[bgm220pc22wga]+iar, efr32~family[b]~series[2]~device_configuration[2]~performance[c]~radio[222]~flash[352k]~temp[g]~package[m]~pins[40]~module[bgm220pc22wga]+gcc, efr32~family[b]~series[2]~device_configuration[2]~performance[c]~radio[112]~flash[352k]~temp[g]~package[m]~pins[40]~module[bgm220sc12wga]+iar, efr32~family[b]~series[2]~device_configuration[2]~performance[c]~radio[112]~flash[352k]~temp[g]~package[m]~pins[40]~module[bgm220sc12wga]+gcc, efr32~family[b]~series[2]~device_configuration[2]~performance[c]~radio[224]~flash[512k]~temp[i]~package[m]~pins[40]~module[bgm220sc22hna]+iar, efr32~family[b]~series[2]~device_configuration[2]~performance[c]~radio[224]~flash[512k]~temp[i]~package[m]~pins[40]~module[bgm220sc22hna]+gcc, efr32~family[b]~series[2]~device_configuration[2]~performance[c]~radio[222]~flash[352k]~temp[g]~package[m]~pins[40]~module[bgm220sc22wga]+iar, efr32~family[b]~series[2]~device_configuration[2]~performance[c]~radio[222]~flash[352k]~temp[g]~package[m]~pins[40]~module[bgm220sc22wga]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+gcc] in framework ble
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2021-01-28 18:49:31.610
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2021-01-28 18:49:35.118
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2021-01-28 18:50:30.598
+!MESSAGE Local timestamp file does not exist: C:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.support.mcu.part.core 1 0 2021-01-28 18:50:58.000
+!MESSAGE MCUUtils#setTargetInterface()::tif => swd
+
+!ENTRY com.silabs.ss.framework.debugger.tcf.agent 1 0 2021-01-28 18:50:59.565
+!MESSAGE Launching SiAgent (Silicon Labs TCF Agent)
+
+!ENTRY org.eclipse.cdt.debug.edc 4 0 2021-01-28 18:51:05.308
+!MESSAGE Unknown context [rc.root.000440173780] is reported in suspended event. Make sure TCF agent has reported contextAdded event first.
