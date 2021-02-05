@@ -223,6 +223,14 @@ void appMain(gecko_configuration_t *pconfig)
 
         printSWO("connection closed, reason: 0x%2.2x\r\n", evt->data.evt_le_connection_closed.reason);
 
+        //cancel all running
+        testFlag = 0;
+        testRunning = 0;
+        stopHeatingPad();
+        dischargeCapacitor();
+
+
+
         /* Check if need to boot to OTA DFU mode */
         if (boot_to_dfu) { //this will be called if the boot_to_dfu flag was set to 1 - device firmware upgrade
           /* Enter to OTA DFU mode */
@@ -298,6 +306,24 @@ void readTemperatureSensorVoltage() {
     adcData = ADC_DataSingleGet(ADC0);  // get the value of the single sample from the adc
     temperatureSensorVoltage = (uint16)(adcData * 3300 / 4096);  // convert the value from the single sample from the adc into a readable temperature(adc signal goes from 0 - 4096, our voltage goes from 0-3700mV)
     printSWO("temperature sensor voltage: %d mV\r\n", temperatureSensorVoltage);  // print the temperature to the SWO console
+
+    if(testRunning == 1){
+
+		if(temperatureSensorVoltage < 2900){ //2900mV = 30C
+		   startHeatingPad();
+		}
+		else if(temperatureSensorVoltage >= 2900 && temperatureSensorVoltage < 3200){ //3200mV = 35C
+			stopHeatingPad();
+		}
+		else if(temperatureSensorVoltage >= 3200){
+			testFlag = 0;
+			testRunning = 0;
+			stopHeatingPad();
+			dischargeCapacitor();
+		}
+
+    }
+
 }
 
 void updateTemperatureSensorVoltage(){ //needs function prototype
