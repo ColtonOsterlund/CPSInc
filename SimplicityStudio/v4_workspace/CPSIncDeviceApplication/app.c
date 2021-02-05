@@ -19,6 +19,7 @@
  *
  ******************************************************************************/
 
+
 #include <stdio.h> //this is so that you can use printf / printSWO / flushSWO for debug prints
 #include <stdlib.h> //to use the delay function
 
@@ -51,6 +52,9 @@ int16 integratedVoltage;
 uint16 referenceVoltage = 1650;
 ADC_InitSingle_TypeDef initSingle = ADC_INITSINGLE_DEFAULT;
 
+//CHANGE THIS TO CHANGE THE DEVICE ID
+uint16 deviceIdentifier = 0;
+
 //global flag to indicate whether or not peripheral device has requested to run a test
 uint8 testFlag;
 
@@ -71,6 +75,11 @@ void appMain(gecko_configuration_t *pconfig)
 //  printf("DEBUG PRINT TEST\n");
   printSWO("PRINT TEST");
   flushSWO();
+
+
+
+  updateDeviceIdentifier();
+
 
   //USE printSWO() and swoFlush() FOR DEBUG PRINTING TO THE SWO CONSOLE***
 
@@ -430,6 +439,11 @@ void dischargeCapacitor(){ //needs function prototype
 	gecko_cmd_hardware_set_soft_timer(65536, 1, 1); //sets a 2 second timer. SWITCH pin stays LOW for 2 second to ensure
 													//it is fully discharging the capacitor
 
+}
+
+void updateDeviceIdentifier(){ //needs function prototype
+	//writing deviceIdentifier into gatt db
+	gecko_cmd_gatt_server_write_attribute_value(gattdb_device_identifier, 0, 2, (const uint8*)&deviceIdentifier); //write deviceIdentifier to the gatt db
 }
 
 

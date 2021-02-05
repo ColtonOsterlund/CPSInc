@@ -1,70 +1,133 @@
 <?xml version="1.0" encoding="ASCII"?>
 <model:MDescriptors xmlns:model="http://www.silabs.com/ss/Studio.ecore">
-  <descriptors name="com.silabs.sdk.stack.btmesh:1.7.1._620725461" label="Micrium OS Kernel" description="SL-MOS-KRNX-000000-P-P1">
-    <properties key="core.installationPath" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.7/platform/micrium_os/micrium-krnx.properties"/>
-    <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.btmesh:1.7.1._620725461"/>
-    <properties key="core.version" value="5.8.2._-238485814"/>
+  <descriptors name="com.silabs.sdk.stack.btmesh:1.4.3._620725456" label="Gecko Bootloader" description="Gecko Bootloader for EFM32 and EFR32 devices">
+    <properties key="core.installationPath" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.4/platform/bootloader/esf.properties"/>
+    <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.btmesh:1.4.3._620725456"/>
+    <properties key="core.version" value="1.8.4._1325322595"/>
     <properties key="sdk.subPropertyFiles" value=""/>
-    <properties key="core.partCompatibility" value="mcu.arm.efm32.g..* mcu.arm.efm32.gg.* mcu.arm.efm32.hg.* mcu.arm.efm32.pg.* mcu.arm.efm32.pg12.* mcu.arm.efm32.jg.* mcu.arm.efm32.jg12.* mcu.arm.efm32.lg.* mcu.arm.efm32.wg.* mcu.arm.efr32.*"/>
-    <properties key="installedUnit" value="krnx"/>
-    <properties key="sdk.subLabel" value="Micrium\ OS\ Kernel"/>
-    <properties key="sdk.docsFile" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\blemesh\v1.7\platform\micrium_os\micrium-krnx-docs.xml"/>
-    <properties key="core.detected" value="true"/>
-    <properties key="core.builtin" value="true"/>
-    <properties key="CACHED_ID_STRING" value="com.silabs.sdk.micrium"/>
-  </descriptors>
-  <descriptors name="com.silabs.sdk.stack.btmesh:1.7.1._620725461" label="Gecko Bootloader" description="Gecko Bootloader for EFM32 and EFR32 devices">
-    <properties key="core.installationPath" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.7/platform/bootloader/esf.properties"/>
-    <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.btmesh:1.7.1._620725461"/>
-    <properties key="core.version" value="1.10.3._-1413776482"/>
-    <properties key="sdk.subPropertyFiles" value=""/>
-    <properties key="sdk.docsFile" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\blemesh\v1.7\platform\bootloader\documentation\gecko_bootloader_documentation.xml"/>
-    <properties key="stack.esf.appDirectory" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\blemesh\v1.7\platform\bootloader\."/>
+    <properties key="sdk.docsFile" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\blemesh\v1.4\platform\bootloader\documentation\gecko_bootloader_documentation.xml"/>
+    <properties key="stack.esf.appDirectory" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\blemesh\v1.4\platform\bootloader\."/>
     <properties key="protocol.protocolKey" value="BOOTLOADER"/>
     <properties key="core.detected" value="true"/>
     <properties key="core.builtin" value="true"/>
     <properties key="CACHED_ID_STRING" value="com.silabs.sdk.stack.bootloader"/>
   </descriptors>
-  <descriptors name="com.silabs.sdk.stack.btmesh:1.7.1._620725461" label="Bluetooth SDK" description="Bluetooth Software Development Kit">
-    <properties key="core.installationPath" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.7/app/bluetooth/appbuilder/esf.properties"/>
-    <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.btmesh:1.7.1._620725461"/>
-    <properties key="core.version" value="2.13.7.0_-1741447365"/>
-    <properties key="sdk.subPropertyFiles" value="C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.7/app/bluetooth/appbuilder/btcommon.properties C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.7/app/bluetooth/appbuilder/btmesh.properties C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.7/app/bluetooth/appbuilder/btmesh_adk.properties"/>
-    <properties key="sdk.useGCCUserObjs" value="ble homekit btmesh"/>
+  <descriptors name="com.silabs.sdk.stack.btmesh:1.4.3._620725456" label="Bluetooth SDK" description="Bluetooth Software Development Kit">
+    <properties key="core.installationPath" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.4/app/bluetooth/appbuilder/esf.properties"/>
+    <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.btmesh:1.4.3._620725456"/>
+    <properties key="core.version" value="2.11.4.0_-229499850"/>
+    <properties key="sdk.subPropertyFiles" value="C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.4/app/bluetooth/appbuilder/btcommon.properties C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.4/app/bluetooth/appbuilder/btmesh.properties C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/blemesh/v1.4/app/bluetooth/appbuilder/btmesh_adk.properties"/>
     <properties key="bleSDK.bgbuildLocation" value="protocol/bluetooth/bin"/>
-    <properties key="stack.esf.appDirectory" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\blemesh\v1.7\app\bluetooth\appbuilder\fwk C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\blemesh\v1.7\app\bluetooth\appbuilder\fwk-homekit C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\blemesh\v1.7\app\bluetooth\appbuilder\fwk-mesh"/>
+    <properties key="bleSDK.incDir" value="../../../protocol/bluetooth/ble_stack/inc/common,../../../protocol/bluetooth/ble_stack/inc/soc,../../../platform/emlib/inc,../../../platform/emdrv/common/inc,../../../platform/emdrv/dmadrv/config,../../../platform/CMSIS/Include"/>
+    <properties key="sdk.subLabel" value="Bluetooth\ 2.11.4.0"/>
+    <properties key="bleSDK.deviceDir" value="../../../platform/Device/SiliconLabs"/>
+    <properties key="bleSDK.bootloaderDir" value="../../../protocol/bluetooth/ble_stack/bootloader"/>
+    <properties key="bleSDK.emlibDir" value="../../../platform/emlib"/>
+    <properties key="bleSDK.libDir" value="../../../protocol/bluetooth/lib"/>
+    <properties key="bleSDK.bootloaderLinkerFile" value="../../../protocol/bluetooth/ble_stack/linker/bootloader.ld"/>
+    <properties key="stack.esf.appDirectory" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\blemesh\v1.4\app\bluetooth\appbuilder\fwk C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\blemesh\v1.4\app\bluetooth\appbuilder\fwk-homekit C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\blemesh\v1.4\app\bluetooth\appbuilder\fwk-mesh"/>
+    <properties key="sdk.useGCCUserObjs" value="ble homekit btmesh"/>
+    <properties key="bleSDK.emdrvSrc" value="dmadrv/src/dmadrv.c"/>
     <properties key="bleSDK.bgbuildToolchain" value="true"/>
-    <properties key="sdk.demosFile" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\blemesh\v1.7\app\bluetooth\appbuilder\sample-apps-bin\demos-homekit.xml"/>
-    <properties key="sdk.subLabel" value="Bluetooth\ 2.13.7.0"/>
-    <properties key="sdk.docsFile" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\blemesh\v1.7\app\bluetooth\appbuilder\..\doc\doc.xml C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\blemesh\v1.7\app\bluetooth\appbuilder\..\doc\doc-ble.xml C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\blemesh\v1.7\app\bluetooth\appbuilder\..\doc\doc-homekit.xml C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\blemesh\v1.7\app\bluetooth\appbuilder\..\doc\doc-btmesh.xml"/>
+    <properties key="bleSDK.linkerDir" value="../../../protocol/bluetooth/ble_stack/linker/GCC"/>
+    <properties key="bleSDK.bootloaderIncDir" value="../../../platform/emlib/inc,../../../platform/emdrv/nvm/inc,../../../platform/emdrv/nvm/config,../../../platform/emdrv/common/inc,../../../platform/CMSIS/Include,../../../protocol/bluetooth/ble_stack/inc/common"/>
+    <properties key="bleSDK.apiFile" value="../../../protocol/bluetooth/ble_stack/api/gecko.xml"/>
+    <properties key="bleSDK.emdrvDir" value="../../../platform/emdrv"/>
+    <properties key="sdk.demosFile" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\blemesh\v1.4\app\bluetooth\appbuilder\sample-apps-bin\demos-homekit.xml"/>
+    <properties key="bleSDK.emlibSrc" value="src/em_leuart.c,src/em_adc.c,src/em_ldma.c,src/em_gpio.c,src/em_i2c.c,src/em_rtcc.c,src/em_usart.c,src/em_msc.c,src/em_cmu.c,src/em_system.c"/>
+    <properties key="sdk.docsFile" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\blemesh\v1.4\app\bluetooth\appbuilder\..\doc\doc.xml C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\blemesh\v1.4\app\bluetooth\appbuilder\..\doc\doc-ble.xml C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\blemesh\v1.4\app\bluetooth\appbuilder\..\doc\doc-homekit.xml C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\blemesh\v1.4\app\bluetooth\appbuilder\..\doc\doc-btmesh.xml"/>
     <properties key="core.detected" value="true"/>
     <properties key="core.builtin" value="true"/>
     <properties key="CACHED_ID_STRING" value="com.silabs.stack.ble"/>
   </descriptors>
-  <descriptors name="com.silabs.sdk.stack.super:2.7.7._310455041" label="Gecko Bootloader" description="Gecko Bootloader for EFM32 and EFR32 devices">
-    <properties key="core.installationPath" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.7/platform/bootloader/esf.properties"/>
-    <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.super:2.7.7._310455041"/>
-    <properties key="core.version" value="1.10.3._1748125906"/>
+  <descriptors name="com.silabs.sdk.stack.super:1.1.1._310456152" label="32 bit MCU SDK" description="Silicon Labs 32 bit MCU SDK">
+    <properties key="core.installationPath" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v1.1/.studio/efm32.properties"/>
+    <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.super:1.1.1._310456152"/>
+    <properties key="core.version" value="5.2.2.0_10155856"/>
     <properties key="sdk.subPropertyFiles" value=""/>
-    <properties key="sdk.docsFile" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v2.7\platform\bootloader\documentation\gecko_bootloader_documentation.xml"/>
-    <properties key="stack.esf.appDirectory" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v2.7\platform\bootloader\."/>
+    <properties key="core.partCompatibility" value="mcu.arm.efm32.g..* mcu.arm.efm32.gg.* mcu.arm.efm32.hg.* mcu.arm.efm32.pg.* mcu.arm.efm32.pg12.* mcu.arm.efm32.jg.* mcu.arm.efm32.jg12.* mcu.arm.efm32.lg.* mcu.arm.efm32.tg.* mcu.arm.efm32.wg.* mcu.arm.efm32.z.* mcu.arm.ezr32.lg.* mcu.arm.ezr32.wg.* mcu.arm.ezr32.hg.* mcu.arm.efr32.bg.* mcu.arm.efr32.mg.*"/>
+    <properties key="sdk.templatesFile" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v1.1\.studio\templates.xml C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v1.1\.studio\builtinTemplates.xml"/>
+    <properties key="gccSDK.gccLinkerScript" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v1.1\.studio\linkerScripts\linker_script_efm32_v4.ld"/>
+    <properties key="sdk.modulesFile" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v1.1\.studio\modules.xml"/>
+    <properties key="sdk.demosFile" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v1.1\.studio\demos.xml"/>
+    <properties key="sdk.subLabel" value="MCU\ 5.2.2.0"/>
+    <properties key="sdk.docsFile" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v1.1\.studio\mcu_doc_content.xml"/>
+    <properties key="core.detected" value="true"/>
+    <properties key="core.builtin" value="true"/>
+    <properties key="CACHED_ID_STRING" value="com.silabs.sdk.exx32"/>
+  </descriptors>
+  <descriptors name="com.silabs.sdk.stack.super:1.1.1._310456152" label="Gecko Bootloader" description="Gecko Bootloader">
+    <properties key="core.installationPath" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v1.1/platform/bootloader/esf.properties"/>
+    <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.super:1.1.1._310456152"/>
+    <properties key="core.version" value="0.0.0._1296071675"/>
+    <properties key="sdk.subPropertyFiles" value=""/>
+    <properties key="stack.esf.appDirectory" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v1.1\platform\bootloader\."/>
+    <properties key="core.detected" value="true"/>
+    <properties key="core.builtin" value="true"/>
+    <properties key="CACHED_ID_STRING" value="com.silabs.sdk.stack.super"/>
+  </descriptors>
+  <descriptors name="com.silabs.sdk.stack.super:2.5.5._310455071" label="Micrium OS Kernel" description="SL-MOS-KRNX-000000-P-P1">
+    <properties key="core.installationPath" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/platform/micrium_os/micrium-krnx.properties"/>
+    <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.super:2.5.5._310455071"/>
+    <properties key="core.version" value="5.6.0._-730119116"/>
+    <properties key="sdk.subPropertyFiles" value=""/>
+    <properties key="core.partCompatibility" value="~(^(?!mcu.arm.efr32.zg1.*)(?:mcu.arm.efm32.g..*|mcu.arm.efm32.gg.*|mcu.arm.efm32.hg.*|mcu.arm.efm32.pg.*|mcu.arm.efm32.pg12.*|mcu.arm.efm32.jg.*|mcu.arm.efm32.jg12.*|mcu.arm.efm32.lg.*|mcu.arm.efm32.wg.*|mcu.arm.efr32.*).*$)"/>
+    <properties key="installedUnit" value="krnx"/>
+    <properties key="sdk.subLabel" value="Micrium\ OS\ Kernel\ 5.6.0"/>
+    <properties key="sdk.docsFile" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v2.5\platform\micrium_os\micrium-krnx-docs.xml"/>
+    <properties key="core.detected" value="true"/>
+    <properties key="core.builtin" value="true"/>
+    <properties key="CACHED_ID_STRING" value="com.silabs.sdk.micrium"/>
+  </descriptors>
+  <descriptors name="com.silabs.sdk.stack.super:2.5.5._310455071" label="Gecko Bootloader" description="Gecko Bootloader for EFM32 and EFR32 devices">
+    <properties key="core.installationPath" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/platform/bootloader/esf.properties"/>
+    <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.super:2.5.5._310455071"/>
+    <properties key="core.version" value="1.8.4._2142304532"/>
+    <properties key="sdk.subPropertyFiles" value=""/>
+    <properties key="sdk.docsFile" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v2.5\platform\bootloader\documentation\gecko_bootloader_documentation.xml"/>
+    <properties key="stack.esf.appDirectory" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v2.5\platform\bootloader\."/>
     <properties key="protocol.protocolKey" value="BOOTLOADER"/>
     <properties key="core.detected" value="true"/>
     <properties key="core.builtin" value="true"/>
     <properties key="CACHED_ID_STRING" value="com.silabs.sdk.stack.bootloader"/>
   </descriptors>
-  <descriptors name="com.silabs.sdk.stack.super:2.7.7._310455041" label="Bluetooth SDK" description="Bluetooth Software Development Kit">
-    <properties key="core.installationPath" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.7/app/bluetooth/appbuilder/esf.properties"/>
-    <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.super:2.7.7._310455041"/>
-    <properties key="core.version" value="2.13.7.0_1685155431"/>
-    <properties key="sdk.subPropertyFiles" value="C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.7/app/bluetooth/appbuilder/ble.properties C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.7/app/bluetooth/appbuilder/btcommon.properties"/>
-    <properties key="sdk.useGCCUserObjs" value="ble homekit btmesh"/>
+  <descriptors name="com.silabs.sdk.stack.super:2.5.5._310455071" label="Flex SDK" description="Silicon Labs Flex SDK">
+    <properties key="core.installationPath" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/protocol/flex/esf.properties"/>
+    <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.super:2.5.5._310455071"/>
+    <properties key="core.version" value="2.5.5.0_1206468967"/>
+    <properties key="sdk.subPropertyFiles" value=""/>
+    <properties key="sdk.useGCCUserObjs" value="flex"/>
+    <properties key="stack.esf.appDirectory" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v2.5\protocol\flex\connect"/>
+    <properties key="sdk.subLabel" value="Flex\ 2.5.5.0"/>
+    <properties key="sdk.docsFile" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v2.5\protocol\flex\documentation\slFlex_docContent.xml"/>
+    <properties key="core.detected" value="true"/>
+    <properties key="core.builtin" value="true"/>
+    <properties key="CACHED_ID_STRING" value="com.silabs.sdk.stack.flex"/>
+  </descriptors>
+  <descriptors name="com.silabs.sdk.stack.super:2.5.5._310455071" label="Bluetooth SDK" description="Bluetooth Software Development Kit">
+    <properties key="core.installationPath" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/app/bluetooth/appbuilder/esf.properties"/>
+    <properties key="coreSdk.contributingSdk" value="com.silabs.sdk.stack.super:2.5.5._310455071"/>
+    <properties key="core.version" value="2.11.5.0_1261547621"/>
+    <properties key="sdk.subPropertyFiles" value="C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/app/bluetooth/appbuilder/ble.properties C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/app/bluetooth/appbuilder/btcommon.properties"/>
     <properties key="bleSDK.bgbuildLocation" value="protocol/bluetooth/bin"/>
-    <properties key="stack.esf.appDirectory" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v2.7\app\bluetooth\appbuilder\fwk C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v2.7\app\bluetooth\appbuilder\fwk-homekit C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v2.7\app\bluetooth\appbuilder\fwk-mesh"/>
+    <properties key="bleSDK.incDir" value="../../../protocol/bluetooth/ble_stack/inc/common,../../../protocol/bluetooth/ble_stack/inc/soc,../../../platform/emlib/inc,../../../platform/emdrv/common/inc,../../../platform/emdrv/dmadrv/config,../../../platform/CMSIS/Include"/>
+    <properties key="sdk.subLabel" value="Bluetooth\ 2.11.5.0"/>
+    <properties key="bleSDK.deviceDir" value="../../../platform/Device/SiliconLabs"/>
+    <properties key="bleSDK.bootloaderDir" value="../../../protocol/bluetooth/ble_stack/bootloader"/>
+    <properties key="bleSDK.emlibDir" value="../../../platform/emlib"/>
+    <properties key="bleSDK.libDir" value="../../../protocol/bluetooth/lib"/>
+    <properties key="bleSDK.bootloaderLinkerFile" value="../../../protocol/bluetooth/ble_stack/linker/bootloader.ld"/>
+    <properties key="stack.esf.appDirectory" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v2.5\app\bluetooth\appbuilder\fwk C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v2.5\app\bluetooth\appbuilder\fwk-homekit C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v2.5\app\bluetooth\appbuilder\fwk-mesh"/>
+    <properties key="sdk.useGCCUserObjs" value="ble homekit btmesh"/>
+    <properties key="bleSDK.emdrvSrc" value="dmadrv/src/dmadrv.c"/>
     <properties key="bleSDK.bgbuildToolchain" value="true"/>
-    <properties key="sdk.demosFile" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v2.7\app\bluetooth\appbuilder\sample-apps-bin\demos-homekit.xml"/>
-    <properties key="sdk.subLabel" value="Bluetooth\ 2.13.7.0"/>
-    <properties key="sdk.docsFile" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v2.7\app\bluetooth\appbuilder\..\doc\doc.xml C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v2.7\app\bluetooth\appbuilder\..\doc\doc-ble.xml C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v2.7\app\bluetooth\appbuilder\..\doc\doc-homekit.xml C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v2.7\app\bluetooth\appbuilder\..\doc\doc-btmesh.xml"/>
+    <properties key="bleSDK.linkerDir" value="../../../protocol/bluetooth/ble_stack/linker/GCC"/>
+    <properties key="bleSDK.bootloaderIncDir" value="../../../platform/emlib/inc,../../../platform/emdrv/nvm/inc,../../../platform/emdrv/nvm/config,../../../platform/emdrv/common/inc,../../../platform/CMSIS/Include,../../../protocol/bluetooth/ble_stack/inc/common"/>
+    <properties key="bleSDK.apiFile" value="../../../protocol/bluetooth/ble_stack/api/gecko.xml"/>
+    <properties key="bleSDK.emdrvDir" value="../../../platform/emdrv"/>
+    <properties key="sdk.demosFile" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v2.5\app\bluetooth\appbuilder\sample-apps-bin\demos-homekit.xml"/>
+    <properties key="bleSDK.emlibSrc" value="src/em_leuart.c,src/em_adc.c,src/em_ldma.c,src/em_gpio.c,src/em_i2c.c,src/em_rtcc.c,src/em_usart.c,src/em_msc.c,src/em_cmu.c,src/em_system.c"/>
+    <properties key="sdk.docsFile" value="C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v2.5\app\bluetooth\appbuilder\..\doc\doc.xml C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v2.5\app\bluetooth\appbuilder\..\doc\doc-ble.xml C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v2.5\app\bluetooth\appbuilder\..\doc\doc-homekit.xml C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v2.5\app\bluetooth\appbuilder\..\doc\doc-btmesh.xml"/>
     <properties key="core.detected" value="true"/>
     <properties key="core.builtin" value="true"/>
     <properties key="CACHED_ID_STRING" value="com.silabs.stack.ble"/>
