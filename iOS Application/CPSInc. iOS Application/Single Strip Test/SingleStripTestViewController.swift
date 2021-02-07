@@ -5,7 +5,6 @@
 //  Created by Colton on 2020-07-06.
 //  Copyright © 2020 Creative Protein Solutions Inc. All rights reserved.
 //
-
 import UIKit
 import CoreBluetooth
 import Charts //using the Charts framework - done using the tutorial https://www.appcoda.com/ios-charts-api-tutorial/
@@ -33,8 +32,6 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
     
     var battLevel: Double = 0
     var tempLevel: Double = 0
-    var tempVoltageLevel: Double = 0
-    var heaterPadOn: Bool = false
     
     var tempVoltageLabelKeepHidden = false
     var batteryVoltageLabelKeepHidden = false
@@ -546,7 +543,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                 self.recommendationBoxLeft.image = UIImage(named: "recommendationBoxLeftNoMilkFeverMM")
                 self.recommendationBoxMiddle.image = UIImage(named: "recommendationBoxMiddleNoMilkFeverMM")
                 self.recommendationBoxRight.image = UIImage(named: "recommendationBoxRightNoMilkFeverMM")
-            }            
+            }
             self.runTest()
             return
         }))
@@ -746,16 +743,10 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                        completion: { Void in()  }
         )
         
-        UIApplication.shared.isIdleTimerDisabled = false
-        
         let stopTestString = "00"
         let stopTestData = Data(hexString: stopTestString)
         
         self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
-        
-        
-        self.heaterPadOn = false
-        
         
         //startTestBtn
         startTestBtn.isEnabled = true
@@ -850,8 +841,6 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         
         self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
         
-        self.heaterPadOn = false
-        
         self.testTimer.invalidate()
         
         discardTestBtnListener()
@@ -906,11 +895,8 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
     
     
     
+    
     private func runTest(){
-        
-        
-        UIApplication.shared.isIdleTimerDisabled = true
-        
         
         self.selectingHerdCowFromList = false
         
@@ -958,395 +944,398 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             
             self.testPageController!.getPeripheralDevice()?.writeValue(startTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
             
-
-            self.heaterPadOn = true
-
             
             
-            while(self.tempLevel < 27.0){
-                //wait
+            
+            //want it to wait here until temperature reaches 27C
+            while(true){
+                //wait here - see if this makes app unresponsive or if we are on a background thread
+                
+                if(self.tempLevel >= 27){
+                    break;
+                }
+            }
+            
+            print("\n\n\n\n\nFINISHED LOOP\n\n\n\n\n");
+            
+            
+            self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
+            
+            self.testPageController!.getPeripheralDevice()?.writeValue(startTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
+            
+            
+            
+            DispatchQueue.main.sync {
+                self.waitingLabel.text = "Waiting for strip to be filled..."
+                //self.waitingLabel.text = "Line 888"
+                
+                self.showToast(controller: self, message: "Fill Strip With Sample", seconds: 2)
+                
             }
             
             
             
+//            DispatchQueue.main.async{
+//                self.waitingLabel.text = "Line 900"
+//            }
             
-                DispatchQueue.main.sync {
-                    self.waitingLabel.text = "Waiting for strip to be filled..."
-                    //self.waitingLabel.text = "Line 888"
+            //sleep(1) //kind of a buggy fix - this is to ensure the capacitor discharges
+            
+            var testDuration = 8 //default test duration = 8s
+            
+            if(self.menuView?.getSettingsView().getTestingModeDefault() == true){
+                testDuration = 30 //testing test duration = 30s
+                
+                //Write Herd report text file
+                self.url = self.getDocumentsDirectory().appendingPathComponent("TestReport.txt")
                     
-                    self.showToast(controller: self, message: "Fill Strip With Sample", seconds: 2)
-                    
+                //write test report header
+                do {
+                    try String("Test Report\n").write(to: self.url!, atomically: true, encoding: .utf8)
+                    self.appendStringToFile(url: self.url!, string: ("--------------------------------------\n\n"))
+                    self.appendStringToFile(url: self.url!, string: ("Device Battery Voltage: " + String(self.battLevel) + "\n"))
+                    self.appendStringToFile(url: self.url!, string: ("Device Temperature: " + String(self.tempLevel) + "\n\n"))
+                    self.appendStringToFile(url: self.url!, string: ("--------------------------------------\n\n"))
+                } catch {
+                    print(error.localizedDescription)
                 }
                 
-                
-                
-    //            DispatchQueue.main.async{
-    //                self.waitingLabel.text = "Line 900"
-    //            }
-                
-                //sleep(1) //kind of a buggy fix - this is to ensure the capacitor discharges
-                
-                var testDuration = 8 //default test duration = 8s
-                
-                if(self.menuView?.getSettingsView().getTestingModeDefault() == true){
-                    testDuration = 30 //testing test duration = 30s
-                    
-                    //Write Herd report text file
-                    self.url = self.getDocumentsDirectory().appendingPathComponent("TestReport.txt")
-                        
-                    //write test report header
-                    do {
-                        try String("Test Report\n").write(to: self.url!, atomically: true, encoding: .utf8)
-                        self.appendStringToFile(url: self.url!, string: ("--------------------------------------\n\n"))
-                        self.appendStringToFile(url: self.url!, string: ("Device Battery Voltage: " + String(self.battLevel) + "\n"))
-                        self.appendStringToFile(url: self.url!, string: ("Device Temperature: " + String(self.tempLevel) + "\n\n"))
-                        self.appendStringToFile(url: self.url!, string: ("--------------------------------------\n\n"))
-                    } catch {
-                        print(error.localizedDescription)
-                    }
-                    
+            }
+            
+//            DispatchQueue.main.async{
+//                self.waitingLabel.text = "Line 924"
+//            }
+            
+            DispatchQueue.main.sync {
+                self.testTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.readNewVoltage), userInfo: nil, repeats: true)
+            }
+            
+            
+            DispatchQueue.main.async{
+                self.waitingLabel.text = "Line 933"
+            }
+            
+            
+            
+            //wait until value is not nil
+            var index = 0
+            
+            while(true){ //this shouldn't pause the UI since its on a background thread
+                if(self.testPageController!.getIntegratedVoltageValue() != nil){
+                    break
                 }
-                
-    //            DispatchQueue.main.async{
-    //                self.waitingLabel.text = "Line 924"
-    //            }
-                
-                DispatchQueue.main.sync {
-                    self.testTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.readNewVoltage), userInfo: nil, repeats: true)
-                }
-                
-                
                 DispatchQueue.main.async{
-                    self.waitingLabel.text = "Line 933"
+                    self.waitingLabel.text = String(index)
                 }
-                
-                
-                
-                //wait until value is not nil
-                var index = 0
-                
-                while(true){ //this shouldn't pause the UI since its on a background thread
-                    if(self.testPageController!.getIntegratedVoltageValue() != nil){
-                        break
-                    }
-                    DispatchQueue.main.async{
-                        self.waitingLabel.text = String(index)
-                    }
-                    index += 1
-                }
+                index += 1
+            }
 
-                //var index = 0;
-                
-                DispatchQueue.main.async{
-                    self.waitingLabel.text = "Line 947"
-                    self.waitingLabel.text = "Waiting for strips to fill"
+            //var index = 0;
+            
+            DispatchQueue.main.async{
+                self.waitingLabel.text = "Line 947"
+                self.waitingLabel.text = "Waiting for strips to fill"
+            }
+            
+            
+            
+            //wait until value reaches a threshold of 250mV
+            while(true){ //this shouldn't pause the UI since its on a background thread
+                //print(self.testPageController!.getIntegratedVoltageValue())
+                if(self.testPageController!.getIntegratedVoltageValue()! >= 150 && self.testPageController!.getIntegratedVoltageValue()! <= 200){
+                    break
                 }
-                
-                
-                
-                //wait until value reaches a threshold of 250mV
-                while(true){ //this shouldn't pause the UI since its on a background thread
-                    //print(self.testPageController!.getIntegratedVoltageValue())
-                    if(self.testPageController!.getIntegratedVoltageValue()! >= 150 && self.testPageController!.getIntegratedVoltageValue()! <= 200){
-                        break
+                else if(self.cancelTestFlag){
+                    DispatchQueue.main.async {
+                        self.discardTestBtnListener()
                     }
-                    else if(self.cancelTestFlag){
-                        DispatchQueue.main.async {
-                            self.discardTestBtnListener()
-                        }
-                        return
-                    }
-    //                if(index % 1000 == 0){
-    //                    self.cancelTestBtn.isHidden = !(self.cancelTestBtn.isHidden)
-    //                }
-    //                index += 1;
+                    return
                 }
+//                if(index % 1000 == 0){
+//                    self.cancelTestBtn.isHidden = !(self.cancelTestBtn.isHidden)
+//                }
+//                index += 1;
+            }
+            
+            DispatchQueue.main.async{
+                self.waitingLabel.text = "Line 971"
+            }
+            
+            DispatchQueue.main.async {
+                self.waitingLabel.isHidden = true
+                self.tempVoltageLabel.isHidden = true
+                self.batteryVoltageLabel.isHidden = true
                 
-                DispatchQueue.main.async{
-                    self.waitingLabel.text = "Line 971"
+                self.testProgressView.isHidden = false
+                self.testProgressView.setProgress(0, animated: true)
+                
+                self.cancelTestBtn.isEnabled = false
+                self.cancelTestBtn.isHidden = true
+            }
+            
+            let currentTime = DispatchTime.now()
+            
+            //MARK: Normal Test
+            finalValueTestQueue.asyncAfter(deadline: currentTime + .seconds(testDuration * 1/4)){
+                DispatchQueue.main.sync {
+                    self.testProgressView.setProgress(0.25, animated: true)
                 }
+            }
+            finalValueTestQueue.asyncAfter(deadline: currentTime + .seconds(testDuration * 1/2 )){
+                DispatchQueue.main.sync {
+                    self.testProgressView.setProgress(0.5, animated: true)
+                }
+            }
+            finalValueTestQueue.asyncAfter(deadline: currentTime + .seconds(testDuration * 3/4)){
+                DispatchQueue.main.sync {
+                     self.testProgressView.setProgress(0.75, animated: true)
+                }
+            }
+            finalValueTestQueue.asyncAfter(deadline: currentTime + .seconds(testDuration)){
+                //TODO
                 
-                DispatchQueue.main.async {
-                    self.waitingLabel.isHidden = true
-                    self.tempVoltageLabel.isHidden = true
-                    self.batteryVoltageLabel.isHidden = true
+                var finalResult: Float?
+                
+                if(self.testPageController!.getIntegratedVoltageValue() != nil){
                     
-                    self.testProgressView.isHidden = false
-                    self.testProgressView.setProgress(0, animated: true)
+                    if((self.menuView?.getSettingsView().getManualCalibrationSwitchValue())!){ //if manual calibration on, then it will take the manual calibration equation
+                        DispatchQueue.main.async {
+                            finalResult = Float((Float(self.testPageController!.getIntegratedVoltageValue()!) - ((self.menuView?.getSettingsView().getManCalBVal())!)) / (self.menuView?.getSettingsView().getManCalMVal())!)
+                        }
+                        
+                    }
+                    else{ //if manual calibration off, then it will take the voltage value
+                        finalResult = Float((Float(self.testPageController!.getIntegratedVoltageValue()!) - Float(1336.5)) / Float(-79.2))
+                        
+                    }
+                    
+                }
+                else{
+                    finalResult = nil
+                }
+                
+                
+                self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
+                if(self.menuView!.getSettingsView().getUnitsSwitchValue()){
+                    finalResult = finalResult! / 4
+                    self.units = "mM"
+                }
+                else{
+                    self.units = "mg/dL"
+                }
+                    
+                
+                self.testTimer.invalidate()
+                
+                //MARK: Normal Testing Procedure
+                self.testResultToSave = finalResult
+                
+                DispatchQueue.main.sync {
+                    
+                    self.testProgressView.setProgress(1, animated: true)
+                    self.testProgressView.isHidden = true
                     
                     self.cancelTestBtn.isEnabled = false
                     self.cancelTestBtn.isHidden = true
-                }
-                
-                let currentTime = DispatchTime.now()
-                
-                //MARK: Normal Test
-                finalValueTestQueue.asyncAfter(deadline: currentTime + .seconds(testDuration * 1/4)){
-                    DispatchQueue.main.sync {
-                        self.testProgressView.setProgress(0.25, animated: true)
-                    }
-                }
-                finalValueTestQueue.asyncAfter(deadline: currentTime + .seconds(testDuration * 1/2 )){
-                    DispatchQueue.main.sync {
-                        self.testProgressView.setProgress(0.5, animated: true)
-                    }
-                }
-                finalValueTestQueue.asyncAfter(deadline: currentTime + .seconds(testDuration * 3/4)){
-                    DispatchQueue.main.sync {
-                         self.testProgressView.setProgress(0.75, animated: true)
-                    }
-                }
-                finalValueTestQueue.asyncAfter(deadline: currentTime + .seconds(testDuration)){
-                    //TODO
                     
-                    var finalResult: Float?
-                    
-                    if(self.testPageController!.getIntegratedVoltageValue() != nil){
-                        
-                        if((self.menuView?.getSettingsView().getManualCalibrationSwitchValue())!){ //if manual calibration on, then it will take the manual calibration equation
-                            DispatchQueue.main.async {
-                                finalResult = Float((Float(self.testPageController!.getIntegratedVoltageValue()!) - ((self.menuView?.getSettingsView().getManCalBVal())!)) / (self.menuView?.getSettingsView().getManCalMVal())!)
-                            }
-                            
-                        }
-                        else{ //if manual calibration off, then it will take the voltage value
-                            finalResult = Float((Float(self.testPageController!.getIntegratedVoltageValue()!) - Float(1336.5)) / Float(-79.2))
-                            
-                        }
-                        
-                    }
-                    else{
-                        finalResult = nil
-                    }
-                    
-                    
-                    self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
-                    
-                    self.heaterPadOn = false
-
-                    if(self.menuView!.getSettingsView().getUnitsSwitchValue()){
-                        finalResult = finalResult! / 4
-                        self.units = "mM"
-                    }
-                    else{
-                        self.units = "mg/dL"
-                    }
-                        
-                    
-                    self.testTimer.invalidate()
-                    
-                    //MARK: Normal Testing Procedure
-                    self.testResultToSave = finalResult
-                    
-                    DispatchQueue.main.sync {
-                        
-                        self.testProgressView.setProgress(1, animated: true)
-                        self.testProgressView.isHidden = true
-                        
-                        self.cancelTestBtn.isEnabled = false
-                        self.cancelTestBtn.isHidden = true
-                        
-                        var progressRatio: Float = 0
-                        
-                        if(self.menuView!.getSettingsView().getUnitsSwitchValue()){
-                            progressRatio = finalResult! / 3.5 //our scale goes up to 14mg/dL
-                            print(progressRatio)
-                        }
-                        else{
-                            progressRatio = finalResult! / 14.0 //our scale goes up to 14mg/dL
-                            print(progressRatio)
-                        }
-                        
-                        
-                        
-                        self.testProgressIndicator.removeConstraints(self.testProgressIndicator.constraints)
-                        self.testProgressIndicator.translatesAutoresizingMaskIntoConstraints = false
-                        self.testProgressIndicator.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.05)).isActive = true
-                        self.testProgressIndicator.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-                        self.testProgressIndicator.topAnchor.constraint(equalTo: self.testResultProgressBar.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.01)).isActive = true
-                        if(progressRatio <= 1 && progressRatio > 0){
-                            self.testProgressIndicator.leftAnchor.constraint(equalTo: self.testResultProgressBar.leftAnchor, constant: ((UIScreen.main.bounds.width * 0.75) * CGFloat(progressRatio))).isActive = true
-                        }
-                        else if(progressRatio <= 0){
-                            self.testProgressIndicator.leftAnchor.constraint(equalTo: self.testResultProgressBar.leftAnchor).isActive = true
-                        }
-                        else{ //if its bigger than 1 then just set it to the very right side of the bar. It will never be smaller than 0 so the lowest it will go is the very left side of the bar
-                            self.testProgressIndicator.leftAnchor.constraint(equalTo: self.testResultProgressBar.leftAnchor, constant: ((UIScreen.main.bounds.width * 0.75))).isActive = true
-                        }
-                        self.testProgressIndicator.isHidden = false
-                        
-                        if(self.savableTest){
-                        self.recommendationBtn.setTitle("Recent Results for Cow: " + (self.cowToSave?.id)!, for: .normal)
-                        self.recommendationBtn.isEnabled = true
-                        self.recommendationBtn.isHidden = false
-                        }
-                        
-                    }
+                    var progressRatio: Float = 0
                     
                     if(self.menuView!.getSettingsView().getUnitsSwitchValue()){
-                        if(finalResult! >= Float(1.375) && finalResult! <= Float(2.0)){
-                            DispatchQueue.main.sync {
-                                self.testResultLabel.textColor = .yellow
-                                self.testResultProgressBar.tintColor = .yellow
-                            }
-                        }
-                        else if(finalResult! > Float(2.0)){
-                            DispatchQueue.main.sync{
-                                self.testResultLabel.textColor = .green
-                                self.testResultProgressBar.tintColor = .green
-                            }
-                        }
-                        else{
-                            DispatchQueue.main.sync {
-                                self.testResultLabel.textColor = .red
-                                self.testResultProgressBar.tintColor = .red
-                            }
-                        }
+                        progressRatio = finalResult! / 3.5 //our scale goes up to 14mg/dL
+                        print(progressRatio)
                     }
                     else{
-                        if(finalResult! >= Float(5.5) && finalResult! <= Float(8.0)){
-                            DispatchQueue.main.sync {
-                                self.testResultLabel.textColor = .yellow
-                                self.testResultProgressBar.tintColor = .yellow
-                            }
-                        }
-                        else if(finalResult! > Float(8.0)){
-                            DispatchQueue.main.sync{
-                                self.testResultLabel.textColor = .green
-                                self.testResultProgressBar.tintColor = .green
-                            }
-                        }
-                        else{
-                            DispatchQueue.main.sync {
-                                self.testResultLabel.textColor = .red
-                                self.testResultProgressBar.tintColor = .red
-                            }
-                        }
+                        progressRatio = finalResult! / 14.0 //our scale goes up to 14mg/dL
+                        print(progressRatio)
                     }
                     
-                       
                     
                     
-                    DispatchQueue.main.sync {
-                        self.testResultLabel.text = String(format: "%.2f", finalResult!) + self.units!
-                        self.testResultLabel.isHidden = false
-                        
-                        self.tempVoltageLabelKeepHidden = true
-                        self.batteryVoltageLabelKeepHidden = true
-                        
-                        self.testResultProgressBar.isHidden = false
-                        //self.testResultProgressBar.setProgress(Float(finalResult! / Float(15.0)), animated: true)
-                        
-                        if(self.savableTest){
-                            self.saveTestBtn.isEnabled = true
-                            self.saveTestBtn.isHidden = false
-                            
-                            self.retestBtn.setTitle("Re-test Cow", for: .normal)
-                        }
-                        else{
-                            self.retestBtn.setTitle("Re-test Blank Test", for: .normal)
-                        }
-                        
-                        self.retestBtn.isEnabled = true
-                        self.retestBtn.isHidden = false
-                        
-                        self.discardTestBtn.isEnabled = true
-                        self.discardTestBtn.isHidden = false
-
-                        if(self.savableTest){
-                        self.zoneSpecificRecommendationLabel.isHidden = false
-                        
-                        self.severeHypocalcemiaRecommendationBtn.isHidden = false
-                        self.severeHypocalcemiaRecommendationBtn.isEnabled = true
-                                
-                        self.subClinicalHypocalcemiaRecommendationBtn.isHidden = false
-                        self.subClinicalHypocalcemiaRecommendationBtn.isEnabled = true
-
-                        self.normalCalcemiaRecommendationBtn.isHidden = false
-                        self.normalCalcemiaRecommendationBtn.isEnabled = true
-                        }
-                        
+                    self.testProgressIndicator.removeConstraints(self.testProgressIndicator.constraints)
+                    self.testProgressIndicator.translatesAutoresizingMaskIntoConstraints = false
+                    self.testProgressIndicator.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.05)).isActive = true
+                    self.testProgressIndicator.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+                    self.testProgressIndicator.topAnchor.constraint(equalTo: self.testResultProgressBar.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.01)).isActive = true
+                    if(progressRatio <= 1 && progressRatio > 0){
+                        self.testProgressIndicator.leftAnchor.constraint(equalTo: self.testResultProgressBar.leftAnchor, constant: ((UIScreen.main.bounds.width * 0.75) * CGFloat(progressRatio))).isActive = true
                     }
+                    else if(progressRatio <= 0){
+                        self.testProgressIndicator.leftAnchor.constraint(equalTo: self.testResultProgressBar.leftAnchor).isActive = true
+                    }
+                    else{ //if its bigger than 1 then just set it to the very right side of the bar. It will never be smaller than 0 so the lowest it will go is the very left side of the bar
+                        self.testProgressIndicator.leftAnchor.constraint(equalTo: self.testResultProgressBar.leftAnchor, constant: ((UIScreen.main.bounds.width * 0.75))).isActive = true
+                    }
+                    self.testProgressIndicator.isHidden = false
                     
                     if(self.savableTest){
-                    self.computeRecommendations()
+                    self.recommendationBtn.setTitle("Recent Results for Cow: " + (self.cowToSave?.id)!, for: .normal)
+                    self.recommendationBtn.isEnabled = true
+                    self.recommendationBtn.isHidden = false
                     }
                     
-                    if(self.menuView?.getSettingsView().getTestingModeDefault() == true){
-                        //SEND EMAIL WITH TESTING STUFF
-                        
-                        DispatchQueue.main.async{
-                            let emailAlert = UIAlertController(title: "Testing Voltage Results", message: "Would you like to email yourself the test voltages?", preferredStyle: .alert)
-
-                                               emailAlert.addAction(UIAlertAction(title: "No", style: .default, handler: { action in
-                                                   return
-                                               }))
-                                               
-                                               emailAlert.addAction(UIAlertAction(title: "Yes", style: .cancel, handler: { action in
-                                                
-                                                
-                                                
-                                                //1. Create the alert controller.
-                                                let sampleIDAlert = UIAlertController(title: "Sample ID", message: "Please enter the ID of the sample used for the test", preferredStyle: .alert)
-
-                                                //2. Add the text field. You can configure it however you need.
-                                                sampleIDAlert.addTextField { (textField) in
-                                                    textField.placeholder = "Sample ID"
-                                                }
-
-                                                // 3. Grab the value from the text field, and print it when the user clicks OK.
-                                                sampleIDAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak sampleIDAlert] (_) in
-                                                    let sampleID = sampleIDAlert?.textFields![0].text // Force unwrapping because we know it exists.
-                                                    
-                                                    
-                                                    if( MFMailComposeViewController.canSendMail() ) {
-                                                            let mailComposer = MFMailComposeViewController()
-                                                            mailComposer.mailComposeDelegate = self
-
-                                                            //Set the subject and message of the email
-                                                        mailComposer.setSubject("Test Report | Sample ID: " + sampleID! + " | " + self.testDateLabel.text!)
-                                                            mailComposer.setMessageBody("", isHTML: false)
-
-                             
-                                                            let fileURL = self.getDocumentsDirectory().appendingPathComponent("TestReport.txt")
-                                                                            
-                                                                            
-                                                            do {
-                                                            let attachmentData = try Data(contentsOf: fileURL)
-                                                                mailComposer.addAttachmentData(attachmentData, mimeType: "text/txt", fileName: "TestReport")
-                                                                mailComposer.mailComposeDelegate = self
-                                                                self.present(mailComposer, animated: true
-                                                                    , completion: nil)
-                                                            } catch let error {
-                                                                print("We have encountered error \(error.localizedDescription)")
-                                                            }
-                                                                                
-                                                            self.present(mailComposer, animated: true, completion: nil)
-                                                        }
-                                                        else{
-                                                            self.showToast(controller: self, message: "Cannot send email - Please make sure you have an email account set up on your device", seconds: 2)
-                                                        }
-                                                }))
-                                                // 4. Present the alert.
-                                                self.present(sampleIDAlert, animated: true, completion: nil)
-
-                                                    
-                                                }))
-                                               self.present(emailAlert, animated: true)
+                }
+                
+                if(self.menuView!.getSettingsView().getUnitsSwitchValue()){
+                    if(finalResult! >= Float(1.375) && finalResult! <= Float(2.0)){
+                        DispatchQueue.main.sync {
+                            self.testResultLabel.textColor = .yellow
+                            self.testResultProgressBar.tintColor = .yellow
                         }
-                        
                     }
+                    else if(finalResult! > Float(2.0)){
+                        DispatchQueue.main.sync{
+                            self.testResultLabel.textColor = .green
+                            self.testResultProgressBar.tintColor = .green
+                        }
+                    }
+                    else{
+                        DispatchQueue.main.sync {
+                            self.testResultLabel.textColor = .red
+                            self.testResultProgressBar.tintColor = .red
+                        }
+                    }
+                }
+                else{
+                    if(finalResult! >= Float(5.5) && finalResult! <= Float(8.0)){
+                        DispatchQueue.main.sync {
+                            self.testResultLabel.textColor = .yellow
+                            self.testResultProgressBar.tintColor = .yellow
+                        }
+                    }
+                    else if(finalResult! > Float(8.0)){
+                        DispatchQueue.main.sync{
+                            self.testResultLabel.textColor = .green
+                            self.testResultProgressBar.tintColor = .green
+                        }
+                    }
+                    else{
+                        DispatchQueue.main.sync {
+                            self.testResultLabel.textColor = .red
+                            self.testResultProgressBar.tintColor = .red
+                        }
+                    }
+                }
+                
+                   
+                
+                
+                DispatchQueue.main.sync {
+                    self.testResultLabel.text = String(format: "%.2f", finalResult!) + self.units!
+                    self.testResultLabel.isHidden = false
+                    
+                    self.tempVoltageLabelKeepHidden = true
+                    self.batteryVoltageLabelKeepHidden = true
+                    
+                    self.testResultProgressBar.isHidden = false
+                    //self.testResultProgressBar.setProgress(Float(finalResult! / Float(15.0)), animated: true)
+                    
+                    if(self.savableTest){
+                        self.saveTestBtn.isEnabled = true
+                        self.saveTestBtn.isHidden = false
+                        
+                        self.retestBtn.setTitle("Re-test Cow", for: .normal)
+                    }
+                    else{
+                        self.retestBtn.setTitle("Re-test Blank Test", for: .normal)
+                    }
+                    
+                    self.retestBtn.isEnabled = true
+                    self.retestBtn.isHidden = false
+                    
+                    self.discardTestBtn.isEnabled = true
+                    self.discardTestBtn.isHidden = false
+
+                    if(self.savableTest){
+                    self.zoneSpecificRecommendationLabel.isHidden = false
+                    
+                    self.severeHypocalcemiaRecommendationBtn.isHidden = false
+                    self.severeHypocalcemiaRecommendationBtn.isEnabled = true
+                            
+                    self.subClinicalHypocalcemiaRecommendationBtn.isHidden = false
+                    self.subClinicalHypocalcemiaRecommendationBtn.isEnabled = true
+
+                    self.normalCalcemiaRecommendationBtn.isHidden = false
+                    self.normalCalcemiaRecommendationBtn.isEnabled = true
+                    }
+                    
+                }
+                
+                if(self.savableTest){
+                self.computeRecommendations()
+                }
+                
+                if(self.menuView?.getSettingsView().getTestingModeDefault() == true){
+                    //SEND EMAIL WITH TESTING STUFF
+                    
+                    DispatchQueue.main.async{
+                        let emailAlert = UIAlertController(title: "Testing Voltage Results", message: "Would you like to email yourself the test voltages?", preferredStyle: .alert)
+
+                                           emailAlert.addAction(UIAlertAction(title: "No", style: .default, handler: { action in
+                                               return
+                                           }))
+                                           
+                                           emailAlert.addAction(UIAlertAction(title: "Yes", style: .cancel, handler: { action in
+                                            
+                                            
+                                            
+                                            //1. Create the alert controller.
+                                            let sampleIDAlert = UIAlertController(title: "Sample ID", message: "Please enter the ID of the sample used for the test", preferredStyle: .alert)
+
+                                            //2. Add the text field. You can configure it however you need.
+                                            sampleIDAlert.addTextField { (textField) in
+                                                textField.placeholder = "Sample ID"
+                                            }
+
+                                            // 3. Grab the value from the text field, and print it when the user clicks OK.
+                                            sampleIDAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak sampleIDAlert] (_) in
+                                                let sampleID = sampleIDAlert?.textFields![0].text // Force unwrapping because we know it exists.
+                                                
+                                                
+                                                if( MFMailComposeViewController.canSendMail() ) {
+                                                        let mailComposer = MFMailComposeViewController()
+                                                        mailComposer.mailComposeDelegate = self
+
+                                                        //Set the subject and message of the email
+                                                    mailComposer.setSubject("Test Report | Sample ID: " + sampleID! + " | " + self.testDateLabel.text!)
+                                                        mailComposer.setMessageBody("", isHTML: false)
+
+                         
+                                                        let fileURL = self.getDocumentsDirectory().appendingPathComponent("TestReport.txt")
+                                                                        
+                                                                        
+                                                        do {
+                                                        let attachmentData = try Data(contentsOf: fileURL)
+                                                            mailComposer.addAttachmentData(attachmentData, mimeType: "text/txt", fileName: "TestReport")
+                                                            mailComposer.mailComposeDelegate = self
+                                                            self.present(mailComposer, animated: true
+                                                                , completion: nil)
+                                                        } catch let error {
+                                                            print("We have encountered error \(error.localizedDescription)")
+                                                        }
+                                                                            
+                                                        self.present(mailComposer, animated: true, completion: nil)
+                                                    }
+                                                    else{
+                                                        self.showToast(controller: self, message: "Cannot send email - Please make sure you have an email account set up on your device", seconds: 2)
+                                                    }
+                                            }))
+                                            // 4. Present the alert.
+                                            self.present(sampleIDAlert, animated: true, completion: nil)
+
+                                                
+                                            }))
+                                           self.present(emailAlert, animated: true)
+                    }
+                    
+                    
+                    
                     
                 }
                 
             }
-                
-
+            
+        }
     }
-    
-    
-    
-    
     
     @objc private func severeHypocalcemiaRecommendationBtnListener(){
         //TODO
@@ -1491,7 +1480,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         //DispatchQueue.main.sync {
         tempVoltageValue = self.testPageController!.getTemperatureVoltageValue()
         
-        //print(tempVoltageValue)
+        print(tempVoltageValue)
         
         
         //}
@@ -1502,37 +1491,28 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             }
         }
         else{
-            
-            
             //var temp = (-21.11 * log(((3.3 * (40000/(Double(tempVoltageValue!)/1000))) - 40000))) + 219.56
-            var temp = (Double(tempVoltageValue!) - 1875) / 25.547
+            var temp = (Double(tempVoltageValue!) * 0.0559) - 60.9
             
             self.tempLevel = Double(round(100 * temp)/100)
-            self.tempVoltageLevel = Double(tempVoltageValue!)
             
             DispatchQueue.main.async{
                 if(self.tempVoltageLabelKeepHidden){
                     self.tempVoltageLabel.isHidden = true
                 }
                 else{
-                    
-//                    if(self.heaterPadOn){
-//                        self.tempVoltageLabel.text = "Device Temp: " + String(self.tempVoltageLevel) + " mV | " + String(self.tempLevel) + " C | ON"
-//                        self.tempVoltageLabel.isHidden = false
-//                    }
-//                    else{
-//                        self.tempVoltageLabel.text = "Device Temp: " + String(self.tempVoltageLevel) + " mV | " + String(self.tempLevel) + " C | OFF"
-//                        self.tempVoltageLabel.isHidden = false
-//                    }
                     self.tempVoltageLabel.text = "Device Temp: " + String(self.tempLevel) + " C"
-                    
+                    self.tempVoltageLabel.isHidden = false
+                }
+                
+                if(self.tempLevel < 27){
+                    self.startTestBtn.setTitle("Heat Device", for: .normal)
+                }
+                else{
+                    self.startTestBtn.setTitle("Start Test", for: .normal)
                 }
             }
         }
-        
-        
-        
-        
         
         var battVoltageValue: Int? = nil
         //DispatchQueue.main.sync {
@@ -1548,7 +1528,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         }
         else{
             
-            var bat = Double(battVoltageValue!) / 1000.0
+            var bat = Double(battVoltageValue!) / 1000.0// * 2.3 //this is a patch
             
             self.battLevel = Double(round(10 * bat)/10)
             
