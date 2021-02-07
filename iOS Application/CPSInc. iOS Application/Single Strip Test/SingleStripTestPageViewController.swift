@@ -240,6 +240,13 @@ public class SingleStripTestPageViewController: UIPageViewController, UIPageView
                     print("found batt charac")
                 }
                 
+                if (characteristic.uuid.uuidString == "EE42F3B5-DCC2-4905-BC8A-B6533F1D0888") {
+                    peripheral.readValue(for: characteristic)
+                    print("found device id charac")
+//                    let deviceID = characteristic.value!.hexEncodedString()
+//                    print("\n\nDevice ID: " + deviceID + "\n\n")
+                }
+                
             }
             
         }
@@ -283,6 +290,13 @@ public class SingleStripTestPageViewController: UIPageViewController, UIPageView
                 let stringValue = characteristic.value!.hexEncodedString()
                 batteryVoltageValue = Int(exactly: Int(stringValue, radix: 16)!)
                 //print("differential vol = " + differentialVoltageValue!)
+            }
+        }
+        else if(characteristic.uuid.uuidString == "EE42F3B5-DCC2-4905-BC8A-B6533F1D0888"){ //battery voltage
+            if(characteristic.value != nil) {
+                //print("notified")
+                let stringValue = characteristic.value!.hexEncodedString()
+                print("\n\nDevice ID = " + stringValue + "\n\n")
             }
         }
     }

@@ -74,7 +74,7 @@ class RecommendationPageViewController: UIViewController {
                 //zoneSpecificRecommendationLabel.isHidden = true
                 
                 //testResultProgressBar
-                self.testResultProgressBar.progressImage = UIImage(named: "testGradient")
+                self.testResultProgressBar.progressImage = UIImage(named: "TestGradient")
                 self.view.addSubview(self.testResultProgressBar)
                 //self.testResultProgressBar.isHidden = true
                         

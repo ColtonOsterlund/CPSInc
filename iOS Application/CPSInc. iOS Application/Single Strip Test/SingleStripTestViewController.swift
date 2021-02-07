@@ -263,7 +263,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         
         
         //testResultProgressBar
-        self.testResultProgressBar.progressImage = UIImage(named: "testGradient")
+        self.testResultProgressBar.progressImage = UIImage(named: "TestGradient")
         self.view.addSubview(self.testResultProgressBar)
         self.testResultProgressBar.isHidden = true
         
@@ -956,7 +956,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                 }
             }
             
-            print("\n\n\n\n\nFINISHED LOOP\n\n\n\n\n");
+            //print("\n\n\n\n\nFINISHED LOOP\n\n\n\n\n");
             
             
             self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
@@ -1011,31 +1011,31 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             }
             
             
-            DispatchQueue.main.async{
-                self.waitingLabel.text = "Line 933"
-            }
+//            DispatchQueue.main.async{
+//                self.waitingLabel.text = "Line 933"
+//            }
             
             
             
             //wait until value is not nil
-            var index = 0
+           // var index = 0
             
             while(true){ //this shouldn't pause the UI since its on a background thread
                 if(self.testPageController!.getIntegratedVoltageValue() != nil){
                     break
                 }
-                DispatchQueue.main.async{
-                    self.waitingLabel.text = String(index)
-                }
-                index += 1
+//                DispatchQueue.main.async{
+//                    self.waitingLabel.text = String(index)
+//                }
+//                index += 1
             }
 
             //var index = 0;
             
-            DispatchQueue.main.async{
-                self.waitingLabel.text = "Line 947"
-                self.waitingLabel.text = "Waiting for strips to fill"
-            }
+//            DispatchQueue.main.async{
+//                self.waitingLabel.text = "Line 947"
+//                self.waitingLabel.text = "Waiting for strips to fill"
+//            }
             
             
             
@@ -1057,9 +1057,9 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
 //                index += 1;
             }
             
-            DispatchQueue.main.async{
-                self.waitingLabel.text = "Line 971"
-            }
+//            DispatchQueue.main.async{
+//                self.waitingLabel.text = "Line 971"
+//            }
             
             DispatchQueue.main.async {
                 self.waitingLabel.isHidden = true
@@ -1179,19 +1179,19 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                     if(finalResult! >= Float(1.375) && finalResult! <= Float(2.0)){
                         DispatchQueue.main.sync {
                             self.testResultLabel.textColor = .yellow
-                            self.testResultProgressBar.tintColor = .yellow
+                            //self.testResultProgressBar.tintColor = .yellow
                         }
                     }
                     else if(finalResult! > Float(2.0)){
                         DispatchQueue.main.sync{
                             self.testResultLabel.textColor = .green
-                            self.testResultProgressBar.tintColor = .green
+                            //self.testResultProgressBar.tintColor = .green
                         }
                     }
                     else{
                         DispatchQueue.main.sync {
                             self.testResultLabel.textColor = .red
-                            self.testResultProgressBar.tintColor = .red
+                            //self.testResultProgressBar.tintColor = .red
                         }
                     }
                 }
@@ -1199,19 +1199,19 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                     if(finalResult! >= Float(5.5) && finalResult! <= Float(8.0)){
                         DispatchQueue.main.sync {
                             self.testResultLabel.textColor = .yellow
-                            self.testResultProgressBar.tintColor = .yellow
+                            //self.testResultProgressBar.tintColor = .yellow
                         }
                     }
                     else if(finalResult! > Float(8.0)){
                         DispatchQueue.main.sync{
                             self.testResultLabel.textColor = .green
-                            self.testResultProgressBar.tintColor = .green
+                            //self.testResultProgressBar.tintColor = .green
                         }
                     }
                     else{
                         DispatchQueue.main.sync {
                             self.testResultLabel.textColor = .red
-                            self.testResultProgressBar.tintColor = .red
+                            //self.testResultProgressBar.tintColor = .red
                         }
                     }
                 }
@@ -1510,6 +1510,10 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                 }
                 else{
                     self.startTestBtn.setTitle("Start Test", for: .normal)
+                }
+                if(self.tempLevel >= 29.5){
+                    self.cancelTestBtnListener()
+                    self.showToast(controller: self, message: "Device overheat reset activated", seconds: 2)
                 }
             }
         }
