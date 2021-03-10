@@ -488,6 +488,10 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             showToast(controller: self, message: "Strips not detected", seconds: 1)
             return
         }
+        else if(self.battLevel <= 3.7){
+            showToast(controller: self, message: "Battery level too low to test", seconds: 1)
+            return
+        }
         
         
         if(savableTest){
@@ -672,6 +676,10 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         else if(testPageController!.getStripDetectVoltageValue()! <= 750){ //set proper value for testing, for now this works
             //this is set to 750 since one of the devices only has a strip detect voltage of 1/2 VDD, the other has a strip detect voltage of VDD. 75O gives a lot of room for any noise at the bottom end and also is low enough to detect when a strip is inserted (essentially 1/4 VDD)
             showToast(controller: self, message: "Strips not detected", seconds: 1)
+            return
+        }
+        else if(self.battLevel <= 3.7){
+            showToast(controller: self, message: "Battery level too low to test", seconds: 1)
             return
         }
         
@@ -951,7 +959,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             while(true){
                 //wait here - see if this makes app unresponsive or if we are on a background thread
                 
-                if(self.tempLevel >= 27){
+                if(self.tempLevel >= 26.5){
                     break;
                 }
             }
