@@ -318,10 +318,10 @@ void readTemperatureSensorVoltage() {
 
     if(testRunning == 1){
 
-		if(temperatureSensorVoltage < 2900){ //2900mV = 30C
+		if(temperatureSensorVoltage < 2250){ //2250mV = 25C
 		   startHeatingPad();
 		}
-		else if(temperatureSensorVoltage >= 2900 && temperatureSensorVoltage < 3200){ //3200mV = 35C
+		else if(temperatureSensorVoltage >= 2250 && temperatureSensorVoltage < 3200){ //3200mV = 35C
 			stopHeatingPad();
 		}
 		else if(temperatureSensorVoltage >= 3200){

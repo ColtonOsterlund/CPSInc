@@ -94,6 +94,12 @@
     <properties key="core.keywords" value="ble bootloader micrium flex super"/>
     <properties key="core.scannedErrorMessage" value=""/>
     <properties key="core.detected" value="true"/>
+    <properties key="stack.esf.stackId" value="com.silabs.sdk.stack.super"/>
+    <properties key="stack.esf.halDir" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/platform/base/hal/"/>
+    <properties key="stack.esf.frameworkIds" value="ble bootloader flex"/>
+    <properties key="stack.esf.stackHalPath" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/platform/base/hal/"/>
+    <properties key="stack.esf.stackLibPath" value="file:/C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.5/platform/base/"/>
+    <properties key="core.boardCompatibility" value="brd4153a brd4101b brd4254a brd4181a brd4173a brd4250a brd4161a com.silabs.board.none brd4250b rd-005701 brd4303a brd4105a wstk:0.0.0 brd4169b brd2500a brd4258a brd4169a brd4202a brd4258b brd4174a brd4251a brd4166a brd4300c brd4300d brd4150b brd4251d brd4150c brd4170a brd4162a brd4174b brd4251b brd4150a brd4304a brd4259a brd4300a brd4255a brd4300b brd4158a brd2204a brd4175a brd4252a brd4163a brd4151a brd2207a com.silabs.board.none:0.0.0 brd4305c brd2102a brd4305a brd4103a brd4256a brd4167a brd4200a brd4159a brd4305d brd4305e brd4301a brd4164a brd4100a brd4152a brd4253a brd4160a brd4172b brd4152b brd4172a brd4180a brd4.* brd4306c brd4306d brd4306a brd4306b brd4168a brd4201a brd4257b brd4104a brd4302a brd2501a brd4257a"/>
     <properties key="CACHED_ID_STRING" value="com.silabs.sdk.stack.super"/>
   </descriptors>
   <descriptors name="com.silabs.stack.external.stackless" label="Stackless applications" description="">

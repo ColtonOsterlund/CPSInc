@@ -1,0 +1,319 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Calciulator Tool";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Calciulator</title>
+    <link rel="stylesheet" href="fontawesome-5.5/css/all.min.css" />
+    <link rel="stylesheet" href="slick/slick.css">
+    <link rel="stylesheet" href="slick/slick-theme.css">
+    <link rel="stylesheet" href="magnific-popup/magnific-popup.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/templatemo-style.css" />
+    <script src="~/js/site.js"></script>
+    <!--
+    The Town
+    https://templatemo.com/tm-525-the-town
+    -->
+</head>
+<body>
+    <!-- Hero section -->
+    <section id="hero" class="text-white tm-font-big tm-parallax">
+        <!-- Navigation -->
+        @*<nav class="navbar navbar-expand-md tm-navbar" id="tmNav">
+            <div class="container">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fas fa-bars navbar-toggler-icon"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link tm-nav-link" href="#hero">Scenarios</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link tm-nav-link" href="#introduction">Sliders</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link tm-nav-link" href="#contact">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>*@
+
+        <div class="text-center tm-hero-text-container">
+            <div class="tm-hero-text-container-inner">
+                <h2 class="tm-hero-title">Calciulator</h2>
+                <p class="tm-hero-subtitle">
+                    Creative Protein Solutions Inc.
+                </p>
+            </div>
+        </div>
+
+        <div id="scenarioDropdownDiv" class="tm-next tm-intro-next">
+
+            <label for="scenarioDropdown">Select a Scenario:</label>
+
+            <select name="scenarioDropdown" id="scenarioDropdown" onchange="changeScenario()">
+                <option value="" selected disabed hidden>-</option>
+                <option value="Ration Change Scenario">Ration Change</option>
+                <option value="Bolus Scenario">Bolus</option>
+            </select>
+
+        </div>
+
+        @*<div class="tm-next tm-intro-next">
+            <a href="#introduction" class="text-center tm-down-arrow-link">
+                <i class="fas fa-3x fa-caret-down tm-down-arrow"></i>
+            </a>
+        </div>*@
+
+    </section>
+
+    <section id="introduction" class="tm-section-pad-top">
+
+        <div class="text-center" id="rationChangeScenarioSliderTool" style="display: block;">
+            <br>
+            <br>
+            <label for="numberOfCowsCalvingSlider">Number of cows calving per year: </label>
+            <input type="range" id="numberOfCowsCalvingSlider" value="0" min="0" max="500" step="10" oninput="">
+            <input value="0" min="0" max="500" onchange="">
+            <br>
+            <br>
+            <label for="costOfAdditivePerkgSlider">Cost of additive per kg: </label>
+            <input type="range" id="costOfAdditivePerkgSlider" value="0" min="0" max="1000" step="25" oninput="">
+            $<input value="0.00" min="0" max="1000" onchange="">
+            <br>
+            <br>
+            <label for="additionalAdditiveHeadDaySlider">Change in dry cow additive per head per day (g): </label>
+            <input type="range" id="additionalAdditiveHeadDaySlider" value="0" min="0" max="1000" step="25" oninput="">
+            <input value="0" min="0" max="1000" onchange="" >
+            <br>
+            <br>
+            <label for="numberOfDaysOnTheRationSlider">Number of days on the ration: </label>
+            <input type="range" id="numberOfDaysOnTheRationSlider" value="0" min="0" max="182" step="2" oninput="">
+            <input value="0" min="0" max="182" onchange="">
+            <br>
+            <br>
+            <label for="prevalenceOfSCHSlider">Prevalence of SCH (%): </label>
+            <input type="range" id="prevalenceOfSCHSlider" value="50" min="0" max="100" oninput="">
+            <input value="50" min="0" max="100" onchange="" >%
+            <br>
+            <br>
+            <label for="prevalenceOfMFSlider">Prevalence of MF (%): </label>
+            <input type="range" id="prevalenceOfMFSlider" value="2" min="0" max="100" oninput="">
+            <input value="2" min="0" max="100" onchange="">%
+            <br>
+            <br>
+            <label for="numberOfCowsTestedSlider">Percentage of cows tested (%): </label>
+            <input type="range" id="numberOfCowsTestedSlider" value="0" min="0" max="100" oninput="">
+            <input value="0" min="0" max="100" onchange="">%
+            <br>
+            <br>
+            <button type="button" id="calculateCostBenefitButton" onclick="">Calculate Cost Benefit</button>
+            <br>
+            <br>
+            <b>Cost Benefit: </b>
+            $<output id="costBenefitOutput">0.00</output>
+            <br>
+            <br>
+            <b>Cost Benefit Per Cow: </b>
+            $<output id="costBenefitOutputPerCow">0.00</output>
+        </div>
+
+
+
+
+
+        <div class="text-center" id="bolusScenarioSliderTool" style="display: none;">
+            <br>
+            <br>
+            <label for="numberOfCowsCalvingSlider2">Number of cows calving per year: </label>
+            <input type="range" id="numberOfCowsCalvingSlider2" value="0" min="0" max="500" step="10" oninput="">
+            <input value="0" min="0" max="500" onchange="">
+            <br>
+            <br>
+            <label for="numberOfHeifersCalvingSlider2">Number of heifers calving per year: </label>
+            <input type="range" id="numberOfHeifersCalvingSlider2" value="0" min="0" max="300" step="10" oninput="">
+            <input value="0" min="0" max="300" onchange="">
+            <br>
+            <br>
+            <label for="costOfBolusPerUnitSlider2">Cost of bolus per unit: </label>
+            <input type="range" id="costOfBolusPerUnitSlider2" value="1000" min="0" max="1200" step="25" oninput="">
+            $<input value="10.00" min="0" max="1200" onchange="">
+            <br>
+            <br>
+            <label for="numberOfBolusesPerCowSlider2">Number of boluses per cow: </label>
+            <input type="range" id="numberOfBolusesPerCowSlider2" value="0" min="0" max="5" step="1" oninput="">
+            <input value="0" min="0" max="5" onchange="">
+            <br>
+            <br>
+            <label for="numberOfBolusesPerHeiferSlider2">Number of boluses per heifer: </label>
+            <input type="range" id="numberOfBolusesPerHeiferSlider2" value="0" min="0" max="5" step="1" oninput="">
+            <input value="0" min="0" max="5" onchange="">
+            <br>
+            <br>
+            <label for="prevalenceOfCowSCHSlider2">Prevalence of cow SCH (%): </label>
+            <input type="range" id="prevalenceOfCowSCHSlider2" value="50" min="0" max="100" oninput="">
+            <input value="50" min="0" max="100" onchange="" >%
+            <br>
+            <br>
+            <label for="prevalenceOfCowMFSlider2">Prevalence of cow MF (%): </label>
+            <input type="range" id="prevalenceOfCowMFSlider2" value="5" min="0" max="100" oninput="">
+            <input value="5" min="0" max="100" onchange="">%
+            <br>
+            <br>
+            <label for="prevalenceOfHeiferSCHSlider2">Prevalence of heifer SCH (%): </label>
+            <input type="range" id="prevalenceOfHeiferSCHSlider2" value="25" min="0" max="100" oninput="">
+            <input value="25" min="0" max="100" onchange="">%
+            <br>
+            <br>
+            <label for="prevalenceOfHeiferMFSlider2">Prevalence of heifer MF (%): </label>
+            <input type="range" id="prevalenceOfHeiferMFSlider2" value="1" min="0" max="100" oninput="">
+            <input value="1" min="0" max="100" onchange="">%
+            <br>
+            <br>
+            <button type="button" id="calculateCostBenefitButton2" onclick="">Calculate Cost Benefit</button>
+            <br>
+            <br>
+            <b>Cost Benefit (Cows): </b>
+            $<output id="costBenefitOutputCows2">0.00</output>
+            <br>
+            <br>
+            <b>Savings per Cow by Testing: </b>
+            $<output id="costBenefitOutputPerCow2">0.00</output>
+            <br>
+            <br>
+            <b>Cost Benefit (Heifers): </b>
+            $<output id="costBenefitOutputHeifers2">0.00</output>
+            <br>
+            <br>
+            <b>Savings per Heifer by Testing: </b>
+            $<output id="heiferBolusSavingsPerTreatment">0.00</output>
+        </div>
+
+        @*<div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <img src="img/the-town-01.jpg" alt="Image" class="img-fluid tm-intro-img" />
+                </div>
+                <div class="col-lg-6">
+                    <div class="tm-intro-text-container">
+                        <h2 class="tm-text-primary mb-4 tm-section-title">Introduction</h2>
+                        <p class="mb-4 tm-intro-text">
+                            The Town is <strong>simple CSS template</strong> built on Bootstrap v4.1.3
+                            and this is a little parallax layout that you can use for your websites.
+                        </p>
+                        <p class="mb-5 tm-intro-text">
+                            Please tell your friends about our site
+                            <a rel="nofollow" href="https://templatemo.com">templatemo</a>. Thank you.
+                            Curabitur dapibus tristique enim a imperdiet. Etiam
+                            tristique sem sed condimentum posuere.
+                        </p>
+                        <div class="tm-next">
+                            <a href="#work" class="tm-intro-text tm-btn-primary">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row tm-section-pad-top">
+                <div class="col-lg-4">
+                    <i class="fas fa-4x fa-bus text-center tm-icon"></i>
+                    <h4 class="text-center tm-text-primary mb-4">Curabitur at elit eu risus</h4>
+                    <p>
+                        Sed ultrices sit amet mi eu malesuada. Cras ultricies gravida
+                        nisi, ac pellentesque nunc tincidunt quis. Aenean at ornare lacus.
+                        Duis imperdiet lacus justo.
+                    </p>
+                </div>
+
+                <div class="col-lg-4 mt-5 mt-lg-0">
+                    <i class="fas fa-4x fa-bicycle text-center tm-icon"></i>
+                    <h4 class="text-center tm-text-primary mb-4">Nunc sed metus vel nisi</h4>
+                    <p>
+                        Praesent ut finibus leo. Duis et tempus ipsum, id pretium nunc.
+                        Vivamus imperdiet sem quis orci pharetra convallis. Nunc a tempus
+                        nisi, sed fringilla purus. In hac habitasse platea.
+                    </p>
+                </div>
+                <div class="col-lg-4 mt-5 mt-lg-0">
+                    <i class="fas fa-4x fa-city text-center tm-icon"></i>
+                    <h4 class="text-center tm-text-primary mb-4">Fusce sed nisi sagittis</h4>
+                    <p>
+                        Donec vestibulum libero nisl. Curabitur ac orci ac lorem blandit
+                        volutpat. Sed ac sodales nibh, ut porttitor elit. Sed id dui mi.
+                        Vestibulum ante ipsum primis in faucibus.
+                    </p>
+                </div>
+            </div>
+        </div>*@
+    </section>
+
+    <!-- Contact -->
+    @*<section id="contact" class="tm-section-pad-top tm-parallax-2">
+        <div class="container tm-container-contact">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="mb-4 tm-section-title">Contact Us</h2>
+                    <div class="mb-5 tm-underline">
+                        <div class="tm-underline-inner"></div>
+                    </div>
+                    <p class="mb-5">
+                        Nullam tincidunt, lacus a suscipit luctus, elit turpis tincidunt dui,
+                        non tempus sem turpis vitae lorem. Maecenas eget odio in sapien ultrices
+                        viverra vitae vel leo. Curabitur at elit eu risus pharetra pellentesque
+                        at at velit.
+                    </p>
+                </div>
+
+                <div class="col-sm-12 col-md-6 d-flex align-items-center tm-contact-item">
+                    <a href="tel:0100200340" class="tm-contact-item-link">
+                        <i class="fas fa-3x fa-phone mr-4"></i>
+                        <span class="mb-0">010-020-0340</span>
+                    </a>
+                </div>
+                <div class="col-sm-12 col-md-6 d-flex align-items-center tm-contact-item">
+                    <a href="mailto:info@company.co" class="tm-contact-item-link">
+                        <i class="fas fa-3x fa-envelope mr-4"></i>
+                        <span class="mb-0">info@company.co</span>
+                    </a>
+                </div>
+                <div class="col-sm-12 col-md-6 d-flex align-items-center tm-contact-item">
+                    <a href="https://www.google.com/maps" class="tm-contact-item-link">
+                        <i class="fas fa-3x fa-map-marker-alt mr-4"></i>
+                        <span class="mb-0">Location on Maps</span>
+                    </a>
+                </div>
+                <div class="col-sm-12 col-md-6 d-flex align-items-center tm-contact-item">
+                    <form action="" method="get">
+                        <input name="email" type="email" placeholder="Subscribe your email" class="tm-input" required />
+                        <button type="submit" class="btn tm-btn-submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <footer class="text-center small tm-footer">
+            <p class="mb-0">
+                Copyright &copy; 2019 Company Name
+
+                - Design: <a rel="nofollow" href="https://templatemo.com" class="tm-footer-link">Template Mo</a>
+            </p>
+        </footer>
+    </section>*@
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="slick/slick.min.js"></script>
+    <script src="magnific-popup/jquery.magnific-popup.min.js"></script>
+    @*<script src="js/jquery.singlePageNav.min.js"></script>*@
+    <script src="js/bootstrap.min.js"></script>
+    <script></script>
+</body>
+</html>
