@@ -32,6 +32,19 @@ class CowInfoViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     private let numberOfTimesBredLabel = UILabel()
     private let farmBreedingIndexLabel = UILabel()
     
+    private let lactationNumberLabel = UILabel()
+    private let daysCarriedCalfIfPregnantLabel = UILabel()
+    private let projectedDueDateLabel = UILabel()
+    private let current305DayMilkLabel = UILabel()
+    private let currentSomaticCellCountLabel = UILabel()
+    private let linearScoreAtLastTestLabel = UILabel()
+    private let dateOfLastClinialMastitisLabel = UILabel()
+    private let chainVisibleIDLabel = UILabel()
+    private let animalRegistrationNoNLIDLabel = UILabel()
+    private let damBreedLabel = UILabel()
+    private let culledLabel = UILabel()
+    private let modifyDateLabel = UILabel()
+    
     private let idTextView = UITextView()
     private let daysInMilkTextView = UITextView()
     private let dryOffDayTextView = UITextView()
@@ -42,6 +55,19 @@ class CowInfoViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     private let reproductionStatusTextView = UITextView()
     private let numberOfTimesBredTextView = UITextView()
     private let farmBreedingIndexTextView = UITextView()
+    
+    private let lactationNumberTextView = UITextView()
+    private let daysCarriedCalfIfPregnantTextView = UITextView()
+    private let projectedDueDateTextView = UITextView()
+    private let current305DayMilkTextView = UITextView()
+    private let currentSomaticCellCountTextView = UITextView()
+    private let linearScoreAtLastTestTextView = UITextView()
+    private let dateOfLastClinialMastitisTextView = UITextView()
+    private let chainVisibleIDTextView = UITextView()
+    private let animalRegistrationNoNLIDTextView = UITextView()
+    private let damBreedTextView = UITextView()
+    private let culledTextView = UITextView()
+    private let modifyDateTextView = UITextView()
     
     private let dryOffDayPicker = UIPickerView()
     private let dryOffDayPickerData = ["Lactating", "Drying Off", "Dry"]
@@ -70,7 +96,7 @@ class CowInfoViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     private func setupComponents(){
         
         scrollView.backgroundColor = .init(red: 0, green: 0.637, blue: 0.999, alpha: 1)
-        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 1.2)
+        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 1.8)
         scrollView.frame = view.bounds
         view.addSubview(scrollView)
         
@@ -114,6 +140,42 @@ class CowInfoViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         
         farmBreedingIndexLabel.text = "Farm Breeding Index:"
         contentView.addSubview(farmBreedingIndexLabel)
+        
+        lactationNumberLabel.text = "Lactation Number:"
+        contentView.addSubview(lactationNumberLabel)
+        
+        daysCarriedCalfIfPregnantLabel.text = "Days Carried Calf if Pregnant:"
+        contentView.addSubview(daysCarriedCalfIfPregnantLabel)
+        
+        projectedDueDateLabel.text = "Projected Due Date"
+        contentView.addSubview(projectedDueDateLabel)
+        
+        current305DayMilkLabel.text = "Current 305 Day Milk:"
+        contentView.addSubview(current305DayMilkLabel)
+        
+        currentSomaticCellCountLabel.text = "Current Somatic Cell Count:"
+        contentView.addSubview(currentSomaticCellCountLabel)
+        
+        linearScoreAtLastTestLabel.text = "Linear Score at Last Test:"
+        contentView.addSubview(linearScoreAtLastTestLabel)
+        
+        dateOfLastClinialMastitisLabel.text = "Date of Last Clinical Mastitis:"
+        contentView.addSubview(dateOfLastClinialMastitisLabel)
+        
+        chainVisibleIDLabel.text = "Chain Visible ID Label:"
+        contentView.addSubview(chainVisibleIDLabel)
+        
+        animalRegistrationNoNLIDLabel.text = "Animal Registration No NLID:"
+        contentView.addSubview(animalRegistrationNoNLIDLabel)
+        
+        damBreedLabel.text = "Dam Breed:"
+        contentView.addSubview(damBreedLabel)
+        
+        culledLabel.text = "Culled:"
+        contentView.addSubview(culledLabel)
+        
+        modifyDateLabel.text = "Modify Date"
+        contentView.addSubview(modifyDateLabel)
         
         idTextView.tag = 0
         idTextView.delegate = self
@@ -170,13 +232,84 @@ class CowInfoViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         numberOfTimesBredTextView.inputAccessoryView = bar
         contentView.addSubview(numberOfTimesBredTextView)
         
-        farmBreedingIndexTextView.tag = 8
+        farmBreedingIndexTextView.tag = 9
         farmBreedingIndexTextView.delegate = self
         farmBreedingIndexTextView.keyboardType = .numberPad
         farmBreedingIndexTextView.inputAccessoryView = bar
         contentView.addSubview(farmBreedingIndexTextView)
         
+        lactationNumberTextView.tag = 10
+        lactationNumberTextView.delegate = self
+        lactationNumberTextView.keyboardType = .numberPad
+        lactationNumberTextView.inputAccessoryView = bar
+        contentView.addSubview(lactationNumberTextView)
         
+        daysCarriedCalfIfPregnantTextView.tag = 11
+        daysCarriedCalfIfPregnantTextView.delegate = self
+        daysCarriedCalfIfPregnantTextView.keyboardType = .numberPad
+        daysCarriedCalfIfPregnantTextView.inputAccessoryView = bar
+        contentView.addSubview(daysCarriedCalfIfPregnantTextView)
+        
+        projectedDueDateTextView.tag = 12
+        projectedDueDateTextView.delegate = self
+        projectedDueDateTextView.keyboardType = .default
+        projectedDueDateTextView.inputAccessoryView = bar
+        contentView.addSubview(projectedDueDateTextView)
+        
+        current305DayMilkTextView.tag = 13
+        current305DayMilkTextView.delegate = self
+        current305DayMilkTextView.keyboardType = .default
+        current305DayMilkTextView.inputAccessoryView = bar
+        contentView.addSubview(current305DayMilkTextView)
+        
+        currentSomaticCellCountTextView.tag = 14
+        currentSomaticCellCountTextView.delegate = self
+        currentSomaticCellCountTextView.keyboardType = .default
+        currentSomaticCellCountTextView.inputAccessoryView = bar
+        contentView.addSubview(currentSomaticCellCountTextView)
+        
+        linearScoreAtLastTestTextView.tag = 15
+        linearScoreAtLastTestTextView.delegate = self
+        linearScoreAtLastTestTextView.keyboardType = .default
+        linearScoreAtLastTestTextView.inputAccessoryView = bar
+        contentView.addSubview(linearScoreAtLastTestTextView)
+        
+        dateOfLastClinialMastitisTextView.tag = 16
+        dateOfLastClinialMastitisTextView.delegate = self
+        dateOfLastClinialMastitisTextView.keyboardType = .default
+        dateOfLastClinialMastitisTextView.inputAccessoryView = bar
+        contentView.addSubview(dateOfLastClinialMastitisTextView)
+        
+        
+        chainVisibleIDTextView.tag = 17
+        chainVisibleIDTextView.delegate = self
+        chainVisibleIDTextView.keyboardType = .default
+        chainVisibleIDTextView.inputAccessoryView = bar
+        contentView.addSubview(chainVisibleIDTextView)
+        
+        animalRegistrationNoNLIDTextView.tag = 18
+        animalRegistrationNoNLIDTextView.delegate = self
+        animalRegistrationNoNLIDTextView.keyboardType = .default
+        animalRegistrationNoNLIDTextView.inputAccessoryView = bar
+        contentView.addSubview(animalRegistrationNoNLIDTextView)
+        
+        damBreedTextView.tag = 19
+        damBreedTextView.delegate = self
+        damBreedTextView.keyboardType = .default
+        damBreedTextView.inputAccessoryView = bar
+        contentView.addSubview(damBreedTextView)
+        
+        culledTextView.tag = 20
+        culledTextView.delegate = self
+        culledTextView.keyboardType = .default
+        culledTextView.inputAccessoryView = bar
+        contentView.addSubview(culledTextView)
+        
+        modifyDateTextView.tag = 21
+        modifyDateTextView.delegate = self
+        modifyDateTextView.keyboardType = .default
+        modifyDateTextView.inputAccessoryView = bar
+        contentView.addSubview(modifyDateTextView)
         
         dryOffDayPicker.tag = 0
         dryOffDayPicker.backgroundColor = .gray
@@ -269,6 +402,7 @@ class CowInfoViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         dryOffDayTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
         dryOffDayTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
+        
         mastitisHistoryLabel.translatesAutoresizingMaskIntoConstraints = false
         mastitisHistoryLabel.topAnchor.constraint(equalTo: dryOffDayLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         mastitisHistoryLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
@@ -278,6 +412,7 @@ class CowInfoViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         mastitisHistoryTextView.leftAnchor.constraint(equalTo: mastitisHistoryLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
         mastitisHistoryTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
         mastitisHistoryTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
         
         methodOfDryOffLabel.translatesAutoresizingMaskIntoConstraints = false
         methodOfDryOffLabel.topAnchor.constraint(equalTo: mastitisHistoryLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
@@ -345,6 +480,163 @@ class CowInfoViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         
         
         
+        lactationNumberLabel.translatesAutoresizingMaskIntoConstraints = false
+        lactationNumberLabel.topAnchor.constraint(equalTo: farmBreedingIndexLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        lactationNumberLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
+        
+        lactationNumberTextView.translatesAutoresizingMaskIntoConstraints = false
+        lactationNumberTextView.topAnchor.constraint(equalTo: farmBreedingIndexLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        lactationNumberTextView.leftAnchor.constraint(equalTo: lactationNumberLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
+        lactationNumberTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
+        lactationNumberTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        
+        
+        daysCarriedCalfIfPregnantLabel.translatesAutoresizingMaskIntoConstraints = false
+        daysCarriedCalfIfPregnantLabel.topAnchor.constraint(equalTo: lactationNumberLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        daysCarriedCalfIfPregnantLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
+        
+        daysCarriedCalfIfPregnantTextView.translatesAutoresizingMaskIntoConstraints = false
+        daysCarriedCalfIfPregnantTextView.topAnchor.constraint(equalTo: lactationNumberLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        daysCarriedCalfIfPregnantTextView.leftAnchor.constraint(equalTo: daysCarriedCalfIfPregnantLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
+        daysCarriedCalfIfPregnantTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
+        daysCarriedCalfIfPregnantTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        
+        
+        
+        projectedDueDateLabel.translatesAutoresizingMaskIntoConstraints = false
+        projectedDueDateLabel.topAnchor.constraint(equalTo: daysCarriedCalfIfPregnantLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        projectedDueDateLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
+        
+        projectedDueDateTextView.translatesAutoresizingMaskIntoConstraints = false
+        projectedDueDateTextView.topAnchor.constraint(equalTo: daysCarriedCalfIfPregnantLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        projectedDueDateTextView.leftAnchor.constraint(equalTo: projectedDueDateLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
+        projectedDueDateTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
+        projectedDueDateTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        
+        
+        
+        current305DayMilkLabel.translatesAutoresizingMaskIntoConstraints = false
+        current305DayMilkLabel.topAnchor.constraint(equalTo: projectedDueDateLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        current305DayMilkLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
+        
+        current305DayMilkTextView.translatesAutoresizingMaskIntoConstraints = false
+        current305DayMilkTextView.topAnchor.constraint(equalTo: projectedDueDateLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        current305DayMilkTextView.leftAnchor.constraint(equalTo: current305DayMilkLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
+        current305DayMilkTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
+        current305DayMilkTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        
+        
+        
+        
+        currentSomaticCellCountLabel.translatesAutoresizingMaskIntoConstraints = false
+        currentSomaticCellCountLabel.topAnchor.constraint(equalTo: current305DayMilkLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        currentSomaticCellCountLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
+        
+        currentSomaticCellCountTextView.translatesAutoresizingMaskIntoConstraints = false
+        currentSomaticCellCountTextView.topAnchor.constraint(equalTo: current305DayMilkLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        currentSomaticCellCountTextView.leftAnchor.constraint(equalTo: currentSomaticCellCountLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
+        currentSomaticCellCountTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
+        currentSomaticCellCountTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        
+        
+        
+        
+        
+        linearScoreAtLastTestLabel.translatesAutoresizingMaskIntoConstraints = false
+        linearScoreAtLastTestLabel.topAnchor.constraint(equalTo: currentSomaticCellCountLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        linearScoreAtLastTestLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
+        
+        linearScoreAtLastTestTextView.translatesAutoresizingMaskIntoConstraints = false
+        linearScoreAtLastTestTextView.topAnchor.constraint(equalTo: currentSomaticCellCountLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        linearScoreAtLastTestTextView.leftAnchor.constraint(equalTo: linearScoreAtLastTestLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
+        linearScoreAtLastTestTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
+        linearScoreAtLastTestTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        
+        
+        
+        
+        dateOfLastClinialMastitisLabel.translatesAutoresizingMaskIntoConstraints = false
+        dateOfLastClinialMastitisLabel.topAnchor.constraint(equalTo: linearScoreAtLastTestLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        dateOfLastClinialMastitisLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
+        
+        dateOfLastClinialMastitisTextView.translatesAutoresizingMaskIntoConstraints = false
+        dateOfLastClinialMastitisTextView.topAnchor.constraint(equalTo: linearScoreAtLastTestLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        dateOfLastClinialMastitisTextView.leftAnchor.constraint(equalTo: dateOfLastClinialMastitisLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
+        dateOfLastClinialMastitisTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
+        dateOfLastClinialMastitisTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        
+        
+        
+        chainVisibleIDLabel.translatesAutoresizingMaskIntoConstraints = false
+        chainVisibleIDLabel.topAnchor.constraint(equalTo: dateOfLastClinialMastitisLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        chainVisibleIDLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
+        
+        chainVisibleIDTextView.translatesAutoresizingMaskIntoConstraints = false
+        chainVisibleIDTextView.topAnchor.constraint(equalTo: dateOfLastClinialMastitisLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        chainVisibleIDTextView.leftAnchor.constraint(equalTo: chainVisibleIDLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
+        chainVisibleIDTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
+        chainVisibleIDTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        
+        
+        
+        animalRegistrationNoNLIDLabel.translatesAutoresizingMaskIntoConstraints = false
+        animalRegistrationNoNLIDLabel.topAnchor.constraint(equalTo: chainVisibleIDLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        animalRegistrationNoNLIDLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
+        
+        animalRegistrationNoNLIDTextView.translatesAutoresizingMaskIntoConstraints = false
+        animalRegistrationNoNLIDTextView.topAnchor.constraint(equalTo: chainVisibleIDLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        animalRegistrationNoNLIDTextView.leftAnchor.constraint(equalTo: animalRegistrationNoNLIDLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
+        animalRegistrationNoNLIDTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
+        animalRegistrationNoNLIDTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        
+        
+        
+        damBreedLabel.translatesAutoresizingMaskIntoConstraints = false
+        damBreedLabel.topAnchor.constraint(equalTo: animalRegistrationNoNLIDLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        damBreedLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
+        
+        damBreedTextView.translatesAutoresizingMaskIntoConstraints = false
+        damBreedTextView.topAnchor.constraint(equalTo: animalRegistrationNoNLIDLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        damBreedTextView.leftAnchor.constraint(equalTo: damBreedLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
+        damBreedTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
+        damBreedTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        
+        
+        culledLabel.translatesAutoresizingMaskIntoConstraints = false
+        culledLabel.topAnchor.constraint(equalTo: damBreedLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        culledLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
+        
+        culledTextView.translatesAutoresizingMaskIntoConstraints = false
+        culledTextView.topAnchor.constraint(equalTo: damBreedLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        culledTextView.leftAnchor.constraint(equalTo: culledLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
+        culledTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
+        culledTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        
+        
+        modifyDateLabel.translatesAutoresizingMaskIntoConstraints = false
+        modifyDateLabel.topAnchor.constraint(equalTo: culledLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        modifyDateLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
+        
+        modifyDateTextView.translatesAutoresizingMaskIntoConstraints = false
+        modifyDateTextView.topAnchor.constraint(equalTo: culledLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        modifyDateTextView.leftAnchor.constraint(equalTo: modifyDateLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
+        modifyDateTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
+        modifyDateTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        
+        
+        
         selectBtn.translatesAutoresizingMaskIntoConstraints = false
         //selectBtn.topAnchor.constraint(equalTo: dryOffDayPicker.bottomAnchor).isActive = true
         selectBtn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -(UIScreen.main.bounds.height * 0.05)).isActive = true
@@ -376,7 +668,7 @@ class CowInfoViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         saveBtn.translatesAutoresizingMaskIntoConstraints = false
         //saveBtn.topAnchor.constraint(equalTo: milkingSystemPicker.bottomAnchor).isActive = true
         saveBtn.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        saveBtn.topAnchor.constraint(equalTo: farmBreedingIndexTextView.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        saveBtn.topAnchor.constraint(equalTo: modifyDateTextView.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         //saveBtn.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.05)).isActive = true
         saveBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
         saveBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
@@ -394,6 +686,18 @@ class CowInfoViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         reproductionStatusTextView.text = selectedCow?.reproductionStatus
         numberOfTimesBredTextView.text = selectedCow?.numberTimesBred
         farmBreedingIndexTextView.text = selectedCow?.farmBreedingIndex
+        lactationNumberTextView.text = selectedCow?.lactationNumber
+        daysCarriedCalfIfPregnantTextView.text = selectedCow?.daysCarriedCalfIfPregnant
+        projectedDueDateTextView.text = selectedCow?.projectedDueDate
+        current305DayMilkTextView.text = selectedCow?.current305DayMilk
+        currentSomaticCellCountTextView.text = selectedCow?.currentSomaticCellCount
+        linearScoreAtLastTestTextView.text = selectedCow?.linearScoreAtLastTest
+        dateOfLastClinialMastitisTextView.text = selectedCow?.dateOfLastClinicalMastitis
+        chainVisibleIDTextView.text = selectedCow?.chainVisibleID
+        animalRegistrationNoNLIDTextView.text = selectedCow?.animalRegistrationNoNLID
+        damBreedTextView.text = selectedCow?.damBreed
+        culledTextView.text = selectedCow?.culled
+        modifyDateTextView.text = selectedCow?.modifyDate
     }
     
     public convenience init(appDelegate: AppDelegate?, cowLogbook: CowLogbookViewController?) {
@@ -607,6 +911,20 @@ class CowInfoViewController: UIViewController, UIPickerViewDataSource, UIPickerV
             cow.reproductionStatus = reproductionStatusTextView.text
             cow.numberTimesBred = numberOfTimesBredTextView.text
             cow.farmBreedingIndex = farmBreedingIndexTextView.text
+            cow.lactationNumber = lactationNumberTextView.text
+            cow.daysCarriedCalfIfPregnant = daysCarriedCalfIfPregnantTextView.text
+            cow.projectedDueDate = projectedDueDateTextView.text
+            cow.current305DayMilk = current305DayMilkTextView.text
+            cow.current305DayMilk = current305DayMilkTextView.text
+            cow.currentSomaticCellCount = currentSomaticCellCountTextView.text
+            cow.linearScoreAtLastTest = linearScoreAtLastTestTextView.text
+            cow.dateOfLastClinicalMastitis = dateOfLastClinialMastitisTextView.text
+            cow.chainVisibleID = chainVisibleIDTextView.text
+            cow.animalRegistrationNoNLID = animalRegistrationNoNLIDTextView.text
+            cow.damBreed = damBreedTextView.text
+            cow.culled = culledTextView.text
+            cow.modifyDate = modifyDateTextView.text
+            
             cow.herd = cowLogbookView?.getSelectedHerd()
             
             //save test resuts from old cow record to new cow record

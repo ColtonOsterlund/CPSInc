@@ -386,6 +386,19 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
                 "reproductionStatus": cowToUpload.reproductionStatus as Any,
                 "numberOfTimesBred": cowToUpload.numberTimesBred as Any,
                 "farmBreedingIndex": cowToUpload.farmBreedingIndex as Any,
+                "lactationNumber": cowToUpload.lactationNumber as Any,
+                "daysCarriedCalfIfPregnant": cowToUpload.daysCarriedCalfIfPregnant as Any,
+                "projectedDueDate": cowToUpload.projectedDueDate as Any,
+                "projectedDueDate": cowToUpload.projectedDueDate as Any,
+                "current305DayMilk": cowToUpload.current305DayMilk as Any,
+                "currentSomaticCellCount": cowToUpload.currentSomaticCellCount as Any,
+                "linearScoreAtLastTest": cowToUpload.linearScoreAtLastTest as Any,
+                "dateOfLastClinicalMastitis": cowToUpload.dateOfLastClinicalMastitis as Any,
+                "chainVisibleID": cowToUpload.chainVisibleID as Any,
+                "animalRegistrationNoNLID": cowToUpload.animalRegistrationNoNLID as Any,
+                "damBreed": cowToUpload.damBreed as Any,
+                "culled": cowToUpload.culled as Any,
+                "modifyDate": cowToUpload.modifyDate as Any,
                 "herdID": cowToUpload.herd!.id as Any,
                 "userID": KeychainWrapper.standard.string(forKey: "User-ID-Token") as Any
             ])
@@ -1239,6 +1252,18 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
                                 toSave.reproductionStatus = object["reproductionStatus"] as? String
                                 toSave.numberTimesBred = object["numberOfTimesBred"] as? String
                                 toSave.farmBreedingIndex = object["farmBreedingIndex"] as? String
+                                toSave.lactationNumber = object["lactationNumber"] as? String
+                                toSave.daysCarriedCalfIfPregnant = object["daysCarriedCalfIfPregnant"] as? String
+                                toSave.projectedDueDate = object["projectedDueDate"] as? String
+                                toSave.current305DayMilk = object["current305DayMilk"] as? String
+                                toSave.currentSomaticCellCount = object["currentSomaticCellCount"] as? String
+                                toSave.linearScoreAtLastTest = object["linearScoreAtLastTest"] as? String
+                                toSave.dateOfLastClinicalMastitis = object["dateOfLastClinicalMastitis"] as? String
+                                toSave.chainVisibleID = object["chainVisibleID"] as? String
+                                toSave.animalRegistrationNoNLID = object["animalRegistrationNoNLID"] as? String
+                                toSave.damBreed = object["damBreed"] as? String
+                                toSave.culled = object["culled"] as? String
+                                toSave.modifyDate = object["modifyDate"] as? String
                                 
                                 let fetchHerdRequest: NSFetchRequest<Herd> = Herd.fetchRequest()
                                 fetchHerdRequest.predicate = NSPredicate(format: "id == %@", (object["herdID"] as! String))
