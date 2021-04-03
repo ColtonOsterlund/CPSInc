@@ -10,8 +10,11 @@
 
 import UIKit
 import CoreData
+import SwiftKeychainWrapper
 
 class HerdInfoViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextViewDelegate {
+    
+    private let scanningIndicator = UIActivityIndicatorView()
     
     private var appDelegate: AppDelegate? = nil
     private var herdLogbookView: HerdLogbookViewController? = nil
@@ -52,6 +55,17 @@ class HerdInfoViewController: UIViewController, UIPickerViewDataSource, UIPicker
     }
     
     private func setupLayoutComponents(){
+        
+        scanningIndicator.center = self.view.center
+        scanningIndicator.style = UIActivityIndicatorView.Style.gray
+        scanningIndicator.backgroundColor = .lightGray
+        view.addSubview(scanningIndicator)
+        //scanningIndicator
+        scanningIndicator.translatesAutoresizingMaskIntoConstraints = false
+        scanningIndicator.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        scanningIndicator.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        scanningIndicator.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 0.12).isActive = true
+        scanningIndicator.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * 0.06).isActive = true
         
         idLabel.text = "Herd ID: "
         view.addSubview(idLabel)
@@ -277,70 +291,110 @@ class HerdInfoViewController: UIViewController, UIPickerViewDataSource, UIPicker
                        completion: { Void in()  }
         )
         
-        //check id does not already exist
-        let fetchRequestCheckID: NSFetchRequest<Herd> = Herd.fetchRequest()
-        let idToCheck = idTextView.text
-        fetchRequestCheckID.predicate = NSPredicate(format: "id == %@", idToCheck!)
-        
-        var savedHerdArray: [Herd]? = nil
-        do{
-            savedHerdArray = try appDelegate?.persistentContainer.viewContext.fetch(fetchRequestCheckID)
-            
-        } catch{
-            print("Error during fetch request")
+        //save test to database
+        DispatchQueue.main.async {
+            self.scanningIndicator.startAnimating()
         }
         
-        if(savedHerdArray!.isEmpty == false && savedHerdArray![0] != selectedHerd){ //check that it is not checking itself - can save changes to self if not changing id, only have to check first since there will never be 2 herds with same id anyways due to these checks
-            showToast(controller: self, message: "Herd Already Exists with that ID", seconds: 1)
-        }
-        else{
-            //get cows from old herd record before deleting to save to new herd record
-            let herdCowListFetchRequest: NSFetchRequest<Cow> = Cow.fetchRequest()
-            let herdToSearch = selectedHerd
-            herdCowListFetchRequest.predicate = NSPredicate(format: "herd == %@", herdToSearch!)
+        //Build HTTP Request
+        var request = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/herd-update")!)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-type")
+        request.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
+        request.setValue(KeychainWrapper.standard.string(forKey: "User-ID-Token"), forHTTPHeaderField: "user-id")
+        
+        //build JSON Body
+        var jsonHerdObject = [String: Any]()
+        
+        
+        let herd = Herd(context: (appDelegate?.persistentContainer.viewContext)!)
+        herd.id = idTextView.text
+        herd.location = locationTextView.text
+        herd.milkingSystem = milkingSystemTextView.text
+        herd.pin = pinTextView.text
+        herdLogbookView!.addToHerdList(herdToAppend: herd)
             
-            var savedCowArray: [Cow]? = nil
-            
+        jsonHerdObject = [
+            "objectType": "Herd" as Any,
+            "id": herd.id as Any,
+            "location": herd.location as Any,
+            "milkingSystem": herd.milkingSystem as Any,
+            "pin": herd.pin as Any,
+            "userID": KeychainWrapper.standard.string(forKey: "User-ID-Token") as Any
+        ]
+        
+        
+        var syncJsonData: Data? = nil
+        
+        if(JSONSerialization.isValidJSONObject(jsonHerdObject)){
             do{
-                savedCowArray = try appDelegate?.persistentContainer.viewContext.fetch(herdCowListFetchRequest)
-            } catch{
-                print("Error during fetch request")
+                syncJsonData = try JSONSerialization.data(withJSONObject: jsonHerdObject, options: [])
+            }catch{
+                print("Problem while serializing jsonHerdObject")
             }
-            
-            
-            let fetchRequest: NSFetchRequest<Herd> = Herd.fetchRequest()
-            let idToSearch = selectedHerd?.id
-            fetchRequest.predicate = NSPredicate(format: "id == %@", idToSearch!)
-            
-            //delete old record
-            do{
-                let savedHerdArray = try appDelegate?.persistentContainer.viewContext.fetch(fetchRequest)
-                self.appDelegate?.persistentContainer.viewContext.delete(savedHerdArray![0]) //this will always only have one element since we check that no two herds are given the same id
-            } catch{
-                print("Error during fetch request")
-            }
-            
-        
-            //save new record
-            let herd = Herd(context: (appDelegate?.persistentContainer.viewContext)!)
-            herd.id = idTextView.text
-            herd.location = locationTextView.text
-            herd.milkingSystem = milkingSystemTextView.text
-            herd.pin = pinTextView.text
-            
-            //save cows from old herd record to new herd record
-            for cow in savedCowArray!{
-                herd.addToCow(cow)
-                cow.herd = herd
-            }
-        
-       
-            herdLogbookView!.addToHerdList(herdToAppend: herd)
-            appDelegate?.saveContext()
-            
         }
+
+        request.httpBody = syncJsonData
         
-        navigationController?.popViewController(animated: true)
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if(error != nil){
+                print("Error occured during /sync RESTAPI request")
+                
+            }
+            else{
+                print("Response:")
+                print(response!)
+                print("Data:")
+                print(String(decoding: data!, as: UTF8.self))
+        
+        
+                    if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
+                        //TODO send them to login again
+                        print("invalid token")
+                        DispatchQueue.main.async {
+                            self.showToast(controller: self, message: "Must login to add a herd to your logbook", seconds: 2)
+                            self.scanningIndicator.stopAnimating()
+                        }
+                        
+                        
+                        return
+                    }
+        
+        
+                    if(String(decoding: data!, as: UTF8.self) != "Success"){ //error occured
+                        DispatchQueue.main.async {
+                            self.showToast(controller: self, message: "Network Error", seconds: 1)
+                        }
+                    
+                        DispatchQueue.main.async{
+                            self.scanningIndicator.stopAnimating()
+                        }
+                        
+                        return //return from function - end sync
+                    }
+                    else{
+                        DispatchQueue.main.async {
+                            self.showToast(controller: self, message: "Herd results have been saved", seconds: 1)
+                            
+                            self.scanningIndicator.stopAnimating()
+                            
+                            DispatchQueue.main.async {
+                                self.idTextView.text = ""
+                                self.locationTextView.text = ""
+                                self.milkingSystemTextView.text = ""
+                                self.pinTextView.text = ""
+                            }
+                            
+                            self.navigationController?.popViewController(animated: true)
+                            
+                            return //return from function - end sync
+                        }
+                    }
+                }
+        
+            }
+        
+            task.resume()
     }
     
     

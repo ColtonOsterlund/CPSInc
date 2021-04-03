@@ -12,8 +12,6 @@
 		9C16096E24B64B4D00490110 /* GradientProgressBar in Frameworks */ = {isa = PBXBuildFile; productRef = 9C16096D24B64B4D00490110 /* GradientProgressBar */; };
 		9C16097024BDFD5300490110 /* RecommendationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C16096F24BDFD5300490110 /* RecommendationViewController.swift */; };
 		9C19ED6E24BE2EE700DC5728 /* CPSInc__iOS_Application.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9C19ED6B24BE2EE700DC5728 /* CPSInc__iOS_Application.xcdatamodeld */; };
-		9C19ED7524BE308200DC5728 /* Herd+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C19ED6F24BE308200DC5728 /* Herd+CoreDataClass.swift */; };
-		9C19ED7624BE308200DC5728 /* Herd+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C19ED7024BE308200DC5728 /* Herd+CoreDataProperties.swift */; };
 		9C1C31B322D53E580057989C /* TestChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C31B222D53E580057989C /* TestChartViewController.swift */; };
 		9C1C31B722D8E1A30057989C /* EncryptedValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C31B622D8E1A30057989C /* EncryptedValueTransformer.swift */; };
 		9C1C31BF22DE3DD80057989C /* InstructionsStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C1C31BE22DE3DD80057989C /* InstructionsStoryboard.storyboard */; };
@@ -22,6 +20,12 @@
 		9C1C31C522DE4BD00057989C /* RunTestInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C31C422DE4BD00057989C /* RunTestInstructionViewController.swift */; };
 		9C1C31C722DE4BDD0057989C /* LogbookInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C31C622DE4BDD0057989C /* LogbookInstructionViewController.swift */; };
 		9C1C31C922DE4BED0057989C /* SettingsInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C31C822DE4BED0057989C /* SettingsInstructionViewController.swift */; };
+		9C27C3112614D6A20054C71D /* Herd+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C27C30B2614D6A20054C71D /* Herd+CoreDataClass.swift */; };
+		9C27C3122614D6A20054C71D /* Herd+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C27C30C2614D6A20054C71D /* Herd+CoreDataProperties.swift */; };
+		9C27C3132614D6A20054C71D /* Cow+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C27C30D2614D6A20054C71D /* Cow+CoreDataClass.swift */; };
+		9C27C3142614D6A20054C71D /* Cow+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C27C30E2614D6A20054C71D /* Cow+CoreDataProperties.swift */; };
+		9C27C3152614D6A20054C71D /* Test+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C27C30F2614D6A20054C71D /* Test+CoreDataClass.swift */; };
+		9C27C3162614D6A20054C71D /* Test+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C27C3102614D6A20054C71D /* Test+CoreDataProperties.swift */; };
 		9C290405248ED3D500571602 /* ShopifyProductPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C290404248ED3D500571602 /* ShopifyProductPageViewController.swift */; };
 		9C2904072493E71100571602 /* ShopifyCheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C2904062493E71100571602 /* ShopifyCheckoutViewController.swift */; };
 		9C33B6C322F104DB0076F492 /* AccountPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C33B6C222F104DB0076F492 /* AccountPageViewController.swift */; };
@@ -29,8 +33,6 @@
 		9C45693B24DE0B1900FD05FC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C45693A24DE0B1900FD05FC /* AudioToolbox.framework */; };
 		9C46C22124AA9DFA00D74F4A /* PhoneNumberKit in Frameworks */ = {isa = PBXBuildFile; productRef = 9C46C22024AA9DFA00D74F4A /* PhoneNumberKit */; };
 		9C52521924C66D0A0044D0B0 /* SettingsViewControllerV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C52521824C66D0A0044D0B0 /* SettingsViewControllerV2.swift */; };
-		9C52522224C794D30044D0B0 /* Test+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C52522024C794D30044D0B0 /* Test+CoreDataClass.swift */; };
-		9C52522324C794D30044D0B0 /* Test+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C52522124C794D30044D0B0 /* Test+CoreDataProperties.swift */; };
 		9C52522524C797290044D0B0 /* RecommendationPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C52522424C797290044D0B0 /* RecommendationPageViewController.swift */; };
 		9C6F9EA422985F35009EC1D6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6F9EA322985F35009EC1D6 /* AppDelegate.swift */; };
 		9C6F9EAE22985F35009EC1D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C6F9EAD22985F35009EC1D6 /* Assets.xcassets */; };
@@ -49,8 +51,6 @@
 		9C92F36722FDC44500047FA2 /* OriginalTestPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C92F36622FDC44500047FA2 /* OriginalTestPageViewController.swift */; };
 		9C9C949522EF76E8003E5454 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9C949422EF76E8003E5454 /* LoginViewController.swift */; };
 		9C9C949722F09AA6003E5454 /* RegisterAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9C949622F09AA6003E5454 /* RegisterAccountViewController.swift */; };
-		9CBCEB4A261290E5000B30E2 /* Cow+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBCEB48261290E5000B30E2 /* Cow+CoreDataProperties.swift */; };
-		9CBCEB4B261290E5000B30E2 /* Cow+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBCEB49261290E5000B30E2 /* Cow+CoreDataClass.swift */; };
 		9CEBED4324B3887F00D2FD5A /* SingleStripTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEBED4224B3887F00D2FD5A /* SingleStripTestViewController.swift */; };
 		9CEBED4F24B3A90000D2FD5A /* SingleStripTestPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEBED4E24B3A90000D2FD5A /* SingleStripTestPageViewController.swift */; };
 		9CFB11C122C3F937003E76B5 /* HerdLogbookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFB11C022C3F937003E76B5 /* HerdLogbookViewController.swift */; };
@@ -114,8 +114,6 @@
 		9C16096F24BDFD5300490110 /* RecommendationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationViewController.swift; sourceTree = "<group>"; };
 		9C19ED6C24BE2EE700DC5728 /* CPSInc__iOS_Application 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "CPSInc__iOS_Application 2.xcdatamodel"; sourceTree = "<group>"; };
 		9C19ED6D24BE2EE700DC5728 /* CPSInc__iOS_Application.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CPSInc__iOS_Application.xcdatamodel; sourceTree = "<group>"; };
-		9C19ED6F24BE308200DC5728 /* Herd+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Herd+CoreDataClass.swift"; sourceTree = "<group>"; };
-		9C19ED7024BE308200DC5728 /* Herd+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Herd+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		9C1C31B222D53E580057989C /* TestChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestChartViewController.swift; sourceTree = "<group>"; };
 		9C1C31B622D8E1A30057989C /* EncryptedValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedValueTransformer.swift; sourceTree = "<group>"; };
 		9C1C31BE22DE3DD80057989C /* InstructionsStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = InstructionsStoryboard.storyboard; sourceTree = "<group>"; };
@@ -124,6 +122,12 @@
 		9C1C31C422DE4BD00057989C /* RunTestInstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunTestInstructionViewController.swift; sourceTree = "<group>"; };
 		9C1C31C622DE4BDD0057989C /* LogbookInstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogbookInstructionViewController.swift; sourceTree = "<group>"; };
 		9C1C31C822DE4BED0057989C /* SettingsInstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInstructionViewController.swift; sourceTree = "<group>"; };
+		9C27C30B2614D6A20054C71D /* Herd+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Herd+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		9C27C30C2614D6A20054C71D /* Herd+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Herd+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		9C27C30D2614D6A20054C71D /* Cow+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cow+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		9C27C30E2614D6A20054C71D /* Cow+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cow+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		9C27C30F2614D6A20054C71D /* Test+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		9C27C3102614D6A20054C71D /* Test+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		9C290404248ED3D500571602 /* ShopifyProductPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopifyProductPageViewController.swift; sourceTree = "<group>"; };
 		9C2904062493E71100571602 /* ShopifyCheckoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopifyCheckoutViewController.swift; sourceTree = "<group>"; };
 		9C33B6C222F104DB0076F492 /* AccountPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPageViewController.swift; sourceTree = "<group>"; };
@@ -131,8 +135,6 @@
 		9C45693A24DE0B1900FD05FC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		9C46C21924AA9DBE00D74F4A /* PhoneNumberKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PhoneNumberKit; path = ../../PhoneNumberKit/PhoneNumberKit; sourceTree = "<group>"; };
 		9C52521824C66D0A0044D0B0 /* SettingsViewControllerV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewControllerV2.swift; sourceTree = "<group>"; };
-		9C52522024C794D30044D0B0 /* Test+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test+CoreDataClass.swift"; sourceTree = "<group>"; };
-		9C52522124C794D30044D0B0 /* Test+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		9C52522424C797290044D0B0 /* RecommendationPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationPageViewController.swift; sourceTree = "<group>"; };
 		9C6F9EA022985F35009EC1D6 /* CPSInc. iOS Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CPSInc. iOS Application.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C6F9EA322985F35009EC1D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -158,8 +160,6 @@
 		9C92F36622FDC44500047FA2 /* OriginalTestPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OriginalTestPageViewController.swift; sourceTree = "<group>"; };
 		9C9C949422EF76E8003E5454 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		9C9C949622F09AA6003E5454 /* RegisterAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterAccountViewController.swift; sourceTree = "<group>"; };
-		9CBCEB48261290E5000B30E2 /* Cow+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Cow+CoreDataProperties.swift"; path = "../Cow+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		9CBCEB49261290E5000B30E2 /* Cow+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Cow+CoreDataClass.swift"; path = "../Cow+CoreDataClass.swift"; sourceTree = "<group>"; };
 		9CEBED4224B3887F00D2FD5A /* SingleStripTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleStripTestViewController.swift; sourceTree = "<group>"; };
 		9CEBED4E24B3A90000D2FD5A /* SingleStripTestPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleStripTestPageViewController.swift; sourceTree = "<group>"; };
 		9CFB11C022C3F937003E76B5 /* HerdLogbookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HerdLogbookViewController.swift; sourceTree = "<group>"; };
@@ -227,12 +227,12 @@
 		9C19ED7B24BE309800DC5728 /* NSManagedObjects */ = {
 			isa = PBXGroup;
 			children = (
-				9CBCEB49261290E5000B30E2 /* Cow+CoreDataClass.swift */,
-				9CBCEB48261290E5000B30E2 /* Cow+CoreDataProperties.swift */,
-				9C52522024C794D30044D0B0 /* Test+CoreDataClass.swift */,
-				9C52522124C794D30044D0B0 /* Test+CoreDataProperties.swift */,
-				9C19ED6F24BE308200DC5728 /* Herd+CoreDataClass.swift */,
-				9C19ED7024BE308200DC5728 /* Herd+CoreDataProperties.swift */,
+				9C27C30B2614D6A20054C71D /* Herd+CoreDataClass.swift */,
+				9C27C30C2614D6A20054C71D /* Herd+CoreDataProperties.swift */,
+				9C27C30D2614D6A20054C71D /* Cow+CoreDataClass.swift */,
+				9C27C30E2614D6A20054C71D /* Cow+CoreDataProperties.swift */,
+				9C27C30F2614D6A20054C71D /* Test+CoreDataClass.swift */,
+				9C27C3102614D6A20054C71D /* Test+CoreDataProperties.swift */,
 			);
 			name = NSManagedObjects;
 			sourceTree = "<group>";
@@ -584,19 +584,21 @@
 				9C52521924C66D0A0044D0B0 /* SettingsViewControllerV2.swift in Sources */,
 				9C33B6C322F104DB0076F492 /* AccountPageViewController.swift in Sources */,
 				9C16097024BDFD5300490110 /* RecommendationViewController.swift in Sources */,
-				9C52522324C794D30044D0B0 /* Test+CoreDataProperties.swift in Sources */,
 				9C1C31C122DE40410057989C /* InstructionPageViewController.swift in Sources */,
 				9C33B6C722F4E8570076F492 /* AccountInstructionViewController.swift in Sources */,
-				9CBCEB4A261290E5000B30E2 /* Cow+CoreDataProperties.swift in Sources */,
+				9C27C3112614D6A20054C71D /* Herd+CoreDataClass.swift in Sources */,
 				9CEBED4F24B3A90000D2FD5A /* SingleStripTestPageViewController.swift in Sources */,
 				9CFB11D422C51D9D003E76B5 /* TestIInfoViewController.swift in Sources */,
 				9CFB11D022C51D6F003E76B5 /* CowInfoViewController.swift in Sources */,
-				9C19ED7624BE308200DC5728 /* Herd+CoreDataProperties.swift in Sources */,
+				9C27C3122614D6A20054C71D /* Herd+CoreDataProperties.swift in Sources */,
 				9CFB11FA22C54E53003E76B5 /* AddCowViewController.swift in Sources */,
 				9C74FA0C2488370800D46738 /* SkeletonViewController.swift in Sources */,
 				9C92F36722FDC44500047FA2 /* OriginalTestPageViewController.swift in Sources */,
+				9C27C3152614D6A20054C71D /* Test+CoreDataClass.swift in Sources */,
 				9C1C31B322D53E580057989C /* TestChartViewController.swift in Sources */,
 				9C92F36522FB257900047FA2 /* Reachability.swift in Sources */,
+				9C27C3132614D6A20054C71D /* Cow+CoreDataClass.swift in Sources */,
+				9C27C3142614D6A20054C71D /* Cow+CoreDataProperties.swift in Sources */,
 				9C2904072493E71100571602 /* ShopifyCheckoutViewController.swift in Sources */,
 				9C9C949522EF76E8003E5454 /* LoginViewController.swift in Sources */,
 				9C74FA0A2488368E00D46738 /* ShopifyStorePagesViewController.swift in Sources */,
@@ -607,7 +609,6 @@
 				9CFB11F822C54E44003E76B5 /* AddHerdViewController.swift in Sources */,
 				9CFB11D222C51D88003E76B5 /* HerdInfoViewController.swift in Sources */,
 				9C6F9EE1229877F2009EC1D6 /* ConnectViewController.swift in Sources */,
-				9CBCEB4B261290E5000B30E2 /* Cow+CoreDataClass.swift in Sources */,
 				9C52522524C797290044D0B0 /* RecommendationPageViewController.swift in Sources */,
 				9C6F9EDB22986944009EC1D6 /* MenuViewController.swift in Sources */,
 				9C1C31C922DE4BED0057989C /* SettingsInstructionViewController.swift in Sources */,
@@ -616,10 +617,9 @@
 				9C9C949722F09AA6003E5454 /* RegisterAccountViewController.swift in Sources */,
 				9CEBED4324B3887F00D2FD5A /* SingleStripTestViewController.swift in Sources */,
 				9C1C31B722D8E1A30057989C /* EncryptedValueTransformer.swift in Sources */,
+				9C27C3162614D6A20054C71D /* Test+CoreDataProperties.swift in Sources */,
 				9C6F9EE52298781A009EC1D6 /* SettingsViewController.swift in Sources */,
-				9C19ED7524BE308200DC5728 /* Herd+CoreDataClass.swift in Sources */,
 				9C1C31C722DE4BDD0057989C /* LogbookInstructionViewController.swift in Sources */,
-				9C52522224C794D30044D0B0 /* Test+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -781,7 +781,7 @@
 				CODE_SIGN_ENTITLEMENTS = "CPSInc. iOS Application/CPSInc. iOS Application.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 36;
+				CURRENT_PROJECT_VERSION = 42;
 				DEVELOPMENT_TEAM = H5K6477XCY;
 				INFOPLIST_FILE = "CPSInc. iOS Application/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -806,7 +806,7 @@
 				CODE_SIGN_ENTITLEMENTS = "CPSInc. iOS Application/CPSInc. iOS Application.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 36;
+				CURRENT_PROJECT_VERSION = 42;
 				DEVELOPMENT_TEAM = H5K6477XCY;
 				INFOPLIST_FILE = "CPSInc. iOS Application/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;

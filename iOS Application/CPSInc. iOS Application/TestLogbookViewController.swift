@@ -11,6 +11,7 @@
 import UIKit
 import WatchConnectivity
 import CoreData
+import SwiftKeychainWrapper
 
 public class TestLogbookViewController: UITableViewController, WCSessionDelegate, UITextFieldDelegate{
     
@@ -24,7 +25,7 @@ public class TestLogbookViewController: UITableViewController, WCSessionDelegate
     private var testChartView: TestChartViewController? = nil
     
     //UIBarButtonItems
-    private var chartBtn = UIBarButtonItem()
+//    private var chartBtn = UIBarButtonItem()
     private var filterBtn = UIBarButtonItem()
     private var graphSelectedBtn = UIBarButtonItem()
     private var cancelSelectionBtn = UIBarButtonItem()
@@ -42,6 +43,9 @@ public class TestLogbookViewController: UITableViewController, WCSessionDelegate
     
     private var selectedTestResults = [Test]()
     
+    //UIActivityIndicatorView
+    private let scanningIndicator = UIActivityIndicatorView()
+    
     
     
     override public func viewDidLoad() {
@@ -51,45 +55,118 @@ public class TestLogbookViewController: UITableViewController, WCSessionDelegate
         //view.backgroundColor = .init(red: 0, green: 0.637, blue: 0.999, alpha: 1)
         setupLayoutItems()
 
-        fetchSavedData()
+        
     }
     
     
     public override func viewWillAppear(_ animated: Bool) {
+        
+    }
+    
+    public override func viewDidAppear(_ animated: Bool) {
         fetchSavedData()
     }
     
     
     private func fetchSavedData(){
-        if(timeFrame == nil){ //SELECT ALL TESTS
-            let fetchRequest: NSFetchRequest<Test> = Test.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "cow == %@", self.selectedCow!)
-            
-            do{
-                let savedTestArray = try appDelegate?.persistentContainer.viewContext.fetch(fetchRequest)
-                self.testList = savedTestArray!
-            } catch{
-                print("Error during fetch request")
-            }
-            
-            tableView.reloadData()
+        DispatchQueue.main.async{
+            self.testList.removeAll()
+            self.tableView.reloadData()
+            self.scanningIndicator.startAnimating()
         }
-        else{ //SELECT TESTS AFTER A SPECIFIC DATE
-            let fetchRequest: NSFetchRequest<Test> = Test.fetchRequest()
-            let predicateCow = NSPredicate(format: "cow == %@", self.selectedCow!)
-            let predicateTimeFrame = NSPredicate(format: "date >= %@", timeFrame! as NSDate)
-            let fetchPredicate = NSCompoundPredicate(type: .and, subpredicates: [predicateTimeFrame, predicateCow])
-            fetchRequest.predicate = fetchPredicate
-            
-            do{
-                let savedTestArray = try appDelegate?.persistentContainer.viewContext.fetch(fetchRequest)
-                self.testList = savedTestArray!
-            } catch{
-                print("Error during fetch request")
+        
+        
+//        let fetchRequest: NSFetchRequest<Herd> = Herd.fetchRequest()
+//
+//        do{
+//            let savedHerdArray = try appDelegate?.persistentContainer.viewContext.fetch(fetchRequest)
+//            self.herdList = savedHerdArray!
+//        } catch{
+//            print("Error during fetch request")
+//        }
+        
+        var backupRequest = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/user-test-app?userID=" + KeychainWrapper.standard.string(forKey: "User-ID-Token")! + "&cowID=" + (selectedCow?.id)! as String + "&herdID=" + (selectedCow?.herd?.id)! as String)!)
+        backupRequest.httpMethod = "GET"
+        backupRequest.setValue("application/json", forHTTPHeaderField: "Content-type")
+        backupRequest.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
+        backupRequest.setValue(KeychainWrapper.standard.string(forKey: "User-ID-Token"), forHTTPHeaderField: "user-id")
+        
+        let backupTask = URLSession.shared.dataTask(with: backupRequest) { data, response, error in
+            if(error != nil){
+                print("Error occured during /user-test RESTAPI request")
+                DispatchQueue.main.async {
+                    self.scanningIndicator.stopAnimating()
+                    self.showToast(controller: self, message: "Network Error", seconds: 1)
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)){
+                    return
+                }
             }
-            
-            tableView.reloadData()
+            else{
+                
+                print("Response:")
+                print(response!)
+                print("Data:")
+                print(String(decoding: data!, as: UTF8.self))
+                
+                
+                if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
+                     DispatchQueue.main.async {
+                        self.scanningIndicator.stopAnimating()
+                        self.showToast(controller: self, message: "Must login to view your logbook", seconds: 2)
+                        self.navigationController?.popToRootViewController(animated: true)
+                        //self.navigationController?.pushViewController(self.menuView!.getLoginView(), animated: true)
+                    }
+                                       
+                    return
+                }
+                
+                
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data!, options: []) as? [[String: Any]]
+                    
+                                        
+                    for object in json! {
+                        
+                        
+                        let toSave = Test(context: (self.appDelegate?.persistentContainer.viewContext)!)
+                            
+                        toSave.cow = self.selectedCow
+                        toSave.herd = self.selectedCow?.herd
+                        toSave.date = object["date"] as? NSDate
+                        toSave.followUpNum = object["followUpNum"] as? NSNumber
+                        toSave.milkFever = object["milkFever"] as! Bool
+                        toSave.testID = object["testID"] as? String
+                        toSave.testType = object["testType"] as? String
+                        toSave.units = object["units"] as? String
+                        toSave.value = object["value"] as! Float
+                            
+                        print("HERE TEST: ")
+                        
+                        
+                    }
+                    
+                    self.testList.sort(by: {$0.testID!.localizedStandardCompare($1.testID!) == .orderedAscending})
+                    
+                    DispatchQueue.main.async {
+                        self.scanningIndicator.stopAnimating()
+                        print(self.testList.isEmpty)
+                        self.tableView.reloadData()
+                    }
+                    
+                    
+                } catch let error as NSError {
+                    DispatchQueue.main.async {
+                        self.scanningIndicator.stopAnimating()
+                        self.showToast(controller: self, message: "Network Error", seconds: 1)
+                    }
+                    print(error.localizedDescription)
+                }
+                
+            }
         }
+        
+        backupTask.resume()
     }
     
     
@@ -97,12 +174,23 @@ public class TestLogbookViewController: UITableViewController, WCSessionDelegate
     private func setupLayoutItems(){
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "testTableViewCell")
         
-        chartBtn = UIBarButtonItem.init(title: "Chart", style: .done, target: self, action: #selector(graphResults))
+        scanningIndicator.center = self.view.center
+        scanningIndicator.style = UIActivityIndicatorView.Style.gray
+        scanningIndicator.backgroundColor = .lightGray
+        view.addSubview(scanningIndicator)
+        //scanningIndicator
+        scanningIndicator.translatesAutoresizingMaskIntoConstraints = false
+        scanningIndicator.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        scanningIndicator.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        scanningIndicator.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 0.12).isActive = true
+        scanningIndicator.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * 0.06).isActive = true
+        
+//        chartBtn = UIBarButtonItem.init(title: "Chart", style: .done, target: self, action: #selector(graphResults))
         filterBtn = UIBarButtonItem.init(title: "Filter", style: .done, target: self, action: #selector(filterResults))
         graphSelectedBtn = UIBarButtonItem.init(title: "Graph Selected", style: .done, target: self, action: #selector(graphFromSelected))
         cancelSelectionBtn = UIBarButtonItem.init(title: "Cancel", style: .done, target: self, action: #selector(cancelSelected))
         
-        navigationItem.rightBarButtonItems = [chartBtn, filterBtn]
+        navigationItem.rightBarButtonItems = [/*chartBtn, */filterBtn]
         
         startDatePicker.datePickerMode = .date
         startDatePicker.tag = 0
@@ -135,7 +223,7 @@ public class TestLogbookViewController: UITableViewController, WCSessionDelegate
     
     @objc private func cancelSelected(){
         DispatchQueue.main.async { //reset bar buttons
-            self.navigationItem.rightBarButtonItems =  [self.chartBtn, self.filterBtn]
+            self.navigationItem.rightBarButtonItems =  [/*self.chartBtn, */self.filterBtn]
         }
         
         selectedTestResults.removeAll() //reset selectedTestResults after graphing
@@ -257,7 +345,7 @@ public class TestLogbookViewController: UITableViewController, WCSessionDelegate
     
     @objc private func graphFromSelected(){
         DispatchQueue.main.async { //reset bar buttons
-            self.navigationItem.rightBarButtonItems =  [self.chartBtn, self.filterBtn]
+            self.navigationItem.rightBarButtonItems =  [/*self.chartBtn, */self.filterBtn]
         }
         
         self.graphTestResults(testResults: selectedTestResults)

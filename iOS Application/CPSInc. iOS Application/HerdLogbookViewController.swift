@@ -13,9 +13,12 @@ import WatchConnectivity
 import CoreData
 import SwiftyDropbox
 import UserNotifications
+import SwiftKeychainWrapper
 
 
 public class HerdLogbookViewController: UITableViewController, WCSessionDelegate, UISearchResultsUpdating {
+    
+    private let scanningIndicator = UIActivityIndicatorView()
     
     private var herdList = [Herd]()
     private var filteredHerds = [Herd]()
@@ -43,8 +46,6 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
     private var addBtn = UIBarButtonItem()
     private var importBtn = UIBarButtonItem()
     
-    //UIActivityIndicatorView
-    private let scanningIndicator = UIActivityIndicatorView()
     
     
     override public func viewDidLoad() {
@@ -54,31 +55,134 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
         //view.backgroundColor = .init(red: 0, green: 0.637, blue: 0.999, alpha: 1)
         setupLayoutItems()
         
-        fetchSavedData()
     }
+    
+    
+    
+    
     
     
     private func fetchSavedData(){
-        let fetchRequest: NSFetchRequest<Herd> = Herd.fetchRequest()
         
-        do{
-            let savedHerdArray = try appDelegate?.persistentContainer.viewContext.fetch(fetchRequest)
-            self.herdList = savedHerdArray!
-        } catch{
-            print("Error during fetch request")
+        //remove all and reload data in tableView so that you don't click on one that no longer exits in the list and get an index out of range exception
+        DispatchQueue.main.async{
+            self.herdList.removeAll()
+            self.tableView.reloadData()
+            self.scanningIndicator.startAnimating()
         }
         
         
-        herdList.sort(by: {$0.id!.localizedStandardCompare($1.id!) == .orderedAscending})
+//        let fetchRequest: NSFetchRequest<Herd> = Herd.fetchRequest()
+//
+//        do{
+//            let savedHerdArray = try appDelegate?.persistentContainer.viewContext.fetch(fetchRequest)
+//            self.herdList = savedHerdArray!
+//        } catch{
+//            print("Error during fetch request")
+//        }
         
-        tableView.reloadData()
+        var backupRequest = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/user-herd-app?userID=" + KeychainWrapper.standard.string(forKey: "User-ID-Token")!)!)
+        backupRequest.httpMethod = "GET"
+        backupRequest.setValue("application/json", forHTTPHeaderField: "Content-type")
+        backupRequest.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
+        backupRequest.setValue(KeychainWrapper.standard.string(forKey: "User-ID-Token"), forHTTPHeaderField: "user-id")
+        
+        let backupTask = URLSession.shared.dataTask(with: backupRequest) { data, response, error in
+            if(error != nil){
+                print("Error occured during /herd RESTAPI request")
+                DispatchQueue.main.async {
+                    self.scanningIndicator.stopAnimating()
+                    self.showToast(controller: self, message: "Network Error", seconds: 1)
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)){
+                    return
+                }
+            }
+            else{
+                
+                print("Response:")
+                print(response!)
+                print("Data:")
+                print(String(decoding: data!, as: UTF8.self))
+                
+                
+                if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
+                     DispatchQueue.main.async {
+                        self.scanningIndicator.stopAnimating()
+                        self.showToast(controller: self, message: "Error: Must login to access logbook", seconds: 2)
+                        self.navigationController?.popToRootViewController(animated: true)
+                        //self.navigationController?.pushViewController(self.menuView!.getLoginView(), animated: true)
+                    }
+                                       
+                    return
+                }
+                
+                
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data!, options: []) as? [[String: Any]]
+                    
+                    
+                    
+                    for object in json! {
+                        
+                        
+                            let toSave = Herd(context: (self.appDelegate?.persistentContainer.viewContext)!)
+                            
+                            toSave.id = object["id"] as? String
+                            toSave.location = object["location"] as? String
+                            toSave.milkingSystem = object["milkingSystem"] as? String
+                            toSave.pin = object["pin"] as? String
+                                
+                            self.herdList.append(toSave)
+                            
+                            print("HERE HERD: ")
+                        
+                        
+                    }
+                    
+                    self.herdList.sort(by: {$0.id!.localizedStandardCompare($1.id!) == .orderedAscending})
+                    
+                    DispatchQueue.main.async {
+                        self.scanningIndicator.stopAnimating()
+                        print(self.herdList.isEmpty)
+                        self.tableView.reloadData()
+                    }
+                    
+                    
+                } catch let error as NSError {
+                    DispatchQueue.main.async {
+                        self.scanningIndicator.stopAnimating()
+                        self.showToast(controller: self, message: "Network Error", seconds: 1)
+                    }
+                    print(error.localizedDescription)
+                }
+                
+            }
+        }
+        
+        backupTask.resume()
+        
+  
     }
     
+    
+    
+    
+    
+    
+    
+    
     public override func viewWillAppear(_ animated: Bool) {
-        fetchSavedData()
+        
+    }
+    
+    public override func viewDidAppear(_ animated: Bool) {
+        fetchSavedData() //fetch saved data when view appears
     }
     
     private func setupLayoutItems(){
+        
+        
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "herdTableViewCell")
         
         addBtn = UIBarButtonItem.init(barButtonSystemItem: .add, target: self, action: #selector(addBtnPressed))
@@ -350,7 +454,6 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
         
         setupLayoutItems()
         
-        fetchSavedData()
     }
     
     // This extends the superclass.
@@ -448,43 +551,76 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
             
             confirmationAlert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
                 
-                //delete all Cow records associated with that Herd in the database
-                let fetchCowDeletionRequest: NSFetchRequest<Cow> = Cow.fetchRequest()
-                fetchCowDeletionRequest.predicate = NSPredicate(format: "herd == %@", herdToUse!) //get all cows associated with the herd being deleted
-                
-                do{
-                    let fetchedCowArray = try self.appDelegate?.persistentContainer.viewContext.fetch(fetchCowDeletionRequest)
-                    
-                    //delete all cows that return from the search
-                    for cowToDelete in fetchedCowArray!{
-                        
-                        let fetchTestDeletionRequest: NSFetchRequest<Test> = Test.fetchRequest()
-                        fetchTestDeletionRequest.predicate = NSPredicate(format: "cow == %@", cowToDelete) //get all cows associated with the herd being deleted
-                        
-                        do{
-                            let fetchedTestArray = try self.appDelegate?.persistentContainer.viewContext.fetch(fetchTestDeletionRequest)
-                            
-                            for testToDelete in fetchedTestArray! {
-                                self.appDelegate?.persistentContainer.viewContext.delete(testToDelete)
-                            }
-                        }
-                        catch{
-                            print("Error during fetch request")
-                        }
-                        
-                        
-                         self.appDelegate?.persistentContainer.viewContext.delete(cowToDelete)
-                    }
-
-                } catch{
-                    print("Error during fetch request")
+                DispatchQueue.main.async{
+                    self.scanningIndicator.startAnimating()
                 }
                 
                 
-                //Delete Herd record from database
-                self.appDelegate?.persistentContainer.viewContext.delete(herdToUse!)
-                self.appDelegate?.saveContext() //save context after element is deleted
-                self.fetchSavedData()
+        //        let fetchRequest: NSFetchRequest<Herd> = Herd.fetchRequest()
+        //
+        //        do{
+        //            let savedHerdArray = try appDelegate?.persistentContainer.viewContext.fetch(fetchRequest)
+        //            self.herdList = savedHerdArray!
+        //        } catch{
+        //            print("Error during fetch request")
+        //        }
+                
+                var backupRequest = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/user-herd-delete-app?userID=" + KeychainWrapper.standard.string(forKey: "User-ID-Token")! + "&herdID=" + (herdToUse?.id)!)!)
+                backupRequest.httpMethod = "GET"
+                backupRequest.setValue("application/json", forHTTPHeaderField: "Content-type")
+                backupRequest.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
+                backupRequest.setValue(KeychainWrapper.standard.string(forKey: "User-ID-Token"), forHTTPHeaderField: "user-id")
+                
+                let backupTask = URLSession.shared.dataTask(with: backupRequest) { data, response, error in
+                    if(error != nil){
+                        print("Error occured during /herd RESTAPI request")
+                        DispatchQueue.main.async {
+                            self.scanningIndicator.stopAnimating()
+                            self.showToast(controller: self, message: "Network Error", seconds: 1)
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)){
+                            return
+                        }
+                    }
+                    else{
+                        
+                        print("Response:")
+                        print(response!)
+                        print("Data:")
+                        print(String(decoding: data!, as: UTF8.self))
+                        
+                        
+                        if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
+                             DispatchQueue.main.async {
+                                self.scanningIndicator.stopAnimating()
+                                self.showToast(controller: self, message: "Error: Must login to access logbook", seconds: 2)
+                                self.navigationController?.popToRootViewController(animated: true)
+                                //self.navigationController?.pushViewController(self.menuView!.getLoginView(), animated: true)
+                            }
+                                               
+                            return
+                        }
+                        
+                        
+                        do {
+                            DispatchQueue.main.async {
+                                self.scanningIndicator.stopAnimating()
+                                self.fetchSavedData()
+                            }
+                            
+                            
+                        } catch let error as NSError {
+                            DispatchQueue.main.async {
+                                self.scanningIndicator.stopAnimating()
+                                self.showToast(controller: self, message: "Network Error", seconds: 1)
+                            }
+                            print(error.localizedDescription)
+                        }
+                        
+                    }
+                }
+                
+                backupTask.resume()
                 
             }))
             

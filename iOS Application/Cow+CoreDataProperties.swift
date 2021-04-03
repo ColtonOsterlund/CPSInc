@@ -1,8 +1,9 @@
 //
 //  Cow+CoreDataProperties.swift
-//  
+//  CPSInc. iOS Application
 //
-//  Created by Colton on 2021-03-29.
+//  Created by Colton on 2021-03-31.
+//  Copyright © 2021 Creative Protein Solutions Inc. All rights reserved.
 //
 //
 
@@ -16,28 +17,28 @@ extension Cow {
         return NSFetchRequest<Cow>(entityName: "Cow")
     }
 
+    @NSManaged public var animalRegistrationNoNLID: String?
+    @NSManaged public var chainVisibleID: String?
+    @NSManaged public var culled: String?
+    @NSManaged public var current305DayMilk: String?
+    @NSManaged public var currentSomaticCellCount: String?
     @NSManaged public var dailyMilkAverage: String?
+    @NSManaged public var damBreed: String?
+    @NSManaged public var dateOfLastClinicalMastitis: String?
+    @NSManaged public var daysCarriedCalfIfPregnant: String?
     @NSManaged public var daysInMilk: String?
     @NSManaged public var dryOffDay: String?
     @NSManaged public var farmBreedingIndex: String?
     @NSManaged public var id: String?
+    @NSManaged public var lactationNumber: String?
+    @NSManaged public var linearScoreAtLastTest: String?
     @NSManaged public var mastitisHistory: String?
     @NSManaged public var methodOfDryOff: String?
+    @NSManaged public var modifyDate: String?
     @NSManaged public var numberTimesBred: String?
     @NSManaged public var parity: String?
-    @NSManaged public var reproductionStatus: String?
-    @NSManaged public var lactationNumber: String?
-    @NSManaged public var daysCarriedCalfIfPregnant: String?
     @NSManaged public var projectedDueDate: String?
-    @NSManaged public var current305DayMilk: String?
-    @NSManaged public var currentSomaticCellCount: String?
-    @NSManaged public var linearScoreAtLastTest: String?
-    @NSManaged public var dateOfLastClinicalMastitis: String?
-    @NSManaged public var chainVisibleID: String?
-    @NSManaged public var animalRegistrationNoNLID: String?
-    @NSManaged public var damBreed: String?
-    @NSManaged public var culled: String?
-    @NSManaged public var modifyDate: String?
+    @NSManaged public var reproductionStatus: String?
     @NSManaged public var herd: Herd?
     @NSManaged public var testData: NSSet?
 

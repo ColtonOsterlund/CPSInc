@@ -10,8 +10,11 @@
 
 import UIKit
 import CoreData
+import SwiftKeychainWrapper
 
 class CowInfoViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextViewDelegate {
+    
+    private let scanningIndicator = UIActivityIndicatorView()
     
     //scrolling
     private let scrollView = UIScrollView()
@@ -43,7 +46,6 @@ class CowInfoViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     private let animalRegistrationNoNLIDLabel = UILabel()
     private let damBreedLabel = UILabel()
     private let culledLabel = UILabel()
-    private let modifyDateLabel = UILabel()
     
     private let idTextView = UITextView()
     private let daysInMilkTextView = UITextView()
@@ -67,7 +69,6 @@ class CowInfoViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     private let animalRegistrationNoNLIDTextView = UITextView()
     private let damBreedTextView = UITextView()
     private let culledTextView = UITextView()
-    private let modifyDateTextView = UITextView()
     
     private let dryOffDayPicker = UIPickerView()
     private let dryOffDayPickerData = ["Lactating", "Drying Off", "Dry"]
@@ -100,6 +101,18 @@ class CowInfoViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         scrollView.frame = view.bounds
         view.addSubview(scrollView)
         
+        scanningIndicator.center = self.view.center
+        scanningIndicator.style = UIActivityIndicatorView.Style.gray
+        scanningIndicator.backgroundColor = .lightGray
+        view.addSubview(scanningIndicator)
+        //scanningIndicator
+        scanningIndicator.translatesAutoresizingMaskIntoConstraints = false
+        scanningIndicator.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        scanningIndicator.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        scanningIndicator.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 0.12).isActive = true
+        scanningIndicator.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * 0.06).isActive = true
+
+        
         contentView.backgroundColor = .init(red: 0, green: 0.637, blue: 0.999, alpha: 1)
         contentView.frame.size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 2)
         scrollView.addSubview(contentView)
@@ -126,7 +139,7 @@ class CowInfoViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         methodOfDryOffLabel.text = "Cow Dry Off:"
         contentView.addSubview(methodOfDryOffLabel)
         
-        dailyMilkAverageLabel.text = "Cow Name:"
+        dailyMilkAverageLabel.text = "Cow Daily Milk Avg:"
         contentView.addSubview(dailyMilkAverageLabel)
         
         parityLabel.text = "Cow Parity:"
@@ -174,8 +187,6 @@ class CowInfoViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         culledLabel.text = "Culled:"
         contentView.addSubview(culledLabel)
         
-        modifyDateLabel.text = "Modify Date"
-        contentView.addSubview(modifyDateLabel)
         
         idTextView.tag = 0
         idTextView.delegate = self
@@ -258,19 +269,19 @@ class CowInfoViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         
         current305DayMilkTextView.tag = 13
         current305DayMilkTextView.delegate = self
-        current305DayMilkTextView.keyboardType = .default
+        current305DayMilkTextView.keyboardType = .numberPad
         current305DayMilkTextView.inputAccessoryView = bar
         contentView.addSubview(current305DayMilkTextView)
         
         currentSomaticCellCountTextView.tag = 14
         currentSomaticCellCountTextView.delegate = self
-        currentSomaticCellCountTextView.keyboardType = .default
+        currentSomaticCellCountTextView.keyboardType = .numberPad
         currentSomaticCellCountTextView.inputAccessoryView = bar
         contentView.addSubview(currentSomaticCellCountTextView)
         
         linearScoreAtLastTestTextView.tag = 15
         linearScoreAtLastTestTextView.delegate = self
-        linearScoreAtLastTestTextView.keyboardType = .default
+        linearScoreAtLastTestTextView.keyboardType = .numberPad
         linearScoreAtLastTestTextView.inputAccessoryView = bar
         contentView.addSubview(linearScoreAtLastTestTextView)
         
@@ -283,13 +294,13 @@ class CowInfoViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         
         chainVisibleIDTextView.tag = 17
         chainVisibleIDTextView.delegate = self
-        chainVisibleIDTextView.keyboardType = .default
+        chainVisibleIDTextView.keyboardType = .numberPad
         chainVisibleIDTextView.inputAccessoryView = bar
         contentView.addSubview(chainVisibleIDTextView)
         
         animalRegistrationNoNLIDTextView.tag = 18
         animalRegistrationNoNLIDTextView.delegate = self
-        animalRegistrationNoNLIDTextView.keyboardType = .default
+        animalRegistrationNoNLIDTextView.keyboardType = .numberPad
         animalRegistrationNoNLIDTextView.inputAccessoryView = bar
         contentView.addSubview(animalRegistrationNoNLIDTextView)
         
@@ -301,15 +312,10 @@ class CowInfoViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         
         culledTextView.tag = 20
         culledTextView.delegate = self
-        culledTextView.keyboardType = .default
+        culledTextView.keyboardType = .numberPad
+        culledTextView.isEditable = false //READ ONLY
         culledTextView.inputAccessoryView = bar
         contentView.addSubview(culledTextView)
-        
-        modifyDateTextView.tag = 21
-        modifyDateTextView.delegate = self
-        modifyDateTextView.keyboardType = .default
-        modifyDateTextView.inputAccessoryView = bar
-        contentView.addSubview(modifyDateTextView)
         
         dryOffDayPicker.tag = 0
         dryOffDayPicker.backgroundColor = .gray
@@ -624,19 +630,6 @@ class CowInfoViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         
         
         
-        modifyDateLabel.translatesAutoresizingMaskIntoConstraints = false
-        modifyDateLabel.topAnchor.constraint(equalTo: culledLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        modifyDateLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
-        
-        modifyDateTextView.translatesAutoresizingMaskIntoConstraints = false
-        modifyDateTextView.topAnchor.constraint(equalTo: culledLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        modifyDateTextView.leftAnchor.constraint(equalTo: modifyDateLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
-        modifyDateTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
-        modifyDateTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        
-        
-        
-        
         selectBtn.translatesAutoresizingMaskIntoConstraints = false
         //selectBtn.topAnchor.constraint(equalTo: dryOffDayPicker.bottomAnchor).isActive = true
         selectBtn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -(UIScreen.main.bounds.height * 0.05)).isActive = true
@@ -668,7 +661,7 @@ class CowInfoViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         saveBtn.translatesAutoresizingMaskIntoConstraints = false
         //saveBtn.topAnchor.constraint(equalTo: milkingSystemPicker.bottomAnchor).isActive = true
         saveBtn.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        saveBtn.topAnchor.constraint(equalTo: modifyDateTextView.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        saveBtn.topAnchor.constraint(equalTo: culledTextView.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         //saveBtn.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.05)).isActive = true
         saveBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
         saveBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
@@ -697,7 +690,6 @@ class CowInfoViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         animalRegistrationNoNLIDTextView.text = selectedCow?.animalRegistrationNoNLID
         damBreedTextView.text = selectedCow?.damBreed
         culledTextView.text = selectedCow?.culled
-        modifyDateTextView.text = selectedCow?.modifyDate
     }
     
     public convenience init(appDelegate: AppDelegate?, cowLogbook: CowLogbookViewController?) {
@@ -845,101 +837,161 @@ class CowInfoViewController: UIViewController, UIPickerViewDataSource, UIPickerV
                        completion: { Void in()  }
         )
         
-        let fetchRequestCheckID: NSFetchRequest<Cow> = Cow.fetchRequest()
-        let idToCheck = idTextView.text
-        let herdOfCow = cowLogbookView!.getSelectedHerd()
-        
-        let idPredicate = NSPredicate(format: "id == %@", idToCheck!)
-        let herdPredicate = NSPredicate(format: "herd == %@", herdOfCow) //must be in the same herd - cows of different herds can have the same id
-        
-        fetchRequestCheckID.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [idPredicate, herdPredicate])
-        
-        var savedCowArray: [Cow]? = nil
-        savedCowArray?.removeAll(keepingCapacity: false)
-        do{
-            savedCowArray = try appDelegate?.persistentContainer.viewContext.fetch(fetchRequestCheckID)
-            
-        } catch{
-            print("Error during fetch request")
+        DispatchQueue.main.async {
+            self.scanningIndicator.startAnimating()
         }
         
-        if(savedCowArray!.isEmpty == false && savedCowArray![0] != selectedCow){ //check that it is not checking itself - can save changes to self if not changing id, only have to check first since there will never be 2 cows with same id anyways due to these checks
-            showToast(controller: self, message: "Cow Already Exists with that ID", seconds: 1)
-        }
-        else{
-            //get tests from old cow record before deleting to save to new cow record
-            let fetchRequestTestResults: NSFetchRequest<Test> = Test.fetchRequest()
-            let cowToCheck = self.selectedCow
+        //Build HTTP Request
+        var request = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/cow-update")!) //sync route on the server
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-type")
+        request.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
+        request.setValue(KeychainWrapper.standard.string(forKey: "User-ID-Token"), forHTTPHeaderField: "user-id")
+        
+        //build JSON Body
+        var jsonCowObject = [String: Any]()
+        
+        
+        let cow = Cow(context: (appDelegate?.persistentContainer.viewContext)!)
+        cow.daysInMilk = daysInMilkTextView.text
+        cow.dryOffDay = dryOffDayTextView.text
+        cow.id = idTextView.text
+        cow.mastitisHistory = mastitisHistoryTextView.text
+        cow.methodOfDryOff = methodOfDryOffTextView.text
+        cow.dailyMilkAverage = dailyMilkAverageTextView.text
+        cow.parity = parityTextView.text
+        cow.reproductionStatus = reproductionStatusTextView.text
+        cow.numberTimesBred = numberOfTimesBredTextView.text
+        cow.farmBreedingIndex = farmBreedingIndexTextView.text
+        cow.herd = cowLogbookView?.getSelectedHerd()
+        cow.lactationNumber = lactationNumberTextView.text
+        cow.daysCarriedCalfIfPregnant = daysCarriedCalfIfPregnantTextView.text
+        cow.projectedDueDate = projectedDueDateTextView.text
+        cow.current305DayMilk = current305DayMilkTextView.text
+        cow.currentSomaticCellCount = currentSomaticCellCountTextView.text
+        cow.linearScoreAtLastTest = linearScoreAtLastTestTextView.text
+        cow.dateOfLastClinicalMastitis = dateOfLastClinialMastitisTextView.text
+        cow.chainVisibleID = chainVisibleIDTextView.text
+        cow.animalRegistrationNoNLID = animalRegistrationNoNLIDTextView.text
+        cow.damBreed = damBreedTextView.text
+        cow.culled = culledTextView.text
             
-            fetchRequestCheckID.predicate = NSPredicate(format: "cow == %@", cowToCheck!)
-            
-            var savedTestArray: [Test]? = nil
-            
+        jsonCowObject = [
+            "objectType": "Cow" as Any,
+            "herdID": cow.herd?.id as Any,
+            "id": cow.id as Any,
+            "daysInMilk": cow.daysInMilk as Any,
+            "dryOffDay": cow.dryOffDay as Any,
+            "mastitisHistory": cow.mastitisHistory as Any,
+            "methodOfDryOff": cow.methodOfDryOff as Any,
+            "dailyMilkAverage": cow.dailyMilkAverage as Any,
+            "parity": cow.parity as Any,
+            "reproductionStatus": cow.reproductionStatus as Any,
+            "numberOfTimesBred": cow.numberTimesBred as Any,
+            "farmBreedingIndex": cow.farmBreedingIndex as Any,
+            "lactationNumber": cow.lactationNumber as Any,
+            "daysCarriedCalfIfPregnant": cow.daysCarriedCalfIfPregnant as Any,
+            "projectedDueDate": cow.projectedDueDate as Any,
+            "current305DayMilk": cow.current305DayMilk as Any,
+            "currentSomaticCellCount": cow.currentSomaticCellCount as Any,
+            "linearScoreAtLastTest": cow.linearScoreAtLastTest as Any,
+            "dateOfLastClinicalMastitis": cow.dateOfLastClinicalMastitis as Any,
+            "chainVisibleId": cow.chainVisibleID as Any,
+            "animalRegistrationNoNLID": cow.animalRegistrationNoNLID as Any,
+            "damBreed": cow.damBreed as Any,
+            "culled": cow.culled as Any,
+            "userID": KeychainWrapper.standard.string(forKey: "User-ID-Token") as Any
+        ]
+        
+        
+        var syncJsonData: Data? = nil
+        
+        if(JSONSerialization.isValidJSONObject(jsonCowObject)){
             do{
-                savedTestArray = try appDelegate?.persistentContainer.viewContext.fetch(fetchRequestTestResults)
+                syncJsonData = try JSONSerialization.data(withJSONObject: jsonCowObject, options: [])
+            }catch{
+                print("Problem while serializing jsonHerdObject")
+            }
+        }
+
+        request.httpBody = syncJsonData
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if(error != nil){
+                print("Error occured during /cow RESTAPI request")
                 
-            } catch{
-                print("Error during fetch request")
             }
-            
-            
-            
-            
-            let fetchRequest: NSFetchRequest<Cow> = Cow.fetchRequest()
-            let idToSearch = selectedCow?.id
-            fetchRequest.predicate = NSPredicate(format: "id == %@", idToSearch!)
-            
-            //delete old record
-            do{
-                let savedCowArray = try appDelegate?.persistentContainer.viewContext.fetch(fetchRequest)
-                self.appDelegate?.persistentContainer.viewContext.delete(savedCowArray![0]) //this will always only have one element since we check that no two herds are given the same id
-            } catch{
-                print("Error during fetch request")
-            }
-            
-            
-            
-            
-            let cow = Cow(context: (appDelegate?.persistentContainer.viewContext)!)
-            cow.daysInMilk = daysInMilkTextView.text
-            cow.dryOffDay = dryOffDayTextView.text
-            cow.id = idTextView.text
-            cow.mastitisHistory = mastitisHistoryTextView.text
-            cow.methodOfDryOff = methodOfDryOffTextView.text
-            cow.dailyMilkAverage = dailyMilkAverageTextView.text
-            cow.parity = parityTextView.text
-            cow.reproductionStatus = reproductionStatusTextView.text
-            cow.numberTimesBred = numberOfTimesBredTextView.text
-            cow.farmBreedingIndex = farmBreedingIndexTextView.text
-            cow.lactationNumber = lactationNumberTextView.text
-            cow.daysCarriedCalfIfPregnant = daysCarriedCalfIfPregnantTextView.text
-            cow.projectedDueDate = projectedDueDateTextView.text
-            cow.current305DayMilk = current305DayMilkTextView.text
-            cow.current305DayMilk = current305DayMilkTextView.text
-            cow.currentSomaticCellCount = currentSomaticCellCountTextView.text
-            cow.linearScoreAtLastTest = linearScoreAtLastTestTextView.text
-            cow.dateOfLastClinicalMastitis = dateOfLastClinialMastitisTextView.text
-            cow.chainVisibleID = chainVisibleIDTextView.text
-            cow.animalRegistrationNoNLID = animalRegistrationNoNLIDTextView.text
-            cow.damBreed = damBreedTextView.text
-            cow.culled = culledTextView.text
-            cow.modifyDate = modifyDateTextView.text
-            
-            cow.herd = cowLogbookView?.getSelectedHerd()
-            
-            //save test resuts from old cow record to new cow record
-            for test in savedTestArray!{
-                cow.addToTestData(test)
-                test.cow = selectedCow
-            }
-            
-            cowLogbookView!.addToCowList(cowToAppend: cow)
-            
-            appDelegate?.saveContext()
-            
-        }
+            else{
+                print("Response:")
+                print(response!)
+                print("Data:")
+                print(String(decoding: data!, as: UTF8.self))
         
-        navigationController?.popViewController(animated: true)
+        
+                    if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
+                        //TODO send them to login again
+                        print("invalid token")
+                        DispatchQueue.main.async {
+                            self.showToast(controller: self, message: "Must login to add a cow to your logbook", seconds: 2)
+                            self.scanningIndicator.stopAnimating()
+                        }
+                        
+                        
+                        return
+                    }
+        
+        
+                    if(String(decoding: data!, as: UTF8.self) != "Success"){ //error occured
+                        DispatchQueue.main.async {
+                            self.showToast(controller: self, message: "Network Error", seconds: 1)
+                        }
+                    
+                        DispatchQueue.main.async{
+                            self.scanningIndicator.stopAnimating()
+                        }
+                        
+                        return //return from function - end sync
+                    }
+                    else{
+                        DispatchQueue.main.async {
+                            self.showToast(controller: self, message: "Cow results have been saved", seconds: 3)
+                            
+                            self.scanningIndicator.stopAnimating()
+                            
+                            DispatchQueue.main.async {
+                                self.idTextView.text = ""
+                                self.daysInMilkTextView.text = ""
+                                self.dryOffDayTextView.text = ""
+                                self.mastitisHistoryTextView.text = ""
+                                self.methodOfDryOffTextView.text = ""
+                                self.dailyMilkAverageTextView.text = ""
+                                self.parityTextView.text = ""
+                                self.reproductionStatusTextView.text = ""
+                                self.lactationNumberTextView.text = ""
+                                self.daysCarriedCalfIfPregnantTextView.text = ""
+                                self.projectedDueDateTextView.text = ""
+                                self.current305DayMilkTextView.text = ""
+                                self.currentSomaticCellCountTextView.text = ""
+                                self.linearScoreAtLastTestTextView.text = ""
+                                self.dateOfLastClinialMastitisTextView.text = ""
+                                self.chainVisibleIDTextView.text = ""
+                                self.animalRegistrationNoNLIDTextView.text = ""
+                                self.damBreedTextView.text = ""
+                                self.culledTextView.text = ""
+                                self.numberOfTimesBredTextView.text = ""
+                                self.farmBreedingIndexTextView.text = ""
+                            }
+                            
+                            self.navigationController?.popViewController(animated: true)
+                            
+                            return //return from function - end sync
+                        }
+                    }
+                }
+        
+            }
+        
+            task.resume()
     }
     
     

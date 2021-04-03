@@ -14,6 +14,7 @@ import CoreData
 import IntentsUI
 import GradientProgressBar
 import MessageUI
+import SwiftKeychainWrapper
 
 public class SingleStripTestViewController: UIViewController, MFMailComposeViewControllerDelegate{
     
@@ -79,6 +80,8 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
     private let recommendationBoxMiddle = UIImageView()
     private let recommendationBoxRight = UIImageView()
     
+    private let scanningIndicator = UIActivityIndicatorView()
+    
     //pageID
     private var pageID: Int? = nil
     
@@ -134,6 +137,13 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
     
     
     private func setupLayoutComponents(){
+        
+        
+        //SCANNING INDICATOR
+        scanningIndicator.center = self.view.center
+        scanningIndicator.style = UIActivityIndicatorView.Style.gray
+        scanningIndicator.backgroundColor = .lightGray
+        view.addSubview(scanningIndicator)
         
         //startTestBtn
         startTestBtn.backgroundColor = .blue
@@ -324,6 +334,14 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
     }
     
     private func setupLayoutConstraints(){
+        
+        //SCANNING INDICATOR
+        scanningIndicator.translatesAutoresizingMaskIntoConstraints = false
+        scanningIndicator.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        scanningIndicator.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        scanningIndicator.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 0.12).isActive = true
+        scanningIndicator.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * 0.06).isActive = true
+        
         //startTestBtn
         startTestBtn.translatesAutoresizingMaskIntoConstraints = false
         startTestBtn.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
@@ -678,7 +696,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             showToast(controller: self, message: "Strips not detected", seconds: 1)
             return
         }
-        else if(self.battLevel <= 3.7){
+        else if(self.battLevel <= 10){
             showToast(controller: self, message: "Battery level too low to test", seconds: 1)
             return
         }
@@ -707,6 +725,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         
         
         let testToSave = Test(context: (self.appDelegate?.persistentContainer.viewContext)!)
+        
         testToSave.date = self.testDate! as NSDate?
                             
         testToSave.testID = UUID().uuidString //create a random UUID for the test identifier
@@ -720,11 +739,109 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         //testToSave.cow = menuView?.getHerdLogbookView().getCowLogbookView().getTestLogbookView().getSelectedCow()
         testToSave.cow = self.cowToSave
         
+        testToSave.herd = self.cowToSave?.herd
+        
         testToSave.followUpNum = self.testFollowUpNumberToSave
         
-        self.appDelegate?.saveContext() //save w core data
-                             
-        self.showToast(controller: self, message: "Test Result Has Been Saved", seconds: 1)
+        
+        //save test to database
+        DispatchQueue.main.async {
+            self.scanningIndicator.startAnimating()
+        }
+        
+        //Build HTTP Request
+        var request = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/test")!) //sync route on the server
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-type")
+        request.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
+        request.setValue(KeychainWrapper.standard.string(forKey: "User-ID-Token"), forHTTPHeaderField: "user-id")
+        
+        //build JSON Body
+        var jsonTestObject = [String: Any]()
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let dateString = formatter.string(from: testToSave.date! as Date)
+            
+        jsonTestObject = [
+            "objectType": "Test" as Any,
+            "date": dateString as Any,
+            "followUpNum": testToSave.followUpNum as Any,
+            "testID": testToSave.testID as Any,
+            "milkFever": testToSave.milkFever as Any,
+            "testType": testToSave.testType as Any,
+            "units": testToSave.units as Any,
+            "value": testToSave.value as Any,
+            "cowID": testToSave.cow!.id as Any,
+            "herdID": testToSave.herd!.id as Any,
+            "userID": KeychainWrapper.standard.string(forKey: "User-ID-Token") as Any
+        ]
+        
+        
+        var syncJsonData: Data? = nil
+        
+        if(JSONSerialization.isValidJSONObject(jsonTestObject)){
+            do{
+                syncJsonData = try JSONSerialization.data(withJSONObject: jsonTestObject, options: [])
+            }catch{
+                print("Problem while serializing jsonTestObject")
+            }
+        }
+
+        request.httpBody = syncJsonData
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if(error != nil){
+                print("Error occured during /sync RESTAPI request")
+                
+            }
+            else{
+                print("Response:")
+                print(response!)
+                print("Data:")
+                print(String(decoding: data!, as: UTF8.self))
+        
+        
+                    if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
+                        //TODO send them to login again
+                        print("invalid token")
+                        DispatchQueue.main.async {
+                            self.scanningIndicator.stopAnimating()
+                        }
+                        
+                        
+                        return
+                    }
+        
+        
+                    if(String(decoding: data!, as: UTF8.self) != "Success"){ //error occured
+                        DispatchQueue.main.async {
+                            self.showToast(controller: self, message: "Network Error", seconds: 1)
+                        }
+                    
+                        DispatchQueue.main.async{
+                            self.scanningIndicator.stopAnimating()
+                        }
+                        
+                        return //return from function - end sync
+                    }
+                    else{
+                        DispatchQueue.main.async {
+                            self.showToast(controller: self, message: "Test results have been saved", seconds: 3)
+                            
+                            self.scanningIndicator.stopAnimating()
+                            
+                            return //return from function - end sync
+                        }
+                    }
+                }
+        
+            }
+        
+            task.resume()
+        
+        
+        
         
         self.discardTestBtnListener()
                             
@@ -1500,16 +1617,20 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         }
         else{
             //var temp = (-21.11 * log(((3.3 * (40000/(Double(tempVoltageValue!)/1000))) - 40000))) + 219.56
-            var temp = (Double(tempVoltageValue!) * 0.0559) - 60.9
+//            var temp = (Double(tempVoltageValue!) * 0.0559) - 60.9
+//
+//            self.tempLevel = Double(round(100 * temp)/100)
             
-            self.tempLevel = Double(round(100 * temp)/100)
+            var temp = Double(tempVoltageValue!)// / 1000 // * 2.3 //this is a patch
+            
+            self.tempLevel = Double(round(10 * temp)/10)
             
             DispatchQueue.main.async{
                 if(self.tempVoltageLabelKeepHidden){
                     self.tempVoltageLabel.isHidden = true
                 }
                 else{
-                    self.tempVoltageLabel.text = "Device Temp: " + String(self.tempLevel) + " C"
+                    self.tempVoltageLabel.text = "Device Temp: " + String(tempVoltageValue!) + " C"
                     self.tempVoltageLabel.isHidden = false
                 }
                 
@@ -1540,9 +1661,9 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         }
         else{
             
-            var bat = Double(battVoltageValue!) / 1000.0// * 2.3 //this is a patch
+            //var bat = Double(battVoltageValue!)// / 1000.0// * 2.3 //this is a patch
             
-            self.battLevel = Double(round(10 * bat)/10)
+            self.battLevel = Double(battVoltageValue!)
             
             DispatchQueue.main.async{
                 
@@ -1550,7 +1671,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                     self.batteryVoltageLabel.isHidden = true
                 }
                 else{
-                    self.batteryVoltageLabel.text = "Device Batt: " + String(self.battLevel) + " V"
+                    self.batteryVoltageLabel.text = "Device Batt: " + String(battVoltageValue!) + " %"
                     self.batteryVoltageLabel.isHidden = false
                 }
                 

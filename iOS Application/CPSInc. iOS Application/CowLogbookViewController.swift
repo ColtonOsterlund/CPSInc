@@ -12,6 +12,7 @@ import UIKit
 import WatchConnectivity
 import CoreData
 import MessageUI
+import SwiftKeychainWrapper
 
 public class CowLogbookViewController: UITableViewController, WCSessionDelegate, UISearchResultsUpdating, MFMailComposeViewControllerDelegate {
     
@@ -51,36 +52,161 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate,
         self.title = "Cow Logbook"
         //view.backgroundColor = .init(red: 0, green: 0.637, blue: 0.999, alpha: 1)
         setupLayoutItems()
-        
-        fetchSavedData()
+
     }
     
     private func fetchSavedData(){
-       // print("fetching saved cow data")
+       
         
-        let fetchRequest: NSFetchRequest<Cow> = Cow.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "herd == %@", self.selectedHerd!) //list the cows from the selected herd
         
-        do{
-            let savedCowArray = try appDelegate?.persistentContainer.viewContext.fetch(fetchRequest)
-            self.cowList = savedCowArray!
-        } catch{
-            print("Error during fetch request")
+        DispatchQueue.main.async{
+            self.cowList.removeAll()
+            self.tableView.reloadData()
+            self.scanningIndicator.startAnimating()
         }
         
-        //IMPLEMENT SORTING ALGORITHM TO SORT COWS BY ID - NOT ALWAYS NECESSARILY SAVED IN ORDER IF USING THE EXECUTION TIME SAIVNG METHOD OF PARSING DATA
-        cowList.sort(by: {$0.id!.localizedStandardCompare($1.id!) == .orderedAscending})
         
-        tableView.reloadData()
+//        let fetchRequest: NSFetchRequest<Herd> = Herd.fetchRequest()
+//
+//        do{
+//            let savedHerdArray = try appDelegate?.persistentContainer.viewContext.fetch(fetchRequest)
+//            self.herdList = savedHerdArray!
+//        } catch{
+//            print("Error during fetch request")
+//        }
+        
+        var backupRequest = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/user-cow-app?userID=" + KeychainWrapper.standard.string(forKey: "User-ID-Token")! + "&herdID=" + (selectedHerd?.id)! as String)!)
+        backupRequest.httpMethod = "GET"
+        backupRequest.setValue("application/json", forHTTPHeaderField: "Content-type")
+        backupRequest.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
+        backupRequest.setValue(KeychainWrapper.standard.string(forKey: "User-ID-Token"), forHTTPHeaderField: "user-id")
+        
+        let backupTask = URLSession.shared.dataTask(with: backupRequest) { data, response, error in
+            if(error != nil){
+                print("Error occured during /user-cow RESTAPI request")
+                DispatchQueue.main.async {
+                    self.scanningIndicator.stopAnimating()
+                    self.showToast(controller: self, message: "Network Error", seconds: 1)
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)){
+                    return
+                }
+            }
+            else{
+                
+                print("Response:")
+                print(response!)
+                print("Data:")
+                print(String(decoding: data!, as: UTF8.self))
+                
+                
+                if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
+                     DispatchQueue.main.async {
+                        self.scanningIndicator.stopAnimating()
+                        self.showToast(controller: self, message: "Must login to view your logbook", seconds: 2)
+                        self.navigationController?.popToRootViewController(animated: true)
+                        //self.navigationController?.pushViewController(self.menuView!.getLoginView(), animated: true)
+                    }
+                                       
+                    return
+                }
+                
+                
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data!, options: []) as? [[String: Any]]
+                    
+                                        
+                    for object in json! {
+                        
+                        
+                        let toSave = Cow(context: (self.appDelegate?.persistentContainer.viewContext)!)
+                            
+                        toSave.id = object["id"] as? String
+                        toSave.daysInMilk = object["daysInMilk"] as? String
+                        toSave.dryOffDay = object["dryOffDay"] as? String
+                        toSave.mastitisHistory = object["mastitisHistory"] as? String
+                        toSave.methodOfDryOff = object["methodOfDryOff"] as? String
+                        toSave.dailyMilkAverage = object["dailyMilkAverage"] as? String
+                        toSave.parity = object["parity"] as? String
+                        toSave.reproductionStatus = object["reproductionStatus"] as? String
+                        toSave.numberTimesBred = object["numberOfTimesBred"] as? String
+                        toSave.farmBreedingIndex = object["farmBreedingIndex"] as? String
+                        toSave.herd = self.selectedHerd
+                        toSave.lactationNumber = object["lactationNumber"] as? String
+                        toSave.daysCarriedCalfIfPregnant = object["daysCarriedCalfIfPregnant"] as? String
+                        toSave.projectedDueDate = object["projectedDueDate"] as? String
+                        toSave.current305DayMilk = object["current305DayMilk"] as? String
+                        toSave.currentSomaticCellCount = object["currentSomaticCellCount"] as? String
+                        toSave.linearScoreAtLastTest = object["linearScoreAtLastTest"] as? String
+                        toSave.dateOfLastClinicalMastitis = object["dateOfLastClinicalMastitis"] as? String
+                        toSave.chainVisibleID = object["chainVisibleId"] as? String
+                        toSave.animalRegistrationNoNLID = object["animalRegistrationNoNLID"] as? String
+                        toSave.damBreed = object["damBreed"] as? String
+                        
+                        var culled = object["culled"] as! Int
+                        toSave.culled = String(culled)
+                    
+                                
+                        self.cowList.append(toSave)
+                            
+                        print("HERE COW: ")
+                        
+                        
+                    }
+                    
+                    self.cowList.sort(by: {$0.id!.localizedStandardCompare($1.id!) == .orderedAscending})
+                    
+                    DispatchQueue.main.async {
+                        self.scanningIndicator.stopAnimating()
+                        print(self.cowList.isEmpty)
+                        self.tableView.reloadData()
+                    }
+                    
+                    
+                } catch let error as NSError {
+                    DispatchQueue.main.async {
+                        self.scanningIndicator.stopAnimating()
+                        self.showToast(controller: self, message: "Network Error", seconds: 1)
+                    }
+                    print(error.localizedDescription)
+                }
+                
+            }
+        }
+        
+        backupTask.resume()
+        
+        
+        
+        
+        
+        
+        
+        
     }
     
     public override func viewWillAppear(_ animated: Bool) {
+        
+    }
+    
+    public override func viewDidAppear(_ animated: Bool) {
         fetchSavedData()
     }
     
     
     private func setupLayoutItems(){
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cowTableViewCell")
+        
+        scanningIndicator.center = self.view.center
+        scanningIndicator.style = UIActivityIndicatorView.Style.gray
+        scanningIndicator.backgroundColor = .lightGray
+        view.addSubview(scanningIndicator)
+        //scanningIndicator
+        scanningIndicator.translatesAutoresizingMaskIntoConstraints = false
+        scanningIndicator.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        scanningIndicator.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        scanningIndicator.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 0.12).isActive = true
+        scanningIndicator.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * 0.06).isActive = true
         
         addBtn = UIBarButtonItem.init(title: "Report", style: .plain, target: self, action: #selector(reportBtnPressed))
         reportBtn = UIBarButtonItem.init(barButtonSystemItem: .add, target: self, action: #selector(addBtnPressed))
@@ -589,33 +715,303 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate,
             self.testLogbook!.setTimeFrame(date: nil)
             self.navigationController?.pushViewController(self.testLogbook!, animated: true)
         }))
+            
+        if(cowToUse?.culled == "0"){
+            selectedRowAlert.addAction(UIAlertAction(title: "Set as Culled", style: .default, handler: { action in
+                
+                //Build HTTP Request
+                var request = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/cow-update")!) //sync route on the server
+                request.httpMethod = "POST"
+                request.setValue("application/json", forHTTPHeaderField: "Content-type")
+                request.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
+                request.setValue(KeychainWrapper.standard.string(forKey: "User-ID-Token"), forHTTPHeaderField: "user-id")
+                
+                //build JSON Body
+                var jsonCowObject = [String: Any]()
+                
+                                    
+                jsonCowObject = [
+                    "objectType": "Cow" as Any,
+                    "herdID": cowToUse!.herd?.id as Any,
+                    "id": cowToUse!.id as Any,
+                    "daysInMilk": cowToUse!.daysInMilk as Any,
+                    "dryOffDay": cowToUse!.dryOffDay as Any,
+                    "mastitisHistory": cowToUse!.mastitisHistory as Any,
+                    "methodOfDryOff": cowToUse!.methodOfDryOff as Any,
+                    "dailyMilkAverage": cowToUse!.dailyMilkAverage as Any,
+                    "parity": cowToUse!.parity as Any,
+                    "reproductionStatus": cowToUse!.reproductionStatus as Any,
+                    "numberOfTimesBred": cowToUse!.numberTimesBred as Any,
+                    "farmBreedingIndex": cowToUse!.farmBreedingIndex as Any,
+                    "lactationNumber": cowToUse!.lactationNumber as Any,
+                    "daysCarriedCalfIfPregnant": cowToUse!.daysCarriedCalfIfPregnant as Any,
+                    "projectedDueDate": cowToUse!.projectedDueDate as Any,
+                    "current305DayMilk": cowToUse!.current305DayMilk as Any,
+                    "currentSomaticCellCount": cowToUse!.currentSomaticCellCount as Any,
+                    "linearScoreAtLastTest": cowToUse!.linearScoreAtLastTest as Any,
+                    "dateOfLastClinicalMastitis": cowToUse!.dateOfLastClinicalMastitis as Any,
+                    "chainVisibleId": cowToUse!.chainVisibleID as Any,
+                    "animalRegistrationNoNLID": cowToUse!.animalRegistrationNoNLID as Any,
+                    "damBreed": cowToUse!.damBreed as Any,
+                    "culled": "1",
+                    "userID": KeychainWrapper.standard.string(forKey: "User-ID-Token") as Any
+                ]
+                
+                
+                var syncJsonData: Data? = nil
+                
+                if(JSONSerialization.isValidJSONObject(jsonCowObject)){
+                    do{
+                        syncJsonData = try JSONSerialization.data(withJSONObject: jsonCowObject, options: [])
+                    }catch{
+                        print("Problem while serializing jsonHerdObject")
+                    }
+                }
+
+                request.httpBody = syncJsonData
+                
+                let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                    if(error != nil){
+                        print("Error occured during /cow RESTAPI request")
+                        
+                    }
+                    else{
+                        print("Response:")
+                        print(response!)
+                        print("Data:")
+                        print(String(decoding: data!, as: UTF8.self))
+                
+                
+                            if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
+                                //TODO send them to login again
+                                print("invalid token")
+                                DispatchQueue.main.async {
+                                    self.showToast(controller: self, message: "Must login to add a cow to your logbook", seconds: 2)
+                                    self.scanningIndicator.stopAnimating()
+                                }
+                                
+                                
+                                return
+                            }
+                
+                
+                            if(String(decoding: data!, as: UTF8.self) != "Success"){ //error occured
+                                DispatchQueue.main.async {
+                                    self.showToast(controller: self, message: "Network Error", seconds: 1)
+                                }
+                            
+                                DispatchQueue.main.async{
+                                    self.scanningIndicator.stopAnimating()
+                                }
+                                
+                                return //return from function - end sync
+                            }
+                            else{
+                                DispatchQueue.main.async {
+                                    self.showToast(controller: self, message: "Cow results have been saved", seconds: 3)
+                                    
+                                    self.scanningIndicator.stopAnimating()
+                                    self.fetchSavedData()
+                                    
+                                    return //return from function - end sync
+                                }
+                            }
+                        }
+                
+                    }
+                
+                    task.resume()
+                
+            }))
+        }
+        else if(cowToUse?.culled == "1"){
+            selectedRowAlert.addAction(UIAlertAction(title: "Set as Non-Culled", style: .default, handler: { action in
+                
+                //Build HTTP Request
+                var request = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/cow-update")!) //sync route on the server
+                request.httpMethod = "POST"
+                request.setValue("application/json", forHTTPHeaderField: "Content-type")
+                request.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
+                request.setValue(KeychainWrapper.standard.string(forKey: "User-ID-Token"), forHTTPHeaderField: "user-id")
+                
+                //build JSON Body
+                var jsonCowObject = [String: Any]()
+                
+                                    
+                jsonCowObject = [
+                    "objectType": "Cow" as Any,
+                    "herdID": cowToUse!.herd?.id as Any,
+                    "id": cowToUse!.id as Any,
+                    "daysInMilk": cowToUse!.daysInMilk as Any,
+                    "dryOffDay": cowToUse!.dryOffDay as Any,
+                    "mastitisHistory": cowToUse!.mastitisHistory as Any,
+                    "methodOfDryOff": cowToUse!.methodOfDryOff as Any,
+                    "dailyMilkAverage": cowToUse!.dailyMilkAverage as Any,
+                    "parity": cowToUse!.parity as Any,
+                    "reproductionStatus": cowToUse!.reproductionStatus as Any,
+                    "numberOfTimesBred": cowToUse!.numberTimesBred as Any,
+                    "farmBreedingIndex": cowToUse!.farmBreedingIndex as Any,
+                    "lactationNumber": cowToUse!.lactationNumber as Any,
+                    "daysCarriedCalfIfPregnant": cowToUse!.daysCarriedCalfIfPregnant as Any,
+                    "projectedDueDate": cowToUse!.projectedDueDate as Any,
+                    "current305DayMilk": cowToUse!.current305DayMilk as Any,
+                    "currentSomaticCellCount": cowToUse!.currentSomaticCellCount as Any,
+                    "linearScoreAtLastTest": cowToUse!.linearScoreAtLastTest as Any,
+                    "dateOfLastClinicalMastitis": cowToUse!.dateOfLastClinicalMastitis as Any,
+                    "chainVisibleId": cowToUse!.chainVisibleID as Any,
+                    "animalRegistrationNoNLID": cowToUse!.animalRegistrationNoNLID as Any,
+                    "damBreed": cowToUse!.damBreed as Any,
+                    "culled": "0",
+                    "userID": KeychainWrapper.standard.string(forKey: "User-ID-Token") as Any
+                ]
+                
+                
+                var syncJsonData: Data? = nil
+                
+                if(JSONSerialization.isValidJSONObject(jsonCowObject)){
+                    do{
+                        syncJsonData = try JSONSerialization.data(withJSONObject: jsonCowObject, options: [])
+                    }catch{
+                        print("Problem while serializing jsonHerdObject")
+                    }
+                }
+
+                request.httpBody = syncJsonData
+                
+                let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                    if(error != nil){
+                        print("Error occured during /cow RESTAPI request")
+                        
+                    }
+                    else{
+                        print("Response:")
+                        print(response!)
+                        print("Data:")
+                        print(String(decoding: data!, as: UTF8.self))
+                
+                
+                            if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
+                                //TODO send them to login again
+                                print("invalid token")
+                                DispatchQueue.main.async {
+                                    self.showToast(controller: self, message: "Must login to add a cow to your logbook", seconds: 2)
+                                    self.scanningIndicator.stopAnimating()
+                                }
+                                
+                                
+                                return
+                            }
+                
+                
+                            if(String(decoding: data!, as: UTF8.self) != "Success"){ //error occured
+                                DispatchQueue.main.async {
+                                    self.showToast(controller: self, message: "Network Error", seconds: 1)
+                                }
+                            
+                                DispatchQueue.main.async{
+                                    self.scanningIndicator.stopAnimating()
+                                }
+                                
+                                return //return from function - end sync
+                            }
+                            else{
+                                DispatchQueue.main.async {
+                                    self.showToast(controller: self, message: "Cow results have been saved", seconds: 3)
+                                    
+                                    self.scanningIndicator.stopAnimating()
+                                    self.fetchSavedData()
+                                    
+                                    return //return from function - end sync
+                                }
+                            }
+                        }
+                
+                    }
+                
+                    task.resume()
+                
+            }))
+        }
+            
+            
+            
         selectedRowAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         selectedRowAlert.addAction(UIAlertAction(title: "Delete Cow", style: .destructive, handler: { action in
             let confirmationAlert = UIAlertController(title: tableView.cellForRow(at: indexPath)?.textLabel?.text, message: "Delete Cow?", preferredStyle: .alert)
             
             confirmationAlert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
                 
-                //delete all Test records associated with that Cow in the database
-                let fetchTestDeletionRequest: NSFetchRequest<Test> = Test.fetchRequest()
-                fetchTestDeletionRequest.predicate = NSPredicate(format: "cow == %@", cowToUse!) //get all cows associated with the herd being deleted
-                
-                do{
-                    let fetchedTestArray = try self.appDelegate?.persistentContainer.viewContext.fetch(fetchTestDeletionRequest)
-                    
-                    //delete all cows that return from the search
-                    for testToDelete in fetchedTestArray!{
-                        self.appDelegate?.persistentContainer.viewContext.delete(testToDelete)
-                    }
-                    
-                } catch{
-                    print("Error during fetch request")
+                DispatchQueue.main.async{
+                    self.scanningIndicator.startAnimating()
                 }
                 
                 
-                //Delete Cow record from database
-                self.appDelegate?.persistentContainer.viewContext.delete(cowToUse!)
-                self.appDelegate?.saveContext() //save context after cow is deleted
-                self.fetchSavedData()
+        //        let fetchRequest: NSFetchRequest<Herd> = Herd.fetchRequest()
+        //
+        //        do{
+        //            let savedHerdArray = try appDelegate?.persistentContainer.viewContext.fetch(fetchRequest)
+        //            self.herdList = savedHerdArray!
+        //        } catch{
+        //            print("Error during fetch request")
+        //        }
+                
+                var backupRequest = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/user-cow-delete-app?userID=" + KeychainWrapper.standard.string(forKey: "User-ID-Token")! + "&herdID=" + (self.selectedHerd?.id)! as String + "&cowID=" + ((cowToUse?.id)!))!)
+                backupRequest.httpMethod = "GET"
+                backupRequest.setValue("application/json", forHTTPHeaderField: "Content-type")
+                backupRequest.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
+                backupRequest.setValue(KeychainWrapper.standard.string(forKey: "User-ID-Token"), forHTTPHeaderField: "user-id")
+                
+                let backupTask = URLSession.shared.dataTask(with: backupRequest) { data, response, error in
+                    if(error != nil){
+                        print("Error occured during /user-cow RESTAPI request")
+                        DispatchQueue.main.async {
+                            self.scanningIndicator.stopAnimating()
+                            self.showToast(controller: self, message: "Network Error", seconds: 1)
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)){
+                            return
+                        }
+                    }
+                    else{
+                        
+                        print("Response:")
+                        print(response!)
+                        print("Data:")
+                        print(String(decoding: data!, as: UTF8.self))
+                        
+                        
+                        if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
+                             DispatchQueue.main.async {
+                                self.scanningIndicator.stopAnimating()
+                                self.showToast(controller: self, message: "Must login to view your logbook", seconds: 2)
+                                self.navigationController?.popToRootViewController(animated: true)
+                                //self.navigationController?.pushViewController(self.menuView!.getLoginView(), animated: true)
+                            }
+                                               
+                            return
+                        }
+                        
+                        
+                        do {
+
+                            DispatchQueue.main.async {
+                                self.scanningIndicator.stopAnimating()
+                                self.fetchSavedData()
+                            }
+                            
+                            
+                        } catch let error as NSError {
+                            DispatchQueue.main.async {
+                                self.scanningIndicator.stopAnimating()
+                                self.showToast(controller: self, message: "Network Error", seconds: 1)
+                            }
+                            print(error.localizedDescription)
+                        }
+                        
+                    }
+                }
+                
+                backupTask.resume()
                 
             }))
             

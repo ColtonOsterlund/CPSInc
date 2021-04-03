@@ -903,8 +903,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
             
             greenCircleView.isHidden = false
             redCircleView.isHidden = true
-            
-            accountView!.setSyncStatus(needsSync: false)
+
         }
         else{
             DispatchQueue.main.async {
@@ -912,7 +911,6 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
                 self.redCircleView.isHidden = false
             }
             
-            accountView!.setSyncStatus(needsSync: true)
         }
     }
     
