@@ -34,7 +34,6 @@
 #include "em_idac.h" //this is the be able to use the built in Digital to Analog Converter
 
 #include "app.h"
-
 /* Print boot message */
 static void bootMessage(struct gecko_msg_system_boot_evt_t *bootevt); //can probably take this out
 
@@ -43,17 +42,21 @@ static void bootMessage(struct gecko_msg_system_boot_evt_t *bootevt); //can prob
 static uint8_t boot_to_dfu = 0; //device firmware upgrade
 
 //ADC global vars
+int16 batteryCalibration = 4450;
+uint16 TempCalibration = 1335;
 uint32_t adcData;
 uint16 batteryVoltage;
+int16 batteryPercentage;
 uint16 temperatureSensorVoltage;
 uint16 stripDetectVoltage;
 int16 differentialVoltage;
 int16 integratedVoltage;
 uint16 referenceVoltage = 1650;
+uint16 tempC;
 ADC_InitSingle_TypeDef initSingle = ADC_INITSINGLE_DEFAULT;
 
 //CHANGE THIS TO CHANGE THE DEVICE ID
-uint16 deviceIdentifier = 0;
+uint16 deviceIdentifier = 021;
 
 //global flag to indicate whether or not peripheral device has requested to run a test
 uint8 testFlag;
@@ -91,9 +94,10 @@ void appMain(gecko_configuration_t *pconfig)
   	  	  	  	  	  	  	  	  	  	  //not sure why it results in a compilation error here - look into this
   	  	  	  	  	  	  	  	  	  	  //hopefully putting it in init_board still works
   initSingle.diff = false; //single ended mode
-  //initSingle.resolution = adcRes12Bit;
-
-
+  initSingle.resolution = adcRes12Bit;
+  //initSingle.resolution = adcRes8Bit;
+  //initSingle.resolution = adcResOVS;
+//initSingle.ovsRateSel = adcOvsRateSel4096;
 //initial setup for GPIO pin to discharge capacitor
   //GPIO_DriveModeSet(gpioPortD, gpioDriveStrengthStrongAlternateStrong); //sets GPIO drive strength to STRONG,
         	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	//not sure if this is necessary
@@ -280,67 +284,104 @@ void appMain(gecko_configuration_t *pconfig)
     }
   }
 }
+void adcReset(void)
+{
+  /* Rest ADC registers */
+  ADC_Reset(ADC0);
+  NVIC_DisableIRQ(ADC0_IRQn);
+  /* Disable clocks */
+  /* Enable key interrupt, for INT and WFE example */
+  GPIO->IFC = _GPIO_IFC_MASK;
+  NVIC_ClearPendingIRQ(GPIO_EVEN_IRQn);
+  NVIC_EnableIRQ(GPIO_EVEN_IRQn);
+  NVIC_ClearPendingIRQ(GPIO_ODD_IRQn);
+  NVIC_EnableIRQ(GPIO_ODD_IRQn);
+}
+
 
 void readBatteryVoltage() {
-    initSingle.reference = adcRef5VDIFF;
-    initSingle.posSel = adcPosSelAPORT1YCH11;  // this is the PC11 pin that the battery is connected to - see ADC Reference Manual and the BGM113 Data Sheet
+	//initSingle.diff = true;
+	initSingle.resolution = adcResOVS;
+	initSingle.posSel = adcPosSelAPORT1YCH11;  // this is the PC11 pin that the battery is connected to - see ADC Reference Manual and the BGM113 Data Sheet
     initSingle.negSel = adcNegSelVSS;
-
+    initSingle.reference = adcRefVDD;
     ADC_InitSingle(ADC0, &initSingle);  // initializing adc single sample mode
     ADC_Start(ADC0, adcStartSingle);    // starting adc single sample
     while ((ADC_IntGet(ADC0) & ADC_IF_SINGLE) != ADC_IF_SINGLE);  // unsure of this looping condition - look into this - something to do with ADC interrupts
     adcData = ADC_DataSingleGet(ADC0);  // get the value of the single sample from the adc
-    batteryVoltage = (uint16)(adcData * 5000 / 4096);  // convert the value from the single sample from the adc into a readable temperature(adc signal goes from 0 - 4096, our voltage goes from 0-5000mV)
-    printSWO("battery voltage: %d mV\r\n", batteryVoltage);  // print the temperature to the SWO console
+    batteryPercentage = (int16) (adcData - batteryCalibration)/6.5; //650 counts between 3.7-4.2
+    printSWO("battery Before %: %d %\r\n", batteryPercentage);
+    if( batteryPercentage < 5){ //cut off
+        	batteryPercentage = 0;
+        	}
+    uint16 remainder = batteryPercentage % 10;
+    if(remainder >= 5){
+    batteryPercentage = batteryPercentage + (10 - remainder);
+    }
+    else{
+    batteryPercentage = batteryPercentage - remainder;
+    }
+    if( batteryPercentage > 100){ //max 100
+    	batteryPercentage = 100;
+    	}
+
+   // batteryVoltage = (uint16)(adcData * 5000 / 3863 );  // convert the value from the single sample from the adc into a readable temperature(adc signal goes from 0 - 4096, our voltage goes from 0-5000mV)
+    printSWO("battery voltage ADC: %ld mV\r\n", adcData);  // print the temperature to the SWO console
+    printSWO("battery After %: %d %\r\n", batteryPercentage);
+   // initSingle.diff = false;
+    initSingle.resolution = adcRes12Bit;
 }
 
 void updateBatteryVoltage(){ //needs function prototype
 	//writing voltage from Strip Detect pin into gatt db
-	batteryVoltage = ((batteryVoltage & 0x00FF) << 8) | ((batteryVoltage & 0xFF00) >> 8); //convert batteryVoltage to hex
-	gecko_cmd_gatt_server_write_attribute_value(gattdb_b_voltage, 0, 2, (const uint8*)&batteryVoltage); //write batteryVoltage to the gatt db
+	batteryPercentage = ((batteryPercentage & 0x00FF) << 8) | ((batteryPercentage & 0xFF00) >> 8); //convert batteryVoltage to hex
+	gecko_cmd_gatt_server_write_attribute_value(gattdb_b_voltage, 0, 2, (const uint8*)&batteryPercentage); //write batteryVoltage to the gatt db
 }
 
 void notifyBatteryVoltage(){ //needs function prototype
-	 gecko_cmd_gatt_server_send_characteristic_notification(0xff, gattdb_b_voltage, 2, (const uint8*)&batteryVoltage);
+	 gecko_cmd_gatt_server_send_characteristic_notification(0xff, gattdb_b_voltage, 2, (const uint8*)&batteryPercentage);
 }
 
 void readTemperatureSensorVoltage() {
-    initSingle.posSel = adcPosSelAPORT4YCH8;  // this is the PA0 pin that the Temperature Sensor is connected to - see ADC Reference Manual and the BGM113 Data Sheet
-    initSingle.negSel = adcNegSelVSS;
-    initSingle.reference = adcRefVDD;
-
+	//initSingle.posSel = adcPosSelAPORT4XCH9;
+	//initSingle.negSel = adcPosSelAPORT4YCH8;
+	initSingle.reference = adcRefVDD;
+	initSingle.posSel = adcPosSelAPORT4YCH8;//adcPosSelVSS;// this is the PA0 pin that the Temperature Sensor is connected to - see ADC Reference Manual and the BGM113 Data Sheet
+    initSingle.negSel = adcNegSelVSS; // adcPosSelAPORT4YCH8; //adcNegSelDEFAULT;
+    initSingle.diff = true; // Differential mode
     ADC_InitSingle(ADC0, &initSingle);  // initializing adc single sample mode
     ADC_Start(ADC0, adcStartSingle);    // starting adc single sample
     while ((ADC_IntGet(ADC0) & ADC_IF_SINGLE) != ADC_IF_SINGLE);  // unsure of this looping condition - look into this - something to do with ADC interrupts
     adcData = ADC_DataSingleGet(ADC0);  // get the value of the single sample from the adc
-    temperatureSensorVoltage = (uint16)(adcData * 3300 / 4096);  // convert the value from the single sample from the adc into a readable temperature(adc signal goes from 0 - 4096, our voltage goes from 0-3700mV)
-    printSWO("temperature sensor voltage: %d mV\r\n", temperatureSensorVoltage);  // print the temperature to the SWO console
+    printSWO("adcData Temp mV: %d mV\r\n", adcData);  // print the temperature to the SWO console
+    temperatureSensorVoltage = (uint16)((adcData - TempCalibration )/ 11.3+24);  // convert the value from the single sample from the adc into a readable temperature(adc signal goes from 0 - 4096, our voltage goes from 0-3700mV)
+    tempC = temperatureSensorVoltage;
+    if(tempC < 24){ //Below Temp
+    		   tempC = 0;
+    		}
 
+    printSWO("temperature sensor Deg C: %d C\r\n", tempC);  // print the temperature to the SWO console
+    initSingle.diff = false; // Differential mode
     if(testRunning == 1){
-
-		if(temperatureSensorVoltage < 2900){ //2900mV = 30C
+		if(tempC < 27){ //Below Temp
 		   startHeatingPad();
 		}
-		else if(temperatureSensorVoltage >= 2900 && temperatureSensorVoltage < 3200){ //3200mV = 35C
+		else if(tempC >= 27 && tempC < 35){ //at Temp
 			stopHeatingPad();
 		}
-		else if(temperatureSensorVoltage >= 3200){
+		else if(tempC >= 35){
 			testFlag = 0;
 			testRunning = 0;
 			stopHeatingPad();
 			dischargeCapacitor();
 		}
-
     }
-
 }
-
 void updateTemperatureSensorVoltage(){ //needs function prototype
 	//writing voltage from Strip Detect pin into gatt db
 	temperatureSensorVoltage = ((temperatureSensorVoltage & 0x00FF) << 8) | ((temperatureSensorVoltage & 0xFF00) >> 8); //convert temperatureSensorVoltage to hex
 	gecko_cmd_gatt_server_write_attribute_value(gattdb_temp_voltage, 0, 2, (const uint8*)&temperatureSensorVoltage); //write temperatureSensorVoltage to the gatt db
 }
-
 void notifyTemperatureSensorVoltage(){ //needs function prototype
 	 gecko_cmd_gatt_server_send_characteristic_notification(0xff, gattdb_temp_voltage, 2, (const uint8*)&temperatureSensorVoltage);
 }

@@ -16,17 +16,5 @@ C_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
-CMSIS \
-bgapi-uart-dfu \
 . \
-core/EFR32/gcc \
-core \
-crc \
-crypto \
-delay-driver \
-emlib \
-mbedtls \
-parser \
-token-management \
-uart-driver \
 
