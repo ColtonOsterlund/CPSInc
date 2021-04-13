@@ -873,6 +873,8 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         
         self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
         
+        self.testPageController!.resetIntegratedVoltageValue()
+        
         //startTestBtn
         startTestBtn.isEnabled = true
         startTestBtn.isHidden = false
@@ -964,7 +966,6 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         let stopTestString = "00"
         let stopTestData = Data(hexString: stopTestString)
         
-        self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
         
         self.testTimer.invalidate()
         
@@ -1064,12 +1065,9 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                 //self.showToast(controller: self, message: "Fill Strip With Sample", seconds: 2)
                 
             }
-        
-            self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
+
             
             self.testPageController!.getPeripheralDevice()?.writeValue(startTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
-            
-            
             
             
             //want it to wait here until temperature reaches 27C
@@ -1081,11 +1079,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                 }
             }
             
-            //print("\n\n\n\n\nFINISHED LOOP\n\n\n\n\n");
-            
-            
-            self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
-            
+
             self.testPageController!.getPeripheralDevice()?.writeValue(startTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
             
             
@@ -1596,6 +1590,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             }
         }
     }
+    
     
     
     @objc private func readNewTempBatVoltages(){
