@@ -1126,7 +1126,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
 //            }
             
             DispatchQueue.main.sync {
-                self.testTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.readNewVoltage), userInfo: nil, repeats: true)
+                self.testTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.readNewVoltage), userInfo: nil, repeats: true)
             }
             
             
@@ -1161,7 +1161,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             //wait until value reaches a threshold of 250mV
             while(true){ //this shouldn't pause the UI since its on a background thread
                 //print(self.testPageController!.getIntegratedVoltageValue())
-                if(self.testPageController!.getIntegratedVoltageValue()! >= 150 && self.testPageController!.getIntegratedVoltageValue()! <= 200){
+                if(self.testPageController!.getIntegratedVoltageValue()! >= 150){
                     break
                 }
                 else if(self.cancelTestFlag){
@@ -1572,6 +1572,13 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
     //MARK: testing purposes - will print voltage values to the screen
     @objc private func readNewVoltage(){
         
+        let today = Date()
+        let formatter3 = DateFormatter()
+        formatter3.dateFormat = "y-MM-dd H:m:ss.SSSS"
+        print(formatter3.string(from: today))
+        
+       
+        
         var intVoltageValue: Int? = nil
         //DispatchQueue.main.sync {
             intVoltageValue = self.testPageController!.getIntegratedVoltageValue()
@@ -1586,7 +1593,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         else{
             print(intVoltageValue!)
             if(menuView?.getSettingsView().getTestingModeDefault() == true){
-                self.appendStringToFile(url: url!, string: (String(intVoltageValue!) + "\n"))
+                self.appendStringToFile(url: url!, string: (String(intVoltageValue!) + ", " + formatter3.string(from: today) + "\n"))
             }
         }
     }
@@ -1600,7 +1607,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         //DispatchQueue.main.sync {
         tempVoltageValue = self.testPageController!.getTemperatureVoltageValue()
         
-        print(tempVoltageValue)
+        //print(tempVoltageValue)
         
         
         //}
@@ -1630,13 +1637,17 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                 }
                 
                 if(self.tempLevel < 27){
+                    
                     self.startTestBtn.setTitle("Heat Device", for: .normal)
                 }
                 else{
+                    
                     self.startTestBtn.setTitle("Start Test", for: .normal)
                 }
-                if(self.tempLevel >= 29.5){
+                if(self.tempLevel >= 40){
                     self.cancelTestBtnListener()
+                    self.startTestBtn.isEnabled = false
+                    self.startTestBtn.isHidden = true
                     self.showToast(controller: self, message: "Device overheat reset activated", seconds: 2)
                 }
             }
@@ -1646,7 +1657,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         //DispatchQueue.main.sync {
             battVoltageValue = self.testPageController!.getBatteryVoltageValue()
         
-        print(battVoltageValue)
+        //print(battVoltageValue)
         //}
         
         if(battVoltageValue == nil){
