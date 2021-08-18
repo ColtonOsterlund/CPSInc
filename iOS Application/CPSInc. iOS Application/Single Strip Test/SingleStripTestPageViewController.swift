@@ -13,6 +13,7 @@ public class SingleStripTestPageViewController: UIPageViewController, UIPageView
     private var integratedVoltageCharacteristic: CBCharacteristic? = nil
     private var differentialVoltageCharacterisitc: CBCharacteristic? = nil
     private var startTestCharacteristic: CBCharacteristic? = nil
+    private var voltageDataCharacteristic: CBCharacteristic? = nil
     private var stripDetectVoltageValue: Int? = nil
     private var integratedVoltageValue: Int? = nil
     private var differentialVoltageValue: Int? = nil
@@ -220,6 +221,15 @@ public class SingleStripTestPageViewController: UIPageViewController, UIPageView
                     print("found capacitor discharge charac")
                 }
                 
+                if (characteristic.uuid.uuidString == "ED1D5E46-6A31-40FD-9D88-D946E2369BA7") { //voltageDataCharacteristic
+                    //we'll save the reference, we need it to write data
+                    voltageDataCharacteristic = characteristic
+                    
+                    //print(characteristic.value) - this prints null also
+                    
+                    print("found voltageData charac")
+                }
+                
                 if (characteristic.uuid.uuidString == "9F8E337A-5E94-4916-B725-3C1570B4C425") { //capacitorDischargeCharacteristic
                     //we'll save the reference, we need it to write data
                     peripheral.readValue(for: characteristic)
@@ -413,6 +423,10 @@ public class SingleStripTestPageViewController: UIPageViewController, UIPageView
     
     public func getStartTestCharacteristic() -> CBCharacteristic{
         return startTestCharacteristic!
+    }
+    
+    public func getVoltageDataCharacteristic() -> CBCharacteristic{
+        return voltageDataCharacteristic!
     }
 
     

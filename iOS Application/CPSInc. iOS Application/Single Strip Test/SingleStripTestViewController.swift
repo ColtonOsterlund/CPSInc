@@ -44,6 +44,8 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
     var testTimer = Timer()
     var tempBatTimer = Timer()
     
+    var startVoltageBoolean: Bool = false
+    
     //views
     private var appDelegate: AppDelegate? = nil
     private var menuView: MenuViewController? = nil
@@ -52,6 +54,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
     
     //buttons
     private var startTestBtn = UIButton()
+    private var startVoltageBtn = UIButton()
     private var saveTestBtn = UIButton()
     private var discardTestBtn = UIButton()
     private var cancelTestBtn = UIButton()
@@ -152,6 +155,15 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         startTestBtn.layer.borderWidth = 2
         startTestBtn.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor
         view.addSubview(startTestBtn)
+        
+        startVoltageBtn.backgroundColor = .blue
+        startVoltageBtn.setTitle("Start Voltage", for: .normal)
+        startVoltageBtn.setTitleColor(.white, for: .normal)
+        startVoltageBtn.layer.borderWidth = 2
+        startVoltageBtn.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor
+        view.addSubview(startVoltageBtn)
+        startVoltageBtn.isHidden = true
+        startVoltageBtn.isEnabled = false
         
         //saveTestBtn
         saveTestBtn.backgroundColor = .blue
@@ -349,6 +361,12 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         startTestBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
         startTestBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.1)).isActive = true
         
+        startVoltageBtn.translatesAutoresizingMaskIntoConstraints = false
+        startVoltageBtn.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        startVoltageBtn.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        startVoltageBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
+        startVoltageBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.1)).isActive = true
+        
         //connectedDevicesLabel
         connectedDeviceLabel.translatesAutoresizingMaskIntoConstraints = false
         connectedDeviceLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
@@ -468,6 +486,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
     
     public func setupButtonListeners(){
         startTestBtn.addTarget(self, action: #selector(startTestBtnListener), for: .touchUpInside)
+        startVoltageBtn.addTarget(self, action: #selector(startVoltageBtnListener), for: .touchUpInside)
         saveTestBtn.addTarget(self, action: #selector(saveTestBtnListener), for: .touchUpInside)
         discardTestBtn.addTarget(self, action: #selector(discardTestBtnListener), for: .touchUpInside)
         cancelTestBtn.addTarget(self, action: #selector(cancelTestBtnListener), for: .touchUpInside)
@@ -495,17 +514,17 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             showToast(controller: self, message: "No device connected", seconds: 1)
             return
         }
-        else if(testPageController!.getStripDetectVoltageValue() == nil){ //set proper value for testing, for now this works
-            //this is set to 750 since one of the devices only has a strip detect voltage of 1/2 VDD, the other has a strip detect voltage of VDD. 75O gives a lot of room for any noise at the bottom end and also is low enough to detect when a strip is inserted (essentially 1/4 VDD)
-            showToast(controller: self, message: "Securing Connection to Device, Please Retry", seconds: 1)
-            return
-        }
-        //check that both strips are entered into the device
-        else if(testPageController!.getStripDetectVoltageValue()! <= 750){ //set proper value for testing, for now this works
-            //this is set to 750 since one of the devices only has a strip detect voltage of 1/2 VDD, the other has a strip detect voltage of VDD. 75O gives a lot of room for any noise at the bottom end and also is low enough to detect when a strip is inserted (essentially 1/4 VDD)
-            showToast(controller: self, message: "Strips not detected", seconds: 1)
-            return
-        }
+//        else if(testPageController!.getStripDetectVoltageValue() == nil){ //set proper value for testing, for now this works
+//            //this is set to 750 since one of the devices only has a strip detect voltage of 1/2 VDD, the other has a strip detect voltage of VDD. 75O gives a lot of room for any noise at the bottom end and also is low enough to detect when a strip is inserted (essentially 1/4 VDD)
+//            showToast(controller: self, message: "Securing Connection to Device, Please Retry", seconds: 1)
+//            return
+//        }
+//        //check that both strips are entered into the device
+//        else if(testPageController!.getStripDetectVoltageValue()! <= 750){ //set proper value for testing, for now this works
+//            //this is set to 750 since one of the devices only has a strip detect voltage of 1/2 VDD, the other has a strip detect voltage of VDD. 75O gives a lot of room for any noise at the bottom end and also is low enough to detect when a strip is inserted (essentially 1/4 VDD)
+//            showToast(controller: self, message: "Strips not detected", seconds: 1)
+//            return
+//        }
         else if(self.battLevel <= 3.7){
             showToast(controller: self, message: "Battery level too low to test", seconds: 1)
             return
@@ -665,6 +684,24 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
     }
     
     
+    @objc private func startVoltageBtnListener(){
+        
+        let startTestString = "01"
+        
+    
+        let startTestData = Data(hexString: startTestString)
+        
+        self.testPageController!.getPeripheralDevice()?.writeValue(startTestData!, for: self.testPageController!.getVoltageDataCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
+        
+        DispatchQueue.main.async {
+            self.showToast(controller: self, message: "Line 697", seconds: 1)
+        }
+        
+        
+        self.startVoltageBoolean = true
+    }
+    
+    
     @objc private func startTestBtnListener(){
 
         startTestBtn.transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
@@ -685,17 +722,17 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             showToast(controller: self, message: "No device connected", seconds: 1)
             return
         }
-        else if(testPageController!.getStripDetectVoltageValue() == nil){ //set proper value for testing, for now this works
-            //this is set to 750 since one of the devices only has a strip detect voltage of 1/2 VDD, the other has a strip detect voltage of VDD. 75O gives a lot of room for any noise at the bottom end and also is low enough to detect when a strip is inserted (essentially 1/4 VDD)
-            showToast(controller: self, message: "Securing Connection to Device, Please Retry", seconds: 1)
-            return
-        }
-        //check that both strips are entered into the device
-        else if(testPageController!.getStripDetectVoltageValue()! <= 750){ //set proper value for testing, for now this works
-            //this is set to 750 since one of the devices only has a strip detect voltage of 1/2 VDD, the other has a strip detect voltage of VDD. 75O gives a lot of room for any noise at the bottom end and also is low enough to detect when a strip is inserted (essentially 1/4 VDD)
-            showToast(controller: self, message: "Strips not detected", seconds: 1)
-            return
-        }
+//        else if(testPageController!.getStripDetectVoltageValue() == nil){ //set proper value for testing, for now this works
+//            //this is set to 750 since one of the devices only has a strip detect voltage of 1/2 VDD, the other has a strip detect voltage of VDD. 75O gives a lot of room for any noise at the bottom end and also is low enough to detect when a strip is inserted (essentially 1/4 VDD)
+//            showToast(controller: self, message: "Securing Connection to Device, Please Retry", seconds: 1)
+//            return
+//        }
+//        //check that both strips are entered into the device
+//        else if(testPageController!.getStripDetectVoltageValue()! <= 750){ //set proper value for testing, for now this works
+//            //this is set to 750 since one of the devices only has a strip detect voltage of 1/2 VDD, the other has a strip detect voltage of VDD. 75O gives a lot of room for any noise at the bottom end and also is low enough to detect when a strip is inserted (essentially 1/4 VDD)
+//            showToast(controller: self, message: "Strips not detected", seconds: 1)
+//            return
+//        }
         else if(self.battLevel <= 10){
             showToast(controller: self, message: "Battery level too low to test", seconds: 1)
             return
@@ -872,6 +909,9 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         let stopTestData = Data(hexString: stopTestString)
         
         self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
+        
+        self.startVoltageBoolean = false
+        self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getVoltageDataCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
         
         self.testPageController!.resetIntegratedVoltageValue()
         
@@ -1083,14 +1123,51 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             self.testPageController!.getPeripheralDevice()?.writeValue(startTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
             
             
+            DispatchQueue.main.sync {
+                
+                self.waitingLabel.isHidden = true
+                
+                //SHOW START TEST BUTTON
+                self.startVoltageBtn.isEnabled = true
+                self.startVoltageBtn.isHidden = false
+            }
+
+            
+            //WAIT UNTIL START TEST BUTTON IS PRESSED
+            while(true){
+                //this will stay in here until the startVoltageBoolean gets set to true in the btn listener
+                if(self.startVoltageBoolean == true){
+                    break;
+                }
+                else if(self.cancelTestFlag){
+                    DispatchQueue.main.async {
+                        self.discardTestBtnListener()
+                    }
+                    return
+                }
+            }
+            
+            
+            
             
             DispatchQueue.main.sync {
-                self.waitingLabel.text = "Waiting for strip to be filled..."
-                //self.waitingLabel.text = "Line 888"
+            
                 
-                self.showToast(controller: self, message: "Fill Strip With Sample", seconds: 2)
-                
+                //SHOW START TEST BUTTON
+                self.startVoltageBtn.isEnabled = false
+                self.startVoltageBtn.isHidden = true
             }
+            
+            
+            //THIS ISN'T NEEDED ANYMORE
+            
+//            DispatchQueue.main.sync {
+//                self.waitingLabel.text = "Waiting for strip to be filled..."
+//                //self.waitingLabel.text = "Line 888"
+//
+//                self.showToast(controller: self, message: "Fill Strip With Sample", seconds: 2)
+//
+//            }
             
             
             
@@ -1139,15 +1216,18 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             //wait until value is not nil
            // var index = 0
             
-            while(true){ //this shouldn't pause the UI since its on a background thread
-                if(self.testPageController!.getIntegratedVoltageValue() != nil){
-                    break
-                }
+            
+            //THIS ISN'T NEEDED BELOW NOW
+            
+            //while(true){ //this shouldn't pause the UI since its on a background thread //UNCOMMENT
+                //if(self.testPageController!.getIntegratedVoltageValue() != nil){ //UNCOMMENT
+                    //break //UNCOMMENT
+                //} //UNCOMMENT
 //                DispatchQueue.main.async{
 //                    self.waitingLabel.text = String(index)
 //                }
 //                index += 1
-            }
+            //} //UNCOMMENT
 
             //var index = 0;
             
@@ -1157,31 +1237,32 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
 //            }
             
             
+            //THIS ISNT NEEDED BELOW NOW
             
             //wait until value reaches a threshold of 250mV
-            while(true){ //this shouldn't pause the UI since its on a background thread
-                //print(self.testPageController!.getIntegratedVoltageValue())
-                if(self.testPageController!.getIntegratedVoltageValue()! >= 150){
-                    break
-                }
-                else if(self.cancelTestFlag){
-                    DispatchQueue.main.async {
-                        self.discardTestBtnListener()
-                    }
-                    return
-                }
-//                if(index % 1000 == 0){
-//                    self.cancelTestBtn.isHidden = !(self.cancelTestBtn.isHidden)
+//            while(true){ //this shouldn't pause the UI since its on a background thread
+//                //print(self.testPageController!.getIntegratedVoltageValue())
+//                if(self.testPageController!.getIntegratedVoltageValue()! >= 150){
+//                    break
 //                }
-//                index += 1;
-            }
+//                else if(self.cancelTestFlag){
+//                    DispatchQueue.main.async {
+//                        self.discardTestBtnListener()
+//                    }
+//                    return
+//                }
+////                if(index % 1000 == 0){
+////                    self.cancelTestBtn.isHidden = !(self.cancelTestBtn.isHidden)
+////                }
+////                index += 1;
+//            }
             
 //            DispatchQueue.main.async{
 //                self.waitingLabel.text = "Line 971"
 //            }
             
             DispatchQueue.main.async {
-                self.waitingLabel.isHidden = true
+                //self.waitingLabel.isHidden = true
                 self.tempVoltageLabel.isHidden = true
                 self.batteryVoltageLabel.isHidden = true
                 
@@ -1213,6 +1294,11 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             finalValueTestQueue.asyncAfter(deadline: currentTime + .seconds(testDuration)){
                 //TODO
                 
+                DispatchQueue.main.sync {
+                    self.testTimer.invalidate()
+                }
+                
+                
                 var finalResult: Float?
                 
                 if(self.testPageController!.getIntegratedVoltageValue() != nil){
@@ -1235,6 +1321,10 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                 
                 
                 self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
+                
+                self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getVoltageDataCharacteristic(), type: .withResponse)
+                self.startVoltageBoolean = false
+                
                 if(self.menuView!.getSettingsView().getUnitsSwitchValue()){
                     finalResult = finalResult! / 4
                     self.units = "mM"
@@ -1244,7 +1334,6 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                 }
                     
                 
-                self.testTimer.invalidate()
                 
                 //MARK: Normal Testing Procedure
                 self.testResultToSave = finalResult
@@ -1572,30 +1661,35 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
     //MARK: testing purposes - will print voltage values to the screen
     @objc private func readNewVoltage(){
         
-        let today = Date()
-        let formatter3 = DateFormatter()
-        formatter3.dateFormat = "y-MM-dd H:m:ss.SSSS"
-        print(formatter3.string(from: today))
+        //put all of this into a new thread that will be destroyed after it is done
+        let dispatchQueue = DispatchQueue(label: "fileWritingThread", qos: .background)
         
-       
-        
-        var intVoltageValue: Int? = nil
-        //DispatchQueue.main.sync {
+        dispatchQueue.async{
+            let today = Date()
+            let formatter3 = DateFormatter()
+            formatter3.dateFormat = "y-MM-dd, H:m:ss:SSSS"
+            print(formatter3.string(from: today))
+            
+           
+            var intVoltageValue: Int? = nil
+
             intVoltageValue = self.testPageController!.getIntegratedVoltageValue()
-        //}
+            
+            if(intVoltageValue == nil){
+                print("nil")
+                if(self.menuView?.getSettingsView().getTestingModeDefault() == true){
+                    self.appendStringToFile(url: self.url!, string: ("nil" + "\n"))
+                }
+            }
+            else{
+                print(intVoltageValue!)
+                if(self.menuView?.getSettingsView().getTestingModeDefault() == true){
+                    self.appendStringToFile(url: self.url!, string: (String(intVoltageValue!) + ", " + formatter3.string(from: today) + "\n"))
+                }
+            }
+            
+        }
         
-        if(intVoltageValue == nil){
-            print("nil")
-            if(menuView?.getSettingsView().getTestingModeDefault() == true){
-                self.appendStringToFile(url: url!, string: ("nil" + "\n"))
-            }
-        }
-        else{
-            print(intVoltageValue!)
-            if(menuView?.getSettingsView().getTestingModeDefault() == true){
-                self.appendStringToFile(url: url!, string: (String(intVoltageValue!) + ", " + formatter3.string(from: today) + "\n"))
-            }
-        }
     }
     
     
