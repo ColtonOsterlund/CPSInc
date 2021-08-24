@@ -273,7 +273,6 @@ public class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotification
     
     public func setSyncUpToDate(upToDate: Bool){
         defaults.set(upToDate, forKey: "syncUpToDateDefault")
-        firstView?.setSyncUpToDate(upToDate: upToDate)
     }
     
     public func getSyncUpToDate() -> Bool{

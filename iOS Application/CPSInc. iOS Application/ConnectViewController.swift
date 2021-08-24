@@ -78,6 +78,18 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
     }
     
     override public func viewDidAppear(_ animated: Bool) {
+        if(self.peripheralDevice == nil){
+            connectedDeviceLabel.text = "Connected Device: None"
+        }
+        else{
+            var connectedDeviceString1 = "Connected to: " + (peripheralDevice?.name)!
+            var connectedDeviceString2 = " ("
+            var connectedDeviceString3 = String((menuView?.getTestPageView().getBatteryVoltageValue()!)!)
+            var connectedDeviceString4 = "%)"
+            connectedDeviceLabel.text = connectedDeviceString1 + connectedDeviceString2 + connectedDeviceString3 + connectedDeviceString4
+        }
+
+        
         searchForKnowBluetoothDevicesFlag = false //when view appears, it stops auto searching
     }
 
@@ -182,7 +194,11 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
             connectedDeviceLabel.text = "Connected Device: None"
         }
         else{
-            connectedDeviceLabel.text = "Connected to: " + (peripheralDevice?.name)!
+            var connectedDeviceString1 = "Connected to: " + (peripheralDevice?.name)!
+            var connectedDeviceString2 = " ("
+            var connectedDeviceString3 = String((menuView?.getTestPageView().getBatteryVoltageValue()!)!)
+            var connectedDeviceString4 = "%)"
+            connectedDeviceLabel.text = connectedDeviceString1 + connectedDeviceString2 + connectedDeviceString3 + connectedDeviceString4
         }
         connectedDeviceLabel.textColor = .black
 //        connectedDeviceLabel.frame = CGRect(x: (UIScreen.main.bounds.width / 2) - 250, y: ((UIScreen.main.bounds.height / 7) * 5.5) + 10, width: 500, height: 20)
@@ -425,14 +441,20 @@ public class ConnectViewController: UIViewController, CBCentralManagerDelegate, 
         
             self.peripheralDevice = peripheral
             self.showToast(controller: self, message: "Connected", seconds: 1)
-            self.connectedDeviceLabel.text = "Connected to: " + peripheral.name!
             self.menuView?.setPeripheralDevice(periphDevice: peripheral)
             self.menuView?.getTestPageView().setPeripheralDevice(periphDevice: peripheral)
             peripheral.delegate = self.menuView?.getTestPageView()
             peripheral.discoverServices(nil)
             
+            var connectedDeviceString1 = "Connected to: " + (self.peripheralDevice?.name)!
+            var connectedDeviceString2 = " ("
+            var connectedDeviceString3 = String((self.menuView?.getTestPageView().getBatteryVoltageValue()!)!)
+            var connectedDeviceString4 = "%)"
+            self.connectedDeviceLabel.text = connectedDeviceString1 + connectedDeviceString2 + connectedDeviceString3 + connectedDeviceString4
+
+            
             for view in (self.menuView?.getTestPageView().getTestPages())!{
-                view.getConnectedDeviceLabel().text = "Connected to: " + peripheral.name! //if testView is visible connectedDeviceLabel will not be changed right away - manually change it
+                view.getConnectedDeviceLabel().text = "Connected to: " + (self.peripheralDevice?.name)! //if testView is visible connectedDeviceLabel will not be changed right away - manually change it
             }
             
             if(self.wcSession != nil){

@@ -286,6 +286,9 @@ public class LoginViewController: UIViewController, UITextFieldDelegate, WCSessi
                         if(jwtSavedSuccessfully && userIDSavedSuccessfully){
                             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)){ //go after 1 second from now you that you know the toast is complete
                                 
+                                
+                                
+                                
                                 //login to shopify account and get the access token
                                 print("Email: " + self.emailTextField.text!)
                                 print("Password: " + self.passwordTextField.text!)
@@ -342,7 +345,14 @@ public class LoginViewController: UIViewController, UITextFieldDelegate, WCSessi
                                     
                                     
                                     if(!self.accountOrStore){
-                                        self.navigationController?.pushViewController(self.accountView!, animated: true)
+                                        
+                                        let emailSavedSuccessfully = KeychainWrapper.standard.set(self.emailTextField.text!, forKey: "UserEmail")
+                                        
+                                        if(emailSavedSuccessfully){
+                                            self.accountView?.refreshUserEmail()
+                                            self.navigationController?.pushViewController(self.accountView!, animated: true)
+                                        }
+                                        
                                     }
                                     else{
                                         

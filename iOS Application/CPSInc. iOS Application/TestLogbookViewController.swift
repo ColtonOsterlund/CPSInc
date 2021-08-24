@@ -125,24 +125,28 @@ public class TestLogbookViewController: UITableViewController, WCSessionDelegate
                 do {
                     let json = try JSONSerialization.jsonObject(with: data!, options: []) as? [[String: Any]]
                     
+                    
                                         
                     for object in json! {
                         
+                        let formatter = DateFormatter()
+                        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
                         
                         let toSave = Test(context: (self.appDelegate?.persistentContainer.viewContext)!)
                             
                         toSave.cow = self.selectedCow
                         toSave.herd = self.selectedCow?.herd
-                        toSave.date = object["date"] as? NSDate
+                        toSave.date = formatter.date(from: object["date"] as! String) as NSDate?
                         toSave.followUpNum = object["followUpNum"] as? NSNumber
-                        toSave.milkFever = object["milkFever"] as! Bool
+                        toSave.milkFever = (object["milkFever"] as! NSString).boolValue
                         toSave.testID = object["testID"] as? String
                         toSave.testType = object["testType"] as? String
                         toSave.units = object["units"] as? String
-                        toSave.value = object["value"] as! Float
+                        toSave.value = (object["value"] as! NSString).floatValue
                             
-                        print("HERE TEST: ")
+                        print(toSave.date)
                         
+                        self.testList.append(toSave)
                         
                     }
                     
@@ -150,7 +154,7 @@ public class TestLogbookViewController: UITableViewController, WCSessionDelegate
                     
                     DispatchQueue.main.async {
                         self.scanningIndicator.stopAnimating()
-                        print(self.testList.isEmpty)
+                        //print(self.testList.isEmpty)
                         self.tableView.reloadData()
                     }
                     
@@ -186,7 +190,7 @@ public class TestLogbookViewController: UITableViewController, WCSessionDelegate
         scanningIndicator.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * 0.06).isActive = true
         
 //        chartBtn = UIBarButtonItem.init(title: "Chart", style: .done, target: self, action: #selector(graphResults))
-        filterBtn = UIBarButtonItem.init(title: "Filter", style: .done, target: self, action: #selector(filterResults))
+        //filterBtn = UIBarButtonItem.init(title: "Filter", style: .done, target: self, action: #selector(filterResults))
         graphSelectedBtn = UIBarButtonItem.init(title: "Graph Selected", style: .done, target: self, action: #selector(graphFromSelected))
         cancelSelectionBtn = UIBarButtonItem.init(title: "Cancel", style: .done, target: self, action: #selector(cancelSelected))
         
@@ -488,6 +492,7 @@ public class TestLogbookViewController: UITableViewController, WCSessionDelegate
         dateformatter.dateStyle = DateFormatter.Style.short
         dateformatter.timeStyle = DateFormatter.Style.short
         
+        print(testList[0])
         
         cell.textLabel?.text = dateformatter.string(from: testList[indexPath.row].date! as Date)
         

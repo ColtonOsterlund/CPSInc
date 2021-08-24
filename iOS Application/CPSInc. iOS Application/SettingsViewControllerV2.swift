@@ -10,6 +10,7 @@ import UIKit
 import CoreBluetooth
 import QuartzCore //to be able to round the background edges on the switches
 import WatchConnectivity
+import SwiftKeychainWrapper
 
 
 public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UIPickerViewDataSource, UIPickerViewDelegate, */UITextFieldDelegate{
@@ -29,6 +30,7 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
     private let mgDlLabel = UILabel()
     private let mMLabel = UILabel()
     private let testingModeLabel = UILabel()
+    private let quantitativeModeLabel = UILabel()
     
     //PickerView
     //private let finalContinuousPicker = UIPickerView()
@@ -39,6 +41,7 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
     private let manualCalibrationSwitch = UISwitch()
     private let unitsSwitch = UISwitch()
     private let testingModeSwitch = UISwitch()
+    private let quantitativeModeSwitch = UISwitch()
     
     //User Defaults
     private let defaults = UserDefaults.standard
@@ -75,15 +78,11 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
         //these should be done upon initialization instead of upon view loading so that the saved settings can be accessed in different controllers
         createLayoutItems()
         setLayoutConstraints()
-//        setButtonListeners()
-//        checkForSavedSettings()
-        
-//        if (WCSession.isSupported()) {
-//            wcSession = WCSession.default
-//            wcSession!.delegate = self
-//            wcSession!.activate()
-//            print("wcSession has been activated on mobile - SettingsViewController")
-//        }
+        checkAccess()
+    }
+    
+    public override func viewWillAppear(_ animated: Bool) {
+        checkAccess()
     }
     
     // This allows you to initialise your custom UIViewController witho@available(iOS 12.0, *)
@@ -95,22 +94,18 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
         
         createLayoutItems()
         setLayoutConstraints()
+        checkAccess()
     }
 
     // This extends the superclass.
     public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
-        //register default settings off on init - will only happen if these have not been created on the device before
-        //defaults.register(defaults: ["finalContinuousDefault": 0])
-        //defaults.register(defaults: ["testDurationDefault": 0])
-        //defaults.register(defaults: ["testTypeDefault": 0])
-        //defaults.register(defaults: ["finalContinuousTextViewDefault": "Final Value"])
-        //defaults.register(defaults: ["testDurationTextViewDefault": "5 Seconds"])
-        //defaults.register(defaults: ["testTypeTextViewDefault": "Immunoglobulins"])
+
         defaults.register(defaults: ["manualCalibrationDefault": false])
         defaults.register(defaults: ["unitsDefault": false])
         defaults.register(defaults: ["testingModeDefault": false])
+        defaults.register(defaults: ["quantitativeModeDefault": false])
         defaults.register(defaults: ["mValDefault": 0])
         defaults.register(defaults: ["bValDefault": 0])
     }
@@ -128,32 +123,7 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
         let done = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(doneKeyboardBtnPressed))
         bar.items = [flex, done]
         
-        //testTypeLabel
-//        let underlinedTestTypeLabelString: NSMutableAttributedString =  NSMutableAttributedString(string: "Final Vs. Cont:")
-//        underlinedTestTypeLabelString.addAttribute(NSAttributedString.Key.underlineStyle, value: 1, range: NSMakeRange(0, underlinedTestTypeLabelString.length))
-//        testTypeLabel.attributedText = underlinedTestTypeLabelString
-//        testTypeLabel.textColor = .black
-//        testTypeLabel.font = UIFont.boldSystemFont(ofSize: 25.0)
-//        testTypeLabel.textAlignment = .center
-//        view.addSubview(testTypeLabel)
-        
-        
-//        let underlinedTestDurationLabelString: NSMutableAttributedString = NSMutableAttributedString(string: "Test Duration:")
-//        underlinedTestDurationLabelString.addAttribute(NSAttributedString.Key.underlineStyle, value: 1, range: NSMakeRange(0, underlinedTestDurationLabelString.length))
-//        testDurationLabel.attributedText = underlinedTestDurationLabelString
-//        testDurationLabel.textColor = .black
-//        testDurationLabel.font = UIFont.boldSystemFont(ofSize: 25.0)
-//        testDurationLabel.textAlignment = .center
-//        view.addSubview(testDurationLabel)
-//
-//
-//        let underlinedTestTypePickerLabel: NSMutableAttributedString = NSMutableAttributedString(string: "Test Type:")
-//        underlinedTestTypePickerLabel.addAttribute(NSAttributedString.Key.underlineStyle, value: 1, range: NSMakeRange(0, underlinedTestTypePickerLabel.length))
-//        testTypePickerLabel.attributedText = underlinedTestTypePickerLabel
-//        testTypePickerLabel.textColor = .black
-//        testTypePickerLabel.font = UIFont.boldSystemFont(ofSize: 25.0)
-//        testTypePickerLabel.textAlignment = .center
-//        view.addSubview(testTypePickerLabel)
+
         
         let underlinedManualCalibrationLabel: NSMutableAttributedString = NSMutableAttributedString(string: "Manual Calibration:")
         underlinedManualCalibrationLabel.addAttribute(NSAttributedString.Key.underlineStyle, value: 1, range: NSMakeRange(0, underlinedManualCalibrationLabel.length))
@@ -191,90 +161,15 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
         testingModeLabel.textAlignment = .center
         view.addSubview(testingModeLabel)
         
-//        finalContinuousPicker.tag = 0
-//        finalContinuousPicker.backgroundColor = .gray
-//        finalContinuousPicker.layer.borderColor = UIColor.black.cgColor
-//        finalContinuousPicker.layer.borderWidth = 1
-//        finalContinuousPicker.delegate = self
-//        finalContinuousPicker.dataSource = self
-//        finalContinuousPicker.selectRow(defaults.integer(forKey: "finalContinuousDefault"), inComponent: 0, animated: true)
-//        finalContinuousPicker.isHidden = true //hide until needed
-//        finalContinuousPicker.isUserInteractionEnabled = false //disable until needed
-//        view.addSubview(finalContinuousPicker)
-//
-//        testDurationPicker.tag = 1
-//        testDurationPicker.backgroundColor = .gray
-//        testDurationPicker.layer.borderColor = UIColor.black.cgColor
-//        testDurationPicker.layer.borderWidth = 1
-//        testDurationPicker.delegate = self
-//        testDurationPicker.dataSource = self
-//        testDurationPicker.selectRow(defaults.integer(forKey: "testDurationDefault"), inComponent: 0, animated: true)
-//        testDurationPicker.isHidden = true //hide until needed
-//        testDurationPicker.isUserInteractionEnabled = false //disable until needed
-//        view.addSubview(testDurationPicker)
-//
-//       // testTypePicker.frame = CGRect(x: 400, y: 200, width: 50, height: 10)
-//        testTypePicker.tag = 2
-//        testTypePicker.backgroundColor = .gray
-//        testTypePicker.layer.borderColor = UIColor.black.cgColor
-//        testTypePicker.layer.borderWidth = 1
-//        testTypePicker.delegate = self
-//        testTypePicker.dataSource = self
-//        testTypePicker.selectRow(defaults.integer(forKey: "testTypeDefault"), inComponent: 0, animated: true)
-//        testTypePicker.isHidden = true //hide until needed
-//        testTypePicker.isUserInteractionEnabled = false //disable until needed
-//        view.addSubview(testTypePicker)
-//
-//        finalContinuousTextView.text = defaults.string(forKey: "finalContinuousTextViewDefault")
-////        finalContinuousTextView.layer.borderWidth = 0.5
-////        finalContinuousTextView.layer.backgroundColor = UIColor.gray.cgColor
-////        finalContinuousTextView.layer.borderColor = UIColor.black.cgColor
-//        //finalContinuousTextView.delegate = self
-//        finalContinuousTextView.tag = 0
-//        view.addSubview(finalContinuousTextView)
-//
-//
-//        testDurationTextView.text = defaults.string(forKey: "testDurationTextViewDefault")
-////        testDurationTextView.layer.borderWidth = 0.5
-////        testDurationTextView.layer.backgroundColor = UIColor.gray.cgColor
-////        testDurationTextView.layer.borderColor = UIColor.black.cgColor
-//        //testDurationTextView.delegate = self
-//        testDurationTextView.tag = 1
-//        view.addSubview(testDurationTextView)
-//
-//
-//        testTypeTextView.text = defaults.string(forKey: "testTypeTextViewDefault")
-//        //testTypeTextView.layer.borderWidth = 0.5
-//        //testTypeTextView.layer.backgroundColor = UIColor.gray.cgColor
-//        //testTypeTextView.layer.borderColor = UIColor.black.cgColor
-//        //testTypeTextView.delegate = self
-//        testTypeTextView.tag = 2
-//        view.addSubview(testTypeTextView)
-//
-//        selectBtn.setTitle("Select", for: .normal)
-//        selectBtn.setTitleColor(.white, for: .normal)
-//        selectBtn.backgroundColor = .gray
-//        selectBtn.layer.borderWidth = 1
-//        selectBtn.layer.borderColor = UIColor.black.cgColor
-//        selectBtn.addTarget(self, action: #selector(selectBtnPressed), for: .touchUpInside)
-//        selectBtn.isHidden = true
-//        selectBtn.isEnabled = false
-//        view.addSubview(selectBtn)
-//
-//        finalContinuousBtn.addTarget(self, action: #selector(finalContinuousBtnPressed), for: .touchUpInside)
-//        finalContinuousBtn.isHidden = false
-//        finalContinuousBtn.isEnabled = true
-//        view.addSubview(finalContinuousBtn)
-//
-//        testDurationBtn.addTarget(self, action: #selector(testDurationBtnPressed), for: .touchUpInside)
-//        testDurationBtn.isHidden = false
-//        testDurationBtn.isEnabled = true
-//        view.addSubview(testDurationBtn)
-//
-//        testTypeBtn.addTarget(self, action: #selector(testTypeBtnPressed), for: .touchUpInside)
-//        testTypeBtn.isHidden = false
-//        testTypeBtn.isEnabled = true
-//        view.addSubview(testTypeBtn)
+        
+        let underlinedQuantitativeLabel: NSMutableAttributedString = NSMutableAttributedString(string: "Quantitative Mode:")
+        underlinedQuantitativeLabel.addAttribute(NSAttributedString.Key.underlineStyle, value: 1, range: NSMakeRange(0, underlinedQuantitativeLabel.length))
+        quantitativeModeLabel.attributedText = underlinedQuantitativeLabel
+        quantitativeModeLabel.textColor = .black
+        quantitativeModeLabel.font = UIFont.boldSystemFont(ofSize: 25.0)
+        quantitativeModeLabel.textAlignment = .center
+        view.addSubview(quantitativeModeLabel)
+        
         
         manualCalibrationSwitch.setOn(defaults.bool(forKey: "manualCalibrationDefault"), animated: true)
         manualCalibrationSwitch.addTarget(self, action: #selector(manualCalibrationSwitchStateChanged), for: .valueChanged)
@@ -283,6 +178,10 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
         unitsSwitch.setOn(defaults.bool(forKey: "unitsDefault"), animated: true)
         unitsSwitch.addTarget(self, action: #selector(unitsSwitchStateChanged), for: .valueChanged)
         view.addSubview(unitsSwitch)
+        
+        quantitativeModeSwitch.setOn(defaults.bool(forKey: "quantitativeModeDefault"), animated: true)
+        quantitativeModeSwitch.addTarget(self, action: #selector(quantitativeModeSwitchStateChanged), for: .valueChanged)
+        view.addSubview(quantitativeModeSwitch)
         
         testingModeSwitch.setOn(defaults.bool(forKey: "testingModeDefault"), animated: true)
         testingModeSwitch.addTarget(self, action: #selector(testingModeSwitchStateChanged), for: .valueChanged)
@@ -313,27 +212,11 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
         }
         
         
-//        if(defaults.integer(forKey: "testTypeDefault") == 0){ //immunoglobulins
-//            changeToImmunoglobulin()
-//        }
-        
     }
     
     private func setLayoutConstraints(){
         
         
-        
-//        testTypeLabel.translatesAutoresizingMaskIntoConstraints = false
-//        testTypeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-//        testTypeLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.07)).isActive = true
-//
-//        testDurationLabel.translatesAutoresizingMaskIntoConstraints = false
-//        testDurationLabel.topAnchor.constraint(equalTo: testTypeLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-//        testDurationLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.07)).isActive = true
-//
-//        testTypePickerLabel.translatesAutoresizingMaskIntoConstraints = false
-//        testTypePickerLabel.topAnchor.constraint(equalTo: testDurationLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-//        testTypePickerLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.07)).isActive = true
         
         unitsLabel.translatesAutoresizingMaskIntoConstraints = false
         unitsLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
@@ -347,79 +230,40 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
         mMLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         mMLabel.leftAnchor.constraint(equalTo: self.unitsSwitch.rightAnchor, constant: (UIScreen.main.bounds.width * 0.07)).isActive = true
         
-        manualCalibrationLabel.translatesAutoresizingMaskIntoConstraints = false
-        manualCalibrationLabel.topAnchor.constraint(equalTo: self.unitsLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        manualCalibrationLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.07)).isActive = true
-        
-//        finalContinuousBtn.translatesAutoresizingMaskIntoConstraints = false
-//        finalContinuousBtn.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-//        finalContinuousBtn.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.07)).isActive = true
-//        finalContinuousBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.45)).isActive = true
-//        finalContinuousBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-//
-//        testDurationBtn.translatesAutoresizingMaskIntoConstraints = false
-//        testDurationBtn.topAnchor.constraint(equalTo: testTypeLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-//        testDurationBtn.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.07)).isActive = true
-//        testDurationBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.45)).isActive = true
-//        testDurationBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-//
-//        testTypeBtn.translatesAutoresizingMaskIntoConstraints = false
-//        testTypeBtn.topAnchor.constraint(equalTo: testDurationLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-//        testTypeBtn.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.07)).isActive = true
-//        testTypeBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.45)).isActive = true
-//        testTypeBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-//
-//        finalContinuousTextView.translatesAutoresizingMaskIntoConstraints = false
-//        finalContinuousTextView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-//        finalContinuousTextView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.05)).isActive = true
-//        finalContinuousTextView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.4)).isActive = true
-//        finalContinuousTextView.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-//
-//        testDurationTextView.translatesAutoresizingMaskIntoConstraints = false
-//        testDurationTextView.topAnchor.constraint(equalTo: testTypeLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-//        testDurationTextView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.05)).isActive = true
-//        testDurationTextView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.4)).isActive = true
-//        testDurationTextView.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-//
-//        testTypeTextView.translatesAutoresizingMaskIntoConstraints = false
-//        testTypeTextView.topAnchor.constraint(equalTo: testDurationLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-//        testTypeTextView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.05)).isActive = true
-//        testTypeTextView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.4)).isActive = true
-//        testTypeTextView.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-//
-//
-//
-//        finalContinuousPicker.translatesAutoresizingMaskIntoConstraints = false
-//        finalContinuousPicker.topAnchor.constraint(equalTo: testTypePickerLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.2)).isActive = true
-//        finalContinuousPicker.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.05)).isActive = true
-//        finalContinuousPicker.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.9)).isActive = true
-//        finalContinuousPicker.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.35)).isActive = true
-//
-//        testDurationPicker.translatesAutoresizingMaskIntoConstraints = false
-//        testDurationPicker.topAnchor.constraint(equalTo: testTypePickerLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.2)).isActive = true
-//        testDurationPicker.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.05)).isActive = true
-//        testDurationPicker.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.9)).isActive = true
-//        testDurationPicker.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.35)).isActive = true
-//
-//        testTypePicker.translatesAutoresizingMaskIntoConstraints = false
-//        testTypePicker.topAnchor.constraint(equalTo: testTypePickerLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.2)).isActive = true
-//        testTypePicker.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.05)).isActive = true
-//        testTypePicker.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.9)).isActive = true
-//        testTypePicker.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.35)).isActive = true
-//
-//        selectBtn.translatesAutoresizingMaskIntoConstraints = false
-//        selectBtn.topAnchor.constraint(equalTo: finalContinuousPicker.bottomAnchor).isActive = true
-//        selectBtn.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.05)).isActive = true
-//        selectBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.9)).isActive = true
-//        selectBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        
-        manualCalibrationSwitch.translatesAutoresizingMaskIntoConstraints = false
-        manualCalibrationSwitch.topAnchor.constraint(equalTo: self.unitsLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        manualCalibrationSwitch.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.05)).isActive = true
         
         unitsSwitch.translatesAutoresizingMaskIntoConstraints = false
         unitsSwitch.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         unitsSwitch.leftAnchor.constraint(equalTo: self.mgDlLabel.rightAnchor, constant: (UIScreen.main.bounds.width * 0.07)).isActive = true
+        
+        testingModeLabel.translatesAutoresizingMaskIntoConstraints = false
+        testingModeLabel.topAnchor.constraint(equalTo: self.unitsLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        testingModeLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.07)).isActive = true
+        
+        testingModeSwitch.translatesAutoresizingMaskIntoConstraints = false
+        testingModeSwitch.topAnchor.constraint(equalTo: self.unitsSwitch.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        testingModeSwitch.leftAnchor.constraint(equalTo: self.testingModeLabel.rightAnchor, constant: (UIScreen.main.bounds.width * 0.07)).isActive = true
+
+        
+        quantitativeModeLabel.translatesAutoresizingMaskIntoConstraints = false
+        quantitativeModeLabel.topAnchor.constraint(equalTo: self.testingModeLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        quantitativeModeLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.07)).isActive = true
+
+        
+        quantitativeModeSwitch.translatesAutoresizingMaskIntoConstraints = false
+        quantitativeModeSwitch.topAnchor.constraint(equalTo: self.testingModeSwitch.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        quantitativeModeSwitch.leftAnchor.constraint(equalTo: self.quantitativeModeLabel.rightAnchor, constant: (UIScreen.main.bounds.width * 0.07)).isActive = true
+        
+        
+        
+        manualCalibrationLabel.translatesAutoresizingMaskIntoConstraints = false
+        manualCalibrationLabel.topAnchor.constraint(equalTo: self.quantitativeModeLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        manualCalibrationLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.07)).isActive = true
+        
+
+        manualCalibrationSwitch.translatesAutoresizingMaskIntoConstraints = false
+        manualCalibrationSwitch.topAnchor.constraint(equalTo: self.quantitativeModeSwitch.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        manualCalibrationSwitch.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.05)).isActive = true
+        
         
         mManualCalibrationTextView.translatesAutoresizingMaskIntoConstraints = false
         mManualCalibrationTextView.topAnchor.constraint(equalTo: manualCalibrationLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
@@ -431,30 +275,40 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
         bManualCalibrationTextView.topAnchor.constraint(equalTo: mManualCalibrationTextView.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         bManualCalibrationTextView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.1)).isActive = true
         bManualCalibrationTextView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
-       
         
         
-        testingModeLabel.translatesAutoresizingMaskIntoConstraints = false
-        if(defaults.bool(forKey: "manualCalibrationDefault") == true){
-            testingModeLabel.topAnchor.constraint(equalTo: self.bManualCalibrationTextView.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+    }
+    
+    
+    private func checkAccess(){
+        if(KeychainWrapper.standard.string(forKey: "UserEmail") != "coltonericosterlund@gmail.com"){
+            testingModeSwitch.isEnabled = false
+            testingModeSwitch.isHidden = true
+            quantitativeModeSwitch.isEnabled = false
+            quantitativeModeSwitch.isHidden = true
+            manualCalibrationSwitch.isEnabled = false
+            manualCalibrationSwitch.isHidden = true
+            
+            testingModeLabel.isHidden = true
+            quantitativeModeLabel.isHidden = true
+            manualCalibrationLabel.isHidden = true
+            mManualCalibrationTextView.isHidden = true
+            bManualCalibrationTextView.isHidden = true
         }
         else{
-            testingModeLabel.topAnchor.constraint(equalTo: self.manualCalibrationLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+            testingModeSwitch.isEnabled = true
+            testingModeSwitch.isHidden = false
+            quantitativeModeSwitch.isEnabled = true
+            quantitativeModeSwitch.isHidden = false
+            manualCalibrationSwitch.isEnabled = true
+            manualCalibrationSwitch.isHidden = false
+            
+            testingModeLabel.isHidden = false
+            quantitativeModeLabel.isHidden = false
+            manualCalibrationLabel.isHidden = false
+            mManualCalibrationTextView.isHidden = false
+            bManualCalibrationTextView.isHidden = false
         }
-        testingModeLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.07)).isActive = true
-
-
-
-        testingModeSwitch.translatesAutoresizingMaskIntoConstraints = false
-        if(defaults.bool(forKey: "manualCalibrationDefault") == true){
-            testingModeSwitch.topAnchor.constraint(equalTo: self.bManualCalibrationTextView.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        }
-        else{
-            testingModeSwitch.topAnchor.constraint(equalTo: self.manualCalibrationLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        }
-        testingModeSwitch.leftAnchor.constraint(equalTo: self.testingModeLabel.rightAnchor, constant: (UIScreen.main.bounds.width * 0.07)).isActive = true
-
-        
     }
     
     
@@ -605,6 +459,18 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
         }
         else{
             defaults.set(false, forKey: "testingModeDefault")
+        }
+    }
+    
+    @objc private func quantitativeModeSwitchStateChanged(){
+        
+        print("quantitative mode switch changed")
+        
+        if(quantitativeModeSwitch.isOn){
+            defaults.set(true, forKey: "quantitativeModeDefault")
+        }
+        else{
+            defaults.set(false, forKey: "quantitativeModeDefault")
         }
     }
     
@@ -1014,39 +880,6 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
         wcSession = session
     }
     
-//    public func getFinalContinuous() -> Bool{
-//        //returns true if Final Value Test, returns false if Continuous Value Test
-//        if(finalContinuousPicker.selectedRow(inComponent: 0) == 0){
-//            return true
-//        }
-//        else{
-//            return false
-//        }
-//    }
-//
-//    public func getTestDuration() -> Int{
-//        //returns the amount of seconds to run the test
-//        if(testDurationPicker.selectedRow(inComponent: 0) == 0){
-//            return 5
-//        }
-//        else if(testDurationPicker.selectedRow(inComponent: 0) == 1){
-//            return 10
-//        }
-//        else if(testDurationPicker.selectedRow(inComponent: 0) == 2){
-//            return 15
-//        }
-//        else if(testDurationPicker.selectedRow(inComponent: 0) == 3){
-//            return 20
-//        }
-//        else{
-//            return 24
-//        }
-//    }
-    
-//    public func getTestType() -> Int{
-//        //returns 0 if Immunoglobulins, 1 if Lactoferin, 2 if Blood Calcium, 3 if Generic Glucose
-//        return testTypePicker.selectedRow(inComponent: 0)
-//    }
     
     public func getManualCalibrationSwitchValue() -> Bool{
         return defaults.bool(forKey: "manualCalibrationDefault")
@@ -1082,6 +915,14 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
     
     public func getTestingModeDefault() -> Bool{
         return defaults.bool(forKey: "testingModeDefault")
+    }
+    
+    public func getCalibrationModeDefault() -> Bool{
+        return defaults.bool(forKey: "calibrationModeDefault")
+    }
+    
+    public func getQuantitativeModeDefault() -> Bool{
+        return defaults.bool(forKey: "quantitativeModeDefault")
     }
     
     

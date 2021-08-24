@@ -58,9 +58,6 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     private let redCircleImage = UIImage(named: "red_circle")
     private let recommendationBtnImage = UIImage(named: "recommendationLOGO")
     
-    //UIImageViews
-    private let greenCircleView = UIImageView()
-    private let redCircleView = UIImageView()
     
     //UILabels
     private let findDeviceLabel = UILabel()
@@ -301,22 +298,6 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         scanningIndicator.backgroundColor = .lightGray
         view.addSubview(scanningIndicator) //add to view because you always want it to be in the middle of the screen, you dont want it to scroll with the screen
         
-        greenCircleView.image = greenCircleImage
-        contentView.addSubview(greenCircleView)
-        
-        redCircleView.image = redCircleImage
-        contentView.addSubview(redCircleView)
-        
-        if(appDelegate!.getSyncUpToDate() == true){
-            print("HERE")
-            greenCircleView.isHidden = false
-            redCircleView.isHidden = true
-        }
-        else{
-            print("HERE 2")
-            greenCircleView.isHidden = true
-            redCircleView.isHidden = false
-        }
     }
     
     private func setLayoutConstraints(){ //might not need constraints if everything is done in relation to screen size
@@ -428,18 +409,6 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         scanningIndicator.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * 0.06).isActive = true
         
         
-        greenCircleView.translatesAutoresizingMaskIntoConstraints = false
-        greenCircleView.topAnchor.constraint(equalTo: accountBtn.topAnchor).isActive = true
-        greenCircleView.rightAnchor.constraint(equalTo: accountBtn.rightAnchor).isActive = true
-        greenCircleView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.04)).isActive = true
-        greenCircleView.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.02)).isActive = true
-        
-        
-        redCircleView.translatesAutoresizingMaskIntoConstraints = false
-        redCircleView.topAnchor.constraint(equalTo: accountBtn.topAnchor).isActive = true
-        redCircleView.rightAnchor.constraint(equalTo: accountBtn.rightAnchor).isActive = true
-        redCircleView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.04)).isActive = true
-        redCircleView.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.02)).isActive = true
     }
     
     private func setButtonListeners(){
@@ -897,22 +866,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         return loginView!
     }
     
-    public func setSyncUpToDate(upToDate: Bool){
-        if(upToDate){
-            //print("DOING THIS RIGH NOW")
-            
-            greenCircleView.isHidden = false
-            redCircleView.isHidden = true
-
-        }
-        else{
-            DispatchQueue.main.async {
-                self.greenCircleView.isHidden = true
-                self.redCircleView.isHidden = false
-            }
-            
-        }
-    }
+    
     
     public func getAppDelegate() -> AppDelegate{
         return appDelegate!

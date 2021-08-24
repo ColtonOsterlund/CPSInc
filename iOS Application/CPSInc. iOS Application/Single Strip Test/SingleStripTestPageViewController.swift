@@ -216,6 +216,8 @@ public class SingleStripTestPageViewController: UIPageViewController, UIPageView
                     //we'll save the reference, we need it to write data
                     startTestCharacteristic = characteristic
                     
+                    //voltageDataCharacteristic = characteristic
+                    
                     //print(characteristic.value) - this prints null also
                     
                     print("found capacitor discharge charac")
@@ -395,6 +397,7 @@ public class SingleStripTestPageViewController: UIPageViewController, UIPageView
         }
         else{
             return temperatureVoltageValue
+            //return 27
         }
         
     }
@@ -406,6 +409,7 @@ public class SingleStripTestPageViewController: UIPageViewController, UIPageView
         }
         else{
             return batteryVoltageValue
+            //return 80
         }
     }
     

@@ -42,6 +42,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
     let group = DispatchGroup()
     
     var testTimer = Timer()
+    var voltageTimer = Timer()
     var tempBatTimer = Timer()
     
     var startVoltageBoolean: Bool = false
@@ -692,13 +693,26 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         let startTestData = Data(hexString: startTestString)
         
         self.testPageController!.getPeripheralDevice()?.writeValue(startTestData!, for: self.testPageController!.getVoltageDataCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
-        
-        DispatchQueue.main.async {
-            self.showToast(controller: self, message: "Line 697", seconds: 1)
-        }
-        
+                
         
         self.startVoltageBoolean = true
+    }
+    
+    
+    @objc private func countdownListener(){
+        DispatchQueue.main.async {
+            var num = Int(self.waitingLabel.text!)
+            var newNum = num! - 1
+            self.waitingLabel.text = String(newNum)
+            self.waitingLabel.isHidden = false
+            
+            if(newNum == 0){
+                self.waitingLabel.isHidden = true
+                self.voltageTimer.invalidate()
+                self.startVoltageBtnListener()
+            }
+            
+        }
     }
     
     
@@ -737,6 +751,23 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             showToast(controller: self, message: "Battery level too low to test", seconds: 1)
             return
         }
+        
+            
+        if((self.menuView?.getSettingsView().getManualCalibrationSwitchValue())!){ //if manual calibration on, then it will take the manual calibration equation
+                        
+                if(self.menuView?.getSettingsView().getManCalMVal() == 0.0){
+                    self.showToast(controller: self, message: "Manual Calibration M value is not set in settings", seconds: 1)
+                    return
+                }
+                else if(self.menuView?.getSettingsView().getManCalBVal() == 0.0){
+                    self.showToast(controller: self, message: "Manual Calibration B value is not set in settings", seconds: 1)
+                    return
+                }
+        }
+        
+        
+        
+        
         
         self.setCowHerd()
         
@@ -1008,6 +1039,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         
         
         self.testTimer.invalidate()
+        self.voltageTimer.invalidate()
         
         discardTestBtnListener()
     }
@@ -1043,7 +1075,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         
         let alert = UIAlertController(title: "Choose Herd/Cow", message: "Would you like to choose a Herd/Cow to save to or run a blank test?", preferredStyle: .alert)
         
-        alert.addAction(UIAlertAction(title: "Blank Test", style: .default, handler: { action in
+        alert.addAction(UIAlertAction(title: "Quick Test", style: .default, handler: { action in
             self.savableTest = false
             self.runTest()
         }))
@@ -1097,14 +1129,14 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             let startTestData = Data(hexString: startTestString)
             let stopTestData = Data(hexString: stopTestString)
             
-            DispatchQueue.main.sync {
-                self.waitingLabel.text = "Waiting for device temperature to reach 27°C..."
-                self.waitingLabel.isHidden = false
-                //self.waitingLabel.text = "Line 888"
-                
-                //self.showToast(controller: self, message: "Fill Strip With Sample", seconds: 2)
-                
-            }
+//            DispatchQueue.main.sync {
+//                self.waitingLabel.text = "Waiting for device temperature to reach 27°C..."
+//                self.waitingLabel.isHidden = false
+//                //self.waitingLabel.text = "Line 888"
+//
+//                //self.showToast(controller: self, message: "Fill Strip With Sample", seconds: 2)
+//
+//            }
 
             
             self.testPageController!.getPeripheralDevice()?.writeValue(startTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
@@ -1113,27 +1145,58 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             //want it to wait here until temperature reaches 27C
             while(true){
                 //wait here - see if this makes app unresponsive or if we are on a background thread
+                if(self.tempLevel <= 26.5){
+                    DispatchQueue.main.async {
+                        self.waitingLabel.text = "Heating device to 27°C..."
+                        self.waitingLabel.isHidden = false
+                    }
+                }
                 
-                if(self.tempLevel >= 26.5){
+                if(self.tempLevel >= 28.0){
+                    DispatchQueue.main.async {
+                        self.waitingLabel.text = "Cooling device to 27°C..."
+                        self.waitingLabel.isHidden = false
+                    }
+                }
+                
+                
+                if(self.tempLevel >= 26.5 && self.tempLevel <= 28.0){
                     break;
                 }
             }
             
-
-            self.testPageController!.getPeripheralDevice()?.writeValue(startTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
             
             
-            DispatchQueue.main.sync {
-                
-                self.waitingLabel.isHidden = true
-                
-                //SHOW START TEST BUTTON
-                self.startVoltageBtn.isEnabled = true
-                self.startVoltageBtn.isHidden = false
+            
+            DispatchQueue.main.async {
+                self.waitingLabel.text = "Insert strip filled with sample"
+                self.waitingLabel.isHidden = false
             }
-
             
-            //WAIT UNTIL START TEST BUTTON IS PRESSED
+            
+            
+            //wait here until strip entry is detected
+            while(true){
+                //check that both strips are entered into the device
+                if((self.testPageController?.getStripDetectVoltageValue())! >= 750){ //set proper value for testing, for now this works
+                    break;
+                }
+            }
+            
+            
+            DispatchQueue.main.async {
+                self.waitingLabel.text = "60"
+                self.waitingLabel.isHidden = false
+            }
+            
+            
+            //waits one minute at temperature and then sends voltage across the strips
+            DispatchQueue.main.sync {
+                self.voltageTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.countdownListener), userInfo: nil, repeats: true)
+            }
+            
+            
+            //WAIT UNTIL TEST VOLTAGE IS STARTED
             while(true){
                 //this will stay in here until the startVoltageBoolean gets set to true in the btn listener
                 if(self.startVoltageBoolean == true){
@@ -1148,15 +1211,30 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             }
             
             
+        
+            
+            //ONCE A MINUTE HAS PASSED AND NOW VOLTAGE IS GOING ACROSS THE STRIPS YOU DISCHARGE THE CAPACITOR AND THEN START READING MEASUREMENTS
+
+            self.testPageController!.getPeripheralDevice()?.writeValue(startTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
             
             
-            DispatchQueue.main.sync {
-            
-                
-                //SHOW START TEST BUTTON
-                self.startVoltageBtn.isEnabled = false
-                self.startVoltageBtn.isHidden = true
-            }
+//            DispatchQueue.main.sync {
+//
+//                self.waitingLabel.isHidden = true
+//
+//                //SHOW START TEST BUTTON
+//                self.startVoltageBtn.isEnabled = true
+//                self.startVoltageBtn.isHidden = false
+//            }
+//
+//
+//            DispatchQueue.main.sync {
+//
+//
+//                //SHOW START TEST BUTTON
+//                self.startVoltageBtn.isEnabled = false
+//                self.startVoltageBtn.isHidden = true
+//            }
             
             
             //THIS ISN'T NEEDED ANYMORE
@@ -1177,7 +1255,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             
             //sleep(1) //kind of a buggy fix - this is to ensure the capacitor discharges
             
-            var testDuration = 8 //default test duration = 8s
+            var testDuration = 7 //default test duration = 8s
             
             if(self.menuView?.getSettingsView().getTestingModeDefault() == true){
                 testDuration = 30 //testing test duration = 30s
@@ -1302,18 +1380,17 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                 var finalResult: Float?
                 
                 if(self.testPageController!.getIntegratedVoltageValue() != nil){
-                    
-                    if((self.menuView?.getSettingsView().getManualCalibrationSwitchValue())!){ //if manual calibration on, then it will take the manual calibration equation
-                        DispatchQueue.main.async {
-                            finalResult = Float((Float(self.testPageController!.getIntegratedVoltageValue()!) - ((self.menuView?.getSettingsView().getManCalBVal())!)) / (self.menuView?.getSettingsView().getManCalMVal())!)
+                        if((self.menuView?.getSettingsView().getManualCalibrationSwitchValue())!){ //if manual calibration on, then it will take the manual calibration equation
+                            
+                            
+                            DispatchQueue.main.async {
+                                finalResult = Float((Float(self.testPageController!.getIntegratedVoltageValue()!) - ((self.menuView?.getSettingsView().getManCalBVal())!)) / (self.menuView?.getSettingsView().getManCalMVal())!)
+                            }
+                            
                         }
-                        
-                    }
-                    else{ //if manual calibration off, then it will take the voltage value
-                        finalResult = Float((Float(self.testPageController!.getIntegratedVoltageValue()!) - Float(1336.5)) / Float(-79.2))
-                        
-                    }
-                    
+                        else{ //if manual calibration off, then it will take the voltage value
+                            finalResult = Float((Float(self.testPageController!.getIntegratedVoltageValue()!) - Float(1336.5)) / Float(-79.2))
+                        }
                 }
                 else{
                     finalResult = nil
@@ -1358,69 +1435,79 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                     }
                     
                     
+                    if(self.menuView!.getSettingsView().getQuantitativeModeDefault()){
+                        self.testProgressIndicator.removeConstraints(self.testProgressIndicator.constraints)
+                        self.testProgressIndicator.translatesAutoresizingMaskIntoConstraints = false
+                        self.testProgressIndicator.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.05)).isActive = true
+                        self.testProgressIndicator.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+                        self.testProgressIndicator.topAnchor.constraint(equalTo: self.testResultProgressBar.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.01)).isActive = true
+                        if(progressRatio <= 1 && progressRatio > 0){
+                            self.testProgressIndicator.leftAnchor.constraint(equalTo: self.testResultProgressBar.leftAnchor, constant: ((UIScreen.main.bounds.width * 0.75) * CGFloat(progressRatio))).isActive = true
+                        }
+                        else if(progressRatio <= 0){
+                            self.testProgressIndicator.leftAnchor.constraint(equalTo: self.testResultProgressBar.leftAnchor).isActive = true
+                        }
+                        else{ //if its bigger than 1 then just set it to the very right side of the bar. It will never be smaller than 0 so the lowest it will go is the very left side of the bar
+                            self.testProgressIndicator.leftAnchor.constraint(equalTo: self.testResultProgressBar.leftAnchor, constant: ((UIScreen.main.bounds.width * 0.75))).isActive = true
+                        }
+                        self.testProgressIndicator.isHidden = false
                     
-                    self.testProgressIndicator.removeConstraints(self.testProgressIndicator.constraints)
-                    self.testProgressIndicator.translatesAutoresizingMaskIntoConstraints = false
-                    self.testProgressIndicator.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.05)).isActive = true
-                    self.testProgressIndicator.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-                    self.testProgressIndicator.topAnchor.constraint(equalTo: self.testResultProgressBar.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.01)).isActive = true
-                    if(progressRatio <= 1 && progressRatio > 0){
-                        self.testProgressIndicator.leftAnchor.constraint(equalTo: self.testResultProgressBar.leftAnchor, constant: ((UIScreen.main.bounds.width * 0.75) * CGFloat(progressRatio))).isActive = true
-                    }
-                    else if(progressRatio <= 0){
-                        self.testProgressIndicator.leftAnchor.constraint(equalTo: self.testResultProgressBar.leftAnchor).isActive = true
-                    }
-                    else{ //if its bigger than 1 then just set it to the very right side of the bar. It will never be smaller than 0 so the lowest it will go is the very left side of the bar
-                        self.testProgressIndicator.leftAnchor.constraint(equalTo: self.testResultProgressBar.leftAnchor, constant: ((UIScreen.main.bounds.width * 0.75))).isActive = true
-                    }
-                    self.testProgressIndicator.isHidden = false
                     
-                    if(self.savableTest){
-                    self.recommendationBtn.setTitle("Recent Results for Cow: " + (self.cowToSave?.id)!, for: .normal)
-                    self.recommendationBtn.isEnabled = true
-                    self.recommendationBtn.isHidden = false
+                        if(self.savableTest){
+                            self.recommendationBtn.setTitle("Recent Results for Cow: " + (self.cowToSave?.id)!, for: .normal)
+                            self.recommendationBtn.isEnabled = true
+                            self.recommendationBtn.isHidden = false
+                        }
                     }
                     
                 }
                 
-                if(self.menuView!.getSettingsView().getUnitsSwitchValue()){
-                    if(finalResult! >= Float(1.375) && finalResult! <= Float(2.0)){
-                        DispatchQueue.main.sync {
-                            self.testResultLabel.textColor = .yellow
-                            //self.testResultProgressBar.tintColor = .yellow
+                
+                if(self.menuView!.getSettingsView().getQuantitativeModeDefault()){
+                    if(self.menuView!.getSettingsView().getUnitsSwitchValue()){
+                        if(finalResult! >= Float(1.375) && finalResult! <= Float(2.0)){
+                            DispatchQueue.main.sync {
+                                self.testResultLabel.textColor = .yellow
+                                //self.testResultProgressBar.tintColor = .yellow
+                            }
                         }
-                    }
-                    else if(finalResult! > Float(2.0)){
-                        DispatchQueue.main.sync{
-                            self.testResultLabel.textColor = .green
-                            //self.testResultProgressBar.tintColor = .green
+                        else if(finalResult! > Float(2.0)){
+                            DispatchQueue.main.sync{
+                                self.testResultLabel.textColor = .green
+                                //self.testResultProgressBar.tintColor = .green
+                            }
+                        }
+                        else{
+                            DispatchQueue.main.sync {
+                                self.testResultLabel.textColor = .red
+                                //self.testResultProgressBar.tintColor = .red
+                            }
                         }
                     }
                     else{
-                        DispatchQueue.main.sync {
-                            self.testResultLabel.textColor = .red
-                            //self.testResultProgressBar.tintColor = .red
+                        if(finalResult! >= Float(5.5) && finalResult! <= Float(8.0)){
+                            DispatchQueue.main.sync {
+                                self.testResultLabel.textColor = .yellow
+                                //self.testResultProgressBar.tintColor = .yellow
+                            }
+                        }
+                        else if(finalResult! > Float(8.0)){
+                            DispatchQueue.main.sync{
+                                self.testResultLabel.textColor = .green
+                                //self.testResultProgressBar.tintColor = .green
+                            }
+                        }
+                        else{
+                            DispatchQueue.main.sync {
+                                self.testResultLabel.textColor = .red
+                                //self.testResultProgressBar.tintColor = .red
+                            }
                         }
                     }
                 }
                 else{
-                    if(finalResult! >= Float(5.5) && finalResult! <= Float(8.0)){
-                        DispatchQueue.main.sync {
-                            self.testResultLabel.textColor = .yellow
-                            //self.testResultProgressBar.tintColor = .yellow
-                        }
-                    }
-                    else if(finalResult! > Float(8.0)){
-                        DispatchQueue.main.sync{
-                            self.testResultLabel.textColor = .green
-                            //self.testResultProgressBar.tintColor = .green
-                        }
-                    }
-                    else{
-                        DispatchQueue.main.sync {
-                            self.testResultLabel.textColor = .red
-                            //self.testResultProgressBar.tintColor = .red
-                        }
+                    DispatchQueue.main.sync {
+                        self.testResultLabel.textColor = .white
                     }
                 }
                 
@@ -1428,13 +1515,37 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                 
                 
                 DispatchQueue.main.sync {
-                    self.testResultLabel.text = String(format: "%.2f", finalResult!) + self.units!
+                    
+                    if(self.menuView!.getSettingsView().getQuantitativeModeDefault()){
+                        self.testResultLabel.text = String(format: "%.2f", finalResult!) + self.units!
+                    }
+                    else{
+                        if(self.units == "mM"){
+                            if(finalResult! >= 2){
+                                self.testResultLabel.text = "No"
+                            }
+                            else{
+                                self.testResultLabel.text = "Yes"
+                            }
+                        }
+                        else{
+                            if(finalResult! >= 8){
+                                self.testResultLabel.text = "No"
+                            }
+                            else{
+                                self.testResultLabel.text = "Yes"
+                            }
+                        }
+                    }
+                    
                     self.testResultLabel.isHidden = false
                     
                     self.tempVoltageLabelKeepHidden = true
                     self.batteryVoltageLabelKeepHidden = true
                     
-                    self.testResultProgressBar.isHidden = false
+                    if(self.menuView!.getSettingsView().getQuantitativeModeDefault()){
+                        self.testResultProgressBar.isHidden = false
+                    }
                     //self.testResultProgressBar.setProgress(Float(finalResult! / Float(15.0)), animated: true)
                     
                     if(self.savableTest){
@@ -1453,17 +1564,19 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                     self.discardTestBtn.isEnabled = true
                     self.discardTestBtn.isHidden = false
 
-                    if(self.savableTest){
-                    self.zoneSpecificRecommendationLabel.isHidden = false
-                    
-                    self.severeHypocalcemiaRecommendationBtn.isHidden = false
-                    self.severeHypocalcemiaRecommendationBtn.isEnabled = true
+                    if(self.menuView!.getSettingsView().getQuantitativeModeDefault()){
+                        if(self.savableTest){
+                            self.zoneSpecificRecommendationLabel.isHidden = false
                             
-                    self.subClinicalHypocalcemiaRecommendationBtn.isHidden = false
-                    self.subClinicalHypocalcemiaRecommendationBtn.isEnabled = true
+                            self.severeHypocalcemiaRecommendationBtn.isHidden = false
+                            self.severeHypocalcemiaRecommendationBtn.isEnabled = true
+                                    
+                            self.subClinicalHypocalcemiaRecommendationBtn.isHidden = false
+                            self.subClinicalHypocalcemiaRecommendationBtn.isEnabled = true
 
-                    self.normalCalcemiaRecommendationBtn.isHidden = false
-                    self.normalCalcemiaRecommendationBtn.isEnabled = true
+                            self.normalCalcemiaRecommendationBtn.isHidden = false
+                            self.normalCalcemiaRecommendationBtn.isEnabled = true
+                        }
                     }
                     
                 }

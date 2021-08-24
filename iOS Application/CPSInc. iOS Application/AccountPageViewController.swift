@@ -33,8 +33,13 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
     //ImageView
     private let userLogoImageView = UIImageView()
     
+    private let userLoggedInLabel = UILabel()
+    private let userEmailLabel = UILabel()
+    
     //UIButtons
     private let accountDetailsBtn = UIButton()
+    
+    private var userEmail = ""
     
     //WCSessions
     private var wcSession: WCSession? = nil
@@ -80,9 +85,15 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
         accountDetailsBtn.addTarget(self, action: #selector(accountDetailsBtnPressed), for: .touchUpInside)
         
         
-
+        userLoggedInLabel.text = "Logged in as: "
+        userLoggedInLabel.textColor = .black
+        userLoggedInLabel.textAlignment = .center
+        view.addSubview(userLoggedInLabel)
         
-        
+        userEmailLabel.text = KeychainWrapper.standard.string(forKey: "UserEmail")!
+        userEmailLabel.textColor = .black
+        userEmailLabel.textAlignment = .center
+        view.addSubview(userEmailLabel)
     }
     
     
@@ -103,6 +114,17 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
         userLogoImageView.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.15)).isActive = true
         
 
+        userLoggedInLabel.translatesAutoresizingMaskIntoConstraints = false
+        userLoggedInLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        userLoggedInLabel.topAnchor.constraint(equalTo: self.userLogoImageView.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        
+        userEmailLabel.translatesAutoresizingMaskIntoConstraints = false
+        userEmailLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        userEmailLabel.topAnchor.constraint(equalTo: self.userLoggedInLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.02)).isActive = true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.refreshUserEmail()
     }
     
     @objc private func backBtnPressed(){
@@ -166,7 +188,13 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
                 }
                 else{
                     print("Blacklisted JWT Token")
-                    group.leave()
+                    
+                    let removedEmail = KeychainWrapper.standard.removeObject(forKey: "UserEmail")
+                    
+                    if(removedEmail){
+                        group.leave()
+                    }
+                    
                 }
             }
         }
@@ -182,6 +210,7 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
         
         //if(removeJWTSuccessfull && removeUserIDSuccessfull){
             navigationController?.popToViewController(menuView!, animated: true)
+        
         //}
         
         DispatchQueue.main.async {
@@ -861,7 +890,12 @@ class AccountPageViewController: UIViewController, WCSessionDelegate {
         self.wcSession = session
     }
     
-    
+    public func refreshUserEmail(){
+        
+        print("USER EMAIL: " + userEmail)
+
+        userEmailLabel.text = KeychainWrapper.standard.string(forKey: "UserEmail")!
+    }
     
     
     private func showToast(controller: UIViewController, message: String, seconds: Double){

@@ -138,6 +138,7 @@ class ShopifyProductPageViewController: UIViewController {
         titleLabel.textColor = .black
         titleLabel.textAlignment = .center
         titleLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
+        titleLabel.numberOfLines = 2
         view.addSubview(titleLabel)
 
         
@@ -187,6 +188,7 @@ class ShopifyProductPageViewController: UIViewController {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
         titleLabel.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        titleLabel.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
         
         //descriptionLabel
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
