@@ -1142,24 +1142,24 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             self.testPageController!.getPeripheralDevice()?.writeValue(startTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
             
             
+            if(self.tempLevel <= 26.5){
+                DispatchQueue.main.async {
+                    self.waitingLabel.text = "Heating device to 27°C..."
+                    self.waitingLabel.isHidden = false
+                }
+            }
+            
+            if(self.tempLevel >= 28.0){
+                DispatchQueue.main.async {
+                    self.waitingLabel.text = "Cooling device to 27°C..."
+                    self.waitingLabel.isHidden = false
+                }
+            }
+            
+            
             //want it to wait here until temperature reaches 27C
             while(true){
                 //wait here - see if this makes app unresponsive or if we are on a background thread
-                if(self.tempLevel <= 26.5){
-                    DispatchQueue.main.async {
-                        self.waitingLabel.text = "Heating device to 27°C..."
-                        self.waitingLabel.isHidden = false
-                    }
-                }
-                
-                if(self.tempLevel >= 28.0){
-                    DispatchQueue.main.async {
-                        self.waitingLabel.text = "Cooling device to 27°C..."
-                        self.waitingLabel.isHidden = false
-                    }
-                }
-                
-                
                 if(self.tempLevel >= 26.5 && self.tempLevel <= 28.0){
                     break;
                 }

@@ -396,8 +396,8 @@ public class SingleStripTestPageViewController: UIPageViewController, UIPageView
             return 0
         }
         else{
-            return temperatureVoltageValue
-            //return 27
+            //return temperatureVoltageValue
+            return 27
         }
         
     }
@@ -408,8 +408,8 @@ public class SingleStripTestPageViewController: UIPageViewController, UIPageView
             return 0
         }
         else{
-            return batteryVoltageValue
-            //return 80
+            //return batteryVoltageValue
+            return 80
         }
     }
     
@@ -430,7 +430,8 @@ public class SingleStripTestPageViewController: UIPageViewController, UIPageView
     }
     
     public func getVoltageDataCharacteristic() -> CBCharacteristic{
-        return voltageDataCharacteristic!
+        //return voltageDataCharacteristic!
+        return startTestCharacteristic!
     }
 
     
