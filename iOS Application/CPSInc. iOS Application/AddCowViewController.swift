@@ -101,7 +101,7 @@ class AddCowViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         view.addSubview(scanningIndicator)
         
         scrollView.backgroundColor = .init(red: 0, green: 0.637, blue: 0.999, alpha: 1)
-        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 1.8)
+        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 1.3)
         scrollView.frame = view.bounds
         view.addSubview(scrollView)
         
@@ -200,43 +200,43 @@ class AddCowViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         mastitisHistoryTextView.delegate = self
         mastitisHistoryTextView.keyboardType = .numberPad
         mastitisHistoryTextView.inputAccessoryView = bar
-        contentView.addSubview(mastitisHistoryTextView)
+        //contentView.addSubview(mastitisHistoryTextView)
         
         methodOfDryOffTextView.tag = 4
         methodOfDryOffTextView.delegate = self
         methodOfDryOffTextView.keyboardType = .default
         methodOfDryOffTextView.inputAccessoryView = bar
-        contentView.addSubview(methodOfDryOffTextView)
+        //contentView.addSubview(methodOfDryOffTextView)
         
         dailyMilkAverageTextView.tag = 5
         dailyMilkAverageTextView.delegate = self
         dailyMilkAverageTextView.keyboardType = .numberPad
         dailyMilkAverageTextView.inputAccessoryView = bar
-        contentView.addSubview(dailyMilkAverageTextView)
+        //contentView.addSubview(dailyMilkAverageTextView)
         
         parityTextView.tag = 6
         parityTextView.delegate = self
         parityTextView.keyboardType = .numberPad
         parityTextView.inputAccessoryView = bar
-        contentView.addSubview(parityTextView)
+        //contentView.addSubview(parityTextView)
         
         reproductionStatusTextView.tag = 7
         reproductionStatusTextView.delegate = self
         reproductionStatusTextView.keyboardType = .default
         reproductionStatusTextView.inputAccessoryView = bar
-        contentView.addSubview(reproductionStatusTextView)
+        //contentView.addSubview(reproductionStatusTextView)
         
         numberOfTimesBredTextView.tag = 8
         numberOfTimesBredTextView.delegate = self
         numberOfTimesBredTextView.keyboardType = .numberPad
         numberOfTimesBredTextView.inputAccessoryView = bar
-        contentView.addSubview(numberOfTimesBredTextView)
+        //contentView.addSubview(numberOfTimesBredTextView)
         
         farmBreedingIndexTextView.tag = 9
         farmBreedingIndexTextView.delegate = self
         farmBreedingIndexTextView.keyboardType = .numberPad
         farmBreedingIndexTextView.inputAccessoryView = bar
-        contentView.addSubview(farmBreedingIndexTextView)
+        //contentView.addSubview(farmBreedingIndexTextView)
         
         
         lactationNumberTextView.tag = 10
@@ -399,85 +399,85 @@ class AddCowViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         dryOffDayTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
         dryOffDayTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
-        mastitisHistoryLabel.translatesAutoresizingMaskIntoConstraints = false
-        mastitisHistoryLabel.topAnchor.constraint(equalTo: dryOffDayLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        mastitisHistoryLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
-        
-        mastitisHistoryTextView.translatesAutoresizingMaskIntoConstraints = false
-        mastitisHistoryTextView.topAnchor.constraint(equalTo: dryOffDayLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        mastitisHistoryTextView.leftAnchor.constraint(equalTo: mastitisHistoryLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
-        mastitisHistoryTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
-        mastitisHistoryTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        
-        methodOfDryOffLabel.translatesAutoresizingMaskIntoConstraints = false
-        methodOfDryOffLabel.topAnchor.constraint(equalTo: mastitisHistoryLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        methodOfDryOffLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
-        
-        methodOfDryOffTextView.translatesAutoresizingMaskIntoConstraints = false
-        methodOfDryOffTextView.topAnchor.constraint(equalTo: mastitisHistoryLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        methodOfDryOffTextView.leftAnchor.constraint(equalTo: methodOfDryOffLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
-        methodOfDryOffTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
-        methodOfDryOffTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        
-        dailyMilkAverageLabel.translatesAutoresizingMaskIntoConstraints = false
-        dailyMilkAverageLabel.topAnchor.constraint(equalTo: methodOfDryOffLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        dailyMilkAverageLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
-        
-        dailyMilkAverageTextView.translatesAutoresizingMaskIntoConstraints = false
-        dailyMilkAverageTextView.topAnchor.constraint(equalTo: methodOfDryOffLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        dailyMilkAverageTextView.leftAnchor.constraint(equalTo: dailyMilkAverageLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
-        dailyMilkAverageTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
-        dailyMilkAverageTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        
-        parityLabel.translatesAutoresizingMaskIntoConstraints = false
-        parityLabel.topAnchor.constraint(equalTo: dailyMilkAverageLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        parityLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
-        
-        parityTextView.translatesAutoresizingMaskIntoConstraints = false
-        parityTextView.topAnchor.constraint(equalTo: dailyMilkAverageLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        parityTextView.leftAnchor.constraint(equalTo: parityLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
-        parityTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
-        parityTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        
-        reproductionStatusLabel.translatesAutoresizingMaskIntoConstraints = false
-        reproductionStatusLabel.topAnchor.constraint(equalTo: parityLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        reproductionStatusLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
-    
-        reproductionStatusTextView.translatesAutoresizingMaskIntoConstraints = false
-        reproductionStatusTextView.topAnchor.constraint(equalTo: parityLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        reproductionStatusTextView.leftAnchor.constraint(equalTo: reproductionStatusLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
-        reproductionStatusTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
-        reproductionStatusTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        
-        numberOfTimesBredLabel.translatesAutoresizingMaskIntoConstraints = false
-        numberOfTimesBredLabel.topAnchor.constraint(equalTo: reproductionStatusLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        numberOfTimesBredLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
-        
-        
-       numberOfTimesBredTextView.translatesAutoresizingMaskIntoConstraints = false
-        numberOfTimesBredTextView.topAnchor.constraint(equalTo: reproductionStatusLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        numberOfTimesBredTextView.leftAnchor.constraint(equalTo: numberOfTimesBredLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
-        numberOfTimesBredTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
-        numberOfTimesBredTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        
-        
-        farmBreedingIndexLabel.translatesAutoresizingMaskIntoConstraints = false
-        farmBreedingIndexLabel.topAnchor.constraint(equalTo: numberOfTimesBredLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        farmBreedingIndexLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
-        
-        farmBreedingIndexTextView.translatesAutoresizingMaskIntoConstraints = false
-        farmBreedingIndexTextView.topAnchor.constraint(equalTo: numberOfTimesBredLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-       farmBreedingIndexTextView.leftAnchor.constraint(equalTo: farmBreedingIndexLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
-        farmBreedingIndexTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
-        farmBreedingIndexTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+//        mastitisHistoryLabel.translatesAutoresizingMaskIntoConstraints = false
+//        mastitisHistoryLabel.topAnchor.constraint(equalTo: dryOffDayLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+//        mastitisHistoryLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
+//
+//        mastitisHistoryTextView.translatesAutoresizingMaskIntoConstraints = false
+//        mastitisHistoryTextView.topAnchor.constraint(equalTo: dryOffDayLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+//        mastitisHistoryTextView.leftAnchor.constraint(equalTo: mastitisHistoryLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
+//        mastitisHistoryTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
+//        mastitisHistoryTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+//
+//        methodOfDryOffLabel.translatesAutoresizingMaskIntoConstraints = false
+//        methodOfDryOffLabel.topAnchor.constraint(equalTo: mastitisHistoryLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+//        methodOfDryOffLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
+//
+//        methodOfDryOffTextView.translatesAutoresizingMaskIntoConstraints = false
+//        methodOfDryOffTextView.topAnchor.constraint(equalTo: mastitisHistoryLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+//        methodOfDryOffTextView.leftAnchor.constraint(equalTo: methodOfDryOffLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
+//        methodOfDryOffTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
+//        methodOfDryOffTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+//
+//        dailyMilkAverageLabel.translatesAutoresizingMaskIntoConstraints = false
+//        dailyMilkAverageLabel.topAnchor.constraint(equalTo: methodOfDryOffLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+//        dailyMilkAverageLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
+//
+//        dailyMilkAverageTextView.translatesAutoresizingMaskIntoConstraints = false
+//        dailyMilkAverageTextView.topAnchor.constraint(equalTo: methodOfDryOffLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+//        dailyMilkAverageTextView.leftAnchor.constraint(equalTo: dailyMilkAverageLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
+//        dailyMilkAverageTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
+//        dailyMilkAverageTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+//
+//        parityLabel.translatesAutoresizingMaskIntoConstraints = false
+//        parityLabel.topAnchor.constraint(equalTo: dailyMilkAverageLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+//        parityLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
+//
+//        parityTextView.translatesAutoresizingMaskIntoConstraints = false
+//        parityTextView.topAnchor.constraint(equalTo: dailyMilkAverageLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+//        parityTextView.leftAnchor.constraint(equalTo: parityLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
+//        parityTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
+//        parityTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+//
+//        reproductionStatusLabel.translatesAutoresizingMaskIntoConstraints = false
+//        reproductionStatusLabel.topAnchor.constraint(equalTo: parityLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+//        reproductionStatusLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
+//
+//        reproductionStatusTextView.translatesAutoresizingMaskIntoConstraints = false
+//        reproductionStatusTextView.topAnchor.constraint(equalTo: parityLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+//        reproductionStatusTextView.leftAnchor.constraint(equalTo: reproductionStatusLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
+//        reproductionStatusTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
+//        reproductionStatusTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+//
+//        numberOfTimesBredLabel.translatesAutoresizingMaskIntoConstraints = false
+//        numberOfTimesBredLabel.topAnchor.constraint(equalTo: reproductionStatusLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+//        numberOfTimesBredLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
+//
+//
+//       numberOfTimesBredTextView.translatesAutoresizingMaskIntoConstraints = false
+//        numberOfTimesBredTextView.topAnchor.constraint(equalTo: reproductionStatusLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+//        numberOfTimesBredTextView.leftAnchor.constraint(equalTo: numberOfTimesBredLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
+//        numberOfTimesBredTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
+//        numberOfTimesBredTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+//
+//
+//        farmBreedingIndexLabel.translatesAutoresizingMaskIntoConstraints = false
+//        farmBreedingIndexLabel.topAnchor.constraint(equalTo: numberOfTimesBredLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+//        farmBreedingIndexLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
+//
+//        farmBreedingIndexTextView.translatesAutoresizingMaskIntoConstraints = false
+//        farmBreedingIndexTextView.topAnchor.constraint(equalTo: numberOfTimesBredLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+//       farmBreedingIndexTextView.leftAnchor.constraint(equalTo: farmBreedingIndexLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
+//        farmBreedingIndexTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
+//        farmBreedingIndexTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         
         lactationNumberLabel.translatesAutoresizingMaskIntoConstraints = false
-        lactationNumberLabel.topAnchor.constraint(equalTo: farmBreedingIndexLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        lactationNumberLabel.topAnchor.constraint(equalTo: dryOffDayLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         lactationNumberLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.025)).isActive = true
         
         lactationNumberTextView.translatesAutoresizingMaskIntoConstraints = false
-        lactationNumberTextView.topAnchor.constraint(equalTo: farmBreedingIndexLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        lactationNumberTextView.topAnchor.constraint(equalTo: dryOffDayLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         lactationNumberTextView.leftAnchor.constraint(equalTo: lactationNumberLabel.rightAnchor, constant: UIScreen.main.bounds.width * 0.025).isActive = true
         lactationNumberTextView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.025)).isActive = true
         lactationNumberTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true

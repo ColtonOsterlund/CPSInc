@@ -100,7 +100,7 @@ class ShopifyProductPageViewController: UIViewController {
                         //SET UP PAGE VALUES HERE
                         self.productTitle = (response.node as! Storefront.Product).title
                         self.productDescription = (response.node as! Storefront.Product).description
-                        self.productPrice = String(Double(truncating: (response.node as! Storefront.Product).priceRange.minVariantPrice.amount as NSNumber))
+                        self.productPrice = String(format: "%.2f", Double(truncating: (response.node as! Storefront.Product).priceRange.minVariantPrice.amount as NSNumber))
                         
                         let imageUrl = (response.node as! Storefront.Product).images.edges[0].node.originalSrc
                         let imageData = try! Data(contentsOf: imageUrl)
@@ -152,7 +152,7 @@ class ShopifyProductPageViewController: UIViewController {
         view.addSubview(descriptionLabel)
         
         //priceLabel
-        priceLabel.text = "$" + productPrice! + "0"
+        priceLabel.text = "$" + productPrice!
         priceLabel.textColor = .white
         priceLabel.textAlignment = .center
         priceLabel.font = UIFont.boldSystemFont(ofSize: 20.0)

@@ -30,6 +30,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
     var units: String? = nil
     var selectingHerdCowFromList: Bool = false
     var savableTest: Bool = true
+    var finalResult: Float? = nil
     
     var battLevel: Double = 0
     var tempLevel: Double = 0
@@ -700,6 +701,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
     
     
     @objc private func countdownListener(){
+        voltageTimer.invalidate()
         DispatchQueue.main.async {
             var num = Int(self.waitingLabel.text!)
             var newNum = num! - 1
@@ -711,8 +713,11 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                 self.voltageTimer.invalidate()
                 self.startVoltageBtnListener()
             }
-            
+            else{
+                self.voltageTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.countdownListener), userInfo: nil, repeats: false)
+            }
         }
+        
     }
     
     
@@ -1158,12 +1163,8 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             
             
             //want it to wait here until temperature reaches 27C
-            while(true){
-                //wait here - see if this makes app unresponsive or if we are on a background thread
-                if(self.tempLevel >= 26.5 && self.tempLevel <= 28.0){
-                    break;
-                }
-            }
+            while(self.tempLevel <= 26.5){sleep(1)}
+            while(self.tempLevel >= 28.0){sleep(1)}
             
             
             
@@ -1192,30 +1193,19 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             
             //waits one minute at temperature and then sends voltage across the strips
             DispatchQueue.main.sync {
-                self.voltageTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.countdownListener), userInfo: nil, repeats: true)
+                self.voltageTimer = Timer(timeInterval: 1, target: self, selector: #selector(self.countdownListener), userInfo: nil, repeats: false)
+                RunLoop.current.add(self.voltageTimer, forMode: .common)
             }
             
             
             //WAIT UNTIL TEST VOLTAGE IS STARTED
-            while(true){
-                //this will stay in here until the startVoltageBoolean gets set to true in the btn listener
-                if(self.startVoltageBoolean == true){
-                    break;
-                }
-                else if(self.cancelTestFlag){
-                    DispatchQueue.main.async {
-                        self.discardTestBtnListener()
-                    }
-                    return
-                }
-            }
-            
+            while(!self.startVoltageBoolean){sleep(1)}
             
         
             
             //ONCE A MINUTE HAS PASSED AND NOW VOLTAGE IS GOING ACROSS THE STRIPS YOU DISCHARGE THE CAPACITOR AND THEN START READING MEASUREMENTS
 
-            self.testPageController!.getPeripheralDevice()?.writeValue(startTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
+            
             
             
 //            DispatchQueue.main.sync {
@@ -1255,10 +1245,13 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             
             //sleep(1) //kind of a buggy fix - this is to ensure the capacitor discharges
             
-            var testDuration = 7 //default test duration = 8s
+            var testDuration = 0;
+            
+            DispatchQueue.main.async {
+                testDuration = (self.menuView?.getSettingsView().getTestDurationVal())!
+            }
             
             if(self.menuView?.getSettingsView().getTestingModeDefault() == true){
-                testDuration = 30 //testing test duration = 30s
                 
                 //Write Herd report text file
                 self.url = self.getDocumentsDirectory().appendingPathComponent("TestReport.txt")
@@ -1280,9 +1273,15 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
 //                self.waitingLabel.text = "Line 924"
 //            }
             
+            
+            
+            //START TIMER TO READ VOLTAGES FIRST BEFORE STARTING THE VOLTAGE ACROSS THE STRIPS
             DispatchQueue.main.sync {
-                self.testTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.readNewVoltage), userInfo: nil, repeats: true)
+                self.testTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.readNewVoltage), userInfo: nil, repeats: false)
             }
+            
+            
+            self.testPageController!.getPeripheralDevice()?.writeValue(startTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
             
             
 //            DispatchQueue.main.async{
@@ -1377,24 +1376,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                 }
                 
                 
-                var finalResult: Float?
                 
-                if(self.testPageController!.getIntegratedVoltageValue() != nil){
-                        if((self.menuView?.getSettingsView().getManualCalibrationSwitchValue())!){ //if manual calibration on, then it will take the manual calibration equation
-                            
-                            
-                            DispatchQueue.main.async {
-                                finalResult = Float((Float(self.testPageController!.getIntegratedVoltageValue()!) - ((self.menuView?.getSettingsView().getManCalBVal())!)) / (self.menuView?.getSettingsView().getManCalMVal())!)
-                            }
-                            
-                        }
-                        else{ //if manual calibration off, then it will take the voltage value
-                            finalResult = Float((Float(self.testPageController!.getIntegratedVoltageValue()!) - Float(1336.5)) / Float(-79.2))
-                        }
-                }
-                else{
-                    finalResult = nil
-                }
                 
                 
                 self.testPageController!.getPeripheralDevice()?.writeValue(stopTestData!, for: self.testPageController!.getStartTestCharacteristic(), type: .withResponse) //discharge capacitor - in case strips were left in after previous test and charge built up
@@ -1403,17 +1385,17 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                 self.startVoltageBoolean = false
                 
                 if(self.menuView!.getSettingsView().getUnitsSwitchValue()){
-                    finalResult = finalResult! / 4
-                    self.units = "mM"
+                    self.finalResult = self.finalResult! * 4
+                    self.units = "mg/dL"
                 }
                 else{
-                    self.units = "mg/dL"
+                    self.units = "mM"
                 }
                     
                 
                 
                 //MARK: Normal Testing Procedure
-                self.testResultToSave = finalResult
+                self.testResultToSave = self.finalResult
                 
                 DispatchQueue.main.sync {
                     
@@ -1426,11 +1408,11 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                     var progressRatio: Float = 0
                     
                     if(self.menuView!.getSettingsView().getUnitsSwitchValue()){
-                        progressRatio = finalResult! / 3.5 //our scale goes up to 14mg/dL
+                        progressRatio = self.finalResult! / 14.0 //our scale goes up to 14mg/dL
                         print(progressRatio)
                     }
                     else{
-                        progressRatio = finalResult! / 14.0 //our scale goes up to 14mg/dL
+                        progressRatio = self.finalResult! / 3.5 //our scale goes up to 3.5mg/dL
                         print(progressRatio)
                     }
                     
@@ -1465,13 +1447,14 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                 
                 if(self.menuView!.getSettingsView().getQuantitativeModeDefault()){
                     if(self.menuView!.getSettingsView().getUnitsSwitchValue()){
-                        if(finalResult! >= Float(1.375) && finalResult! <= Float(2.0)){
+                        
+                        if(self.finalResult! >= Float(5.5) && self.finalResult! <= Float(8.0)){
                             DispatchQueue.main.sync {
                                 self.testResultLabel.textColor = .yellow
                                 //self.testResultProgressBar.tintColor = .yellow
                             }
                         }
-                        else if(finalResult! > Float(2.0)){
+                        else if(self.finalResult! > Float(8.0)){
                             DispatchQueue.main.sync{
                                 self.testResultLabel.textColor = .green
                                 //self.testResultProgressBar.tintColor = .green
@@ -1483,15 +1466,17 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                                 //self.testResultProgressBar.tintColor = .red
                             }
                         }
+                        
                     }
                     else{
-                        if(finalResult! >= Float(5.5) && finalResult! <= Float(8.0)){
+                        
+                        if(self.finalResult! >= Float(1.375) && self.finalResult! <= Float(2.0)){
                             DispatchQueue.main.sync {
                                 self.testResultLabel.textColor = .yellow
                                 //self.testResultProgressBar.tintColor = .yellow
                             }
                         }
-                        else if(finalResult! > Float(8.0)){
+                        else if(self.finalResult! > Float(2.0)){
                             DispatchQueue.main.sync{
                                 self.testResultLabel.textColor = .green
                                 //self.testResultProgressBar.tintColor = .green
@@ -1503,6 +1488,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                                 //self.testResultProgressBar.tintColor = .red
                             }
                         }
+                        
                     }
                 }
                 else{
@@ -1517,11 +1503,11 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                 DispatchQueue.main.sync {
                     
                     if(self.menuView!.getSettingsView().getQuantitativeModeDefault()){
-                        self.testResultLabel.text = String(format: "%.2f", finalResult!) + self.units!
+                        self.testResultLabel.text = String(format: "%.2f", self.finalResult!) + self.units!
                     }
                     else{
                         if(self.units == "mM"){
-                            if(finalResult! >= 2){
+                            if(self.finalResult! >= 2){
                                 self.testResultLabel.text = "No"
                             }
                             else{
@@ -1529,7 +1515,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                             }
                         }
                         else{
-                            if(finalResult! >= 8){
+                            if(self.finalResult! >= 8){
                                 self.testResultLabel.text = "No"
                             }
                             else{
@@ -1788,20 +1774,41 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
 
             intVoltageValue = self.testPageController!.getIntegratedVoltageValue()
             
+            
             if(intVoltageValue == nil){
                 print("nil")
                 if(self.menuView?.getSettingsView().getTestingModeDefault() == true){
                     self.appendStringToFile(url: self.url!, string: ("nil" + "\n"))
                 }
+                
+                
+                self.finalResult = nil
+                
             }
             else{
                 print(intVoltageValue!)
                 if(self.menuView?.getSettingsView().getTestingModeDefault() == true){
                     self.appendStringToFile(url: self.url!, string: (String(intVoltageValue!) + ", " + formatter3.string(from: today) + "\n"))
                 }
+                
+                
+                if((self.menuView?.getSettingsView().getManualCalibrationSwitchValue())!){ //if manual calibration on, then it will take the manual calibration equation
+                    
+                    
+                    DispatchQueue.main.async {
+                        self.finalResult = Float((Float(intVoltageValue!) - ((self.menuView?.getSettingsView().getManCalBVal())!)) / (self.menuView?.getSettingsView().getManCalMVal())!)
+                    }
+                    
+                }
+                else{ //if manual calibration off, then it will take the voltage value
+                    self.finalResult = Float((Float(intVoltageValue!) - Float(1336.5)) / Float(-79.2))
+                }
+                
+                
             }
             
         }
+        
         
     }
     

@@ -54,6 +54,7 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
     //textFields
     private let mManualCalibrationTextView = UITextField()
     private let bManualCalibrationTextView = UITextField()
+    private let testDurationTextView = UITextField()
     
     //buttons
     //private let selectBtn = UIButton()
@@ -108,6 +109,7 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
         defaults.register(defaults: ["quantitativeModeDefault": false])
         defaults.register(defaults: ["mValDefault": 0])
         defaults.register(defaults: ["bValDefault": 0])
+        defaults.register(defaults: ["testDurationDefault": 7])
     }
 
     // This is also necessary when extending the superclass.
@@ -141,13 +143,13 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
         unitsLabel.textAlignment = .center
         view.addSubview(unitsLabel)
         
-        mgDlLabel.text = "mg/dL"
+        mgDlLabel.text = "mM"
         mgDlLabel.textColor = .black
         mgDlLabel.font = UIFont.boldSystemFont(ofSize: 25.0)
         mgDlLabel.textAlignment = .center
         view.addSubview(mgDlLabel)
         
-        mMLabel.text = "mM"
+        mMLabel.text = "mg/dL"
         mMLabel.textColor = .black
         mMLabel.font = UIFont.boldSystemFont(ofSize: 25.0)
         mMLabel.textAlignment = .center
@@ -200,6 +202,13 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
         bManualCalibrationTextView.inputAccessoryView = bar
         bManualCalibrationTextView.keyboardType = .default
         view.addSubview(bManualCalibrationTextView)
+        
+        testDurationTextView.placeholder = "Enter Test Duration"
+        testDurationTextView.tag = 2
+        testDurationTextView.backgroundColor = .white
+        testDurationTextView.inputAccessoryView = bar
+        testDurationTextView.keyboardType = .default
+        view.addSubview(testDurationTextView)
         
         
         if(defaults.bool(forKey: "manualCalibrationDefault") == true){
@@ -254,14 +263,19 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
         quantitativeModeSwitch.leftAnchor.constraint(equalTo: self.quantitativeModeLabel.rightAnchor, constant: (UIScreen.main.bounds.width * 0.07)).isActive = true
         
         
+        testDurationTextView.translatesAutoresizingMaskIntoConstraints = false
+        testDurationTextView.topAnchor.constraint(equalTo: quantitativeModeLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        testDurationTextView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.1)).isActive = true
+        testDurationTextView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
+        
         
         manualCalibrationLabel.translatesAutoresizingMaskIntoConstraints = false
-        manualCalibrationLabel.topAnchor.constraint(equalTo: self.quantitativeModeLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        manualCalibrationLabel.topAnchor.constraint(equalTo: self.testDurationTextView.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         manualCalibrationLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.07)).isActive = true
         
 
         manualCalibrationSwitch.translatesAutoresizingMaskIntoConstraints = false
-        manualCalibrationSwitch.topAnchor.constraint(equalTo: self.quantitativeModeSwitch.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        manualCalibrationSwitch.topAnchor.constraint(equalTo: self.testDurationTextView.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         manualCalibrationSwitch.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.05)).isActive = true
         
         
@@ -281,7 +295,7 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
     
     
     private func checkAccess(){
-        if(KeychainWrapper.standard.string(forKey: "UserEmail") != "coltonericosterlund@gmail.com"){
+        if(KeychainWrapper.standard.string(forKey: "UserEmail") != "creativeproteinsolutions@gmail.com" && KeychainWrapper.standard.string(forKey: "UserEmail") != "coltonericosterlund@gmail.com"){
             testingModeSwitch.isEnabled = false
             testingModeSwitch.isHidden = true
             quantitativeModeSwitch.isEnabled = false
@@ -294,6 +308,7 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
             manualCalibrationLabel.isHidden = true
             mManualCalibrationTextView.isHidden = true
             bManualCalibrationTextView.isHidden = true
+            testDurationTextView.isHidden = true
         }
         else{
             testingModeSwitch.isEnabled = true
@@ -308,6 +323,7 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
             manualCalibrationLabel.isHidden = false
             mManualCalibrationTextView.isHidden = false
             bManualCalibrationTextView.isHidden = false
+            testDurationTextView.isHidden = false
         }
     }
     
@@ -910,6 +926,21 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
         }
         else{
             return Float(bManualCalibrationTextView.text!)!
+        }
+    }
+    
+    public func getTestDurationVal() -> Int{
+        if(testDurationTextView.text == nil){
+            return 7
+        }
+        else if(testDurationTextView.text! == ""){
+            return 7
+        }
+        else if(Int(testDurationTextView.text!)! <= 0){
+            return 7
+        }
+        else{
+            return Int(testDurationTextView.text!)!
         }
     }
     
