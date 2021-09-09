@@ -714,7 +714,8 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                 self.startVoltageBtnListener()
             }
             else{
-                self.voltageTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.countdownListener), userInfo: nil, repeats: false)
+                self.voltageTimer = Timer(timeInterval: 1, target: self, selector: #selector(self.countdownListener), userInfo: nil, repeats: false)
+                RunLoop.current.add(self.voltageTimer, forMode: .common)
             }
         }
         
@@ -1193,6 +1194,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             
             //waits one minute at temperature and then sends voltage across the strips
             DispatchQueue.main.sync {
+                self.voltageTimer.invalidate()
                 self.voltageTimer = Timer(timeInterval: 1, target: self, selector: #selector(self.countdownListener), userInfo: nil, repeats: false)
                 RunLoop.current.add(self.voltageTimer, forMode: .common)
             }
@@ -1277,7 +1279,9 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             
             //START TIMER TO READ VOLTAGES FIRST BEFORE STARTING THE VOLTAGE ACROSS THE STRIPS
             DispatchQueue.main.sync {
-                self.testTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.readNewVoltage), userInfo: nil, repeats: false)
+                self.testTimer.invalidate()
+                self.testTimer = Timer(timeInterval: 0.5, target: self, selector: #selector(self.readNewVoltage), userInfo: nil, repeats: true)
+                RunLoop.current.add(self.testTimer, forMode: .common)
             }
             
             
@@ -1371,7 +1375,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             finalValueTestQueue.asyncAfter(deadline: currentTime + .seconds(testDuration)){
                 //TODO
                 
-                DispatchQueue.main.sync {
+                DispatchQueue.main.async {
                     self.testTimer.invalidate()
                 }
                 
