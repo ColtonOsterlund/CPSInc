@@ -629,28 +629,111 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
 
     @objc private func settingsBtnPressed(){ //see if you can put this in a seperate class like a listener class
         
-        settingsBtn.transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
+//        settingsBtn.transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
+//
+//        UIView.animate(withDuration: 0.5,
+//                       delay: 0,
+//                       usingSpringWithDamping: CGFloat(0.70),
+//                       initialSpringVelocity: CGFloat(5.0),
+//                       options: UIView.AnimationOptions.allowUserInteraction,
+//                       animations: {
+//                        self.settingsBtn.transform = CGAffineTransform.identity
+//        },
+//                       completion: { Void in()  }
+//        )
+//
+//        navigationController?.pushViewController(settingsView!, animated: true) //pushes settingsView onto the navigationController stack
+//
+//        //settingsView.menuView = self
+//        //settingsView.connectView = self.connectView
+//        //settingsView.testView = self.testView
+//        if(wcSession != nil){
+//        wcSession!.delegate = settingsView
+//        settingsView?.setWCSession(session: wcSession)
+//        }
         
+        settingsBtn.transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
+    
         UIView.animate(withDuration: 0.5,
-                       delay: 0,
-                       usingSpringWithDamping: CGFloat(0.70),
-                       initialSpringVelocity: CGFloat(5.0),
-                       options: UIView.AnimationOptions.allowUserInteraction,
-                       animations: {
-                        self.settingsBtn.transform = CGAffineTransform.identity
+                   delay: 0,
+                   usingSpringWithDamping: CGFloat(0.70),
+                   initialSpringVelocity: CGFloat(5.0),
+                   options: UIView.AnimationOptions.allowUserInteraction,
+                   animations: {
+                    self.settingsBtn.transform = CGAffineTransform.identity
         },
-                       completion: { Void in()  }
+                   completion: { Void in()  }
         )
         
-        navigationController?.pushViewController(settingsView!, animated: true) //pushes settingsView onto the navigationController stack
-        
-        //settingsView.menuView = self
-        //settingsView.connectView = self.connectView
-        //settingsView.testView = self.testView
-        if(wcSession != nil){
-        wcSession!.delegate = settingsView
-        settingsView?.setWCSession(session: wcSession)
+        //NOT GOING TO SWITCH TO THIS ON APPLE WATCH
+        if(Reachability.isConnectedToNetwork() == false){
+            showToast(controller: self, message: "No Internet Connection", seconds: 1)
+            return
         }
+        
+        DispatchQueue.main.async {
+            self.scanningIndicator.startAnimating()
+        }
+        
+        //CHECK THAT JWT HAS NOT EXPIRED - IF IT HAS SET APPDELEGATES AUTHORIZEDSESSION TO FALSE
+        var request = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/user/authenticate")!) //authenticate path just used to check that the jwt has not expired
+        request.httpMethod = "GET"
+        request.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if(error != nil){
+                DispatchQueue.main.async {
+                    self.scanningIndicator.stopAnimating()
+                    print("Error occured during /login RESTAPI request")
+                    self.showToast(controller: self, message: "Error: " + (error as! String), seconds: 1)
+                }
+            }
+            else{
+                DispatchQueue.main.async {
+                    self.scanningIndicator.stopAnimating()
+                    //self.showToast(controller: self, message: String(decoding: data!, as: UTF8.self), seconds: 1) //not too useful for the user, instead just print to the console
+                    print(String(decoding: data!, as: UTF8.self))
+                }
+                
+                
+                print("Response:")
+                print(response!)
+                print("Data:")
+                print(String(decoding: data!, as: UTF8.self))
+                
+                if(String(decoding: data!, as: UTF8.self) == "Authenticated"){ //if authenticated switch to account view
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)){
+                        //dont change admin flag
+                        
+                        self.navigationController?.pushViewController(self.settingsView!, animated: true)
+                        if(self.wcSession != nil){
+                            self.wcSession!.delegate = self.accountView
+                            self.settingsView?.setWCSession(session: self.wcSession)
+                        }
+                    }
+                }
+                
+                else{
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)){
+                        //change admin keychain flag to 0
+                        let adminFlagSavedSuccesfully = KeychainWrapper.standard.set(0, forKey: "User-Admin-Flag")
+                        
+                        if(adminFlagSavedSuccesfully){
+                            self.navigationController?.pushViewController(self.settingsView!, animated: true)
+                        }
+                        
+                        if(self.wcSession != nil){
+                            self.wcSession!.delegate = self.accountView
+                            self.settingsView?.setWCSession(session: self.wcSession)
+                        }
+                    }
+                }
+                
+            }
+            
+        }
+        
+        task.resume()
         
         
     }

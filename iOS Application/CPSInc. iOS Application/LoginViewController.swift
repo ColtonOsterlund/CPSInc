@@ -263,7 +263,11 @@ public class LoginViewController: UIViewController, UITextFieldDelegate, WCSessi
                 
                     let jwtToken = ((response! as! HTTPURLResponse).allHeaderFields["Auth-Token"] as? String)
                     let userID = ((response! as! HTTPURLResponse).allHeaderFields["User-Id"] as? String)
-            
+                    let adminFlag = ((response! as! HTTPURLResponse).allHeaderFields["Admin-Flag"] as? String)
+                    
+                    
+                    print("ADMIN FLAG: " + adminFlag!);
+                    
                     if(jwtToken == nil || userID == nil){ //not authenticated - let user know and return
                         DispatchQueue.main.async {
                             self.emailTextField.text = ""
@@ -281,9 +285,12 @@ public class LoginViewController: UIViewController, UITextFieldDelegate, WCSessi
                         
                         let userIDSavedSuccessfully = KeychainWrapper.standard.set(userID!, forKey: "User-ID-Token") //user id gets saved to keychain upon login
                         
+                        let adminFlagSavedSuccesfully = KeychainWrapper.standard.set(adminFlag!, forKey: "User-Admin-Flag")
+                        
+                        
                         print("LOGGED IN USER ID: " + userID!)
                         
-                        if(jwtSavedSuccessfully && userIDSavedSuccessfully){
+                        if(jwtSavedSuccessfully && userIDSavedSuccessfully && adminFlagSavedSuccesfully){
                             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)){ //go after 1 second from now you that you know the toast is complete
                                 
                                 

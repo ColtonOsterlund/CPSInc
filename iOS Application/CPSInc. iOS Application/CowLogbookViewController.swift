@@ -753,7 +753,7 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate,
                     "chainVisibleId": cowToUse!.chainVisibleID as Any,
                     "animalRegistrationNoNLID": cowToUse!.animalRegistrationNoNLID as Any,
                     "damBreed": cowToUse!.damBreed as Any,
-                    "culled": "1",
+                    "culled": 1,
                     "userID": KeychainWrapper.standard.string(forKey: "User-ID-Token") as Any
                 ]
                 
@@ -861,7 +861,7 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate,
                     "chainVisibleId": cowToUse!.chainVisibleID as Any,
                     "animalRegistrationNoNLID": cowToUse!.animalRegistrationNoNLID as Any,
                     "damBreed": cowToUse!.damBreed as Any,
-                    "culled": "0",
+                    "culled": 0,
                     "userID": KeychainWrapper.standard.string(forKey: "User-ID-Token") as Any
                 ]
                 

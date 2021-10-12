@@ -959,27 +959,7 @@ class CowInfoViewController: UIViewController, UIPickerViewDataSource, UIPickerV
                             self.scanningIndicator.stopAnimating()
                             
                             DispatchQueue.main.async {
-                                self.idTextView.text = ""
-                                self.daysInMilkTextView.text = ""
-                                self.dryOffDayTextView.text = ""
-                                self.mastitisHistoryTextView.text = ""
-                                self.methodOfDryOffTextView.text = ""
-                                self.dailyMilkAverageTextView.text = ""
-                                self.parityTextView.text = ""
-                                self.reproductionStatusTextView.text = ""
-                                self.lactationNumberTextView.text = ""
-                                self.daysCarriedCalfIfPregnantTextView.text = ""
-                                self.projectedDueDateTextView.text = ""
-                                self.current305DayMilkTextView.text = ""
-                                self.currentSomaticCellCountTextView.text = ""
-                                self.linearScoreAtLastTestTextView.text = ""
-                                self.dateOfLastClinialMastitisTextView.text = ""
-                                self.chainVisibleIDTextView.text = ""
-                                self.animalRegistrationNoNLIDTextView.text = ""
-                                self.damBreedTextView.text = ""
-                                self.culledTextView.text = ""
-                                self.numberOfTimesBredTextView.text = ""
-                                self.farmBreedingIndexTextView.text = ""
+                                self.saveBtn.isHidden = true;
                             }
                             
                             self.navigationController?.popViewController(animated: true)

@@ -1247,7 +1247,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             
             //sleep(1) //kind of a buggy fix - this is to ensure the capacitor discharges
             
-            var testDuration = 0;
+            var testDuration = 10;
             
             DispatchQueue.main.async {
                 testDuration = (self.menuView?.getSettingsView().getTestDurationVal())!
@@ -1805,7 +1805,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                     
                 }
                 else{ //if manual calibration off, then it will take the voltage value
-                    self.finalResult = Float((Float(intVoltageValue!) - Float(1336.5)) / Float(-79.2))
+                    self.finalResult = Float((Float(intVoltageValue!) - Float(1500.0)) / Float(-250.0))
                 }
                 
                 

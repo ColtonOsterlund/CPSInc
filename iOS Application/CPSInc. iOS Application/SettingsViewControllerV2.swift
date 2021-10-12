@@ -29,8 +29,12 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
     private let unitsLabel = UILabel()
     private let mgDlLabel = UILabel()
     private let mMLabel = UILabel()
+    private let testDurationLabel = UILabel()
+    private let mValueLabel = UILabel()
+    private let bValueLabel = UILabel()
     private let testingModeLabel = UILabel()
     private let quantitativeModeLabel = UILabel()
+
     
     //PickerView
     //private let finalContinuousPicker = UIPickerView()
@@ -84,6 +88,10 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
     
     public override func viewWillAppear(_ animated: Bool) {
         checkAccess()
+        
+        mManualCalibrationTextView.text = NSString(format: "%.2f", defaults.float(forKey: "mValDefault")) as String
+        bManualCalibrationTextView.text = NSString(format: "%.2f", defaults.float(forKey: "bValDefault")) as String
+        testDurationTextView.text = String(defaults.integer(forKey: "testDurationDefault"))
     }
     
     // This allows you to initialise your custom UIViewController witho@available(iOS 12.0, *)
@@ -107,9 +115,9 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
         defaults.register(defaults: ["unitsDefault": false])
         defaults.register(defaults: ["testingModeDefault": false])
         defaults.register(defaults: ["quantitativeModeDefault": false])
-        defaults.register(defaults: ["mValDefault": 0])
-        defaults.register(defaults: ["bValDefault": 0])
-        defaults.register(defaults: ["testDurationDefault": 7])
+        defaults.register(defaults: ["mValDefault": 0.0])
+        defaults.register(defaults: ["bValDefault": 0.0])
+        defaults.register(defaults: ["testDurationDefault": 10])
     }
 
     // This is also necessary when extending the superclass.
@@ -154,6 +162,26 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
         mMLabel.font = UIFont.boldSystemFont(ofSize: 25.0)
         mMLabel.textAlignment = .center
         view.addSubview(mMLabel)
+        
+        
+        mValueLabel.text = "M:"
+        mValueLabel.textColor = .black
+        mValueLabel.font = UIFont.boldSystemFont(ofSize: 15.0)
+        mValueLabel.textAlignment = .center
+        view.addSubview(mValueLabel)
+        
+        bValueLabel.text = "B:"
+        bValueLabel.textColor = .black
+        bValueLabel.font = UIFont.boldSystemFont(ofSize: 15.0)
+        bValueLabel.textAlignment = .center
+        view.addSubview(bValueLabel)
+        
+        testDurationLabel.text = "T:"
+        testDurationLabel.textColor = .black
+        testDurationLabel.font = UIFont.boldSystemFont(ofSize: 15.0)
+        testDurationLabel.textAlignment = .center
+        view.addSubview(testDurationLabel)
+        
         
         let underlinedTestingLabel: NSMutableAttributedString = NSMutableAttributedString(string: "Testing Mode:")
         underlinedTestingLabel.addAttribute(NSAttributedString.Key.underlineStyle, value: 1, range: NSMakeRange(0, underlinedTestingLabel.length))
@@ -263,54 +291,71 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
         quantitativeModeSwitch.leftAnchor.constraint(equalTo: self.quantitativeModeLabel.rightAnchor, constant: (UIScreen.main.bounds.width * 0.07)).isActive = true
         
         
-        testDurationTextView.translatesAutoresizingMaskIntoConstraints = false
-        testDurationTextView.topAnchor.constraint(equalTo: quantitativeModeLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        testDurationTextView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.1)).isActive = true
-        testDurationTextView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
-        
         
         manualCalibrationLabel.translatesAutoresizingMaskIntoConstraints = false
-        manualCalibrationLabel.topAnchor.constraint(equalTo: self.testDurationTextView.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        manualCalibrationLabel.topAnchor.constraint(equalTo: self.quantitativeModeLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         manualCalibrationLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.07)).isActive = true
         
 
         manualCalibrationSwitch.translatesAutoresizingMaskIntoConstraints = false
-        manualCalibrationSwitch.topAnchor.constraint(equalTo: self.testDurationTextView.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        manualCalibrationSwitch.topAnchor.constraint(equalTo: self.quantitativeModeLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         manualCalibrationSwitch.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -(UIScreen.main.bounds.width * 0.05)).isActive = true
+        
+        
         
         
         mManualCalibrationTextView.translatesAutoresizingMaskIntoConstraints = false
         mManualCalibrationTextView.topAnchor.constraint(equalTo: manualCalibrationLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
         mManualCalibrationTextView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.1)).isActive = true
-        mManualCalibrationTextView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
+        mManualCalibrationTextView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.2)).isActive = true
         
         
         bManualCalibrationTextView.translatesAutoresizingMaskIntoConstraints = false
-        bManualCalibrationTextView.topAnchor.constraint(equalTo: mManualCalibrationTextView.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
-        bManualCalibrationTextView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: (UIScreen.main.bounds.width * 0.1)).isActive = true
-        bManualCalibrationTextView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
+        bManualCalibrationTextView.topAnchor.constraint(equalTo: manualCalibrationLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        bManualCalibrationTextView.leftAnchor.constraint(equalTo: mManualCalibrationTextView.rightAnchor, constant: (UIScreen.main.bounds.width * 0.1)).isActive = true
+        bManualCalibrationTextView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.2)).isActive = true
         
+        
+        testDurationTextView.translatesAutoresizingMaskIntoConstraints = false
+        testDurationTextView.topAnchor.constraint(equalTo: manualCalibrationLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        testDurationTextView.leftAnchor.constraint(equalTo: bManualCalibrationTextView.rightAnchor, constant: (UIScreen.main.bounds.width * 0.1)).isActive = true
+        testDurationTextView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.2)).isActive = true
+        
+        mValueLabel.translatesAutoresizingMaskIntoConstraints = false
+        mValueLabel.topAnchor.constraint(equalTo: manualCalibrationLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        mValueLabel.rightAnchor.constraint(equalTo: mManualCalibrationTextView.leftAnchor, constant: -(UIScreen.main.bounds.width * 0.015)).isActive = true
+        
+        bValueLabel.translatesAutoresizingMaskIntoConstraints = false
+        bValueLabel.topAnchor.constraint(equalTo: manualCalibrationLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        bValueLabel.rightAnchor.constraint(equalTo: bManualCalibrationTextView.leftAnchor, constant: -(UIScreen.main.bounds.width * 0.015)).isActive = true
+        
+        testDurationLabel.translatesAutoresizingMaskIntoConstraints = false
+        testDurationLabel.topAnchor.constraint(equalTo: manualCalibrationLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
+        testDurationLabel.rightAnchor.constraint(equalTo: testDurationTextView.leftAnchor, constant: -(UIScreen.main.bounds.width * 0.015)).isActive = true
         
     }
     
     
     private func checkAccess(){
-        if(KeychainWrapper.standard.string(forKey: "UserEmail") != "creativeproteinsolutions@gmail.com" && KeychainWrapper.standard.string(forKey: "UserEmail") != "coltonericosterlund@gmail.com"){
+        
+        print(KeychainWrapper.standard.string(forKey: "User-Admin-Flag"));
+        
+        if(KeychainWrapper.standard.string(forKey: "User-Admin-Flag") == "0"){ //NON-ADMIN
             testingModeSwitch.isEnabled = false
             testingModeSwitch.isHidden = true
             quantitativeModeSwitch.isEnabled = false
             quantitativeModeSwitch.isHidden = true
-            manualCalibrationSwitch.isEnabled = false
-            manualCalibrationSwitch.isHidden = true
+            manualCalibrationSwitch.isEnabled = true
+            manualCalibrationSwitch.isHidden = false
             
             testingModeLabel.isHidden = true
             quantitativeModeLabel.isHidden = true
-            manualCalibrationLabel.isHidden = true
-            mManualCalibrationTextView.isHidden = true
-            bManualCalibrationTextView.isHidden = true
-            testDurationTextView.isHidden = true
+            manualCalibrationLabel.isHidden = false
+            mManualCalibrationTextView.isHidden = false
+            bManualCalibrationTextView.isHidden = false
+            testDurationTextView.isHidden = false
         }
-        else{
+        else{ //ADMIN
             testingModeSwitch.isEnabled = true
             testingModeSwitch.isHidden = false
             quantitativeModeSwitch.isEnabled = true
@@ -444,14 +489,14 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
     @objc private func manualCalibrationSwitchStateChanged(){
         if(manualCalibrationSwitch.isOn){
             defaults.set(true, forKey: "manualCalibrationDefault")
-            //display y = mx + b option
-            mManualCalibrationTextView.isHidden = false
-            bManualCalibrationTextView.isHidden = false
+//            //display y = mx + b option
+//            mManualCalibrationTextView.isHidden = false
+//            bManualCalibrationTextView.isHidden = false
         }
         else{
             defaults.set(false, forKey: "manualCalibrationDefault")
-            mManualCalibrationTextView.isHidden = true
-            bManualCalibrationTextView.isHidden = true
+//            mManualCalibrationTextView.isHidden = true
+//            bManualCalibrationTextView.isHidden = true
         }
     }
     
@@ -881,6 +926,54 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
 //        }
     }
     
+    
+    public override func viewWillDisappear(_ animated: Bool) {
+        
+        //set defaults for m value
+        if(mManualCalibrationTextView.text == nil){
+            defaults.setValue(0.0, forKey: "mValDefault")
+        }
+        else if(mManualCalibrationTextView.text! == ""){
+            defaults.setValue(0.0, forKey: "mValDefault")
+        }
+        else{
+            defaults.setValue(Float(mManualCalibrationTextView.text!), forKey: "mValDefault")
+        }
+        
+        
+        //set defaults for b value
+        if(bManualCalibrationTextView.text == nil){
+            defaults.setValue(0.0, forKey: "bValDefault")
+        }
+        else if(bManualCalibrationTextView.text! == ""){
+            defaults.setValue(0.0, forKey: "bValDefault")
+        }
+        else{
+            defaults.setValue(Float(bManualCalibrationTextView.text!), forKey: "bValDefault")
+        }
+        
+        
+        //set defaults for test duration value
+        if(testDurationTextView.text == nil){
+            defaults.setValue(10, forKey: "testDurationDefault")
+        }
+        else if(testDurationTextView.text! == ""){
+            defaults.setValue(10, forKey: "testDurationDefault")
+        }
+        else if(Int(testDurationTextView.text!)! <= 0){
+            defaults.setValue(10, forKey: "testDurationDefault")
+        }
+        else{
+            defaults.setValue(Int(testDurationTextView.text!)!, forKey: "testDurationDefault")
+        }
+        
+        
+    }
+    
+    
+    
+    
+    
     @objc private func doneKeyboardBtnPressed(){
         view.endEditing(true)
     }
@@ -906,42 +999,45 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
     }
     
     public func getManCalMVal() -> Float{
-        if(mManualCalibrationTextView.text == nil){
-            return 0.0
-        }
-        else if(mManualCalibrationTextView.text! == ""){
-            return 0.0
-        }
-        else{
-            return Float(mManualCalibrationTextView.text!)!
-        }
+//        if(mManualCalibrationTextView.text == nil){
+//            return 0.0
+//        }
+//        else if(mManualCalibrationTextView.text! == ""){
+//            return 0.0
+//        }
+//        else{
+//            return Float(mManualCalibrationTextView.text!)!
+//        }
+        return defaults.float(forKey: "mValDefault")
     }
     
     public func getManCalBVal() -> Float{
-        if(bManualCalibrationTextView.text == nil){
-            return 0.0
-        }
-        else if(bManualCalibrationTextView.text! == ""){
-            return 0.0
-        }
-        else{
-            return Float(bManualCalibrationTextView.text!)!
-        }
+//        if(bManualCalibrationTextView.text == nil){
+//            return 0.0
+//        }
+//        else if(bManualCalibrationTextView.text! == ""){
+//            return 0.0
+//        }
+//        else{
+//            return Float(bManualCalibrationTextView.text!)!
+//        }
+        return defaults.float(forKey: "bValDefault")
     }
     
     public func getTestDurationVal() -> Int{
-        if(testDurationTextView.text == nil){
-            return 7
-        }
-        else if(testDurationTextView.text! == ""){
-            return 7
-        }
-        else if(Int(testDurationTextView.text!)! <= 0){
-            return 7
-        }
-        else{
-            return Int(testDurationTextView.text!)!
-        }
+//        if(testDurationTextView.text == nil){
+//            return 10
+//        }
+//        else if(testDurationTextView.text! == ""){
+//            return 10
+//        }
+//        else if(Int(testDurationTextView.text!)! <= 0){
+//            return 10
+//        }
+//        else{
+//            return Int(testDurationTextView.text!)!
+//        }
+        return defaults.integer(forKey: "testDurationDefault")
     }
     
     public func getTestingModeDefault() -> Bool{
@@ -955,6 +1051,7 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
     public func getQuantitativeModeDefault() -> Bool{
         return defaults.bool(forKey: "quantitativeModeDefault")
     }
+    
     
     
 }

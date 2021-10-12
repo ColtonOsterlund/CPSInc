@@ -379,10 +379,7 @@ class HerdInfoViewController: UIViewController, UIPickerViewDataSource, UIPicker
                             self.scanningIndicator.stopAnimating()
                             
                             DispatchQueue.main.async {
-                                self.idTextView.text = ""
-                                self.locationTextView.text = ""
-                                self.milkingSystemTextView.text = ""
-                                self.pinTextView.text = ""
+                                self.saveBtn.isHidden = true;
                             }
                             
                             self.navigationController?.popViewController(animated: true)
