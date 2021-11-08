@@ -110,13 +110,21 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
     public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
+        
+        if(defaults.float(forKey: "mValDefault") == 0.0){
+            UserDefaults.standard.removeObject(forKey: "mValDefault")
+        }
+        
+        if(defaults.float(forKey: "bValDefault") == 0.0){
+            UserDefaults.standard.removeObject(forKey: "bValDefault")
+        }
 
         defaults.register(defaults: ["manualCalibrationDefault": false])
         defaults.register(defaults: ["unitsDefault": false])
         defaults.register(defaults: ["testingModeDefault": false])
         defaults.register(defaults: ["quantitativeModeDefault": false])
-        defaults.register(defaults: ["mValDefault": 0.0])
-        defaults.register(defaults: ["bValDefault": 0.0])
+        defaults.register(defaults: ["mValDefault": -330.0])
+        defaults.register(defaults: ["bValDefault": 1850.0])
         defaults.register(defaults: ["testDurationDefault": 10])
     }
 
@@ -340,16 +348,16 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
         
         print(KeychainWrapper.standard.string(forKey: "User-Admin-Flag"));
         
-        if(KeychainWrapper.standard.string(forKey: "User-Admin-Flag") == "0"){ //NON-ADMIN
+        if(KeychainWrapper.standard.string(forKey: "User-Admin-Flag") == nil || KeychainWrapper.standard.string(forKey: "User-Admin-Flag") == "0"){ //NON-ADMIN
             testingModeSwitch.isEnabled = false
             testingModeSwitch.isHidden = true
-            quantitativeModeSwitch.isEnabled = false
-            quantitativeModeSwitch.isHidden = true
+            quantitativeModeSwitch.isEnabled = true
+            quantitativeModeSwitch.isHidden = false
             manualCalibrationSwitch.isEnabled = true
             manualCalibrationSwitch.isHidden = false
             
             testingModeLabel.isHidden = true
-            quantitativeModeLabel.isHidden = true
+            quantitativeModeLabel.isHidden = false
             manualCalibrationLabel.isHidden = false
             mManualCalibrationTextView.isHidden = false
             bManualCalibrationTextView.isHidden = false
@@ -931,10 +939,10 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
         
         //set defaults for m value
         if(mManualCalibrationTextView.text == nil){
-            defaults.setValue(0.0, forKey: "mValDefault")
+            defaults.setValue(-330.0, forKey: "mValDefault")
         }
         else if(mManualCalibrationTextView.text! == ""){
-            defaults.setValue(0.0, forKey: "mValDefault")
+            defaults.setValue(-330.0, forKey: "mValDefault")
         }
         else{
             defaults.setValue(Float(mManualCalibrationTextView.text!), forKey: "mValDefault")
@@ -943,10 +951,10 @@ public class SettingsViewControllerV2: UIViewController, WCSessionDelegate, /*UI
         
         //set defaults for b value
         if(bManualCalibrationTextView.text == nil){
-            defaults.setValue(0.0, forKey: "bValDefault")
+            defaults.setValue(1850.0, forKey: "bValDefault")
         }
         else if(bManualCalibrationTextView.text! == ""){
-            defaults.setValue(0.0, forKey: "bValDefault")
+            defaults.setValue(1850.0, forKey: "bValDefault")
         }
         else{
             defaults.setValue(Float(bManualCalibrationTextView.text!), forKey: "bValDefault")

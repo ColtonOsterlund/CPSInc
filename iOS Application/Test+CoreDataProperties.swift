@@ -26,5 +26,6 @@ extension Test {
     @NSManaged public var value: Float
     @NSManaged public var cow: Cow?
     @NSManaged public var herd: Herd?
+    @NSManaged public var milivolts: Int
 
 }

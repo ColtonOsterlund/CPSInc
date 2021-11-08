@@ -31,6 +31,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
     var selectingHerdCowFromList: Bool = false
     var savableTest: Bool = true
     var finalResult: Float? = nil
+    var milivoltValue: Int? = nil
     
     var battLevel: Double = 0
     var tempLevel: Double = 0
@@ -561,7 +562,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         let alert = UIAlertController(title: "Is this cow experiencing any of the following symptoms?", message: "Hypersensitivity\nRestlessness\nMuscle tremors\nShifting of body weight\nUnbalanced gait\nDifficulty moving\nReduced body temperature\nDry muzzle\nIncreased heart rate (103+)\nWeak heartbeat\nUnable to stand\nTrouble urinating\nLaying down on its side\nComatose", preferredStyle: .alert)
 
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: {action in
-            self.signsOfMilkFever = false
+            self.signsOfMilkFever = true
             if(self.menuView?.getSettingsView().getUnitsSwitchValue() == false){ //MGDL
                 self.recommendationBoxLeft.image = UIImage(named: "recommendationBoxLeftMilkFeverMGDL")
                 self.recommendationBoxMiddle.image = UIImage(named: "recommendationBoxMiddleMilkFeverMGDL")
@@ -576,7 +577,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             return
         }))
         alert.addAction(UIAlertAction(title: "No", style: .default, handler: { action in
-            self.signsOfMilkFever = true
+            self.signsOfMilkFever = false
             if(self.menuView?.getSettingsView().getUnitsSwitchValue() == false){ //MGDL
                 self.recommendationBoxLeft.image = UIImage(named: "recommendationBoxLeftNoMilkFeverMGDL")
                 self.recommendationBoxMiddle.image = UIImage(named: "recommendationBoxMiddleNoMilkFeverMGDL")
@@ -807,6 +808,8 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         testToSave.testType = "Blood Calcium"
                              
         testToSave.value = testResultToSave!
+        
+        testToSave.milkFever = self.signsOfMilkFever!
                              
         testToSave.units = units!
                              
@@ -816,6 +819,10 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         testToSave.herd = self.cowToSave?.herd
         
         testToSave.followUpNum = self.testFollowUpNumberToSave
+        
+        //testToSave.milivolts = self.milivoltValue!
+        
+        
         
         
         //save test to database
@@ -848,6 +855,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             "value": testToSave.value as Any,
             "cowID": testToSave.cow!.id as Any,
             "herdID": testToSave.herd!.id as Any,
+            "milivolts": self.milivoltValue! as Any,
             "userID": KeychainWrapper.standard.string(forKey: "User-ID-Token") as Any
         ]
         
@@ -1411,7 +1419,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                     
                     var progressRatio: Float = 0
                     
-                    if(self.menuView!.getSettingsView().getUnitsSwitchValue()){
+                    if(self.units == "mg/dL"){
                         progressRatio = self.finalResult! / 14.0 //our scale goes up to 14mg/dL
                         print(progressRatio)
                     }
@@ -1436,7 +1444,8 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                         else{ //if its bigger than 1 then just set it to the very right side of the bar. It will never be smaller than 0 so the lowest it will go is the very left side of the bar
                             self.testProgressIndicator.leftAnchor.constraint(equalTo: self.testResultProgressBar.leftAnchor, constant: ((UIScreen.main.bounds.width * 0.75))).isActive = true
                         }
-                        self.testProgressIndicator.isHidden = false
+                        //self.testProgressIndicator.isHidden = false
+                        self.testProgressIndicator.isHidden = true
                     
                     
                         if(self.savableTest){
@@ -1791,6 +1800,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
             }
             else{
                 print(intVoltageValue!)
+                self.milivoltValue = intVoltageValue!
                 if(self.menuView?.getSettingsView().getTestingModeDefault() == true){
                     self.appendStringToFile(url: self.url!, string: (String(intVoltageValue!) + ", " + formatter3.string(from: today) + "\n"))
                 }
@@ -1805,7 +1815,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                     
                 }
                 else{ //if manual calibration off, then it will take the voltage value
-                    self.finalResult = Float((Float(intVoltageValue!) - Float(1500.0)) / Float(-250.0))
+                    self.finalResult = Float((Float(intVoltageValue!) - Float(1850.0)) / Float(-330.0))
                 }
                 
                 
