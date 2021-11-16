@@ -202,6 +202,10 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate,
     
     public override func viewDidAppear(_ animated: Bool) {
         fetchSavedData()
+        
+        if(selectingFromList){
+            filteringBtnPressed()
+        }
     }
     
     
@@ -705,7 +709,7 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate,
         
         let filterAlert = UIAlertController(title: "Filter List", message: "Please Select One of the Following", preferredStyle: .actionSheet) //actionSheet shows on the bottom of the screen while alert comes up in the middle
         
-        filterAlert.addAction(UIAlertAction(title: "All", style: .default, handler: { action in
+        filterAlert.addAction(UIAlertAction(title: "No Filter", style: .default, handler: { action in
             self.fetchSavedData()
         }))
         filterAlert.addAction(UIAlertAction(title: "DIM = 1-4", style: .default, handler: { action in
@@ -723,32 +727,64 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate,
             self.tableView.reloadData()
             
         }))
+        filterAlert.addAction(UIAlertAction(title: "Enter DIM", style: .default, handler: { action in
+            
+            
+            
+            var enterDIMAlert = UIAlertController(title: "Enter DIM", message: "DIM: ", preferredStyle: .alert)
+            
+            enterDIMAlert.addTextField{ (textField) in
+                textField.placeholder = "DIM"
+                textField.keyboardType = .numberPad
+            }
+            
+            enterDIMAlert.addAction(UIAlertAction(title: "Filter Cows", style: .default, handler: { action in
+                if(Int(enterDIMAlert.textFields![0].text!)! >= 1 && Int(enterDIMAlert.textFields![0].text!)! <= 305){
+                    var tempCowList = [Cow]()
+                    for cow in self.cowList{
+                        tempCowList.append(cow)
+                    }
+                    self.cowList.removeAll()
+                    for cow in tempCowList{
+                        if(cow.daysInMilk! == enterDIMAlert.textFields![0].text!){
+                            self.cowList.append(cow)
+                        }
+                    }
+                    self.tableView.reloadData()
+                }
+                else{
+                    self.showToast(controller: self, message: "DIM must be between 1 and 305", seconds: 1)
+                    self.fetchSavedData()
+                }
+                
+            }))
+            
+            self.present(enterDIMAlert, animated: true)
+            
+        }))
         filterAlert.addAction(UIAlertAction(title: "Recently Tested", style: .default, handler: { action in
             
             
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            self.dateTextAlert = UIAlertController(title: "Recently Tested", message: "Select Date Range", preferredStyle: .alert)
+            self.dateTextAlert = UIAlertController(title: "Recently Tested", message: "Tested Since: ", preferredStyle: .alert)
             
                 self.dateTextAlert?.addTextField{ (textField) in
                     textField.placeholder = "Start Date"
                     textField.inputView = self.startDatePicker
                 }
-                    self.dateTextAlert?.addTextField{ (textField) in
-                    textField.placeholder = "End Date"
+
+                self.dateTextAlert?.addTextField{ (textField) in
+                    self.endDatePicker.date = Date() //set to current date
                     textField.inputView = self.endDatePicker
+                    let dateformatter = DateFormatter()
+                    dateformatter.dateStyle = DateFormatter.Style.short
+                    self.endDate = dateformatter.string(from: self.endDatePicker.date as Date)
+                    textField.text = self.endDate
                 }
+            
             
                 self.dateTextAlert?.addAction(UIAlertAction(title: "Get Recently Tested", style: .default, handler: { action in
                     if(self.startDate == nil && self.endDate == nil){
-                        self.showToast(controller: self, message: "Please Select a Start and End Date", seconds: 1)
+                        self.showToast(controller: self, message: "Please Select a Date", seconds: 1)
                         return
                     }
                     else if(self.startDate == nil){
@@ -756,7 +792,7 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate,
                         return
                     }
                     else if(self.endDate == nil){
-                        self.showToast(controller: self, message: "Please Select an End Date", seconds: 1)
+                        self.showToast(controller: self, message: "Please Select a Date", seconds: 1)
                         return
                     }
                     
@@ -858,7 +894,7 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate,
 //                                var endDateString: String? = nil;
                                 DispatchQueue.main.sync {
                                     self.startDateString = dateformatter.string(from: self.startDatePicker.date) + ",12:00:00AM"
-                                    self.endDateString = dateformatter.string(from: self.endDatePicker.date) + ",11:59:59 PM"
+                                    self.endDateString = dateformatter.string(from: Date()) + ",11:59:59 PM"
                                 }
                                 dateformatter.timeStyle = DateFormatter.Style.short
                                 
@@ -1011,16 +1047,21 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate,
             self.dateTextAlert?.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             
             self.startDate = nil
-            self.endDate = nil
+            //self.endDate = nil
             self.startDatePicker.date = Date() //set to current date
-            self.endDatePicker.date = Date() //set to current date
+            //self.endDatePicker.date = Date() //set to current date
             self.dateTextAlert?.textFields![0].text = "" //clear textField
-            self.dateTextAlert?.textFields![1].text = "" //cear textField
+            //self.dateTextAlert?.textFields![1].text = "" //cear textField
             self.present(self.dateTextAlert!, animated: true)
             
             
             
         }))
+        
+        
+        
+        
+        
         filterAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         self.present(filterAlert, animated: true)
         
