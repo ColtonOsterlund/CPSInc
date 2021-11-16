@@ -59,6 +59,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
     private var startTestBtn = UIButton()
     private var startVoltageBtn = UIButton()
     private var saveTestBtn = UIButton()
+    private var saveQuickTestBtn = UIButton()
     private var discardTestBtn = UIButton()
     private var cancelTestBtn = UIButton()
     private var recommendationBtn = UIButton()
@@ -177,6 +178,15 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         view.addSubview(saveTestBtn)
         saveTestBtn.isHidden = true
         saveTestBtn.isEnabled = false
+        
+        saveQuickTestBtn.backgroundColor = .blue
+        saveQuickTestBtn.setTitle("Save Test", for: .normal)
+        saveQuickTestBtn.setTitleColor(.white, for: .normal)
+        saveQuickTestBtn.layer.borderWidth = 2
+        saveQuickTestBtn.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor
+        view.addSubview(saveQuickTestBtn)
+        saveQuickTestBtn.isHidden = true
+        saveQuickTestBtn.isEnabled = false
         
         //discardTestBtn
         discardTestBtn.backgroundColor = .blue
@@ -406,6 +416,11 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         saveTestBtn.topAnchor.constraint(equalTo: discardTestBtn.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.02)).isActive = true
         saveTestBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
         
+        saveQuickTestBtn.translatesAutoresizingMaskIntoConstraints = false
+        saveQuickTestBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        saveQuickTestBtn.topAnchor.constraint(equalTo: discardTestBtn.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.02)).isActive = true
+        saveQuickTestBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.8)).isActive = true
+        
         cancelTestBtn.translatesAutoresizingMaskIntoConstraints = false
         cancelTestBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         cancelTestBtn.topAnchor.constraint(equalTo: saveTestBtn.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.05)).isActive = true
@@ -491,6 +506,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         startTestBtn.addTarget(self, action: #selector(startTestBtnListener), for: .touchUpInside)
         startVoltageBtn.addTarget(self, action: #selector(startVoltageBtnListener), for: .touchUpInside)
         saveTestBtn.addTarget(self, action: #selector(saveTestBtnListener), for: .touchUpInside)
+        saveQuickTestBtn.addTarget(self, action: #selector(setCowHerdPostTest), for: .touchUpInside)
         discardTestBtn.addTarget(self, action: #selector(discardTestBtnListener), for: .touchUpInside)
         cancelTestBtn.addTarget(self, action: #selector(cancelTestBtnListener), for: .touchUpInside)
         severeHypocalcemiaRecommendationBtn.addTarget(self, action: #selector(severeHypocalcemiaRecommendationBtnListener), for: .touchUpInside)
@@ -563,6 +579,12 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
 
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: {action in
             self.signsOfMilkFever = true
+            
+            if(self.finalResult != nil){
+                self.saveTestBtnListener()
+                return
+            }
+            
             if(self.menuView?.getSettingsView().getUnitsSwitchValue() == false){ //MGDL
                 self.recommendationBoxLeft.image = UIImage(named: "recommendationBoxLeftMilkFeverMGDL")
                 self.recommendationBoxMiddle.image = UIImage(named: "recommendationBoxMiddleMilkFeverMGDL")
@@ -573,11 +595,19 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                 self.recommendationBoxMiddle.image = UIImage(named: "recommendationBoxMiddleMilkFeverMM")
                 self.recommendationBoxRight.image = UIImage(named: "recommendationBoxRightMilkFeverMM")
             }
+            
             self.runTest()
             return
+            
         }))
         alert.addAction(UIAlertAction(title: "No", style: .default, handler: { action in
             self.signsOfMilkFever = false
+            
+            if(self.finalResult != nil){
+                self.saveTestBtnListener()
+                return
+            }
+            
             if(self.menuView?.getSettingsView().getUnitsSwitchValue() == false){ //MGDL
                 self.recommendationBoxLeft.image = UIImage(named: "recommendationBoxLeftNoMilkFeverMGDL")
                 self.recommendationBoxMiddle.image = UIImage(named: "recommendationBoxMiddleNoMilkFeverMGDL")
@@ -588,6 +618,7 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                 self.recommendationBoxMiddle.image = UIImage(named: "recommendationBoxMiddleNoMilkFeverMM")
                 self.recommendationBoxRight.image = UIImage(named: "recommendationBoxRightNoMilkFeverMM")
             }
+
             self.runTest()
             return
         }))
@@ -972,6 +1003,9 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         saveTestBtn.isEnabled = false
         saveTestBtn.isHidden = true
         
+        saveQuickTestBtn.isEnabled = false
+        saveQuickTestBtn.isHidden = true
+        
         //discardTestBtn
         discardTestBtn.isEnabled = false
         discardTestBtn.isHidden = true
@@ -1020,6 +1054,8 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         recommendationBoxRight.isHidden = true
         
         self.cancelTestFlag = false
+        
+        self.finalResult = nil
     }
     
     
@@ -1103,6 +1139,22 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
         }))
         
         self.present(alert, animated: true)
+    }
+    
+    
+    
+    @objc public func setCowHerdPostTest(){
+        
+        self.herdToSave = nil
+        self.cowToSave = nil
+        
+
+        self.savableTest = true
+        self.selectingHerdCowFromList = true
+        self.menuView?.getHerdLogbookView().setSelectingHerdFromList(select: true)
+        self.navigationController?.pushViewController((self.menuView?.getHerdLogbookView())! , animated: true)
+        return
+
     }
     
     
@@ -1554,6 +1606,9 @@ public class SingleStripTestViewController: UIViewController, MFMailComposeViewC
                         self.retestBtn.setTitle("Re-test Cow", for: .normal)
                     }
                     else{
+                        self.saveQuickTestBtn.isEnabled = true
+                        self.saveQuickTestBtn.isHidden = false
+                        
                         self.retestBtn.setTitle("Re-test Blank Test", for: .normal)
                     }
                     

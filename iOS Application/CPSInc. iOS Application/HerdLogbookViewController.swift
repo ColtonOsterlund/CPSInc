@@ -35,6 +35,10 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
     private var endDate: String? = nil
     
     
+    var startDateString: String? = nil
+    var endDateString: String? = nil
+    
+    
     //ViewControllers
     public var menuView: MenuViewController? = nil
     private var cowLogbook: CowLogbookViewController? = nil
@@ -203,10 +207,16 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
         
         
         startDatePicker.datePickerMode = .date
+        if #available(iOS 14, *) {
+            startDatePicker.preferredDatePickerStyle = .wheels
+        }
         startDatePicker.tag = 0
         startDatePicker.addTarget(self, action: #selector(datePickerChangedValue(sender:)), for: .valueChanged)
         
         endDatePicker.datePickerMode = .date
+        if #available(iOS 14, *) {
+            endDatePicker.preferredDatePickerStyle = .wheels
+        }
         endDatePicker.tag = 1
         endDatePicker.addTarget(self, action: #selector(datePickerChangedValue(sender:)), for: .valueChanged)
         
@@ -816,21 +826,18 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
                             var startDateString: String? = nil;
                             var endDateString: String? = nil;
                             DispatchQueue.main.sync {
-                                startDateString = dateformatter.string(from: self.startDatePicker.date) + ", 12:00:00 AM"
-                                endDateString = dateformatter.string(from: self.endDatePicker.date) + ", 11:59:59 PM"
+                                self.startDateString = dateformatter.string(from: self.startDatePicker.date) + ",12:00:00AM"
+                                self.endDateString = dateformatter.string(from: self.endDatePicker.date) + ",11:59:59PM"
                             }
                             dateformatter.timeStyle = DateFormatter.Style.short
                             
-            //                let predicateStartDate = NSPredicate(format: "date >= %@", dateformatter.date(from: startDateString)! as NSDate) //need to add times to these dates
-            //                let predicateEndDate = NSPredicate(format: "date <= %@", dateformatter.date(from: endDateString)! as NSDate)
-            //                let fetchPredicate = NSCompoundPredicate(type: .and, subpredicates: [predicateStartDate, predicateEndDate])
-            //                fetchTestRequest.predicate = fetchPredicate
+
                             var savedTestArray = [Test]()
                             
                             var testFetchString = "https://pacific-ridge-88217.herokuapp.com/user-test-app"
                             testFetchString.append("?userID=" + KeychainWrapper.standard.string(forKey: "User-ID-Token")!)
-                            testFetchString.append("&startDate=" + startDateString!)
-                            testFetchString.append("&endDate=" + endDateString!)
+//                            testFetchString.append("&startDate=" + startDateString!)
+//                            testFetchString.append("&endDate=" + endDateString!)
                             testFetchString.append("&herdID=" + ((selectedHerd?.id!)!))
                             
                             var backupRequestFetchTests = URLRequest(url: URL(string: testFetchString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!)!)
@@ -902,7 +909,13 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
                                                 
                                             print(toSave.date)
                                             
-                                            savedTestArray.append(toSave)
+                                            if(object["date"] as! String > startDateString!){
+                                                
+                                                if(endDateString! > object["date"] as! String){
+                                                    savedTestArray.append(toSave)
+                                                }
+                                                
+                                            }
                                             
                                         }
                                         
@@ -951,48 +964,6 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
                 
                 backupTaskFetchCows.resume()
                 
-//                do{
-//                    savedCowArray = try (self.appDelegate?.persistentContainer.viewContext.fetch(fetchCowRequest))!
-//                } catch{
-//                    print("Error during fetch request")
-//                }
-                
-                //FETCH TESTS FOR EACH COW BETWEEN THE SPECIFIED DATES
-//                let fetchTestRequest: NSFetchRequest<Test> = Test.fetchRequest()
-                
-                
-                
-//                do{
-//                    savedTestArray = try (self.appDelegate?.persistentContainer.viewContext.fetch(fetchTestRequest))!
-//                    
-//                    //remove all tests from the array that do not correspond to the cows in the herd being analyzed (farmer may have multiple herds)
-//                    var index = 0
-//                    
-//                    for test in savedTestArray{
-//                        var inCowArray: Bool = false
-//                        
-//                        for cow in savedCowArray{
-//                            if(test.cow == cow){
-//                                inCowArray = true
-//                            }
-//                        }
-//                        
-//                        if(inCowArray == false){
-//                            savedTestArray.remove(at: index)
-//                        }
-//                        
-//                        index += 1
-//                    }
-//                    
-//                } catch{
-//                    print("Error during fetch request")
-//                }
-                
-                //savedCowArray
-                //savedTestArray
-                
-                //FULL HERD ANALYTICS
-                //count number of cows tested in full herd
                 
                 
                 
@@ -1017,12 +988,6 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
     
     func GenerateEmail(selectedHerd: Herd?, savedCowArray: [Cow], savedTestArray: [Test]){
         var fullHerdNumCowsTested: Int = 0
-//        var parity1NumCowsTested: Int = 0
-//        var parity2NumCowsTested: Int = 0
-//        var parity3NumCowsTested: Int = 0
-//        var parity4NumCowsTested: Int = 0
-//        var parity5NumCowsTested: Int = 0
-//        var parity6NumCowsTested: Int = 0
         
         
         for cow in savedCowArray{
@@ -1032,24 +997,7 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
                     
                     fullHerdNumCowsTested += 1
                     break
-//                    if(test.cow!.parity! == String(1)){
-//                        parity1NumCowsTested += 1
-//                    }
-//                    else if(test.cow!.parity! == String(2)){
-//                        parity2NumCowsTested += 1
-//                    }
-//                    else if(test.cow!.parity! == String(3)){
-//                        parity3NumCowsTested += 1
-//                    }
-//                    else if(test.cow!.parity! == String(4)){
-//                        parity4NumCowsTested += 1
-//                    }
-//                    else if(test.cow!.parity! == String(5)){
-//                        parity5NumCowsTested += 1
-//                    }
-//                    else if(test.cow!.parity! == String(6)){
-//                        parity6NumCowsTested += 1
-//                    }
+
                 }
             }
             
@@ -1059,24 +1007,7 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
         var fullHerdNumCowsTestedSubclinical: Int = 0
         var fullHerdNumCowsTestedClinical: Int = 0
         var fullHerdNumCowsTestedNormal: Int = 0
-//        var parity1NumCowsTestedSubclinical: Int = 0
-//        var parity1NumCowsTestedClinical: Int = 0
-//        var parity1NumCowsTestedNormal: Int = 0
-//        var parity2NumCowsTestedSubclinical: Int = 0
-//        var parity2NumCowsTestedClinical: Int = 0
-//        var parity2NumCowsTestedNormal: Int = 0
-//        var parity3NumCowsTestedSubclinical: Int = 0
-//        var parity3NumCowsTestedClinical: Int = 0
-//        var parity3NumCowsTestedNormal: Int = 0
-//        var parity4NumCowsTestedSubclinical: Int = 0
-//        var parity4NumCowsTestedClinical: Int = 0
-//        var parity4NumCowsTestedNormal: Int = 0
-//        var parity5NumCowsTestedSubclinical: Int = 0
-//        var parity5NumCowsTestedClinical: Int = 0
-//        var parity5NumCowsTestedNormal: Int = 0
-//        var parity6NumCowsTestedSubclinical: Int = 0
-//        var parity6NumCowsTestedClinical: Int = 0
-//        var parity6NumCowsTestedNormal: Int = 0
+
         
         for cow in savedCowArray{
             var testFlag: Int = -1 // -1 = no test, 0 = normal, 1 = subclinical, 2 = clinical
@@ -1224,39 +1155,7 @@ public class HerdLogbookViewController: UITableViewController, WCSessionDelegate
             self.appendStringToFile(url: url, string: ("\nPercentage of cows over the cows tested displaying signs of Subclinical Milk Fever \n(*may be a skewed value based on what percentage of the herd was tested*): " + String(prevalenceTestsRounded) + "%\n"))
             
             self.appendStringToFile(url: url, string: ("\nPercentage of cows over the whole herd displaying signs of Subclinical Milk Fever \n(*may be a skewed value based on what percentage of the herd was tested*): " + String(prevalenceWholeHerdRounded) + "%\n"))
-            //self.appendStringToFile(url: url, string: ("Prevalence of Clinical Milk Fever in Herd: " + String(prevalenceClinical) + "%\n\n\n"))
-//            self.appendStringToFile(url: url, string: ("Parity Based Herd Analytics" + "\n"))
-//            self.appendStringToFile(url: url, string: ("----------------------------\n\n"))
-//            self.appendStringToFile(url: url, string: ("Parity 1:" + "\n"))
-//            self.appendStringToFile(url: url, string: ("Number of Cows Tested: " + String(parity1NumCowsTested) + "\n"))
-//            self.appendStringToFile(url: url, string: ("Number of Cows Displaying no Signs of Milk Fever: " + String(parity1NumCowsTestedNormal) + "\n"))
-//            self.appendStringToFile(url: url, string: ("Number of Cows Displaying Signs of Subclinical Milk Fever: " + String(parity1NumCowsTestedSubclinical) + "\n"))
-//            self.appendStringToFile(url: url, string: ("Number of Cows Displaying Signs of Clinical Milk Fever: " + String(parity1NumCowsTestedClinical) + "\n\n"))
-//            self.appendStringToFile(url: url, string: ("Parity 2:" + "\n"))
-//            self.appendStringToFile(url: url, string: ("Number of Cows Tested: " + String(parity2NumCowsTested) + "\n"))
-//            self.appendStringToFile(url: url, string: ("Number of Cows Displaying no Signs of Milk Fever: " + String(parity2NumCowsTestedNormal) + "\n"))
-//            self.appendStringToFile(url: url, string: ("Number of Cows Displaying Signs of Subclinical Milk Fever: " + String(parity2NumCowsTestedSubclinical) + "\n"))
-//            self.appendStringToFile(url: url, string: ("Number of Cows Displaying Signs of Clinical Milk Fever: " + String(parity2NumCowsTestedClinical) + "\n\n"))
-//            self.appendStringToFile(url: url, string: ("Parity 3:" + "\n"))
-//            self.appendStringToFile(url: url, string: ("Number of Cows Tested: " + String(parity3NumCowsTested) + "\n"))
-//            self.appendStringToFile(url: url, string: ("Number of Cows Displaying no Signs of Milk Fever: " + String(parity3NumCowsTestedNormal) + "\n"))
-//            self.appendStringToFile(url: url, string: ("Number of Cows Displaying Signs of Subclinical Milk Fever: " + String(parity3NumCowsTestedSubclinical) + "\n"))
-//            self.appendStringToFile(url: url, string: ("Number of Cows Displaying Signs of Clinical Milk Fever: " + String(parity3NumCowsTestedClinical) + "\n\n"))
-//            self.appendStringToFile(url: url, string: ("Parity 4:" + "\n"))
-//            self.appendStringToFile(url: url, string: ("Number of Cows Tested: " + String(parity4NumCowsTested) + "\n"))
-//            self.appendStringToFile(url: url, string: ("Number of Cows Displaying no Signs of Milk Fever: " + String(parity4NumCowsTestedNormal) + "\n"))
-//            self.appendStringToFile(url: url, string: ("Number of Cows Displaying Signs of Subclinical Milk Fever: " + String(parity4NumCowsTestedSubclinical) + "\n"))
-//            self.appendStringToFile(url: url, string: ("Number of Cows Displaying Signs of Clinical Milk Fever: " + String(parity4NumCowsTestedClinical) + "\n\n"))
-//            self.appendStringToFile(url: url, string: ("Parity 5:" + "\n"))
-//            self.appendStringToFile(url: url, string: ("Number of Cows Tested: " + String(parity5NumCowsTested) + "\n"))
-//            self.appendStringToFile(url: url, string: ("Number of Cows Displaying no Signs of Milk Fever: " + String(parity5NumCowsTestedNormal) + "\n"))
-//            self.appendStringToFile(url: url, string: ("Number of Cows Displaying Signs of Subclinical Milk Fever: " + String(parity5NumCowsTestedSubclinical) + "\n"))
-//            self.appendStringToFile(url: url, string: ("Number of Cows Displaying Signs of Clinical Milk Fever: " + String(parity5NumCowsTestedClinical) + "\n\n"))
-//            self.appendStringToFile(url: url, string: ("Parity 6+:" + "\n"))
-//            self.appendStringToFile(url: url, string: ("Number of Cows Tested: " + String(parity6NumCowsTested) + "\n"))
-//            self.appendStringToFile(url: url, string: ("Number of Cows Displaying no Signs of Milk Fever: " + String(parity6NumCowsTestedNormal) + "\n"))
-//            self.appendStringToFile(url: url, string: ("Number of Cows Displaying Signs of Subclinical Milk Fever: " + String(parity6NumCowsTestedSubclinical) + "\n"))
-//            self.appendStringToFile(url: url, string: ("Number of Cows Displaying Signs of Clinical Milk Fever: " + String(parity6NumCowsTestedClinical) + "\n\n"))
+   
             
             let input = try String(contentsOf: url)
             print(input)

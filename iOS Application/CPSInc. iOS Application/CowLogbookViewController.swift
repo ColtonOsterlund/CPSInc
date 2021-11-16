@@ -34,6 +34,17 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate,
     //UIBarButtonItems
     private var addBtn = UIBarButtonItem()
     private var reportBtn = UIBarButtonItem()
+    private var filterBtn = UIBarButtonItem()
+    
+    
+    //UIDatePicker
+    private let startDatePicker = UIDatePicker()
+    private let endDatePicker = UIDatePicker()
+    var dateTextAlert: UIAlertController? = nil
+    private var startDate: String? = nil
+    private var endDate: String? = nil
+    private var startDateString: String? = nil
+    private var endDateString: String? = nil
     
 //    //UIDatePicker
 //    private let startDatePicker = UIDatePicker()
@@ -197,6 +208,24 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate,
     private func setupLayoutItems(){
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cowTableViewCell")
         
+        
+        
+        startDatePicker.datePickerMode = .date
+        if #available(iOS 14, *) {
+            startDatePicker.preferredDatePickerStyle = .wheels
+        }
+        startDatePicker.tag = 0
+        startDatePicker.addTarget(self, action: #selector(datePickerChangedValue(sender:)), for: .valueChanged)
+        
+        endDatePicker.datePickerMode = .date
+        if #available(iOS 14, *) {
+            endDatePicker.preferredDatePickerStyle = .wheels
+        }
+        endDatePicker.tag = 1
+        endDatePicker.addTarget(self, action: #selector(datePickerChangedValue(sender:)), for: .valueChanged)
+        
+        
+        
         scanningIndicator.center = self.view.center
         scanningIndicator.style = UIActivityIndicatorView.Style.gray
         scanningIndicator.backgroundColor = .lightGray
@@ -210,8 +239,9 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate,
         
         //reportBtn = UIBarButtonItem.init(title: "Report", style: .plain, target: self, action: #selector(reportBtnPressed))
         addBtn = UIBarButtonItem.init(barButtonSystemItem: .add, target: self, action: #selector(addBtnPressed))
+        filterBtn = UIBarButtonItem.init(title: "Filter", style: .plain, target: self, action: #selector(filteringBtnPressed))
      
-        navigationItem.rightBarButtonItems = [addBtn/*, reportBtn*/]
+        navigationItem.rightBarButtonItems = [addBtn/*, reportBtn*/, filterBtn]
         
 //        startDatePicker.datePickerMode = .date
 //        startDatePicker.tag = 0
@@ -234,6 +264,30 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate,
         scanningIndicator.backgroundColor = .lightGray
         view.addSubview(scanningIndicator)
     }
+    
+    
+    
+    
+    
+    
+    
+    @objc private func datePickerChangedValue(sender: UIDatePicker){
+        let dateformatter = DateFormatter()
+        dateformatter.dateStyle = DateFormatter.Style.short
+        
+        if(sender.tag == 0){
+            startDate = dateformatter.string(from: startDatePicker.date as Date)
+            dateTextAlert?.textFields![0].text = startDate
+        }
+        else if(sender.tag == 1){
+            endDate = dateformatter.string(from: endDatePicker.date as Date)
+            dateTextAlert?.textFields![1].text = endDate
+        }
+    }
+    
+    
+    
+    
     
     
     
@@ -644,6 +698,337 @@ public class CowLogbookViewController: UITableViewController, WCSessionDelegate,
         
         
     }
+    
+    
+    
+    @objc private func filteringBtnPressed(){
+        
+        let filterAlert = UIAlertController(title: "Filter List", message: "Please Select One of the Following", preferredStyle: .actionSheet) //actionSheet shows on the bottom of the screen while alert comes up in the middle
+        
+        filterAlert.addAction(UIAlertAction(title: "All", style: .default, handler: { action in
+            self.fetchSavedData()
+        }))
+        filterAlert.addAction(UIAlertAction(title: "DIM = 1-4", style: .default, handler: { action in
+            
+            var tempCowList = [Cow]()
+            for cow in self.cowList{
+                tempCowList.append(cow)
+            }
+            self.cowList.removeAll()
+            for cow in tempCowList{
+                if(cow.daysInMilk! == "1" || cow.daysInMilk! == "2" || cow.daysInMilk! == "3" || cow.daysInMilk! == "4"){
+                    self.cowList.append(cow)
+                }
+            }
+            self.tableView.reloadData()
+            
+        }))
+        filterAlert.addAction(UIAlertAction(title: "Recently Tested", style: .default, handler: { action in
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            self.dateTextAlert = UIAlertController(title: "Recently Tested", message: "Select Date Range", preferredStyle: .alert)
+            
+                self.dateTextAlert?.addTextField{ (textField) in
+                    textField.placeholder = "Start Date"
+                    textField.inputView = self.startDatePicker
+                }
+                    self.dateTextAlert?.addTextField{ (textField) in
+                    textField.placeholder = "End Date"
+                    textField.inputView = self.endDatePicker
+                }
+            
+                self.dateTextAlert?.addAction(UIAlertAction(title: "Get Recently Tested", style: .default, handler: { action in
+                    if(self.startDate == nil && self.endDate == nil){
+                        self.showToast(controller: self, message: "Please Select a Start and End Date", seconds: 1)
+                        return
+                    }
+                    else if(self.startDate == nil){
+                        self.showToast(controller: self, message: "Please Select a Start Date", seconds: 1)
+                        return
+                    }
+                    else if(self.endDate == nil){
+                        self.showToast(controller: self, message: "Please Select an End Date", seconds: 1)
+                        return
+                    }
+                    
+                    self.scanningIndicator.startAnimating()
+                    
+                    //FETCH ALL COWS IN THE HERD
+                    var savedCowArray = [Cow]()
+                    
+                    var backupRequestFetchCows = URLRequest(url: URL(string: "https://pacific-ridge-88217.herokuapp.com/user-cow-app?userID=" + KeychainWrapper.standard.string(forKey: "User-ID-Token")! + "&herdID=" + (self.selectedHerd?.id)! as String)!)
+                    backupRequestFetchCows.httpMethod = "GET"
+                    backupRequestFetchCows.setValue("application/json", forHTTPHeaderField: "Content-type")
+                    backupRequestFetchCows.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
+                    backupRequestFetchCows.setValue(KeychainWrapper.standard.string(forKey: "User-ID-Token"), forHTTPHeaderField: "user-id")
+                    
+                    let backupTaskFetchCows = URLSession.shared.dataTask(with: backupRequestFetchCows) { data, response, error in
+                        if(error != nil){
+                            print("Error occured during /user-cow RESTAPI request")
+                            DispatchQueue.main.async {
+                                self.scanningIndicator.stopAnimating()
+                                self.showToast(controller: self, message: "Network Error", seconds: 1)
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)){
+                                return
+                            }
+                        }
+                        else{
+                            
+                            print("Response:")
+                            print(response!)
+                            print("Data:")
+                            print(String(decoding: data!, as: UTF8.self))
+                            
+                            
+                            if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
+                                 DispatchQueue.main.async {
+                                    self.scanningIndicator.stopAnimating()
+                                    self.showToast(controller: self, message: "Must login to view your logbook", seconds: 2)
+                                    self.navigationController?.popToRootViewController(animated: true)
+                                    //self.navigationController?.pushViewController(self.menuView!.getLoginView(), animated: true)
+                                }
+                                                   
+                                return
+                            }
+                            
+                            
+                            do {
+                                let json = try JSONSerialization.jsonObject(with: data!, options: []) as? [[String: Any]]
+                                
+                                                    
+                                for object in json! {
+                                    
+                                    
+                                    let toSave = Cow(context: (self.appDelegate?.persistentContainer.viewContext)!)
+                                        
+                                    toSave.id = object["id"] as? String
+                                    toSave.daysInMilk = object["daysInMilk"] as? String
+                                    toSave.dryOffDay = object["dryOffDay"] as? String
+                                    toSave.mastitisHistory = ""//object["mastitisHistory"] as? String
+                                    toSave.methodOfDryOff = ""//object["methodOfDryOff"] as? String
+                                    toSave.dailyMilkAverage = ""//object["dailyMilkAverage"] as? String
+                                    toSave.parity = ""//object["parity"] as? String
+                                    toSave.reproductionStatus = ""//object["reproductionStatus"] as? String
+                                    toSave.numberTimesBred = ""//object["numberOfTimesBred"] as? String
+                                    toSave.farmBreedingIndex = ""//object["farmBreedingIndex"] as? String
+                                    toSave.herd = self.selectedHerd
+                                    toSave.lactationNumber = object["lactationNumber"] as? String
+                                    toSave.daysCarriedCalfIfPregnant = object["daysCarriedCalfIfPregnant"] as? String
+                                    toSave.projectedDueDate = object["projectedDueDate"] as? String
+                                    toSave.current305DayMilk = object["current305DayMilk"] as? String
+                                    toSave.currentSomaticCellCount = object["currentSomaticCellCount"] as? String
+                                    toSave.linearScoreAtLastTest = object["linearScoreAtLastTest"] as? String
+                                    toSave.dateOfLastClinicalMastitis = object["dateOfLastClinicalMastitis"] as? String
+                                    toSave.chainVisibleID = object["chainVisibleId"] as? String
+                                    toSave.animalRegistrationNoNLID = object["animalRegistrationNoNLID"] as? String
+                                    toSave.damBreed = object["damBreed"] as? String
+                                    
+                                    var culled = object["culled"] as! Int
+                                    toSave.culled = String(culled)
+                                
+                                            
+                                    savedCowArray.append(toSave)
+                                        
+                                    
+                                }
+                                
+                                savedCowArray.sort(by: {$0.id!.localizedStandardCompare($1.id!) == .orderedAscending})
+                                
+                                DispatchQueue.main.async {
+                                    self.scanningIndicator.stopAnimating()
+                                }
+                                
+                                
+                                
+                                
+                                
+                                let dateformatter = DateFormatter()
+                                dateformatter.dateStyle = DateFormatter.Style.short
+//                                var startDateString: String? = nil;
+//                                var endDateString: String? = nil;
+                                DispatchQueue.main.sync {
+                                    self.startDateString = dateformatter.string(from: self.startDatePicker.date) + ",12:00:00AM"
+                                    self.endDateString = dateformatter.string(from: self.endDatePicker.date) + ",11:59:59 PM"
+                                }
+                                dateformatter.timeStyle = DateFormatter.Style.short
+                                
+
+                                var savedTestArray = [Test]()
+                                
+                                var testFetchString = "https://pacific-ridge-88217.herokuapp.com/user-test-app"
+                                testFetchString.append("?userID=" + KeychainWrapper.standard.string(forKey: "User-ID-Token")!)
+//                                testFetchString.append("&startDate=" + startDateString!)
+//                                testFetchString.append("&endDate=" + endDateString!)
+                                testFetchString.append("&herdID=" + ((self.selectedHerd?.id!)!))
+                                
+                                var backupRequestFetchTests = URLRequest(url: URL(string: testFetchString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!)!)
+                                backupRequestFetchTests.httpMethod = "GET"
+                                backupRequestFetchTests.setValue("application/json", forHTTPHeaderField: "Content-type")
+                                backupRequestFetchTests.setValue(KeychainWrapper.standard.string(forKey: "JWT-Auth-Token"), forHTTPHeaderField: "auth-token")
+                                backupRequestFetchTests.setValue(KeychainWrapper.standard.string(forKey: "User-ID-Token"), forHTTPHeaderField: "user-id")
+                                
+                                let backupTaskFetchTests = URLSession.shared.dataTask(with: backupRequestFetchTests) { [self] data, response, error in
+                                    if(error != nil){
+                                        print("Error occured during /user-test RESTAPI request")
+                                        DispatchQueue.main.async {
+                                            self.scanningIndicator.stopAnimating()
+                                            self.showToast(controller: self, message: "Network Error", seconds: 1)
+                                        }
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)){
+                                            return
+                                        }
+                                    }
+                                    else{
+                                        
+                                        print("Response:")
+                                        print(response!)
+                                        print("Data:")
+                                        print(String(decoding: data!, as: UTF8.self))
+                                        
+                                        
+                                        if(String(decoding: data!, as: UTF8.self) == "Invalid Token"){
+                                             DispatchQueue.main.async {
+                                                self.scanningIndicator.stopAnimating()
+                                                self.showToast(controller: self, message: "Must login to view your logbook", seconds: 2)
+                                                self.navigationController?.popToRootViewController(animated: true)
+                                                //self.navigationController?.pushViewController(self.menuView!.getLoginView(), animated: true)
+                                            }
+                                                               
+                                            return
+                                        }
+                                        
+                                        
+                                        do {
+                                            let json = try JSONSerialization.jsonObject(with: data!, options: []) as? [[String: Any]]
+                                            
+                                            
+                                                                
+                                            for object in json! {
+                                                
+                                                let formatter = DateFormatter()
+                                                formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                                                
+                                                let toSave = Test(context: (self.appDelegate?.persistentContainer.viewContext)!)
+                                                
+                                                //find cow with proper ID to save to test
+                                                for cow in savedCowArray{
+                                                    
+                                                    
+                                                    if(cow.id == object["cowID"] as! String){
+                                                        toSave.cow = cow
+                                                    }
+                                                }
+
+                                                toSave.herd = selectedHerd
+                                                toSave.date = formatter.date(from: object["date"] as! String) as NSDate?
+                                                toSave.followUpNum = object["followUpNum"] as? NSNumber
+                                                toSave.milkFever = (object["milkFever"] as! NSString).boolValue
+                                                toSave.testID = object["testID"] as? String
+                                                toSave.testType = object["testType"] as? String
+                                                toSave.units = object["units"] as? String
+                                                toSave.value = (object["value"] as! NSString).floatValue
+                                                    
+                                                print(toSave.date)
+                                                
+                                                
+                                                if(object["date"] as! String > startDateString!){
+                                                    
+                                                    if(endDateString! > object["date"] as! String){
+                                                        savedTestArray.append(toSave)
+                                                    }
+                                                    
+                                                }
+                                                
+                                               
+                                                
+                                            }
+                                            
+                                            savedTestArray.sort(by: {$0.testID!.localizedStandardCompare($1.testID!) == .orderedAscending})
+                                            
+                                            print(savedTestArray.count)
+
+                                            self.cowList.removeAll()
+                                            var cowIDs = [String]()
+                                            
+                                            for test in savedTestArray{
+                                                for cow in savedCowArray{
+                                                    if(test.cow!.id == cow.id!){
+                                                        if(!cowIDs.contains(cow.id!)){
+                                                            self.cowList.append(cow)
+                                                            cowIDs.append(cow.id!)
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            
+                                            
+                                            DispatchQueue.main.async {
+                                                self.scanningIndicator.stopAnimating()
+                                                self.tableView.reloadData()
+                                            }
+                                            
+                                            
+                                        } catch let error as NSError {
+                                            DispatchQueue.main.async {
+                                                self.scanningIndicator.stopAnimating()
+                                                self.showToast(controller: self, message: "Network Error", seconds: 1)
+                                            }
+                                            print(error.localizedDescription)
+                                        }
+                                        
+                                    }
+                                }
+                                
+                                backupTaskFetchTests.resume()
+                                
+  
+                            } catch let error as NSError {
+                                DispatchQueue.main.async {
+                                    self.scanningIndicator.stopAnimating()
+                                    self.showToast(controller: self, message: "Network Error", seconds: 1)
+                                }
+                                print(error.localizedDescription)
+                            }
+                            
+                        }
+                    }
+                    
+                    backupTaskFetchCows.resume()
+                    
+                    
+                }))
+            
+            self.dateTextAlert?.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            
+            self.startDate = nil
+            self.endDate = nil
+            self.startDatePicker.date = Date() //set to current date
+            self.endDatePicker.date = Date() //set to current date
+            self.dateTextAlert?.textFields![0].text = "" //clear textField
+            self.dateTextAlert?.textFields![1].text = "" //cear textField
+            self.present(self.dateTextAlert!, animated: true)
+            
+            
+            
+        }))
+        filterAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        self.present(filterAlert, animated: true)
+        
+    }
+    
+    
+    
+    
     
     @objc private func removeBtnPressed(){
         //fill out

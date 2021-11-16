@@ -42,6 +42,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     private let accountBtn = UIButton()
     private let shopBtn = UIButton()
     private let recommendationBtn = UIButton()
+    private let correlationBtn = UIButton()
     
     //UIBarButtons
     private var instructionBtn = UIBarButtonItem()
@@ -57,6 +58,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     private let greenCircleImage = UIImage(named: "green_circle")
     private let redCircleImage = UIImage(named: "red_circle")
     private let recommendationBtnImage = UIImage(named: "recommendationLOGO")
+    private let correlationBtnImage = UIImage(named: "calculator")
     
     
     //UILabels
@@ -68,6 +70,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     private let accountLabel = UILabel()
     private let shopLabel = UILabel()
     private let recommendationLabel = UILabel()
+    private let correlationLabel = UILabel()
     
     //UIActivityIndicatorView
     private let scanningIndicator = UIActivityIndicatorView()
@@ -199,7 +202,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
     private func createLayoutItems(){ //play with layout of buttons
         
         scrollView.backgroundColor = .init(red: 0, green: 0.637, blue: 0.999, alpha: 1)
-        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 1.2)
+        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 1.4)
         scrollView.frame = view.bounds
         view.addSubview(scrollView)
         
@@ -239,6 +242,14 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         logbookLabel.textColor = .black
         logbookLabel.textAlignment = .center
         contentView.addSubview(logbookLabel)
+        
+        correlationBtn.setBackgroundImage(correlationBtnImage, for: .normal)
+        contentView.addSubview(correlationBtn)
+        
+        correlationLabel.text = "Analysis"
+        correlationLabel.textColor = .black
+        correlationLabel.textAlignment = .center
+        contentView.addSubview(correlationLabel)
         
         logoLabel.text = "Creative Protein Solutions Inc."
         logoLabel.textColor = .black
@@ -379,6 +390,7 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         shopLabel.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25)).isActive = true
         shopLabel.topAnchor.constraint(equalTo: shopBtn.bottomAnchor, constant: 10).isActive = true
         
+        
         recommendationBtn.translatesAutoresizingMaskIntoConstraints = false
         recommendationBtn.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: (UIScreen.main.bounds.width * 0.25) ).isActive = true
         recommendationBtn.topAnchor.constraint(equalTo: accountLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.15)).isActive = true
@@ -388,6 +400,20 @@ public class MenuViewController: UIViewController, CBCentralManagerDelegate, WCS
         recommendationLabel.translatesAutoresizingMaskIntoConstraints = false
         recommendationLabel.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: (UIScreen.main.bounds.width * 0.25)).isActive = true
         recommendationLabel.topAnchor.constraint(equalTo: recommendationBtn.bottomAnchor, constant: 10).isActive = true
+        
+        
+        
+        correlationBtn.translatesAutoresizingMaskIntoConstraints = false
+        correlationBtn.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25) ).isActive = true
+        correlationBtn.topAnchor.constraint(equalTo: shopLabel.bottomAnchor, constant: (UIScreen.main.bounds.height * 0.15)).isActive = true
+        correlationBtn.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width * 0.4)).isActive = true
+        correlationBtn.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height * 0.15)).isActive = true
+
+        correlationLabel.translatesAutoresizingMaskIntoConstraints = false
+        correlationLabel.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor, constant: -(UIScreen.main.bounds.width * 0.25)).isActive = true
+        correlationLabel.topAnchor.constraint(equalTo: correlationBtn.bottomAnchor, constant: 10).isActive = true
+        
+
         
         logoLabel.translatesAutoresizingMaskIntoConstraints = false
         logoLabel.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor).isActive = true
